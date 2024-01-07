@@ -10,7 +10,8 @@ fun PackyTheme(
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
-        PackyColorScheme provides PackyColor()
+        PackyColorScheme provides LightPackyColor(),
+        PackyTypographyScheme provides DefaultPackyTypography()
     ) {
         MaterialTheme {
             content()
@@ -23,4 +24,9 @@ object PackyTheme {
         @Composable
         @ReadOnlyComposable
         get() = PackyColorScheme.current
+
+    val typography: PackyTypography
+        @Composable
+        @ReadOnlyComposable
+        get() = PackyTypographyScheme.current
 }

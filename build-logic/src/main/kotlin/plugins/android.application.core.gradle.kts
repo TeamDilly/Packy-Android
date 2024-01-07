@@ -1,0 +1,14 @@
+import config.configurationKotlinSerialization
+import config.configureAndroidApplication
+import config.configureAndroidCompose
+import config.configureAndroidTest
+import config.configureHiltAndroid
+import config.configureKotlinTest
+
+configureAndroidApplication()
+configurationKotlinSerialization()
+
+configureHiltAndroid()
+
+configureAndroidTest()
+configureKotlinTest()

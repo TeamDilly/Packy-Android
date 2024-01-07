@@ -1,0 +1,109 @@
+[versions]
+#앱의 전반적인 의존성을 가지고 있기 때문에 업데이트 시 유의 해야함
+#참고 https://developer.android.com/build/releases/gradle-plugin
+#https://mvnrepository.com/artifact/com.android.application/com.android.application.gradle.plugin
+androidGradlePlugin = "8.2.0"
+kotlin = "1.9.21"
+#https://developer.android.com/jetpack/androidx/releases/compose-compiler
+androidxComposeCompiler = "1.5.7"
+
+#의존성
+#https://developer.android.com/jetpack/androidx/releases/core
+coreKtx = "1.12.0"
+#androidx.appcompat:appcompat
+appcompat = "1.6.1"
+#https://mvnrepository.com/artifact/com.google.android.material/material
+material = "1.10.0"
+#https://developer.android.com/jetpack/androidx/releases/activity
+activityCompose = "1.8.1"
+#https://developer.android.com/jetpack/compose/bom/bom-mapping
+composeBom = "2023.10.01"
+#https://developer.android.com/jetpack/androidx/releases/navigation
+androidxComposeNavigation = "2.7.5"
+#https://mvnrepository.com/artifact/com.google.dagger/hilt-android
+hilt = "2.48"
+#https://developer.android.com/jetpack/androidx/releases/hilt?hl=ko
+hiltNavigationCompose = "1.1.0"
+#https://central.sonatype.com/artifact/com.squareup.okhttp3/okhttp/4.11.0?smo=true
+okhttp = "4.12.0"
+#https://github.com/square/retrofit
+retrofit = "2.9.0"
+#https://plugins.gradle.org/plugin/org.jetbrains.kotlin.plugin.serialization
+kotlin-serialization = "1.9.21"
+#https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json-jvm
+kotlin-serialization-json = "1.6.1"
+#https://github.com/JakeWharton/retrofit2-kotlinx-serialization-converter
+retrofit-kotlin-serialization-converter = "1.0.0"
+#https://github.com/Kotlin/kotlinx.coroutines
+coroutine = "1.7.3"
+#https://developer.android.com/jetpack/androidx/releases/datastore?hl=ko
+data-store = "1.0.0"
+
+#test
+#https://mvnrepository.com/artifact/junit/junit
+junit = "4.13.2"
+#https://mvnrepository.com/artifact/androidx.test.ext/junit
+androidJunit = "1.1.5"
+#https://mvnrepository.com/artifact/androidx.test.espresso/espresso-core
+espressoCore = "3.5.1"
+#https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=ko
+lifecycle = "2.6.2"
+
+[libraries]
+#andorid
+android-core = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+android-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+android-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+
+#hilt
+hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
+#compose
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxComposeNavigation" }
+
+#network
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-kotlin-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-kotlin-serialization-converter" }
+okhttp-logging-interceptor = {group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref="okhttp"}
+
+#serialization
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization-json" }
+
+#coroutine
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutine" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutine" }
+
+androidx-data-store = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "data-store" }
+
+#test
+test-junit = { group = "junit", name = "junit", version.ref = "junit" }
+test-android-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidJunit" }
+test-android-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+[bundles]
+compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-material3", "compose-navigation", "hilt-navigation-compose"]
+test = ["test-junit", "test-android-junit", "test-android-espresso"]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serialization" }

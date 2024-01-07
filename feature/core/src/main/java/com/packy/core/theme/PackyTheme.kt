@@ -10,7 +10,7 @@ fun PackyTheme(
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
-        PackyColorScheme provides LightPackyColor(),
+        PackyColorScheme provides lightPackyColor,
         PackyTypographyScheme provides DefaultPackyTypography()
     ) {
         MaterialTheme {

@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import com.packy.core.theme.lightPackyColor
 import javax.annotation.concurrent.Immutable
 
-val buttonStyle get() = PackyButtonStyle().buttonSize
+val buttonStyle get() = PackyButtonStyle().buttonSizeType
 
 @Immutable
 class PackyButtonStyle internal constructor() {
@@ -18,9 +18,10 @@ class PackyButtonStyle internal constructor() {
     lateinit var buttonColor: ButtonColor
         private set
 
-    private val buttonColorType = ButtonColorType()
+    val buttonSizeType = ButtonSizeType()
+    val buttonColorType = ButtonColorType()
 
-    private inner class ButtonSizeType {
+    inner class ButtonSizeType {
         val large: ButtonColorType
             get() {
                 buttonSize = ButtonSize.Large
@@ -38,7 +39,7 @@ class PackyButtonStyle internal constructor() {
             }
     }
 
-    private inner class ButtonColorType {
+    inner class ButtonColorType {
         val purple: PackyButtonStyle
             get() {
                 buttonColor = ButtonColor.Purple

@@ -1,5 +1,6 @@
 package com.packy.core.widget.button
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -7,7 +8,6 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -54,7 +54,8 @@ fun PackyButton(
                 width = 0.dp,
                 color = backgroundColor,
                 shape = RoundedCornerShape(style.buttonSize.radius),
-            ),
+            )
+            .background(backgroundColor)
     ) {
         CompositionLocalProvider(LocalContentColor provides contentColor) {
             content(contentColor)

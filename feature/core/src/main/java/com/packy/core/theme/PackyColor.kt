@@ -1,8 +1,7 @@
-package com.packy.core
+package com.packy.core.theme
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 

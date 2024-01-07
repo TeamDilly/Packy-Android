@@ -1,4 +1,4 @@
-package com.packy.core
+package com.packy.core.theme
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -9,6 +9,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.packy.core.R
 import javax.annotation.concurrent.Immutable
 
 private val PackyFontStyle = TextStyle(

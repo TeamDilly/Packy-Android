@@ -43,69 +43,68 @@ interface PackyTypography {
     val body06: TextStyle
 }
 
-@Immutable
-data class DefaultPackyTypography(
+val defaultPackyTypography = object : PackyTypography {
     override val heading01: TextStyle = PackyFontStyle.copy(
         fontSize = 24.sp,
         lineHeight = 34.sp,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Normal
-    ),
+    )
     override val title01: TextStyle = PackyFontStyle.copy(
         fontSize = 24.sp,
         lineHeight = 34.sp,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Normal
-    ),
+    )
     override val title02: TextStyle = PackyFontStyle.copy(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Normal
-    ),
+    )
     override val title03: TextStyle = PackyFontStyle.copy(
         fontSize = 16.sp,
         lineHeight = 24.sp,
         fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Normal
-    ),
+    )
     override val body01: TextStyle = PackyFontStyle.copy(
         fontSize = 18.sp,
         lineHeight = 24.sp,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Normal
-    ),
+    )
     override val body02: TextStyle = PackyFontStyle.copy(
         fontSize = 16.sp,
         lineHeight = 26.sp,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Normal
-    ),
+    )
     override val body03: TextStyle = PackyFontStyle.copy(
         fontSize = 16.sp,
         lineHeight = 26.sp,
         fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Normal
-    ),
+    )
     override val body04: TextStyle = PackyFontStyle.copy(
         fontSize = 14.sp,
         lineHeight = 22.sp,
         fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Normal
-    ),
+    )
     override val body05: TextStyle = PackyFontStyle.copy(
         fontSize = 14.sp,
         lineHeight = 26.sp,
         fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Normal
-    ),
+    )
     override val body06: TextStyle = PackyFontStyle.copy(
         fontSize = 12.sp,
         lineHeight = 20.sp,
         fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Normal
     )
-) : PackyTypography
+}
 
 @SuppressLint("CompositionLocalNaming")
-internal val PackyTypographyScheme = staticCompositionLocalOf { DefaultPackyTypography() }
+internal val PackyTypographyScheme = staticCompositionLocalOf { defaultPackyTypography }

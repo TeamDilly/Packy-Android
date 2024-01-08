@@ -11,7 +11,7 @@ fun PackyTheme(
 ) {
     CompositionLocalProvider(
         PackyColorScheme provides lightPackyColor,
-        PackyTypographyScheme provides DefaultPackyTypography()
+        PackyTypographyScheme provides defaultPackyTypography
     ) {
         MaterialTheme {
             content()

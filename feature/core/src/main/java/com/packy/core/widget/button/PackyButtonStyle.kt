@@ -1,10 +1,10 @@
 package com.packy.core.widget.button
 
-import android.annotation.SuppressLint
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.packy.core.theme.defaultPackyTypography
 import com.packy.core.theme.lightPackyColor
 import javax.annotation.concurrent.Immutable
 
@@ -57,10 +57,34 @@ class PackyButtonStyle internal constructor() {
             }
     }
 
-    enum class ButtonSize(val height: Dp, val radius: Dp) {
-        Large(height = 16.dp, radius = 16.dp),
-        Medium(height = 12.dp, radius = 8.dp),
-        Small(height = 8.dp, radius = 8.dp);
+    enum class ButtonSize(
+        val height: Dp,
+        val radius: Dp,
+        val iconSize: Dp,
+        val contentPadding: Dp,
+        val textStyle: TextStyle
+    ) {
+        Large(
+            height = 58.dp,
+            radius = 16.dp,
+            iconSize = 20.dp,
+            contentPadding= 12.dp,
+            textStyle = defaultPackyTypography.body02
+        ),
+        Medium(
+            height = 46.dp,
+            radius = 8.dp,
+            iconSize = 16.dp,
+            contentPadding= 8.dp,
+            textStyle = defaultPackyTypography.body04
+        ),
+        Small(
+            height = 46.dp,
+            radius = 8.dp,
+            iconSize = 10.dp,
+            contentPadding= 4.dp,
+            textStyle = defaultPackyTypography.body06
+        ),
     }
 
     enum class ButtonColor(

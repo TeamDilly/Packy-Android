@@ -22,7 +22,7 @@ fun NavGraphBuilder.onboardingNavGraph(
         composable(
             route = OnboardingRoute.LOGIN,
         ) {
-            LoginScreen()
+            LoginScreen(navController = navController)
         }
     }
 }

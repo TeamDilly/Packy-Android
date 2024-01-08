@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "com.packy.core"
+    namespace = "com.packy.feature.core"
 }

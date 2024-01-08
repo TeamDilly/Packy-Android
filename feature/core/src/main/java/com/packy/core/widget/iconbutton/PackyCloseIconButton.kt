@@ -14,7 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import com.packy.core.R
+import com.packy.feature.core.R
 
 @Composable
 fun PackyCloseIconButton(

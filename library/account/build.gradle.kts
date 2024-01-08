@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mvi.library.account"
+    namespace = "com.packy.library.account"
 }

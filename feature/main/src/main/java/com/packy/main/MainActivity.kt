@@ -14,6 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.packy.core.theme.PackyTheme
+import com.packy.core.widget.button.PackyButton
+import com.packy.core.widget.button.buttonStyle
 import com.packy.mvi.ext.emitMviIntent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -65,13 +68,26 @@ fun Greeting(
         }) {
 
         }
+        PackyButton(
+            style = buttonStyle.large.purple,
+            text = "버튼",
+            onClick = { },
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MaterialTheme {
-        Greeting(onClick = {})
+    PackyTheme {
+        Column {
+            PackyButton(
+                style = buttonStyle.large.purple,
+                icon = com.packy.core.R.drawable.bell,
+                text = "버튼",
+                onClick = { },
+            )
+        }
+
     }
 }

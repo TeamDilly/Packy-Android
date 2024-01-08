@@ -52,6 +52,10 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
         emitIntent(intent())
     }
 
+    protected fun sendEffect(effect: Effect) {
+        viewModelScope.launch { _effect.send(effect) }
+    }
+
     protected fun sendEffect(builder: () -> Effect) {
         val effectValue = builder()
         viewModelScope.launch { _effect.send(effectValue) }

@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.packy.onboarding.login.LoginScreen
 import com.packy.onboarding.onboarding.OnboardingScreen
 
 fun NavGraphBuilder.onboardingNavGraph(
@@ -17,6 +18,11 @@ fun NavGraphBuilder.onboardingNavGraph(
             route = OnboardingRoute.ONBOARDING,
         ) {
             OnboardingScreen(navController = navController)
+        }
+        composable(
+            route = OnboardingRoute.LOGIN,
+        ) {
+            LoginScreen()
         }
     }
 }

@@ -32,9 +32,7 @@ private val PackyFontStyle = TextStyle(
 
 interface PackyTypography {
     val heading01: TextStyle
-    val title01: TextStyle
-    val title02: TextStyle
-    val title03: TextStyle
+    val heading02: TextStyle
     val body01: TextStyle
     val body02: TextStyle
     val body03: TextStyle
@@ -50,22 +48,10 @@ val defaultPackyTypography = object : PackyTypography {
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Normal
     )
-    override val title01: TextStyle = PackyFontStyle.copy(
-        fontSize = 24.sp,
-        lineHeight = 34.sp,
-        fontWeight = FontWeight.Bold,
-        fontStyle = FontStyle.Normal
-    )
-    override val title02: TextStyle = PackyFontStyle.copy(
-        fontSize = 16.sp,
+    override val heading02: TextStyle = PackyFontStyle.copy(
+        fontSize = 18.sp,
         lineHeight = 24.sp,
         fontWeight = FontWeight.Bold,
-        fontStyle = FontStyle.Normal
-    )
-    override val title03: TextStyle = PackyFontStyle.copy(
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Normal
     )
     override val body01: TextStyle = PackyFontStyle.copy(

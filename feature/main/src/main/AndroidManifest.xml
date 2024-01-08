@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name="com.packy.main.MainActivity"
+            android:name="com.packy.root.RootActivity"
             android:exported="true">
 
             <intent-filter>

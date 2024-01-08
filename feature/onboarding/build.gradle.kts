@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.packy.feature.main"
+    namespace = "com.packy.onboarding"
 }
 
 dependencies {
@@ -12,6 +12,4 @@ dependencies {
     implementation(project(":library:mvi"))
     implementation(project(":library:account"))
     implementation(project(":feature:core"))
-    implementation(project(":feature:onboarding"))
 }
-

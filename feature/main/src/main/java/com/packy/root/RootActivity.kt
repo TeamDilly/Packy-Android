@@ -10,7 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import com.packy.core.theme.PackyTheme
 import com.packy.onboarding.navigation.OnboardingRoute
 import com.packy.root.navigation.PackyNavHost
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RootActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

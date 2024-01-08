@@ -38,6 +38,8 @@ retrofit-kotlin-serialization-converter = "1.0.0"
 coroutine = "1.7.3"
 #https://developer.android.com/jetpack/androidx/releases/datastore?hl=ko
 data-store = "1.0.0"
+#https://bumptech.github.io/glide/int/compose.html
+compose-glide = "1.0.0-beta01"
 
 #test
 #https://mvnrepository.com/artifact/junit/junit
@@ -72,6 +74,7 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxComposeNavigation" }
+compose-glide = { group = "com.github.bumptech.glide", name = "compose", version.ref = "compose-glide" }
 
 #network
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
@@ -98,7 +101,7 @@ android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", ver
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [bundles]
-compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose"]
+compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide"]
 test = ["test-junit", "test-android-junit", "test-android-espresso"]
 
 [plugins]

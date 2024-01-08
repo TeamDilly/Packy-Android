@@ -1,18 +1,22 @@
 package com.packy.onboarding.navigation
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.packy.onboarding.onboarding.OnboardingScreen
 
 fun NavGraphBuilder.onboardingNavGraph(
+    navController: NavHostController,
 ) {
     navigation(
         startDestination = OnboardingRoute.ONBOARDING,
-        route = OnboardingRoute.ONBOARDING_NAV_GRAPH
+        route = OnboardingRoute.ONBOARDING_NAV_GRAPH,
     ) {
-        composable(route = OnboardingRoute.ONBOARDING) {
-            OnboardingScreen()
+        composable(
+            route = OnboardingRoute.ONBOARDING,
+        ) {
+            OnboardingScreen(navController = navController)
         }
     }
 }

@@ -17,6 +17,6 @@ fun PackyNavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
-        onboardingNavGraph()
+        onboardingNavGraph(navController)
     }
 }

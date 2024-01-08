@@ -4,7 +4,7 @@ import com.packy.account.AuthenticatorKey
 
 object ExampleAuthenticatorKey: AuthenticatorKey {
     override val accountType: String
-        get() = "example_account"
+        get() = "Packy"
     override val authTokenType: String
-        get() = "example_authToken"
+        get() = "PackyUser"
 }

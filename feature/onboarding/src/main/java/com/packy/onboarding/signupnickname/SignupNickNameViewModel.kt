@@ -9,13 +9,14 @@ class SignupNickNameViewModel @Inject constructor() :
     MviViewModel<SignupNickNameIntent, SignupNickNameState, SignupNickNameEffect>() {
     override fun createInitialState() = SignupNickNameState(
         inputNickName = null,
-        isInputNickNAmeFail = false
+        isAvailableNickName = false
     )
 
     override fun handleIntent() {
         subscribeStateIntent<SignupNickNameIntent.OnChangeInputNickName> { state, intent ->
             state.copy(
-                inputNickName = intent.inputNickName
+                inputNickName = intent.inputNickName,
+                isAvailableNickName = (state.inputNickName?.length ?: 0) >= 2
             )
         }
     }

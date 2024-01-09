@@ -13,7 +13,7 @@ sealed interface SignupNickNameIntent : MviIntent {
 
 data class SignupNickNameState(
     val inputNickName: String?,
-    val isInputNickNAmeFail: Boolean
+    val isAvailableNickName: Boolean
 ) : UiState
 
 sealed interface SignupNickNameEffect: SideEffect

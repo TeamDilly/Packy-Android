@@ -13,6 +13,10 @@ class SignupNickNameViewModel @Inject constructor() :
     )
 
     override fun handleIntent() {
-
+        subscribeStateIntent<SignupNickNameIntent.OnChangeInputNickName> { state, intent ->
+            state.copy(
+                inputNickName = intent.inputNickName
+            )
+        }
     }
 }

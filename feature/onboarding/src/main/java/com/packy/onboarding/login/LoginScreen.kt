@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.packy.core.theme.PackyTheme
+import com.packy.core.values.Strings
 import com.packy.core.values.Strings.LOGIN_TITLE
+import com.packy.core.widget.topbar.PackyTopBar
 import com.packy.feature.core.R
 import com.packy.onboarding.navigation.OnboardingRoute
 
@@ -27,7 +30,6 @@ fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -35,33 +37,34 @@ fun LoginScreen(
             }
         }
     }
-
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        Image(
-            painter = painterResource(id = R.drawable.packy_logo),
-            contentDescription = "Packy Logo"
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = LOGIN_TITLE,
-            style = PackyTheme.typography.body03,
-            color = PackyTheme.color.gray900
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Image(
-            painter = painterResource(id = R.drawable.login_button_kakao),
-            contentDescription = "Kakao Login Button",
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .clickable {
-                    viewModel.emitIntent(LoginIntent.OnKakaoLoginButtonClick)
-                }
-        )
-        Spacer(modifier = Modifier.height(32.dp))
+    Scaffold { innerPadding ->
+        Column(
+            modifier = modifier.padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            Image(
+                painter = painterResource(id = R.drawable.packy_logo),
+                contentDescription = "Packy Logo"
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = LOGIN_TITLE,
+                style = PackyTheme.typography.body03,
+                color = PackyTheme.color.gray900
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Image(
+                painter = painterResource(id = R.drawable.login_button_kakao),
+                contentDescription = "Kakao Login Button",
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .clickable {
+                        viewModel.emitIntent(LoginIntent.OnKakaoLoginButtonClick)
+                    }
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+        }
     }
 }

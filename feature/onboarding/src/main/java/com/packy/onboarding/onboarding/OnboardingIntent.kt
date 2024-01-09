@@ -6,10 +6,12 @@ import com.packy.mvi.mvi.UiState
 
 sealed interface OnboardingIntent : MviIntent {
     data object OnStartButtonClick : OnboardingIntent
+    data object OnNextButtonClick : OnboardingIntent
+    data object  OnSkipButtonClick : OnboardingIntent
 }
 
 data class OnboardingState(
-    val isLoading: Boolean,
+    val currentPage: Int,
 ) : UiState
 
 sealed interface OnboardingEffect : SideEffect{

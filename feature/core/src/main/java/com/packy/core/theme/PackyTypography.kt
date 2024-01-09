@@ -19,6 +19,11 @@ private val PackyFontStyle = TextStyle(
             style = FontStyle.Normal
         ),
         Font(
+           resId = R.font.pretendard_semibold,
+            weight = FontWeight.SemiBold,
+            style = FontStyle.Normal
+        ),
+        Font(
             resId = R.font.pretendard_regular,
             weight = FontWeight.Normal,
             style = FontStyle.Normal
@@ -66,9 +71,9 @@ val defaultPackyTypography = object : PackyTypography {
         fontStyle = FontStyle.Normal
     )
     override val body03: TextStyle = PackyFontStyle.copy(
-        fontSize = 16.sp,
-        lineHeight = 26.sp,
-        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 22.sp,
+        fontWeight = FontWeight.SemiBold,
         fontStyle = FontStyle.Normal
     )
     override val body04: TextStyle = PackyFontStyle.copy(

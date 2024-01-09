@@ -20,8 +20,6 @@ fun NavGraphBuilder.onboardingNavGraph(
             route = OnboardingRoute.ONBOARDING,
             enterTransition = {
                 PaginationAnimation.slidInTop()
-            }, exitTransition = {
-                PaginationAnimation.slidOutToBottom()
             }
         ) {
             OnboardingScreen(navController = navController)
@@ -30,8 +28,6 @@ fun NavGraphBuilder.onboardingNavGraph(
             route = OnboardingRoute.LOGIN,
             enterTransition = {
                 PaginationAnimation.slidInToStart()
-            }, exitTransition = {
-                PaginationAnimation.slidOutToEnd()
             }
         ) {
             LoginScreen(navController = navController)
@@ -40,8 +36,6 @@ fun NavGraphBuilder.onboardingNavGraph(
             route = OnboardingRoute.SIGNUP_NICKNAME,
             enterTransition = {
                 PaginationAnimation.slidInToStart()
-            }, exitTransition = {
-                PaginationAnimation.slidOutToEnd()
             }
         ) {
             SignupNickNameScreen(navController = navController)

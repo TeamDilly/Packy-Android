@@ -32,7 +32,9 @@ fun SignupNickNameScreen(
         Column(
             modifier = modifier
                 .padding(innerPadding)
+                .padding(horizontal = 24.dp)
         ) {
+            Spacer(64.dp)
             Text(
                 text = Strings.SIGNUP_NICK_NAME_TITLE,
                 style = PackyTheme.typography.heading01,
@@ -51,12 +53,14 @@ fun SignupNickNameScreen(
                     viewModel.emitIntent(SignupNickNameIntent.OnChangeInputNickName(it))
                 },
                 showTrailingIcon = true,
-                placeholder = SIGNUP_NICK_NAME_MAX_VALUE
+                placeholder = SIGNUP_NICK_NAME_MAX_VALUE,
+                maxValues = 6
             )
             Spacer(1f)
             PackyButton(style = buttonStyle.large.purple, text = Strings.SAVE) {
                 viewModel.emitIntent(SignupNickNameIntent.OnSaveButtonClick)
             }
+            Spacer(width = 16.dp)
         }
     }
 }

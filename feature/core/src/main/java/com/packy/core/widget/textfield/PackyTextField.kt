@@ -16,12 +16,9 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.packy.core.theme.PackyTheme
@@ -36,6 +33,7 @@ fun PackyTextField(
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
+    maxValues: Int = Int.MAX_VALUE,
     label: String? = null,
     showTrailingIcon: Boolean = false,
     trailingIconOnClick: (() -> Unit) = {
@@ -65,7 +63,9 @@ fun PackyTextField(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 14.dp),
             value = value,
-            onValueChange = onValueChange,
+            onValueChange = {
+                onValueChange(it.take(maxValues))
+            },
             textStyle = PackyTheme.typography.body04.copy(color = PackyTheme.color.gray900),
             maxLines = maxLines,
             minLines = minLines,

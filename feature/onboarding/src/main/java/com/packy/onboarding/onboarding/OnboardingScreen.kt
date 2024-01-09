@@ -55,7 +55,8 @@ fun OnboardingScreen(
     ) {
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            Strings.OnboardingTitle,
+            Strings.ONBOARDING_TITLE,
+            modifier = Modifier.padding(horizontal = 51.dp),
             style = PackyTheme.typography.heading01,
             textAlign = TextAlign.Center
         )
@@ -76,7 +77,7 @@ fun OnboardingScreen(
         PackyButton(
             modifier = Modifier.padding(horizontal = 24.dp),
             style = buttonStyle.large.purple,
-            text = Strings.Start
+            text = Strings.START
         ) {
             viewModel.emitIntent(OnboardingIntent.OnStartButtonClick)
         }

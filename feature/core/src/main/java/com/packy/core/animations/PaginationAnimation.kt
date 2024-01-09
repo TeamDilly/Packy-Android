@@ -25,7 +25,7 @@ object PaginationAnimation {
         durationMillis: Int = 300
     ): ExitTransition {
         return slideOutVertically(
-            targetOffsetY = { fullHeight -> -fullHeight },
+            targetOffsetY = { fullHeight -> fullHeight },
             animationSpec = tween(durationMillis = durationMillis, easing = LinearOutSlowInEasing)
         )
     }
@@ -43,7 +43,7 @@ object PaginationAnimation {
         durationMillis: Int = 300
     ): ExitTransition {
         return slideOutHorizontally(
-            targetOffsetX = { fullWidth -> -fullWidth },
+            targetOffsetX = { fullWidth -> fullWidth },
             animationSpec = tween(durationMillis = durationMillis, easing = LinearOutSlowInEasing)
         )
     }

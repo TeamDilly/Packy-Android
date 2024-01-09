@@ -12,6 +12,8 @@ class LoginViewModel @Inject constructor() : MviViewModel<LoginIntent, LoginStat
     )
 
     override fun handleIntent() {
-
+        subscribeIntent<LoginIntent.OnKakaoLoginButtonClick> {
+            sendEffect(LoginEffect.LoginKakao)
+        }
     }
 }

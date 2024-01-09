@@ -1,6 +1,7 @@
 package com.packy.onboarding.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -17,6 +19,7 @@ import androidx.navigation.NavController
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings.LOGIN_TITLE
 import com.packy.feature.core.R
+import com.packy.onboarding.navigation.OnboardingRoute
 
 @Composable
 fun LoginScreen(
@@ -24,7 +27,17 @@ fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(null) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                LoginEffect.LoginKakao -> navController.navigate(OnboardingRoute.SIGNUP_NICKNAME)
+            }
+        }
+    }
+
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -43,7 +56,11 @@ fun LoginScreen(
         Image(
             painter = painterResource(id = R.drawable.login_button_kakao),
             contentDescription = "Kakao Login Button",
-            modifier = Modifier.padding(horizontal = 24.dp)
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .clickable {
+                    viewModel.emitIntent(LoginIntent.OnKakaoLoginButtonClick)
+                }
         )
         Spacer(modifier = Modifier.height(32.dp))
     }

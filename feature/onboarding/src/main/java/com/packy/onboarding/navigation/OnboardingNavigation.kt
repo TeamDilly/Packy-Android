@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.packy.onboarding.login.LoginScreen
 import com.packy.onboarding.onboarding.OnboardingScreen
+import com.packy.onboarding.signupnickname.SignupNickNameScreen
 
 fun NavGraphBuilder.onboardingNavGraph(
     navController: NavHostController,
@@ -24,13 +25,20 @@ fun NavGraphBuilder.onboardingNavGraph(
         ) {
             LoginScreen(navController = navController)
         }
+        composable(
+            route = OnboardingRoute.SIGNUP_NICKNAME
+        ) {
+            SignupNickNameScreen(navController = navController)
+        }
     }
 }
 
 object OnboardingRoute {
-    const val ONBOARDING_NAV_GRAPH = "onboarding_nav_graph"
+    const val ONBOARDING_NAV_GRAPH = "onboardingNavGraph"
 
     const val ONBOARDING = "onboarding"
     const val LOGIN = "login"
+    const val SIGNUP_NICKNAME = "signupNickName"
+    const val SIGNUP_PROFILE_IMAGE = "signupProfileImage"
     const val TERMS_AGREEMENT = "termsAgreement"
 }

@@ -52,7 +52,7 @@ fun OnboardingScreen(
     LaunchedEffect(null) {
         viewModel.effect.collect {
             when (it) {
-                OnboardingEffect.GoToLoginScreenEffect -> navController.navigate(OnboardingRoute.LOGIN)
+                OnboardingEffect.NavLoginScreenEffect -> navController.navigate(OnboardingRoute.LOGIN)
             }
         }
     }

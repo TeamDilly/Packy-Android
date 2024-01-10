@@ -16,4 +16,6 @@ data class SignupNickNameState(
     val isAvailableNickName: Boolean
 ) : UiState
 
-sealed interface SignupNickNameEffect: SideEffect
+sealed interface SignupNickNameEffect: SideEffect{
+    data object NavSignupProfileEffect: SignupNickNameEffect
+}

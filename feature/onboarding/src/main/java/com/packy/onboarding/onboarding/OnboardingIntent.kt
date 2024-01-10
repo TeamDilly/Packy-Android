@@ -23,5 +23,5 @@ data class OnboardingState(
 }
 
 sealed interface OnboardingEffect : SideEffect {
-    data object GoToLoginScreenEffect : OnboardingEffect
+    data object NavLoginScreenEffect : OnboardingEffect
 }

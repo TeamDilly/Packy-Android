@@ -13,10 +13,10 @@ class OnboardingViewModel @Inject constructor() :
 
     override fun handleIntent() {
         subscribeIntent<OnboardingIntent.OnStartButtonClick> {
-            sendEffect(OnboardingEffect.GoToLoginScreenEffect)
+            sendEffect(OnboardingEffect.NavLoginScreenEffect)
         }
         subscribeIntent<OnboardingIntent.OnSkipButtonClick> {
-            sendEffect(OnboardingEffect.GoToLoginScreenEffect)
+            sendEffect(OnboardingEffect.NavLoginScreenEffect)
         }
         subscribeStateIntent<OnboardingIntent.OnNextButtonClick> { state, _ ->
             val currentPage = state.currentPage

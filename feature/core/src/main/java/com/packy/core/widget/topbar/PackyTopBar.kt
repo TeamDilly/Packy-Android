@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -46,13 +47,15 @@ class PackyTopBar {
         ) = this.apply {
             startIconButton = {
                 IconButton(
-                    modifier = Modifier.apply {
-                        if (showShadow) {
-                            this
-                                .clip(CircleShape)
-                                .shadow(2.dp)
-                        }
-                    },
+                    modifier = Modifier
+                        .size(ICON_BUTTON_CLICKABLE_SIZE)
+                        .apply {
+                            if (showShadow) {
+                                this
+                                    .clip(CircleShape)
+                                    .shadow(2.dp)
+                            }
+                        },
                     onClick = onClick
                 ) {
                     Icon(
@@ -80,13 +83,15 @@ class PackyTopBar {
         ) = this.apply {
             endIconButton = {
                 IconButton(
-                    modifier = Modifier.apply {
-                        if (showShadow) {
-                            this
-                                .clip(CircleShape)
-                                .shadow(2.dp)
-                        }
-                    },
+                    modifier = Modifier
+                        .size(ICON_BUTTON_CLICKABLE_SIZE)
+                        .apply {
+                            if (showShadow) {
+                                this
+                                    .clip(CircleShape)
+                                    .shadow(2.dp)
+                            }
+                        },
                     onClick = onClick
                 ) {
                     Icon(
@@ -106,13 +111,15 @@ class PackyTopBar {
         ) = this.apply {
             endIconButton2 = {
                 IconButton(
-                    modifier = Modifier.apply {
-                        if (showShadow) {
-                            this
-                                .clip(CircleShape)
-                                .shadow(2.dp)
-                        }
-                    },
+                    modifier = Modifier
+                        .size(ICON_BUTTON_CLICKABLE_SIZE)
+                        .apply {
+                            if (showShadow) {
+                                this
+                                    .clip(CircleShape)
+                                    .shadow(2.dp)
+                            }
+                        },
                     onClick = onClick
                 ) {
                     Icon(
@@ -131,7 +138,10 @@ class PackyTopBar {
         ) = this.apply {
             endTextButton = {
                 Text(
-                    modifier = Modifier.clickable(onClick = onClick),
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .padding(horizontal = 4.dp)
+                        .clickable(onClick = onClick),
                     text = text,
                     style = PackyTheme.typography.body04,
                     color = PackyTheme.color.gray600
@@ -196,6 +206,7 @@ class PackyTopBar {
     companion object {
         private val TOP_BAR_HEIGHT = 48.dp
         private val ICON_BUTTON_SIZE = 24.dp
+        private val ICON_BUTTON_CLICKABLE_SIZE = 40.dp
     }
 }
 

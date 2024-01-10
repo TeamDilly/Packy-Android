@@ -29,7 +29,7 @@ import com.packy.core.widget.button.buttonStyle
 import com.packy.core.widget.textfield.PackyTextField
 import com.packy.onboarding.navigation.OnboardingRoute
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SignupNickNameScreen(
     modifier: Modifier = Modifier,
@@ -37,6 +37,7 @@ fun SignupNickNameScreen(
     viewModel: SignupNickNameViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
@@ -82,6 +83,7 @@ fun SignupNickNameScreen(
                 text = Strings.SAVE,
                 enabled = uiState.isAvailableNickName
             ) {
+                keyboardController?.hide()
                 viewModel.emitIntentThrottle(SignupNickNameIntent.OnSaveButtonClick)
             }
             Spacer(width = 16.dp)

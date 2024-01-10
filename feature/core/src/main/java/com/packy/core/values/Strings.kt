@@ -21,4 +21,11 @@ object Strings {
 
     // signupProfile
     const val SIGNUP_PROFILE = "프로필을 선택해주세요"
+
+    // termsAgreement
+    const val TERMS_AGREEMENT_TITLE = "서비스 사용을 위한\n약관에 동의해주세요"
+    const val TERMS_AGREEMENT_ALL_ALLOW = "전체 동의하기"
+    const val TERMS_AGREEMENT_SERVICE_ALLOW = "(필수) 서비스 이용약관"
+    const val TERMS_AGREEMENT_PERSONAL_ALLOW = "(필수) 개인정보 수집 및 이용안내"
+    const val TERMS_AGREEMENT_NOTIFICATION_ALLOW = "(선택) 이벤트 및 마케팅 수신 동의"
 }

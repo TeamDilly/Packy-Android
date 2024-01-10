@@ -2,6 +2,7 @@ package com.packy.core.checkbox
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -21,6 +22,7 @@ fun PackyCheckBox(
     modifier: Modifier = Modifier,
     label: String? = null,
     isSelected: Boolean,
+    iconPadding: PaddingValues = PaddingValues(0.dp),
     onClick: (Boolean) -> Unit,
 ) {
     val checkIconColor = if (isSelected) {
@@ -30,14 +32,15 @@ fun PackyCheckBox(
     }
     Row(
         modifier = modifier
-            .padding()
             .clickable {
                 onClick(!isSelected)
             },
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
+            modifier = Modifier
+                .padding(iconPadding),
             painter = painterResource(id = R.drawable.check),
             contentDescription = "CheckBoxIcon",
             tint = checkIconColor

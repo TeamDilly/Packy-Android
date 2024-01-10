@@ -13,16 +13,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.packy.core.common.NoRippleTheme
 import com.packy.core.theme.PackyTheme
 import com.packy.feature.core.R
 
@@ -152,52 +155,54 @@ class PackyTopBar {
         @SuppressLint("ComposableNaming")
         @Composable
         fun build(modifier: Modifier = Modifier) {
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .height(TOP_BAR_HEIGHT)
-                    .padding(horizontal = 16.dp, vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
                 Row(
-                    modifier = Modifier.weight(1f),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .height(TOP_BAR_HEIGHT)
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (showLogo) {
-                        Image(
-                            painter = painterResource(id = R.drawable.logo_black),
-                            contentDescription = "TopBar Logo"
-                        )
+                    Row(
+                        modifier = Modifier.weight(1f),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (showLogo) {
+                            Image(
+                                painter = painterResource(id = R.drawable.logo_black),
+                                contentDescription = "TopBar Logo"
+                            )
+                        }
+                        startIconButton?.invoke()
+                        if (startTitle != null) {
+                            Text(
+                                modifier = Modifier.weight(1f),
+                                text = startTitle!!,
+                                style = PackyTheme.typography.body01,
+                                color = PackyTheme.color.gray900
+                            )
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
                     }
-                    startIconButton?.invoke()
-                    if (startTitle != null) {
+                    if (centerTitle != null) {
                         Text(
                             modifier = Modifier.weight(1f),
-                            text = startTitle!!,
+                            text = centerTitle!!,
                             style = PackyTheme.typography.body01,
                             color = PackyTheme.color.gray900
                         )
                     }
-                    Spacer(modifier = Modifier.weight(1f))
-                }
-                if (centerTitle != null) {
-                    Text(
+                    Row(
                         modifier = Modifier.weight(1f),
-                        text = centerTitle!!,
-                        style = PackyTheme.typography.body01,
-                        color = PackyTheme.color.gray900
-                    )
-                }
-                Row(
-                    modifier = Modifier.weight(1f),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    endIconButton?.invoke()
-                    endIconButton2?.invoke()
-                    endTextButton?.invoke()
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier.weight(1f))
+                        endIconButton?.invoke()
+                        endIconButton2?.invoke()
+                        endTextButton?.invoke()
+                    }
                 }
             }
         }

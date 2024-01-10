@@ -70,7 +70,7 @@ fun SignupNickNameScreen(
                 text = Strings.SAVE,
                 enabled = uiState.isAvailableNickName
             ) {
-                viewModel.emitIntent(SignupNickNameIntent.OnSaveButtonClick)
+                viewModel.emitIntentThrottle(SignupNickNameIntent.OnSaveButtonClick)
             }
             Spacer(width = 16.dp)
         }

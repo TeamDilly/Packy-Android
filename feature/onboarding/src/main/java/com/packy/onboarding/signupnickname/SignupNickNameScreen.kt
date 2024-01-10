@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -26,6 +27,7 @@ import com.packy.core.values.Strings.SIGNUP_NICK_NAME_MAX_VALUE
 import com.packy.core.widget.button.PackyButton
 import com.packy.core.widget.button.buttonStyle
 import com.packy.core.widget.textfield.PackyTextField
+import com.packy.onboarding.navigation.OnboardingRoute
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -35,6 +37,16 @@ fun SignupNickNameScreen(
     viewModel: SignupNickNameViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(null) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                SignupNickNameEffect.NavSignupProfileEffect -> navController.navigate(
+                    OnboardingRoute.SIGNUP_PROFILE
+                )
+            }
+        }
+    }
 
     Scaffold { innerPadding ->
         Column(

@@ -6,14 +6,16 @@ import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
 
 sealed interface SignupProfileIntent : MviIntent {
-    data object OnBackClick : MviIntent
-    data object OnChangeProfile : MviIntent
-    data object OnSaveButtonClick : MviIntent
+    data object OnBackClick : SignupProfileIntent
+    data object OnChangeProfile : SignupProfileIntent
+    data object OnSaveButtonClick : SignupProfileIntent
 }
 
 data class SignupProfileState(
     @DrawableRes val profile: Int
 ) : UiState
 
-sealed interface SignupProfileEffect : SideEffect
+sealed interface SignupProfileEffect : SideEffect {
+    data object NavTermsAgreementEffect : SignupProfileEffect
+}
 

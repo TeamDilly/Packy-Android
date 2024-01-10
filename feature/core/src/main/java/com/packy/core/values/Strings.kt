@@ -18,4 +18,7 @@ object Strings {
     const val SIGNUP_NICK_NAME_TITLE = "패키에서 사용할\n닉네임을 입력해주세요"
     const val SIGNUP_NICK_NAME_DESCRIPTION = "친구들이 나를 잘 알아볼 수 있는 닉네임으로 설정해주세요"
     const val SIGNUP_NICK_NAME_MAX_VALUE = "6자 이내로 입력해주세요"
+
+    // signupProfile
+    const val SIGNUP_PROFILE = "프로필을 선택해주세요"
 }

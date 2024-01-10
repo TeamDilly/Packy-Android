@@ -8,7 +8,8 @@ object Strings {
     const val SAVE = "저장"
 
     // onboarding
-    const val ONBOARDING_TITLE = "패키와 함께 특별한 선물박스를 만들어보세요."
+    const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
+    const val ONBOARDING_TITLE_2 = "다가오는 이벤트를 기다리고\n지나간 이벤트를 추억해요"
 
     // login
     const val LOGIN_TITLE = "마음으로 채우는 특별한 선물박스"

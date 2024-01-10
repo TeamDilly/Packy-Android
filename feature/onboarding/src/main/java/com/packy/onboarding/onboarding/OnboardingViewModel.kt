@@ -23,6 +23,9 @@ class OnboardingViewModel @Inject constructor() :
             if (currentPage >= MAX_ONBOARDING_PAGE_SIZE) state
             else state.copy(currentPage = currentPage + 1)
         }
+        subscribeStateIntent<OnboardingIntent.OnScrollPager> { state, intent ->
+            state.copy(currentPage = intent.changePage)
+        }
     }
 
     companion object {

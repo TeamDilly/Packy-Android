@@ -13,6 +13,8 @@ class SignupProfileViewModel @Inject constructor() :
     )
 
     override fun handleIntent() {
-
+        subscribeIntent<SignupProfileIntent.OnSaveButtonClick> {
+            sendEffect(SignupProfileEffect.NavTermsAgreementEffect)
+        }
     }
 }

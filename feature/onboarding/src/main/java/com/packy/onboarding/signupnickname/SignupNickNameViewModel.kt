@@ -19,5 +19,8 @@ class SignupNickNameViewModel @Inject constructor() :
                 isAvailableNickName = (state.inputNickName?.length ?: 0) >= 2
             )
         }
+        subscribeIntent<SignupNickNameIntent.OnSaveButtonClick> {
+            sendEffect(SignupNickNameEffect.NavSignupProfileEffect)
+        }
     }
 }

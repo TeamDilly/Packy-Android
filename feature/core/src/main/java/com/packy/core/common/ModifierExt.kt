@@ -9,7 +9,7 @@ import androidx.compose.ui.composed
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 fun Modifier.clickableWithoutRipple(
-    interactionSource: MutableInteractionSource?,
+    interactionSource: MutableInteractionSource? = null,
     onClick: () -> Unit
 ) = composed({
     value = interactionSource

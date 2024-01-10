@@ -1,5 +1,6 @@
 package com.packy.mvi.base
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.packy.mvi.mvi.MviIntent
@@ -7,12 +8,16 @@ import com.packy.mvi.mvi.MviIntentKey
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEffect> :
     ViewModel() {
@@ -32,8 +37,10 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
     private val _effect: Channel<Effect> = Channel()
     val effect = _effect.receiveAsFlow()
 
-    protected val intentMap = mutableMapOf<MviIntentKey<out Intent>, ((Intent) -> Any?)>()
-    protected val uiIntentMap = mutableMapOf<MviIntentKey<out Intent>, ((State, Intent) -> State)>()
+    protected val intentMap = mutableMapOf<MviIntentKey<out Intent>, suspend (Intent) -> Any?>()
+    protected val uiIntentMap =
+        mutableMapOf<MviIntentKey<out Intent>, suspend (State, Intent) -> State>()
+    private val isIntentProcessing = mutableSetOf<MviIntentKey<out Intent>>()
 
     init {
         this.handleIntent()
@@ -45,6 +52,16 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
     fun emitIntent(intent: Intent) {
         viewModelScope.launch {
             _intent.emit(intent)
+        }
+    }
+
+    fun emitIntentThrottle(intent: Intent, throttle: Long = 300) {
+        viewModelScope.launch {
+            if (isIntentProcessing.contains(MviIntentKey(intent::class.java))) return@launch
+            isIntentProcessing.add(MviIntentKey(intent::class.java))
+            _intent.emit(intent)
+            delay(throttle)
+            isIntentProcessing.remove(MviIntentKey(intent::class.java))
         }
     }
 
@@ -66,9 +83,9 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
      */
     @Suppress("UNCHECKED_CAST")
     protected inline fun <reified IT : Intent> subscribeIntent(
-        noinline init: (IT) -> Any?
+        noinline init: suspend (IT) -> Any?
     ) {
-        intentMap[MviIntentKey(IT::class.java)] = init as (Intent) -> Any?
+        intentMap[MviIntentKey(IT::class.java)] = init as suspend (Intent) -> Any?
     }
 
     /**
@@ -77,9 +94,9 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
      */
     @Suppress("UNCHECKED_CAST")
     protected inline fun <reified IT : Intent> subscribeStateIntent(
-        noinline init: (State, IT) -> State
+        noinline init: suspend (State, IT) -> State
     ) {
-        uiIntentMap[MviIntentKey(IT::class.java)] = init as (State, Intent) -> State
+        uiIntentMap[MviIntentKey(IT::class.java)] = init as suspend (State, Intent) -> State
     }
 
     /**

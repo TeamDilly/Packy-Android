@@ -46,7 +46,7 @@ fun OnboardingScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     val pagerState = rememberPagerState(pageCount = {
-        OnboardingViewModel.MAX_ONBOARDING_PAGE_SIZE
+        OnboardingViewModel.MAX_ONBOARDING_PAGE_SIZE + 1
     })
 
     LaunchedEffect(null) {
@@ -73,7 +73,7 @@ fun OnboardingScreen(
         topBar = {
             PackyTopBar.Builder()
                 .endTextButton(Strings.SKIP) {
-                    viewModel.emitIntent(OnboardingIntent.OnSkipButtonClick)
+                    viewModel.emitIntentThrottle(OnboardingIntent.OnSkipButtonClick)
                 }
                 .build()
         }
@@ -103,9 +103,9 @@ fun OnboardingScreen(
                     }
                 ) {
                     if (uiState.currentPage == OnboardingViewModel.MAX_ONBOARDING_PAGE_SIZE) {
-                        viewModel.emitIntent(OnboardingIntent.OnStartButtonClick)
+                        viewModel.emitIntentThrottle(OnboardingIntent.OnStartButtonClick)
                     } else {
-                        viewModel.emitIntent(OnboardingIntent.OnNextButtonClick)
+                        viewModel.emitIntentThrottle(OnboardingIntent.OnNextButtonClick)
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))

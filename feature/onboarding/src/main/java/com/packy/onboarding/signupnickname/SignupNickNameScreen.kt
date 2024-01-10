@@ -48,7 +48,7 @@ fun SignupNickNameScreen(
                 style = PackyTheme.typography.heading01,
                 color = PackyTheme.color.gray900
             )
-            Spacer(16.dp)
+            Spacer(8.dp)
             Text(
                 text = Strings.SIGNUP_NICK_NAME_DESCRIPTION,
                 style = PackyTheme.typography.body04,

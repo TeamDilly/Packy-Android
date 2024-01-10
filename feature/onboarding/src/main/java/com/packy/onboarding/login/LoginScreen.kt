@@ -61,7 +61,7 @@ fun LoginScreen(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
                     .clickable {
-                        viewModel.emitIntent(LoginIntent.OnKakaoLoginButtonClick)
+                        viewModel.emitIntentThrottle(LoginIntent.OnKakaoLoginButtonClick)
                     }
             )
             Spacer(modifier = Modifier.height(32.dp))

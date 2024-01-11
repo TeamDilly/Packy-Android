@@ -8,4 +8,5 @@ android {
 
 dependencies {
     implementation(project(":library:pref"))
+    implementation(libs.kakao.user)
 }

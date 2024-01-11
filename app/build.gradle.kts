@@ -5,6 +5,11 @@ plugins {
 android {
     namespace = "com.packy"
 
+    defaultConfig{
+        versionCode = 1
+        versionName = "1.0.0"
+    }
+
     buildFeatures {
         buildConfig = true
     }

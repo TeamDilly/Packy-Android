@@ -12,4 +12,5 @@ dependencies {
     implementation(project(":library:mvi"))
     implementation(project(":library:account"))
     implementation(project(":feature:core"))
+    implementation(project(":common"))
 }

@@ -14,6 +14,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":library:pref"))
     implementation(project(":library:account"))
+    implementation(project(":common"))
 
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)

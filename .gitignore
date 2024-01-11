@@ -28,3 +28,4 @@ out/
 *.ipr
 *~
 *.swp
+/app/src/main/res/values/private_strings.xml

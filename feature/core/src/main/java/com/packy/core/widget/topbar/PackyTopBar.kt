@@ -3,6 +3,7 @@ package com.packy.core.widget.topbar
 import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.Icon
@@ -24,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.packy.core.common.NoRippleTheme
 import com.packy.core.theme.PackyTheme
@@ -51,6 +55,7 @@ class PackyTopBar {
             startIconButton = {
                 IconButton(
                     modifier = Modifier
+                        .fillMaxHeight()
                         .size(ICON_BUTTON_CLICKABLE_SIZE)
                         .apply {
                             if (showShadow) {
@@ -87,6 +92,7 @@ class PackyTopBar {
             endIconButton = {
                 IconButton(
                     modifier = Modifier
+                        .fillMaxHeight()
                         .size(ICON_BUTTON_CLICKABLE_SIZE)
                         .apply {
                             if (showShadow) {
@@ -115,6 +121,7 @@ class PackyTopBar {
             endIconButton2 = {
                 IconButton(
                     modifier = Modifier
+                        .fillMaxHeight()
                         .size(ICON_BUTTON_CLICKABLE_SIZE)
                         .apply {
                             if (showShadow) {
@@ -143,11 +150,12 @@ class PackyTopBar {
                 Text(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .padding(horizontal = 4.dp)
-                        .clickable(onClick = onClick),
+                        .clickable(onClick = onClick)
+                        .wrapContentHeight(align = Alignment.CenterVertically),
                     text = text,
                     style = PackyTheme.typography.body04,
-                    color = PackyTheme.color.gray600
+                    color = PackyTheme.color.gray600,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -159,17 +167,21 @@ class PackyTopBar {
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
-                        .height(TOP_BAR_HEIGHT)
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                        .height(TOP_BAR_HEIGHT),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                            .padding(start = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         if (showLogo) {
                             Image(
+                                modifier = Modifier
+                                    .fillMaxHeight(),
                                 painter = painterResource(id = R.drawable.logo_black),
                                 contentDescription = "TopBar Logo"
                             )
@@ -177,24 +189,35 @@ class PackyTopBar {
                         startIconButton?.invoke()
                         if (startTitle != null) {
                             Text(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight(),
                                 text = startTitle!!,
                                 style = PackyTheme.typography.body01,
-                                color = PackyTheme.color.gray900
+                                color = PackyTheme.color.gray900,
+                                textAlign = TextAlign.Center
                             )
                         }
                         Spacer(modifier = Modifier.weight(1f))
                     }
                     if (centerTitle != null) {
                         Text(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
+                                .wrapContentHeight(align = Alignment.CenterVertically),
                             text = centerTitle!!,
                             style = PackyTheme.typography.body01,
-                            color = PackyTheme.color.gray900
-                        )
+                            color = PackyTheme.color.gray900,
+                            textAlign = TextAlign.Center,
+
+                            )
                     }
                     Row(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                            .padding(end = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -215,3 +238,25 @@ class PackyTopBar {
     }
 }
 
+@Preview
+@Composable
+fun PackyTopBarPreview() {
+    PackyTopBar.Builder()
+        .startIconButton(
+            icon = R.drawable.arrow_left
+        ) {
+
+        }
+        .centerTitle("Title")
+        .endIconButton(
+            icon = R.drawable.arrow_left
+        ) {
+
+        }
+        .endTextButton(
+            text = "Text="
+        ) {
+
+        }
+        .build(Modifier.background(PackyTheme.color.gray100))
+}

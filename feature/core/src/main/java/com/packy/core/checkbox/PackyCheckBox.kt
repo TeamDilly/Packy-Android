@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.packy.core.common.Spacer
+import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
 import com.packy.feature.core.R
 
@@ -32,7 +33,7 @@ fun PackyCheckBox(
     }
     Row(
         modifier = modifier
-            .clickable {
+            .clickableWithoutRipple {
                 onClick(!isSelected)
             },
         horizontalArrangement = Arrangement.Start,

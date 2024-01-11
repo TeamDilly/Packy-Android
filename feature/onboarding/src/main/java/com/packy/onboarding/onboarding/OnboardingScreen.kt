@@ -2,6 +2,7 @@ package com.packy.onboarding.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -145,6 +147,8 @@ private fun OnboardingPager(
             Image(
                 modifier = Modifier
                     .weight(1f)
+                    .requiredSize(300.dp)
+                    .border(2.dp, PackyTheme.color.gray100)
                     .padding(horizontal = 24.dp),
                 painter = painterResource(R.drawable.packy_logo),
                 contentDescription = "dummyLogo"

@@ -14,32 +14,49 @@ import javax.inject.Singleton
 class KakaoLoginController @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    private val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        if (error != null) {
-            Log.e("LOGEE", "카카오계정으로 로그인 실패", error)
+    private fun kakaoLoginCallback(
+        token: OAuthToken?,
+        throwable: Throwable?,
+        callback: (KakaoAuth) -> Unit
+    ) {
+        if (throwable != null) {
+            callback(KakaoAuth.KakaoLoginFail(throwable))
         } else if (token != null) {
-            Log.i("LOGEE", "카카오계정으로 로그인 성공 ${token.accessToken}")
+            UserApiClient.instance.me { user, error ->
+                if (error != null) {
+                    callback(KakaoAuth.KakaoLoginFail(error))
+                } else if (user != null) {
+                    callback(
+                        KakaoAuth.KakaoLoginSuccess(
+                            token.accessToken,
+                            user.kakaoAccount?.profile?.nickname
+                        )
+                    )
+                }
+            }
         }
     }
 
-    fun login() {
+    fun login(
+        callback: (KakaoAuth) -> Unit
+    ) {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 if (error != null) {
-                    Log.e("LOGEE", "카카오톡으로 로그인 실패", error)
-
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                         return@loginWithKakaoTalk
                     }
-
-                    // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
-                    UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
+                    UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
+                        kakaoLoginCallback(token, error, callback)
+                    }
                 } else if (token != null) {
-                    Log.i("LOGEE", "카카오톡으로 로그인 성공 ${token.accessToken}")
+                    kakaoLoginCallback(token, null, callback)
                 }
             }
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
+            UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
+                kakaoLoginCallback(token, error, callback)
+            }
         }
     }
 }

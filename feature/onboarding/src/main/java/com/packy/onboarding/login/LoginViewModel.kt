@@ -1,5 +1,6 @@
 package com.packy.onboarding.login
 
+import com.packy.common.authenticator.KakaoAuth
 import com.packy.common.authenticator.KakaoLoginController
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,14 @@ class LoginViewModel @Inject constructor(
 
     override fun handleIntent() {
         subscribeIntent<LoginIntent.OnKakaoLoginButtonClick> {
-            sendEffect(LoginEffect.LoginKakao)
+            kakaoLoginController.login{ kakaoAuth ->
+                when(kakaoAuth){
+                    is KakaoAuth.KakaoLoginFail -> sendEffect(LoginEffect.KakaoLoginFail)
+                    is KakaoAuth.KakaoLoginSuccess -> {
+
+                    }
+                }
+            }
         }
     }
 }

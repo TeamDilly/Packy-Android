@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.packy.core.theme.PackyTheme
@@ -33,7 +34,10 @@ fun LoginScreen(
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                LoginEffect.LoginKakao -> navController.navigate(OnboardingRoute.SIGNUP_NICKNAME)
+                LoginEffect.KakaoLoginFail ->{
+                  // FIXME : 로그인 실패 처리
+                }
+                LoginEffect.KakaoLoginSuccess -> navController.navigate(OnboardingRoute.SIGNUP_NICKNAME)
             }
         }
     }

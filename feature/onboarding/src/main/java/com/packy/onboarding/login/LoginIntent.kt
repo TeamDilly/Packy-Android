@@ -6,8 +6,6 @@ import com.packy.mvi.mvi.UiState
 
 sealed interface LoginIntent : MviIntent {
     data object OnKakaoLoginButtonClick : LoginIntent
-    data object KakaoLoginSuccess : LoginIntent
-    data object KakaoLoginFail : LoginIntent
 }
 
 sealed interface LogindState {
@@ -20,5 +18,6 @@ data class LoginState(
 ) : UiState
 
 sealed interface LoginEffect : SideEffect {
-    data object LoginKakao : LoginEffect
+    data object KakaoLoginSuccess : LoginEffect
+    data object KakaoLoginFail : LoginEffect
 }

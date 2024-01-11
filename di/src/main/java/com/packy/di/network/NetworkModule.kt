@@ -1,4 +1,4 @@
-package com.packy.di
+package com.packy.di.network
 
 import com.packy.di.common.NetworkConstant
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory

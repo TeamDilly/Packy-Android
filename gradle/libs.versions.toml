@@ -51,6 +51,10 @@ espressoCore = "3.5.1"
 #https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=ko
 lifecycle = "2.6.2"
 
+#OAuth
+#https://developers.kakao.com/sdk/reference/android-rx/release/index.html
+kakaoSdk = "2.19.0"
+
 [libraries]
 #andorid
 android-core = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -99,6 +103,9 @@ test-android-espresso = { group = "androidx.test.espresso", name = "espresso-cor
 
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+#kakao
+kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakaoSdk" }
 
 [bundles]
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide"]

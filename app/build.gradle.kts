@@ -29,4 +29,5 @@ dependencies {
 
     implementation(project(":library:pref"))
     implementation(project(":library:account"))
+    implementation(libs.kakao.user)
 }

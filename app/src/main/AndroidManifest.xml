@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Packy"
         tools:targetApi="31">
-        <service android:name="com.packy.account.AuthenticatorService"
+        <service
+            android:name="com.packy.account.AuthenticatorService"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -28,5 +29,19 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="oauth"
+                    android:scheme="@string/kakao_app_key" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

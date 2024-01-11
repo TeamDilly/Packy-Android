@@ -14,13 +14,7 @@ sealed interface OnboardingIntent : MviIntent {
 
 data class OnboardingState(
     val currentPage: Int,
-) : UiState {
-    fun getTitle(): String = when (currentPage) {
-        1 -> Strings.ONBOARDING_TITLE_1
-        2 -> Strings.ONBOARDING_TITLE_2
-        else -> Strings.ONBOARDING_TITLE_1
-    }
-}
+) : UiState
 
 sealed interface OnboardingEffect : SideEffect {
     data object NavLoginScreenEffect : OnboardingEffect

@@ -124,6 +124,11 @@ private fun OnboardingPager(
         modifier = Modifier.fillMaxSize(),
         state = pagerState,
     ) {
+        val title: String = when (it) {
+            0 -> Strings.ONBOARDING_TITLE_1
+            1 -> Strings.ONBOARDING_TITLE_2
+            else -> Strings.ONBOARDING_TITLE_1
+        }
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -131,7 +136,7 @@ private fun OnboardingPager(
         ) {
             Spacer(66.dp)
             Text(
-                text = uiState.getTitle(),
+                text = title,
                 modifier = Modifier.padding(horizontal = 24.dp),
                 style = PackyTheme.typography.heading01,
                 textAlign = TextAlign.Center

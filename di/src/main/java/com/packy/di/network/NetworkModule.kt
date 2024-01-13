@@ -50,12 +50,13 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
+    @Youtube
     fun providerRetrofit(
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://reqres.in/")
+            .baseUrl("https://www.youtube.com/")
             .addConverterFactory(converterFactory)
             .client(okHttpClient).build()
     }

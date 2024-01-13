@@ -1,4 +1,4 @@
-package com.packy.core.widget.iconbutton
+package com.packy.core.designsystem.iconbutton
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

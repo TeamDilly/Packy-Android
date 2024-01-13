@@ -1,4 +1,4 @@
-package com.packy.core.widget.textfield
+package com.packy.core.designsystem.textfield
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

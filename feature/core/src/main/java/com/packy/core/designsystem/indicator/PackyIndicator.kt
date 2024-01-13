@@ -1,4 +1,4 @@
-package com.packy.core.widget.indicator
+package com.packy.core.designsystem.indicator
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background

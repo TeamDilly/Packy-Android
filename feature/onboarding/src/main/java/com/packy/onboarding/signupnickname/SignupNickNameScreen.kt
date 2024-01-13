@@ -1,13 +1,7 @@
 package com.packy.onboarding.signupnickname
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,9 +18,9 @@ import com.packy.core.common.Spacer
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.SIGNUP_NICK_NAME_MAX_VALUE
-import com.packy.core.widget.button.PackyButton
-import com.packy.core.widget.button.buttonStyle
-import com.packy.core.widget.textfield.PackyTextField
+import com.packy.core.designsystem.button.PackyButton
+import com.packy.core.designsystem.button.buttonStyle
+import com.packy.core.designsystem.textfield.PackyTextField
 import com.packy.onboarding.navigation.OnboardingRoute
 
 @OptIn(ExperimentalComposeUiApi::class)

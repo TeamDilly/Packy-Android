@@ -1,4 +1,4 @@
-package com.packy.core.widget.button
+package com.packy.core.designsystem.button
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle

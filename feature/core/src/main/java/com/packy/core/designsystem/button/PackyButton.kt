@@ -1,4 +1,4 @@
-package com.packy.core.widget.button
+package com.packy.core.designsystem.button
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background

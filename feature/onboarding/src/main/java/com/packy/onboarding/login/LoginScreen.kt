@@ -15,13 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.packy.core.theme.PackyTheme
-import com.packy.core.values.Strings
 import com.packy.core.values.Strings.LOGIN_TITLE
-import com.packy.core.widget.topbar.PackyTopBar
 import com.packy.feature.core.R
 import com.packy.onboarding.navigation.OnboardingRoute
 

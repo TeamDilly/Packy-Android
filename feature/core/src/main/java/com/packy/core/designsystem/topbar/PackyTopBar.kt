@@ -1,4 +1,4 @@
-package com.packy.core.widget.topbar
+package com.packy.core.designsystem.topbar
 
 import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes

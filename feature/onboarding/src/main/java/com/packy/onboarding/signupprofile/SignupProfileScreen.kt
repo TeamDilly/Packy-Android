@@ -32,9 +32,9 @@ import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.SIGNUP_PROFILE
-import com.packy.core.widget.button.PackyButton
-import com.packy.core.widget.button.buttonStyle
-import com.packy.core.widget.topbar.PackyTopBar
+import com.packy.core.designsystem.button.PackyButton
+import com.packy.core.designsystem.button.buttonStyle
+import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
 import com.packy.onboarding.navigation.OnboardingRoute

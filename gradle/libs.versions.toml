@@ -55,6 +55,9 @@ lifecycle = "2.6.2"
 #https://developers.kakao.com/sdk/reference/android-rx/release/index.html
 kakaoSdk = "2.19.0"
 
+#YutubePlayer
+youtube-player = "12.1.0"
+
 [libraries]
 #andorid
 android-core = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -106,6 +109,9 @@ kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ve
 
 #kakao
 kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakaoSdk" }
+
+#YoutubePlayer
+youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "youtube-player" }
 
 [bundles]
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide"]

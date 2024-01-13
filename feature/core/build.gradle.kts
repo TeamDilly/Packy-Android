@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "com.packy.feature.core"
 }
+
+dependencies{
+    implementation(libs.youtube.player)
+}

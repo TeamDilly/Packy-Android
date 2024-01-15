@@ -14,7 +14,7 @@ open class PrefManager(
     private val dataStorePref: Pref = DataStorePref(appContext, domainName)
     private val memoryPref: Pref = MemoryPref()
 
-    fun <T> createPrefItem(key: String, defaultValue: T, type: KClass<*>) =
+    fun <T> createPrefItem(key: String, defaultValue: T?, type: KClass<*>) =
         PrefItem(
             key = key,
             defaultValue = defaultValue,
@@ -24,7 +24,7 @@ open class PrefManager(
             type = type,
         )
 
-    fun <T> createMemoryPrefItem(key: String, defaultValue: T, type: KClass<*>) =
+    fun <T> createMemoryPrefItem(key: String, defaultValue: T?, type: KClass<*>) =
         PrefItem(
             key = key,
             defaultValue = defaultValue,
@@ -34,7 +34,37 @@ open class PrefManager(
             type = type,
         )
 
-    fun <T> createPreferencePrefItem(key: String, defaultValue: T, type: KClass<*>) =
+    fun <T> createPreferencePrefItem(key: String, defaultValue: T?, type: KClass<*>) =
+        PrefItem(
+            key = key,
+            defaultValue = defaultValue,
+            prefStrategy = PrefStrategy.FILE_ONLY,
+            dataStorePref = dataStorePref,
+            memoryPref = memoryPref,
+            type = type,
+        )
+
+    fun <T> createNonNullPrefItem(key: String, defaultValue: T, type: KClass<*>) =
+        PrefItem(
+            key = key,
+            defaultValue = defaultValue,
+            prefStrategy = PrefStrategy.BOTH_MEMORY_AND_FILE,
+            dataStorePref = dataStorePref,
+            memoryPref = memoryPref,
+            type = type,
+        )
+
+    fun <T> createNonNullMemoryPrefItem(key: String, defaultValue: T, type: KClass<*>) =
+        PrefItem(
+            key = key,
+            defaultValue = defaultValue,
+            prefStrategy = PrefStrategy.MEMORY_ONLY,
+            dataStorePref = dataStorePref,
+            memoryPref = memoryPref,
+            type = type,
+        )
+
+    fun <T> createNonNullPreferencePrefItem(key: String, defaultValue: T, type: KClass<*>) =
         PrefItem(
             key = key,
             defaultValue = defaultValue,

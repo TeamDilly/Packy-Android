@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlin.reflect.KClass
 
-data class PrefItem<T>(
+data class NonNullPrefItem<T>(
     private val key: String,
-    private val defaultValue: T?,
+    private val defaultValue: T,
     private val prefStrategy: PrefStrategy,
     private val dataStorePref: Pref,
     private val memoryPref: Pref,

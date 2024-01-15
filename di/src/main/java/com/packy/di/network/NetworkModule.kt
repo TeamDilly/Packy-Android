@@ -2,7 +2,7 @@ package com.packy.di.network
 
 import com.packy.di.common.NetworkConstant
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.packy.data.BuildConfig
+import com.packy.di.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,12 +51,25 @@ internal object NetworkModule {
     @Provides
     @Singleton
     @Youtube
-    fun providerRetrofit(
+    fun providerYoutubeRetrofit(
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://www.youtube.com/")
+            .addConverterFactory(converterFactory)
+            .client(okHttpClient).build()
+    }
+
+    @Provides
+    @Singleton
+    @Packy
+    fun providerPackyRetorfit(
+        okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(converterFactory)
             .client(okHttpClient).build()
     }

@@ -4,10 +4,12 @@ sealed class Resource<T>(val data: T? = null, val message: String? = null, val c
     class Success<T>(data: T, message: String, code: String) :
         Resource<T>(data = data, message = message, code = code)
 
-    class Error<T>(data: T?, message: String, code: String) :
+    class ApiError<T>(data: T?, message: String, code: String) :
         Resource<T>(data = data, message = message, code = code)
 
-    class UnKnowError<T>(message: String?) : Resource<T>(message = message)
+    class NetworkError<T>(val throwable: Throwable) : Resource<T>()
+
+    class NullResult<T> : Resource<T>()
 
     class Loading<T>() : Resource<T>()
 }

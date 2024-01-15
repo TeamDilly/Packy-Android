@@ -69,6 +69,7 @@ internal object NetworkModule {
         converterFactory: Converter.Factory,
     ): Retrofit {
         return Retrofit.Builder()
+            .addConverterFactory(converterFactory)
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(converterFactory)
             .client(okHttpClient).build()

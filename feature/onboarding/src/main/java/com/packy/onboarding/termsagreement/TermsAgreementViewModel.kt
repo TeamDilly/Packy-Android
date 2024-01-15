@@ -1,18 +1,25 @@
 package com.packy.onboarding.termsagreement
 
+import android.util.Log
+import com.packy.domain.usecase.auth.SignUpUseCase
+import com.packy.lib.utils.Resource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
-class TermsAgreementViewModel @Inject constructor() :
+class TermsAgreementViewModel @Inject constructor(
+    private val signUpUseCase: SignUpUseCase
+) :
     MviViewModel<TermsAgreementIntent, TermsAgreementState, TermsAgreementEffect>() {
     override fun createInitialState() = TermsAgreementState(
         isAllAllow = false,
         isRequiredAllow = false,
         enabledTermsOfService = false,
         enabledPersonalInformation = false,
-        enabledNotification = false
+        enabledNotification = false,
+        signUpFail = false
     )
 
     override fun handleIntent() {
@@ -44,6 +51,33 @@ class TermsAgreementViewModel @Inject constructor() :
                 isAllAllow = state.enabledAllAllow(enabledNotification = !state.enabledNotification),
                 enabledNotification = !state.enabledNotification,
             )
+        }
+        subscribeIntent<TermsAgreementIntent.OnBackClick> {
+            sendEffect(TermsAgreementEffect.NavBackEffect)
+        }
+        subscribeIntent<TermsAgreementIntent.OnSaveButtonClick> {
+            signUpUseCase.setUserSignUpInfo(
+                signUpUseCase.getUserSignUpInfo().first().copy(
+                    serviceAllow = currentState.enabledTermsOfService,
+                    personalAllow = currentState.enabledPersonalInformation,
+                    marketingAgreement = currentState.enabledNotification
+                )
+            )
+            Log.d("LOGEE", "handleIntent: ${signUpUseCase.getUserSignUpInfo().first()}")
+            signUpUseCase
+                .signUp(signUpUseCase.getUserSignUpInfo().first())
+                .collect { resource ->
+                    when (resource) {
+                        is Resource.ApiError,
+                        is Resource.Loading,
+                        is Resource.NetworkError,
+                        is Resource.NullResult -> setState {
+                            currentState.copy(signUpFail = true)
+                        }
+
+                        is Resource.Success -> sendEffect(TermsAgreementEffect.OnSuccessSignUp)
+                    }
+                }
         }
     }
 }

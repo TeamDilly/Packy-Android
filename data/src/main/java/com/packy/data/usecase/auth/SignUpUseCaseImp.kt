@@ -11,7 +11,7 @@ import javax.inject.Inject
 class SignUpUseCaseImp @Inject constructor(
     private val signUpRepository: SignUpRepository
 ) : SignUpUseCase {
-    override suspend fun getUserSignUpInfo(): Flow<SignUp?> = signUpRepository.getUserSignUpInfo()
+    override suspend fun getUserSignUpInfo(): Flow<SignUp> = signUpRepository.getUserSignUpInfo()
 
     override suspend fun setUserSignUpInfo(signUp: SignUp) =
         signUpRepository.setUserSignUpInfo(signUp)

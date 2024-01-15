@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SignUp(
-    val kakaoToken: String,
+    val token: String,
     val provider: String,
     val nickname: String,
     val profileImg: Int,
@@ -12,4 +12,6 @@ data class SignUp(
     val pushNotification: Boolean,
     val serviceAllow: Boolean,
     val personalAllow: Boolean
-)
+) {
+    fun isAvailable() = token.isNotBlank() && provider.isNotBlank() && serviceAllow && personalAllow
+}

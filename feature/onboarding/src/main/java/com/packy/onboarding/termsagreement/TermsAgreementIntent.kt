@@ -18,7 +18,8 @@ data class TermsAgreementState(
     val isRequiredAllow: Boolean,
     val enabledTermsOfService: Boolean,
     val enabledPersonalInformation: Boolean,
-    val enabledNotification: Boolean
+    val enabledNotification: Boolean,
+    val signUpFail: Boolean
 ) : UiState {
     fun enabledAllAllow(
         enabledTermsOfService: Boolean = this.enabledTermsOfService,
@@ -33,5 +34,8 @@ data class TermsAgreementState(
     ) = enabledTermsOfService && enabledPersonalInformation
 }
 
-sealed interface TermsAgreementEffect : SideEffect
+sealed interface TermsAgreementEffect : SideEffect{
+    data object NavBackEffect : TermsAgreementEffect
+    data object OnSuccessSignUp : TermsAgreementEffect
+}
 

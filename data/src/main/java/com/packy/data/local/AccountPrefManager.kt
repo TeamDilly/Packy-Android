@@ -12,7 +12,18 @@ class AccountPrefManager @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : PrefManager(context, ACCOUNT_PREF) {
 
-    val signUp = createMemoryPrefItem<SignUp>("globalSample", null, SignUp::class)
+    val signUp = createNonNullMemoryPrefItem<SignUp>(
+        "globalSample", SignUp(
+            provider = "kakao",
+            nickname = "",
+            profileImg = -1,
+            pushNotification = false,
+            marketingAgreement = false,
+            token = "",
+            serviceAllow = false,
+            personalAllow = false
+        ), SignUp::class
+    )
 
     companion object {
         const val ACCOUNT_PREF = "accountPref"

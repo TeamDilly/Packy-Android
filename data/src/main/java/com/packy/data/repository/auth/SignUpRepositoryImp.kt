@@ -15,7 +15,7 @@ class SignUpRepositoryImp @Inject constructor(
     private val accountPref: AccountPrefManager,
     private val api: SignUpService
 ) : SignUpRepository {
-    override suspend fun getUserSignUpInfo(): Flow<SignUp?> =
+    override suspend fun getUserSignUpInfo(): Flow<SignUp> =
         accountPref.signUp.getData()
 
 

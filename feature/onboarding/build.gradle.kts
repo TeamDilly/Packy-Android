@@ -13,4 +13,5 @@ dependencies {
     implementation(project(":library:account"))
     implementation(project(":feature:core"))
     implementation(project(":common-android"))
+    implementation(project(":lib"))
 }

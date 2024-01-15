@@ -11,7 +11,7 @@ import javax.inject.Inject
 class SignUpRepositoryImp @Inject constructor(
     private val accountPref: AccountPrefManager
 ) : SignUpRepository {
-    override suspend fun getUserSignUpInfo(): Flow<SignUp> =
+    override suspend fun getUserSignUpInfo(): Flow<SignUp?> =
         accountPref.signUp.getData()
 
 

@@ -1,6 +1,6 @@
 package com.packy.pref.memory
 
-import com.packy.pref.Pref
+import com.packy.pref.NonNullPref
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.update
 import kotlin.reflect.KClass
 
 
-class MemoryPref : Pref {
+class MemoryNonNullPref : NonNullPref {
 
     private val _memoryPref = MutableStateFlow<MutableMap<String, Any?>>(mutableMapOf())
     private val memoryPref: StateFlow<MutableMap<String, Any?>> get() = _memoryPref

@@ -9,8 +9,8 @@ data class NonNullPrefItem<T>(
     private val key: String,
     private val defaultValue: T,
     private val prefStrategy: PrefStrategy,
-    private val dataStorePref: Pref,
-    private val memoryPref: Pref,
+    private val dataStoreNonNullPref: NonNullPref,
+    private val memoryNonNullPref: NonNullPref,
     private val type: KClass<*>
 ) {
 
@@ -21,11 +21,11 @@ data class NonNullPrefItem<T>(
     }
 
     suspend fun getData(): Flow<T> {
-        val memoryResult = memoryPref.get(key, defaultValue, type).first()
+        val memoryResult = memoryNonNullPref.get(key, defaultValue, type).first()
         return if (memoryResult == defaultValue) {
-            dataStorePref.get(key, defaultValue, type)
+            dataStoreNonNullPref.get(key, defaultValue, type)
         } else {
-            memoryPref.get(key, defaultValue, type)
+            memoryNonNullPref.get(key, defaultValue, type)
         }
     }
 
@@ -42,8 +42,8 @@ data class NonNullPrefItem<T>(
     }
 
     private fun getPrefItem(strategy: PrefStrategy) = when (strategy) {
-        PrefStrategy.MEMORY_ONLY -> listOf(memoryPref)
-        PrefStrategy.FILE_ONLY -> listOf(dataStorePref)
-        PrefStrategy.BOTH_MEMORY_AND_FILE -> listOf(memoryPref, dataStorePref)
+        PrefStrategy.MEMORY_ONLY -> listOf(memoryNonNullPref)
+        PrefStrategy.FILE_ONLY -> listOf(dataStoreNonNullPref)
+        PrefStrategy.BOTH_MEMORY_AND_FILE -> listOf(memoryNonNullPref, dataStoreNonNullPref)
     }
 }

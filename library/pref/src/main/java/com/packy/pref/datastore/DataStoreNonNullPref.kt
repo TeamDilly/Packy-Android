@@ -11,7 +11,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.packy.pref.Pref
+import com.packy.pref.NonNullPref
+import com.packy.pref.NullablePref
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -20,10 +21,10 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 import kotlin.reflect.KClass
 
-class DataStorePref(
+class DataStoreNonNullPref(
     private val context: Context,
     private val domain: String
-) : Pref {
+) : NonNullPref {
 
     private val dataStore = PreferenceDataStoreFactory.create {
         context.preferencesDataStoreFile(domain)

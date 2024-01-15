@@ -1,76 +1,83 @@
 package com.packy.pref.manager
 
 import android.content.Context
-import com.packy.pref.Pref
-import com.packy.pref.PrefItem
-import com.packy.pref.datastore.DataStorePref
-import com.packy.pref.memory.MemoryPref
+import com.packy.pref.NonNullPref
+import com.packy.pref.NullablePref
+import com.packy.pref.NonNullPrefItem
+import com.packy.pref.NullablePrefItem
+import com.packy.pref.datastore.DataStoreNonNullPref
+import com.packy.pref.datastore.DataStoreNullablePref
+import com.packy.pref.memory.MemoryNonNullPref
+import com.packy.pref.memory.MemoryNullablePref
 import kotlin.reflect.KClass
 
 open class PrefManager(
     private val appContext: Context,
     private val domainName: String
 ) {
-    private val dataStorePref: Pref = DataStorePref(appContext, domainName)
-    private val memoryPref: Pref = MemoryPref()
+    private val dataStoreNullablePref: NullablePref = DataStoreNullablePref(appContext, domainName)
+    private val memoryNullablePref: NullablePref = MemoryNullablePref()
+
+    private val dataStoreNonNullPref: NonNullPref = DataStoreNonNullPref(appContext, domainName)
+    private val memoryNonNullPref: NonNullPref = MemoryNonNullPref()
 
     fun <T> createPrefItem(key: String, defaultValue: T?, type: KClass<*>) =
-        PrefItem(
+        NullablePrefItem(
             key = key,
             defaultValue = defaultValue,
             prefStrategy = PrefStrategy.BOTH_MEMORY_AND_FILE,
-            dataStorePref = dataStorePref,
-            memoryPref = memoryPref,
+            dataStoreNullablePref = dataStoreNullablePref,
+            memoryNullablePref = memoryNullablePref,
             type = type,
         )
 
     fun <T> createMemoryPrefItem(key: String, defaultValue: T?, type: KClass<*>) =
-        PrefItem(
+        NullablePrefItem(
             key = key,
             defaultValue = defaultValue,
             prefStrategy = PrefStrategy.MEMORY_ONLY,
-            dataStorePref = dataStorePref,
-            memoryPref = memoryPref,
+            dataStoreNullablePref = dataStoreNullablePref,
+            memoryNullablePref = memoryNullablePref,
             type = type,
         )
 
     fun <T> createPreferencePrefItem(key: String, defaultValue: T?, type: KClass<*>) =
-        PrefItem(
+        NullablePrefItem(
             key = key,
             defaultValue = defaultValue,
             prefStrategy = PrefStrategy.FILE_ONLY,
-            dataStorePref = dataStorePref,
-            memoryPref = memoryPref,
+            dataStoreNullablePref = dataStoreNullablePref,
+            memoryNullablePref = memoryNullablePref,
             type = type,
         )
 
     fun <T> createNonNullPrefItem(key: String, defaultValue: T, type: KClass<*>) =
-        PrefItem(
+        NonNullPrefItem(
             key = key,
             defaultValue = defaultValue,
             prefStrategy = PrefStrategy.BOTH_MEMORY_AND_FILE,
-            dataStorePref = dataStorePref,
-            memoryPref = memoryPref,
+            dataStoreNonNullPref = dataStoreNonNullPref,
+            memoryNonNullPref = memoryNonNullPref,
             type = type,
         )
 
     fun <T> createNonNullMemoryPrefItem(key: String, defaultValue: T, type: KClass<*>) =
-        PrefItem(
+        NonNullPrefItem(
             key = key,
             defaultValue = defaultValue,
             prefStrategy = PrefStrategy.MEMORY_ONLY,
-            dataStorePref = dataStorePref,
-            memoryPref = memoryPref,
+            dataStoreNonNullPref = dataStoreNonNullPref,
+            memoryNonNullPref = memoryNonNullPref,
             type = type,
         )
 
     fun <T> createNonNullPreferencePrefItem(key: String, defaultValue: T, type: KClass<*>) =
-        PrefItem(
+        NonNullPrefItem(
             key = key,
             defaultValue = defaultValue,
             prefStrategy = PrefStrategy.FILE_ONLY,
-            dataStorePref = dataStorePref,
-            memoryPref = memoryPref,
+            dataStoreNonNullPref = dataStoreNonNullPref,
+            memoryNonNullPref = memoryNonNullPref,
             type = type,
         )
 }

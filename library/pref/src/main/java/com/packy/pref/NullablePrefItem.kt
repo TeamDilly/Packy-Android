@@ -5,12 +5,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlin.reflect.KClass
 
-data class PrefItem<T>(
+data class NullablePrefItem<T>(
     private val key: String,
     private val defaultValue: T?,
     private val prefStrategy: PrefStrategy,
-    private val dataStorePref: Pref,
-    private val memoryPref: Pref,
+    private val dataStoreNullablePref: NullablePref,
+    private val memoryNullablePref: NullablePref,
     private val type: KClass<*>
 ) {
 
@@ -20,12 +20,12 @@ data class PrefItem<T>(
         }
     }
 
-    suspend fun getData(): Flow<T> {
-        val memoryResult = memoryPref.get(key, defaultValue, type).first()
+    suspend fun getData(): Flow<T?> {
+        val memoryResult = memoryNullablePref.get(key, defaultValue, type).first()
         return if (memoryResult == defaultValue) {
-            dataStorePref.get(key, defaultValue, type)
+            dataStoreNullablePref.get(key, defaultValue, type)
         } else {
-            memoryPref.get(key, defaultValue, type)
+            memoryNullablePref.get(key, defaultValue, type)
         }
     }
 
@@ -42,8 +42,8 @@ data class PrefItem<T>(
     }
 
     private fun getPrefItem(strategy: PrefStrategy) = when (strategy) {
-        PrefStrategy.MEMORY_ONLY -> listOf(memoryPref)
-        PrefStrategy.FILE_ONLY -> listOf(dataStorePref)
-        PrefStrategy.BOTH_MEMORY_AND_FILE -> listOf(memoryPref, dataStorePref)
+        PrefStrategy.MEMORY_ONLY -> listOf(memoryNullablePref)
+        PrefStrategy.FILE_ONLY -> listOf(dataStoreNullablePref)
+        PrefStrategy.BOTH_MEMORY_AND_FILE -> listOf(memoryNullablePref, dataStoreNullablePref)
     }
 }

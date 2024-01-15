@@ -13,12 +13,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun YouTubeCdPlayer(
     modifier: Modifier = Modifier,
-    videoId: String
+    videoId: String,
+    thumbnail: String
 ) {
     YoutubePlayer(
         modifier = modifier
             .aspectRatio(1f,)
             .clip(CircleShape),
         videoId = videoId,
+        thumbnail = thumbnail
     )
 }

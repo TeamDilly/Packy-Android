@@ -1,7 +1,9 @@
 package com.packy.core.widget.youtube
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,7 +12,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.viewinterop.AndroidView
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.theme.PackyTheme
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -18,10 +23,12 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun YoutubePlayer(
     modifier: Modifier = Modifier,
-    videoId: String
+    videoId: String,
+    thumbnail: String
 ) {
     var youtubeState: YoutubeState by remember { mutableStateOf(YoutubeState.INIT) }
 
@@ -70,5 +77,12 @@ fun YoutubePlayer(
                     )
                 }
             })
+        GlideImage(
+            modifier = modifier
+                .fillMaxSize(),
+            model = thumbnail,
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
     }
 }

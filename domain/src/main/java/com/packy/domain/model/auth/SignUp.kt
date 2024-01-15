@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SignUp(
+    val kakaoToken: String,
     val provider: String,
     val nickname: String,
     val profileImg: Int,

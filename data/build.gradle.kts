@@ -9,4 +9,5 @@ android {
 dependencies {
     implementation(project(":domain"))
     implementation(project(":library:pref"))
+    implementation(project(":lib"))
 }

@@ -1,7 +1,7 @@
 package com.packy.domain.repository
 
+import com.packy.lib.utils.Resource
 import com.packy.domain.model.auth.SignUp
-import com.packy.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface SignUpRepository {

@@ -1,7 +1,7 @@
 package com.packy.domain.usecase.auth
 
 import com.packy.domain.model.auth.SignUp
-import com.packy.domain.utils.Resource
+import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface SignUpUseCase {

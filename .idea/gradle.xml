@@ -30,6 +30,7 @@
             <option value="$PROJECT_DIR$/feature/core" />
             <option value="$PROJECT_DIR$/feature/main" />
             <option value="$PROJECT_DIR$/feature/onboarding" />
+            <option value="$PROJECT_DIR$/lib" />
             <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/library/account" />
             <option value="$PROJECT_DIR$/library/mvi" />

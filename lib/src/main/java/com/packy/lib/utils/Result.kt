@@ -1,4 +1,4 @@
-package com.packy.domain.utils
+package com.packy.lib.utils
 
 sealed class Resource<T>(val data: T? = null, val message: String? = null, val code: String? = null) {
     class Success<T>(data: T, message: String, code: String) :

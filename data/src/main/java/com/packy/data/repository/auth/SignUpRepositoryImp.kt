@@ -33,7 +33,8 @@ class SignUpRepositoryImp @Inject constructor(
                     provider = signUp.provider,
                     marketingAgreement = signUp.marketingAgreement,
                     pushNotification = signUp.pushNotification
-                )
+                ),
+                token = signUp.token
             )
         }
     }

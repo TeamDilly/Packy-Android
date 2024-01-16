@@ -17,13 +17,15 @@ import retrofit2.Retrofit
 @InstallIn(SingletonComponent::class)
 object SignUpServiceModule {
     @Provides
-    fun providerSignUpService(@Packy retrofit: Retrofit): SignUpService =
+    fun providerSignUpService(
+        @Packy retrofit: Retrofit
+    ): SignUpService =
         retrofit.create(SignUpService::class.java)
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class SignRepositoryModule{
+abstract class SignRepositoryModule {
 
     @Binds
     abstract fun bindSignRepository(signUpRepository: SignUpRepositoryImp): SignUpRepository

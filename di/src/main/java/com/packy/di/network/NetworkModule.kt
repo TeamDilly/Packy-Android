@@ -59,7 +59,8 @@ internal object NetworkModule {
         return Retrofit.Builder()
             .baseUrl("https://www.youtube.com/")
             .addConverterFactory(converterFactory)
-            .client(okHttpClient).build()
+            .client(okHttpClient)
+            .build()
     }
 
     @Provides
@@ -73,6 +74,7 @@ internal object NetworkModule {
             .addCallAdapterFactory(ResourceAdapterFactory())
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(converterFactory)
-            .client(okHttpClient).build()
+            .client(okHttpClient)
+            .build()
     }
 }

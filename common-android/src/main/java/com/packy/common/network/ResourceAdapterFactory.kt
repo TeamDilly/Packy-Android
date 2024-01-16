@@ -1,5 +1,6 @@
 package com.packy.common.network
 
+import com.packy.lib.utils.Resource
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
@@ -12,16 +13,13 @@ class ResourceAdapterFactory: CallAdapter.Factory() {
         annotations: Array<out Annotation>,
         retrofit: Retrofit
     ): CallAdapter<*, *>? {
-        if (Call::class.java != getRawType(returnType)) return null
-        check(returnType is ParameterizedType)
-
+        if (getRawType(returnType) != Call::class.java) {
+            return null
+        }
+        if (returnType !is ParameterizedType) {
+            throw IllegalStateException("Resource must be parameterized")
+        }
         val responseType = getParameterUpperBound(0, returnType)
-        if (getRawType(responseType) != Result::class.java) return null
-        check(responseType is ParameterizedType)
-
-
-        val successType = getParameterUpperBound(0, responseType)
-
-        return ResourceCallAdapter<Any>(successType)
+        return ResourceCallAdapter<Any>(responseType)
     }
 }

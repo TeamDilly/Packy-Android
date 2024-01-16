@@ -1,6 +1,11 @@
 package com.packy.lib.utils
 
-sealed class Resource<T>(val data: T? = null, val message: String? = null, val code: String? = null) {
+import kotlinx.serialization.SerialName
+
+sealed class Resource<T>(
+    @SerialName("data") val data: T? = null,
+    @SerialName("message") val message: String? = null,
+    @SerialName("code") val code: String? = null) {
     class Success<T>(data: T, message: String, code: String) :
         Resource<T>(data = data, message = message, code = code)
 

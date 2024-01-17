@@ -29,6 +29,7 @@ import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.CRATE_BOX_MUSIC
+import com.packy.createbox.createboax.navigation.CreateBoxNavHost
 import com.packy.di.network.Packy
 import com.packy.feature.core.R
 
@@ -49,81 +50,7 @@ fun BoxGuideScreen(
             sheetState = sheetState,
             dragHandle = null
         ) {
-            Column(
-                modifier = Modifier.padding(start = 24.dp),
-            ){
-                Spacer(height = 12.dp)
-                PackyTopBar.Builder()
-                    .endIconButton(icon = R.drawable.cancle) {
-                        showBottomSheet = false
-                    }
-                    .build()
-                Spacer(height = 9.dp)
-                Text(
-                    text = CRATE_BOX_MUSIC,
-                    style = PackyTheme.typography.heading01,
-                    color = PackyTheme.color.gray900
-                )
-                Spacer(height = 24.dp)
-                ChooseMusicBox(
-                    title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
-                    description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
-                ) {}
-                Spacer(height = 8.dp)
-                ChooseMusicBox(
-                    title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
-                    description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
-                ) {}
-            }
+            CreateBoxNavHost { showBottomSheet = false }
         }
     }
-}
-
-@Composable
-private fun ChooseMusicBox(
-    modifier: Modifier = Modifier,
-    title: String,
-    description: String,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = modifier
-            .background(
-                color = PackyTheme.color.gray100,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .padding(all = 24.dp)
-            .clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Column(
-            modifier = Modifier.weight(1f),
-        ) {
-            Text(
-                text = title,
-                style = PackyTheme.typography.body01,
-                color = PackyTheme.color.gray900
-            )
-            Spacer(height = 2.dp)
-            Text(
-                text = description,
-                style = PackyTheme.typography.body04,
-                color = PackyTheme.color.gray600
-            )
-        }
-        Icon(
-            painter = painterResource(id = R.drawable.arrow_right),
-            contentDescription = "Arrow Right"
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewChooseMusicBox() {
-    ChooseMusicBox(
-        title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
-        description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
-    ) {}
 }

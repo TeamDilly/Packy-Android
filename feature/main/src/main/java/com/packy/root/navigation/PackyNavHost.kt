@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.packy.createbox.navigation.createBoxNavGraph
 import com.packy.onboarding.navigation.onboardingNavGraph
 
 @Composable
@@ -18,5 +19,6 @@ fun PackyNavHost(
         startDestination = startDestination,
     ) {
         onboardingNavGraph(navController)
+        createBoxNavGraph(navController)
     }
 }

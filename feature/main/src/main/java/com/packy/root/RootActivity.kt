@@ -8,6 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.packy.core.theme.PackyTheme
+import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.onboarding.navigation.OnboardingRoute
 import com.packy.root.navigation.PackyNavHost
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +25,7 @@ class RootActivity : ComponentActivity() {
                 ) {
                     PackyNavHost(
                         navController = rememberNavController(),
-                        startDestination = OnboardingRoute.ONBOARDING_NAV_GRAPH
+                        startDestination = CreateBoxRoute.CREATE_BOX_NAV_GRAPH
                     )
                 }
             }

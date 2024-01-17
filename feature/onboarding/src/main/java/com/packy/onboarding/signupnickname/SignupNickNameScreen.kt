@@ -80,7 +80,7 @@ fun SignupNickNameScreen(
                 keyboardController?.hide()
                 viewModel.emitIntentThrottle(SignupNickNameIntent.OnSaveButtonClick)
             }
-            Spacer(width = 16.dp)
+            Spacer(height = 16.dp)
         }
     }
 }

@@ -28,4 +28,11 @@ object Strings {
     const val TERMS_AGREEMENT_SERVICE_ALLOW = "(필수) 서비스 이용약관"
     const val TERMS_AGREEMENT_PERSONAL_ALLOW = "(필수) 개인정보 수집 및 이용안내"
     const val TERMS_AGREEMENT_NOTIFICATION_ALLOW = "(선택) 이벤트 및 마케팅 수신 동의"
+
+    // crateBox
+    const val CRATE_BOX_MUSIC = "음악 추가하기"
+    const val CHOOSE_YOUR_MUSIC_TITLE = "직접 음악 선택하기"
+    const val CHOOSE_YOUR_MUSIC_DESCRIPTION = "유튜브 링크로 음악을 넣어주세요"
+    const val CHOOSE_PACKY_MUSIC_TITLE = "패키의 음악으로 담기"
+    const val CHOOSE_PACKY_MUSIC_DESCRIPTION = "다양한 테마의 음악들을 준비했어요!"
 }

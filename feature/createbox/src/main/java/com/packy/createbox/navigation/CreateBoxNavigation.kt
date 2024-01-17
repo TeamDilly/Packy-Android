@@ -15,11 +15,11 @@ fun NavGraphBuilder.createBoxNavGraph(
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = CreateBoxRoute.BOX_START,
+        startDestination = CreateBoxRoute.BOX_GUIDE,
         route = CreateBoxRoute.CREATE_BOX_NAV_GRAPH
     ){
         composable(
-            route = CreateBoxRoute.BOX_GUIDE,
+            route = CreateBoxRoute.BOX_START,
             enterTransition = {
                 PaginationAnimation.slidInTop()
             }

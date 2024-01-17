@@ -119,7 +119,7 @@ fun TermsAgreementScreen(
             ) {
                 viewModel.emitIntentThrottle(TermsAgreementIntent.OnSaveButtonClick)
             }
-            Spacer(width = 16.dp)
+            Spacer(height = 16.dp)
         }
     }
 }

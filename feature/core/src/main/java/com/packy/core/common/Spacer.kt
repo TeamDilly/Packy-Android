@@ -15,7 +15,7 @@ fun RowScope.Spacer(width: Dp) = androidx.compose.foundation.layout.Spacer(modif
 fun RowScope.Spacer(weight: Float) = androidx.compose.foundation.layout.Spacer(modifier = Modifier.weight(weight))
 
 @Composable
-fun ColumnScope.Spacer(width: Dp) = androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(width))
+fun ColumnScope.Spacer(height: Dp) = androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(height))
 
 @Composable
 fun ColumnScope.Spacer(weight: Float) = androidx.compose.foundation.layout.Spacer(modifier = Modifier.weight(weight))

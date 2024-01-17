@@ -48,9 +48,7 @@ fun CreateBoxChooseMusicScreen(
             }
         }
     }
-    Column(
-        modifier = modifier.padding(start = 24.dp),
-    ) {
+    Column {
         Spacer(height = 12.dp)
         PackyTopBar.Builder()
             .endIconButton(icon = R.drawable.cancle) {
@@ -58,26 +56,31 @@ fun CreateBoxChooseMusicScreen(
             }
             .build()
         Spacer(height = 9.dp)
-        Text(
-            text = Strings.CRATE_BOX_MUSIC,
-            style = PackyTheme.typography.heading01,
-            color = PackyTheme.color.gray900
-        )
-        Spacer(height = 24.dp)
-        ChooseMusicBox(
-            title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
-            description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
+
+        Column(
+            modifier = modifier.padding(horizontal = 24.dp),
         ) {
-            viewModel.emitIntent(CreateBoxChooseMusicIntent.OnChooseYourMusicClick)
+            Text(
+                text = Strings.CRATE_BOX_MUSIC,
+                style = PackyTheme.typography.heading01,
+                color = PackyTheme.color.gray900
+            )
+            Spacer(height = 24.dp)
+            ChooseMusicBox(
+                title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
+                description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
+            ) {
+                viewModel.emitIntent(CreateBoxChooseMusicIntent.OnChooseYourMusicClick)
+            }
+            Spacer(height = 8.dp)
+            ChooseMusicBox(
+                title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
+                description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
+            ) {
+                viewModel.emitIntent(CreateBoxChooseMusicIntent.OnPackyMusicClick)
+            }
+            Spacer(height = 32.dp)
         }
-        Spacer(height = 8.dp)
-        ChooseMusicBox(
-            title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
-            description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
-        ) {
-            viewModel.emitIntent(CreateBoxChooseMusicIntent.OnPackyMusicClick)
-        }
-        Spacer(height = 32.dp)
     }
 }
 

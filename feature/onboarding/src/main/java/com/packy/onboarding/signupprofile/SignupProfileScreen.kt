@@ -58,6 +58,8 @@ fun SignupProfileScreen(
                 SignupProfileEffect.ProfileChangeHapticEffect -> {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                 }
+
+                SignupProfileEffect.MoveToBack -> navController.popBackStack()
             }
         }
     }

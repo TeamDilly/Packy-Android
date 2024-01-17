@@ -35,7 +35,7 @@ data class TermsAgreementState(
 }
 
 sealed interface TermsAgreementEffect : SideEffect{
-    data object NavBackEffect : TermsAgreementEffect
+    data object MoveToBack : TermsAgreementEffect
     data object OnSuccessSignUp : TermsAgreementEffect
 }
 

@@ -53,7 +53,7 @@ class TermsAgreementViewModel @Inject constructor(
             )
         }
         subscribeIntent<TermsAgreementIntent.OnBackClick> {
-            sendEffect(TermsAgreementEffect.NavBackEffect)
+            sendEffect(TermsAgreementEffect.MoveToBack)
         }
         subscribeIntent<TermsAgreementIntent.OnSaveButtonClick> {
             signUpUseCase.setUserSignUpInfo(

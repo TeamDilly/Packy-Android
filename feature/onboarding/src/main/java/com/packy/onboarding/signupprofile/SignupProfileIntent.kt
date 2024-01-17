@@ -30,6 +30,7 @@ enum class Profile(
 }
 
 sealed interface SignupProfileEffect : SideEffect {
+    data object MoveToBack: SignupProfileEffect
     data object NavTermsAgreementEffect : SignupProfileEffect
     data object ProfileChangeHapticEffect : SignupProfileEffect
 }

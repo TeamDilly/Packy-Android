@@ -22,6 +22,9 @@ class SignupProfileViewModel @Inject constructor(
     )
 
     override fun handleIntent() {
+        subscribeIntent<SignupProfileIntent.OnBackClick> {
+            sendEffect(SignupProfileEffect.MoveToBack)
+        }
         subscribeIntent<SignupProfileIntent.OnSaveButtonClick> {
             val signUp = signUpUseCase.getUserSignUpInfo().first()
             signUpUseCase.setUserSignUpInfo(

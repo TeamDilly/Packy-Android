@@ -1,20 +1,24 @@
 package com.packy.createbox.createboax.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.packy.createbox.createboax.addyourmusic.CreateBoxYourMusicScreen
 import com.packy.createbox.createboax.choosemusic.CreateBoxChooseMusicScreen
 
 @Composable
 fun CreateBoxNavHost(
+    modifier: Modifier = Modifier,
     closeBottomSheet: () -> Unit
 ) {
     val navController = rememberNavController()
     NavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_BOTTOM_SHEET_NAV_GRAPH
     ) {
@@ -41,7 +45,10 @@ fun NavGraphBuilder.createBoxBottomSheetNavGraph(
         composable(
             route = CreateBoxBottomSheetRoute.CREATE_BOX_ADD_YOUR_MUSIC,
         ) {
-
+            CreateBoxYourMusicScreen(
+                navController = navController,
+                closeBottomSheet = closeBottomSheet
+            )
         }
         composable(
             route = CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PACKY_MUSIC,

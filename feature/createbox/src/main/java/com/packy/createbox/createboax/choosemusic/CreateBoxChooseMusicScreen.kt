@@ -1,7 +1,6 @@
 package com.packy.createbox.createboax.choosemusic
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,32 +9,52 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
+import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
 
 @Composable
 fun CreateBoxChooseMusicScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    closeBottomSheet: () -> Unit
+    closeBottomSheet: () -> Unit,
+    viewModel: CreateBoxChooseMusicViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(null) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                CreateBoxChooseMusicEffect.CloseBottomSheet -> closeBottomSheet()
+                CreateBoxChooseMusicEffect.MoveToPackyMusic -> navController.navigate(
+                    CreateBoxBottomSheetRoute.CREATE_BOX_ADD_YOUR_MUSIC
+                )
+
+                CreateBoxChooseMusicEffect.MoveToYourMusic -> navController.navigate(
+                    CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PACKY_MUSIC
+                )
+            }
+        }
+    }
     Column(
         modifier = modifier.padding(start = 24.dp),
     ) {
         Spacer(height = 12.dp)
         PackyTopBar.Builder()
-            .endIconButton(icon = R.drawable.cancle){
-                closeBottomSheet()
+            .endIconButton(icon = R.drawable.cancle) {
+                viewModel.emitIntent(CreateBoxChooseMusicIntent.OnCloseClick)
             }
             .build()
         Spacer(height = 9.dp)
@@ -48,12 +67,17 @@ fun CreateBoxChooseMusicScreen(
         ChooseMusicBox(
             title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
             description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
-        ) {}
+        ) {
+            viewModel.emitIntent(CreateBoxChooseMusicIntent.OnChooseYourMusicClick)
+        }
         Spacer(height = 8.dp)
         ChooseMusicBox(
             title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
             description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
-        ) {}
+        ) {
+            viewModel.emitIntent(CreateBoxChooseMusicIntent.OnPackyMusicClick)
+        }
+        Spacer(height = 32.dp)
     }
 }
 

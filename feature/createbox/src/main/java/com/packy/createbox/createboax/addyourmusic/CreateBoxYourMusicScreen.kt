@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -31,6 +33,7 @@ fun CreateBoxYourMusicScreen(
     closeBottomSheet: () -> Unit,
     viewModel: CreateBoxYourMusicViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -77,7 +80,7 @@ fun CreateBoxYourMusicScreen(
             )
             Spacer(height = 32.dp)
             YoutubeLinkForm(
-                link = viewModel.currentState.youtubeLink,
+                link = uiState.youtubeLink,
                 onLinkChange = {
                     viewModel.emitIntent(
                         CreateBoxYourMusicIntent.OnYoutubeLinkChange(
@@ -115,7 +118,9 @@ private fun YoutubeLinkForm(
             PackyTextField(
                 value = link,
                 onValueChange = onLinkChange,
+                singleLine = true,
                 placeholder = Strings.CREATE_BOX_ADD_MUSIC_PLACE_HOLDER,
+                showTrailingIcon = true
             )
             if (isFailUrl) {
                 Spacer(height = 4.dp)

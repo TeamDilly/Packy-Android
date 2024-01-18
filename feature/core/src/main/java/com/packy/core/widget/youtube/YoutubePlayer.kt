@@ -30,6 +30,15 @@ fun YoutubePlayer(
     stateListener: (YoutubeState) -> Unit = {},
     youtubeState: YoutubeState
 ) {
+   var player by remember {
+       mutableStateOf<YouTubePlayer?>(null)
+   }
+    if (youtubeState == YoutubeState.PLAYING) {
+        player?.play()
+    }
+    if (youtubeState == YoutubeState.PAUSED) {
+        player?.pause()
+    }
     AndroidView(
         modifier = modifier
             .fillMaxSize(),
@@ -42,20 +51,8 @@ fun YoutubePlayer(
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         super.onReady(youTubePlayer)
                         youTubePlayer.loadVideo(videoId, 0f)
-                        if (youtubeState == YoutubeState.PLAYING) {
-                            youTubePlayer.play()
-                        }
-                        if (youtubeState == YoutubeState.PAUSED) {
-                            youTubePlayer.pause()
-                        }
-                    }
-
-                    override fun onStateChange(
-                        youTubePlayer: YouTubePlayer,
-                        state: PlayerConstants.PlayerState
-                    ) {
-                        super.onStateChange(youTubePlayer, state)
-                        stateListener(state.toState())
+                        stateListener(YoutubeState.PLAYING)
+                        player = youTubePlayer
                     }
                 },
                 playerOptions = IFramePlayerOptions.Builder()

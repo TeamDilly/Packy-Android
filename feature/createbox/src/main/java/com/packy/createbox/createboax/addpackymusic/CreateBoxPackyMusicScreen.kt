@@ -39,7 +39,6 @@ fun CreateBoxPackyMusicScreen(
     viewModel: CreateBoxPackyMusicViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    var youtubeState by remember { mutableStateOf(YoutubeState.INIT) }
 
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
@@ -84,9 +83,12 @@ fun CreateBoxPackyMusicScreen(
                 modifier = Modifier.size(180.dp),
                 videoId = CreateBoxPackyMusicViewModel.dumyMusic[0].videoId,
                 thumbnail = CreateBoxPackyMusicViewModel.dumyMusic[0].thumbnail,
-                youtubeState = youtubeState,
-                stateListener = {
-                    youtubeState = it
+                youtubeState = uiState.musicState,
+                stateListener = { state ->
+                    viewModel.emitIntent(CreateBoxPackyMusicIntent.ChangeMusicState(state))
+                },
+                changeYoutubeState = { state ->
+                    viewModel.emitIntent(CreateBoxPackyMusicIntent.ChangeMusicState(state))
                 }
             )
             Spacer(1f)

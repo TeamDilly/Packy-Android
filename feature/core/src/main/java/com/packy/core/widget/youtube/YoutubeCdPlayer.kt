@@ -31,57 +31,58 @@ fun YouTubeCdPlayer(
     youtubeState: YoutubeState,
     rotationDuration: Int = 20000,
     stateListener: (YoutubeState) -> Unit = {},
+    changeYoutubeState: (YoutubeState) -> Unit = {}
 ) {
 
     val isPlaying = youtubeState == YoutubeState.PLAYING
+
     Box(
         modifier = modifier
             .clip(CircleShape)
-            .infiniteRotationAnimation(
-                play = isPlaying,
-                durationMillis = rotationDuration
-            )
     ) {
-        YoutubePlayer(
-            modifier = modifier,
-            videoId = videoId,
-            stateListener = stateListener,
-            youtubeState = youtubeState
-        )
-        GlideImage(
-            modifier = modifier
-                .fillMaxSize(),
-            model = thumbnail,
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .infiniteRotationAnimation(
+                    paused = !isPlaying,
+                    durationMillis = rotationDuration
+                )
+        ) {
+            YoutubePlayer(
+                modifier = modifier,
+                videoId = videoId,
+                stateListener = stateListener,
+                youtubeState = youtubeState
+            )
+            GlideImage(
+                modifier = modifier
+                    .fillMaxSize(),
+                model = thumbnail,
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+        }
         Box(modifier = Modifier
-            .clickableWithoutRipple {}
+            .clickableWithoutRipple {
+                changeYoutubeState(
+                    if (isPlaying) YoutubeState.PAUSED else YoutubeState.PLAYING
+                )
+            }
             .size(44.dp)
             .background(
                 color = PackyTheme.color.white,
                 shape = CircleShape
             )
-            .align(Alignment.Center)) {
+            .align(Alignment.Center))
+        {
             Icon(
                 modifier = Modifier
-                    .size(24.dp)
-                    .align(Alignment.Center)
-                    .graphicsLayer(
-                        scaleX = animateFloatAsState(
-                            if (isPlaying) 1f else 0f,
-                            label = "iconChange"
-                        ).value,
-                        scaleY = animateFloatAsState(
-                            if (isPlaying) 1f else 0f,
-                            label = "iconChange"
-                        ).value,
-                        alpha = animateFloatAsState(
-                            if (isPlaying) 1f else 0f,
-                            label = "iconChange"
-                        ).value
-                    ),
-                painter = painterResource(id = if (isPlaying) R.drawable.play_fill else R.drawable.pause),
+                    .size(16.dp)
+                    .align(Alignment.Center),
+                painter = painterResource(
+                    id = if (isPlaying) R.drawable.play_fill
+                    else R.drawable.pause
+                ),
                 contentDescription = "YoutubeCd PlayIcon",
                 tint = PackyTheme.color.gray900
             )

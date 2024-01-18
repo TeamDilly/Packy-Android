@@ -8,20 +8,26 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
+import kotlin.math.absoluteValue
 
 fun Modifier.infiniteRotationAnimation(
-    play: Boolean = true,
+    paused: Boolean = false,
     durationMillis: Int = 2000,
     easing: Easing = LinearEasing
 ): Modifier = composed {
-    if (!play) return@composed this
-    val infiniteTransition = rememberInfiniteTransition(label = "cdPlay Animation")
 
+    val infiniteTransition = rememberInfiniteTransition(label = "cdPlay Animation")
+    var currentValue by remember {
+        mutableFloatStateOf(0f)
+    }
     val rotation by infiniteTransition.animateFloat(
-        initialValue = 0f,
+        initialValue = currentValue,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = durationMillis, easing = easing),
@@ -32,6 +38,10 @@ fun Modifier.infiniteRotationAnimation(
     return@composed this.then(
         Modifier.graphicsLayer(
             rotationZ = rotation
-        )
+        ).also {
+            if (paused) {
+                currentValue = rotation
+            }
+        }
     )
 }

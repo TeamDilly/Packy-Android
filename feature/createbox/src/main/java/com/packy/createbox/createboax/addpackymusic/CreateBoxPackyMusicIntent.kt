@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.addpackymusic
 
+import com.packy.core.widget.youtube.YoutubeState
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
@@ -11,7 +12,7 @@ sealed interface CreateBoxPackyMusicIntent : MviIntent {
     data object OnSaveClick : CreateBoxPackyMusicIntent
     data class ChangeMusic(val index: Int) : CreateBoxPackyMusicIntent
 
-    data object ChangeMusicState : CreateBoxPackyMusicIntent
+    data class ChangeMusicState(val state: YoutubeState) : CreateBoxPackyMusicIntent
 }
 
 data class PackyMusic(
@@ -25,20 +26,8 @@ data class CreateBoxPackyMusicState(
     val currentTitle: String,
     val currentHashTag: List<String>,
     val currentMusicIndex: Int,
-    val musicState: MusicState
-) : UiState {
-    enum class MusicState {
-        PLAY,
-        PAUSE;
-
-        fun next(): MusicState{
-            return when(this){
-                PLAY -> PAUSE
-                PAUSE -> PLAY
-            }
-        }
-    }
-}
+    val musicState: YoutubeState
+) : UiState
 
 sealed interface CreateBoxPackyMusicEffect : SideEffect {
     data object CloseBottomSheet : CreateBoxPackyMusicEffect

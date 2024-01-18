@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.addpackymusic
 
+import com.packy.core.widget.youtube.YoutubeState
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -11,7 +12,7 @@ class CreateBoxPackyMusicViewModel @Inject constructor() :
         currentTitle = "",
         currentHashTag = emptyList(),
         currentMusicIndex = 0,
-        musicState = CreateBoxPackyMusicState.MusicState.PAUSE
+        musicState = YoutubeState.INIT
     )
 
     override fun handleIntent() {
@@ -25,8 +26,8 @@ class CreateBoxPackyMusicViewModel @Inject constructor() :
 
         }
 
-        subscribeStateIntent<CreateBoxPackyMusicIntent.ChangeMusicState> { state, _ ->
-            state.copy(musicState = state.musicState.next())
+        subscribeStateIntent<CreateBoxPackyMusicIntent.ChangeMusicState> { state, intent ->
+            state.copy(musicState = intent.state)
         }
         subscribeStateIntent<CreateBoxPackyMusicIntent.ChangeMusic> { state, intent ->
             state.copy(currentMusicIndex = intent.index)
@@ -39,7 +40,7 @@ class CreateBoxPackyMusicViewModel @Inject constructor() :
                 title = "Dynamite",
                 hashTag = listOf("#BTS", "#Dynamite"),
                 videoId = "gdZLi9oWNZg",
-                thumbnail = "https://i.ytimg.com/vi/gdZLi9oWNZg/maxresdefault.jpg"
+                thumbnail = "https://i.ytimg.com/vi/gqmtefROI_0/maxresdefault.jpg"
             ),
             PackyMusic(
                 title = "Butter",

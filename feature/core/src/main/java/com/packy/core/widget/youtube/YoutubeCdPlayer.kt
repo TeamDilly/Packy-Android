@@ -22,7 +22,10 @@ fun YouTubeCdPlayer(
     videoId: String,
     thumbnail: String
 ) {
-    Box {
+    Box(
+        modifier = modifier
+            .clip(CircleShape)
+    ) {
         YoutubePlayer(
             modifier = modifier
                 .aspectRatio(1f)

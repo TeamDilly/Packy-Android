@@ -79,7 +79,7 @@ fun CreateBoxYourMusicScreen(
             Text(
                 modifier = Modifier
                     .padding(horizontal = 24.dp),
-                text = Strings.CREATE_BOX_ADD_MUSIC_TITLE,
+                text = Strings.CREATE_BOX_ADD_YOUR_MUSIC_TITLE,
                 style = PackyTheme.typography.heading01,
                 color = PackyTheme.color.gray900
             )
@@ -87,7 +87,7 @@ fun CreateBoxYourMusicScreen(
             Text(
                 modifier = Modifier
                     .padding(horizontal = 24.dp),
-                text = Strings.CREATE_BOX_ADD_MUSIC_DESCRIPTION,
+                text = Strings.CREATE_BOX_ADD_YOUR_MUSIC_DESCRIPTION,
                 style = PackyTheme.typography.body04,
                 color = PackyTheme.color.gray600
             )

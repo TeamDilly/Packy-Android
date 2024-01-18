@@ -23,66 +23,50 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun YoutubePlayer(
     modifier: Modifier = Modifier,
     videoId: String,
-    thumbnail: String
 ) {
     var youtubeState: YoutubeState by remember { mutableStateOf(YoutubeState.INIT) }
 
-    Box(
+    AndroidView(
         modifier = modifier
-            .background(
-                PackyTheme.color.purple500,
-            )
-    ) {
-        AndroidView(
-            modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.Center),
-            factory = {
-                val view = YouTubePlayerView(it)
-                view.enableAutomaticInitialization = false
-                view.isClickable = false
-                view.initialize(
-                    youTubePlayerListener = object : AbstractYouTubePlayerListener() {
-                        override fun onReady(youTubePlayer: YouTubePlayer) {
-                            super.onReady(youTubePlayer)
-                            youTubePlayer.loadVideo(videoId, 0f)
-                        }
+            .fillMaxSize(),
+        factory = {
+            val view = YouTubePlayerView(it)
+            view.enableAutomaticInitialization = false
+            view.isClickable = false
+            view.initialize(
+                youTubePlayerListener = object : AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        super.onReady(youTubePlayer)
+                        youTubePlayer.loadVideo(videoId, 0f)
+                    }
 
-                        override fun onStateChange(
-                            youTubePlayer: YouTubePlayer,
-                            state: PlayerConstants.PlayerState
-                        ) {
-                            super.onStateChange(youTubePlayer, state)
-                            youtubeState = state.toState()
-                        }
-                    },
-                    playerOptions = IFramePlayerOptions.Builder()
-                        .autoplay(1)
-                        .controls(0)
-                        .ccLoadPolicy(0)
-                        .ivLoadPolicy(3)
-                        .build()
-                )
-                view.apply {
-                    this.setLayoutParams(
-                        android.widget.FrameLayout.LayoutParams(
-                            android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
-                            android.widget.FrameLayout.LayoutParams.MATCH_PARENT
-                        )
+                    override fun onStateChange(
+                        youTubePlayer: YouTubePlayer,
+                        state: PlayerConstants.PlayerState
+                    ) {
+                        super.onStateChange(youTubePlayer, state)
+                        youtubeState = state.toState()
+                    }
+                },
+                playerOptions = IFramePlayerOptions.Builder()
+                    .autoplay(1)
+                    .controls(0)
+                    .ccLoadPolicy(0)
+                    .ivLoadPolicy(3)
+                    .build()
+            )
+            view.apply {
+                this.setLayoutParams(
+                    android.widget.FrameLayout.LayoutParams(
+                        android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                        android.widget.FrameLayout.LayoutParams.MATCH_PARENT
                     )
-                }
-            })
-        GlideImage(
-            modifier = modifier
-                .fillMaxSize(),
-            model = thumbnail,
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
-    }
+                )
+            }
+        })
+
 }

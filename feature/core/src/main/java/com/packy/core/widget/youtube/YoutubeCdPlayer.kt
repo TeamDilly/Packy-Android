@@ -40,7 +40,7 @@ fun YouTubeCdPlayer(
 
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(100))
+            .clip(CircleShape)
     ) {
         Box(
             modifier = Modifier

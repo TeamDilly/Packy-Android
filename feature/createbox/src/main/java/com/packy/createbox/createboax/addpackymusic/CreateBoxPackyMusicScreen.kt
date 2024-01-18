@@ -108,28 +108,21 @@ fun CreateBoxPackyMusicScreen(
                 beyondBoundsPageCount = 2,
                 contentPadding = PaddingValues(horizontal = 70.dp)
             ) { index ->
+                val pageOffset = (
+                        (pagerState.currentPage - index) + pagerState
+                            .currentPageOffsetFraction
+                        ).absoluteValue
                 Box(modifier = Modifier.fillMaxSize()) {
                     YouTubeCdPlayer(
                         modifier = Modifier
-                            .size(180.dp)
-                            .align(Alignment.Center)
-                            .graphicsLayer{
-                                val pageOffset = (
-                                        (pagerState.currentPage - index) + pagerState
-                                            .currentPageOffsetFraction
-                                        ).absoluteValue
-
-                                scaleX = lerp(
-                                    start = 0.90f,
+                            .size(
+                                180.dp * lerp(
+                                    start = 0.88f,
                                     stop = 1f,
                                     fraction = 1f - pageOffset.coerceIn(0f, 1f)
                                 )
-                                scaleY = lerp(
-                                    start = 0.90f,
-                                    stop = 1f,
-                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                )
-                            },
+                            )
+                            .align(Alignment.Center),
                         videoId = uiState.music[index].videoId,
                         thumbnail = uiState.music[index].thumbnail,
                         youtubeState = uiState.music[index].state,

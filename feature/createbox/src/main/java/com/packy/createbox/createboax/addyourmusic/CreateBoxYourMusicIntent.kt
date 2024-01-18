@@ -10,6 +10,7 @@ sealed interface CreateBoxYourMusicIntent : MviIntent {
     data object OnSaveClick : CreateBoxYourMusicIntent
     data class OnYoutubeLinkChange(val newLink: String) : CreateBoxYourMusicIntent
     data object OnValidateCheckYoutubeLink : CreateBoxYourMusicIntent
+    data object OnYoutubeCancelClick: CreateBoxYourMusicIntent
 }
 
 data class CreateBoxYourMusicState(

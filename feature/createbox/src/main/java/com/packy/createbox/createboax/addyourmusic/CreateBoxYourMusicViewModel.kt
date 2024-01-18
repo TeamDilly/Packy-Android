@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.addyourmusic
 
+import com.packy.core.widget.youtube.validationYoutubeVideoId
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -9,7 +10,7 @@ class CreateBoxYourMusicViewModel @Inject constructor() :
     MviViewModel<CreateBoxYourMusicIntent, CreateBoxYourMusicState, CreateBoxYourMusicEffect>() {
     override fun createInitialState(): CreateBoxYourMusicState = CreateBoxYourMusicState(
         youtubeLink = "",
-        validationYoutubeLink = null
+        validationYoutubeLink = null,
     )
 
     override fun handleIntent() {
@@ -20,13 +21,22 @@ class CreateBoxYourMusicViewModel @Inject constructor() :
             sendEffect(CreateBoxYourMusicEffect.CloseBottomSheet)
         }
         subscribeStateIntent<CreateBoxYourMusicIntent.OnYoutubeLinkChange> { state, intent ->
-            state.copy(youtubeLink = intent.newLink)
+            state.copy(youtubeLink = intent.newLink, validationYoutubeLink = null)
         }
         subscribeIntent<CreateBoxYourMusicIntent.OnSaveClick> {
 
         }
-        subscribeIntent<CreateBoxYourMusicIntent.OnValidateCheckYoutubeLink> {
-
+        subscribeStateIntent<CreateBoxYourMusicIntent.OnValidateCheckYoutubeLink> { state, _ ->
+            val validationLink = state.youtubeLink.validationYoutubeVideoId()
+            state.copy(
+                validationYoutubeLink = validationLink,
+            )
+        }
+        subscribeStateIntent<CreateBoxYourMusicIntent.OnYoutubeCancelClick> { state, _ ->
+            state.copy(
+                youtubeLink = "",
+                validationYoutubeLink = null,
+            )
         }
     }
 }

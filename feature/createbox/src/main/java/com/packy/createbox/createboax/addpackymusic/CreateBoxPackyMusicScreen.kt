@@ -2,6 +2,7 @@ package com.packy.createbox.createboax.addpackymusic
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -17,6 +18,8 @@ import com.packy.core.common.Spacer
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.createbox.createboax.common.BottomSheetTitle
+import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.feature.core.R
 
@@ -60,22 +63,12 @@ fun CreateBoxPackyMusicScreen(
             modifier = Modifier
                 .fillMaxSize(),
         ) {
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp),
-                text = Strings.CREATE_BOX_ADD_PACKY_MUSIC_TITLE,
-                style = PackyTheme.typography.heading01,
-                color = PackyTheme.color.gray900
+            BottomSheetTitle(
+                BottomSheetTitleContent(
+                    title = Strings.CREATE_BOX_ADD_PACKY_MUSIC_TITLE,
+                    description = Strings.CREATE_BOX_ADD_PACKY_MUSIC_DESCRIPTION,
+                )
             )
-            Spacer(height = 4.dp)
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp),
-                text = Strings.CREATE_BOX_ADD_PACKY_MUSIC_DESCRIPTION,
-                style = PackyTheme.typography.body04,
-                color = PackyTheme.color.gray600
-            )
-            Spacer(1f)
         }
     }
 }

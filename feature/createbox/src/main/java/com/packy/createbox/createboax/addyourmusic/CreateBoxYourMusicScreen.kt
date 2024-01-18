@@ -32,6 +32,8 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.extractYouTubeVideoId
+import com.packy.createbox.createboax.common.BottomSheetTitle
+import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
@@ -76,20 +78,11 @@ fun CreateBoxYourMusicScreen(
             modifier = Modifier
                 .fillMaxSize(),
         ) {
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp),
-                text = Strings.CREATE_BOX_ADD_YOUR_MUSIC_TITLE,
-                style = PackyTheme.typography.heading01,
-                color = PackyTheme.color.gray900
-            )
-            Spacer(height = 4.dp)
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp),
-                text = Strings.CREATE_BOX_ADD_YOUR_MUSIC_DESCRIPTION,
-                style = PackyTheme.typography.body04,
-                color = PackyTheme.color.gray600
+            BottomSheetTitle(
+                BottomSheetTitleContent(
+                    title = Strings.CREATE_BOX_ADD_YOUR_MUSIC_TITLE,
+                    description = Strings.CREATE_BOX_ADD_YOUR_MUSIC_DESCRIPTION,
+                )
             )
             Spacer(height = 32.dp)
             val youtubeVideoId = extractYouTubeVideoId(uiState.youtubeLink)

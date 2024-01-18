@@ -3,6 +3,7 @@ package com.packy.core.designsystem.textfield
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,10 +42,11 @@ fun PackyTextField(
         onValueChange("")
     },
 ) {
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Start
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
     ) {
         if (label != null) {
             Text(
@@ -69,24 +72,29 @@ fun PackyTextField(
             textStyle = PackyTheme.typography.body04.copy(color = PackyTheme.color.gray900),
             maxLines = maxLines,
             minLines = minLines,
+            singleLine = singleLine,
+
             decorationBox = { innerTextField ->
-                Box(
-                    contentAlignment = Alignment.CenterStart,
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (placeholder != null && value.isEmpty()) {
-                        Text(
-                            text = placeholder,
-                            style = PackyTheme.typography.body04,
-                            color = PackyTheme.color.gray400.copy(alpha = 0.5f),
-                        )
+                    Box(modifier = Modifier.weight(1f)) {
+                        if (placeholder != null && value.isEmpty()) {
+                            Text(
+                                text = placeholder,
+                                style = PackyTheme.typography.body04,
+                                color = PackyTheme.color.gray400.copy(alpha = 0.5f),
+                            )
+                        }
+                        innerTextField()
                     }
-                    innerTextField()
-                    if (showTrailingIcon) {
+                    if (showTrailingIcon && value.isNotEmpty()) {
                         Spacer(modifier = Modifier.width(width = 8.dp))
                         IconButton(
                             onClick = trailingIconOnClick,
                             modifier = Modifier
-                                .align(Alignment.CenterEnd)
                                 .background(
                                     color = PackyTheme.color.gray400,
                                     shape = CircleShape

@@ -31,6 +31,7 @@ import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.youtube.YoutubePlayer
+import com.packy.core.widget.youtube.YoutubeState
 import com.packy.core.widget.youtube.extractYouTubeVideoId
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
@@ -130,7 +131,9 @@ private fun YoutubeView(
                 .padding(all = 4.dp)
                 .height(180.dp)
                 .clip(RoundedCornerShape(16.dp)),
-            videoId = youtubeVideoId
+            videoId = youtubeVideoId,
+            youtubeState = YoutubeState.INIT,
+            stateListener = {}
         )
         PackyCloseIconButton(
             modifier = Modifier

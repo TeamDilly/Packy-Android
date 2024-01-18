@@ -27,9 +27,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 fun YoutubePlayer(
     modifier: Modifier = Modifier,
     videoId: String,
+    stateListener: (YoutubeState) -> Unit = {},
+    youtubeState: YoutubeState
 ) {
-    var youtubeState: YoutubeState by remember { mutableStateOf(YoutubeState.INIT) }
-
     AndroidView(
         modifier = modifier
             .fillMaxSize(),
@@ -42,6 +42,12 @@ fun YoutubePlayer(
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         super.onReady(youTubePlayer)
                         youTubePlayer.loadVideo(videoId, 0f)
+                        if (youtubeState == YoutubeState.PLAYING) {
+                            youTubePlayer.play()
+                        }
+                        if (youtubeState == YoutubeState.PAUSED) {
+                            youTubePlayer.pause()
+                        }
                     }
 
                     override fun onStateChange(
@@ -49,7 +55,7 @@ fun YoutubePlayer(
                         state: PlayerConstants.PlayerState
                     ) {
                         super.onStateChange(youTubePlayer, state)
-                        youtubeState = state.toState()
+                        stateListener(state.toState())
                     }
                 },
                 playerOptions = IFramePlayerOptions.Builder()

@@ -28,7 +28,6 @@ fun ColumnScope.BottomSheetTitle(bottomSheetTitle: BottomSheetTitleContent) {
         style = PackyTheme.typography.body04,
         color = PackyTheme.color.gray600
     )
-    Spacer(1f)
 }
 
 @Stable

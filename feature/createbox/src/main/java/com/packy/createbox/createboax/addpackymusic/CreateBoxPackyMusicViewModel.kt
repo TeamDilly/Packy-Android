@@ -32,4 +32,33 @@ class CreateBoxPackyMusicViewModel @Inject constructor() :
             state.copy(currentMusicIndex = intent.index)
         }
     }
+
+    companion object {
+        val dumyMusic: List<PackyMusic> = listOf(
+            PackyMusic(
+                title = "Dynamite",
+                hashTag = listOf("#BTS", "#Dynamite"),
+                videoId = "gdZLi9oWNZg",
+                thumbnail = "https://i.ytimg.com/vi/gdZLi9oWNZg/maxresdefault.jpg"
+            ),
+            PackyMusic(
+                title = "Butter",
+                hashTag = listOf("#BTS", "#Butter"),
+                videoId = "WMweEpGlu_U",
+                thumbnail = "https://i.ytimg.com/vi/WMweEpGlu_U/maxresdefault.jpg"
+            ),
+            PackyMusic(
+                title = "Permission to Dance",
+                hashTag = listOf("#BTS", "#PermissionToDance"),
+                videoId = "CuklIb9d3fI",
+                thumbnail = "https://i.ytimg.com/vi/CuklIb9d3fI/maxresdefault.jpg"
+            ),
+            PackyMusic(
+                title = "Life Goes On",
+                hashTag = listOf("#BTS", "#LifeGoesOn"),
+                videoId = "2CGPWmTqYkU",
+                thumbnail = "https://i.ytimg.com/vi/2CGPWmTqYkU/maxresdefault.jpg"
+            ),
+        )
+    }
 }

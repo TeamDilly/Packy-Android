@@ -1,25 +1,21 @@
 package com.packy.core.widget.youtube
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.packy.core.animations.infiniteRotationAnimation
+import com.packy.core.animations.RotationAnimation
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
 import com.packy.feature.core.R
@@ -31,9 +27,8 @@ fun YouTubeCdPlayer(
     videoId: String,
     thumbnail: String,
     youtubeState: YoutubeState,
-    rotationDuration: Int = 20000,
     stateListener: (YoutubeState) -> Unit = {},
-    autoPlay: Boolean = true
+    autoPlay: Boolean = true,
 ) {
 
     val isPlaying = youtubeState == YoutubeState.PLAYING
@@ -42,13 +37,12 @@ fun YouTubeCdPlayer(
         modifier = modifier
             .clip(CircleShape)
     ) {
-        Box(
+        RotationAnimation(
             modifier = Modifier
-                .fillMaxSize()
-                .infiniteRotationAnimation(
-                    paused = !isPlaying,
-                    durationMillis = rotationDuration
-                )
+                .fillMaxSize(),
+            isPlaying = isPlaying,
+            durationMillis = 8000,
+            pauseDurationMillis = 2500
         ) {
             YoutubePlayer(
                 modifier = modifier,

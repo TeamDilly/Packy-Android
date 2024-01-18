@@ -108,6 +108,12 @@ fun CreateBoxPackyMusicScreen(
                 beyondBoundsPageCount = 2,
                 contentPadding = PaddingValues(horizontal = 70.dp)
             ) { index ->
+                if (pagerState.currentPage != index) {
+                    CreateBoxPackyMusicIntent.ChangeMusicState(
+                        index,
+                        YoutubeState.PAUSED
+                    )
+                }
                 val pageOffset = (
                         (pagerState.currentPage - index) + pagerState
                             .currentPageOffsetFraction
@@ -127,7 +133,6 @@ fun CreateBoxPackyMusicScreen(
                         thumbnail = uiState.music[index].thumbnail,
                         youtubeState = uiState.music[index].state,
                         stateListener = { state ->
-                            Log.d("LOGEE", "CreateBoxPackyMusicScreen: $state")
                             viewModel.emitIntent(
                                 CreateBoxPackyMusicIntent.ChangeMusicState(
                                     index,

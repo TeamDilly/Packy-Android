@@ -27,15 +27,15 @@ fun PackyCloseIconButton(
     val isPressed by interactionSource.collectIsPressedAsState()
     val backgroundColor = when {
         !enabled -> style.buttonColor.disabled
-        isPressed -> style.buttonColor.default
-        !isPressed -> style.buttonColor.pressed
+        isPressed -> style.buttonColor.pressed
+        !isPressed -> style.buttonColor.default
         else -> style.buttonColor.disabled
     }
 
     val contentColor = when {
         !enabled -> style.buttonColor.disabledContentColor
-        isPressed -> style.buttonColor.defaultContentColor
-        !isPressed -> style.buttonColor.pressedContentColor
+        isPressed -> style.buttonColor.pressedContentColor
+        !isPressed -> style.buttonColor.defaultContentColor
         else -> style.buttonColor.disabledContentColor
     }
 

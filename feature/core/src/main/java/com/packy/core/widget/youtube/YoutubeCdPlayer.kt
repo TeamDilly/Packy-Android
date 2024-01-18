@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -31,14 +33,14 @@ fun YouTubeCdPlayer(
     youtubeState: YoutubeState,
     rotationDuration: Int = 20000,
     stateListener: (YoutubeState) -> Unit = {},
-    changeYoutubeState: (YoutubeState) -> Unit = {}
+    autoPlay: Boolean = true
 ) {
 
     val isPlaying = youtubeState == YoutubeState.PLAYING
 
     Box(
         modifier = modifier
-            .clip(CircleShape)
+            .clip(RoundedCornerShape(100))
     ) {
         Box(
             modifier = Modifier
@@ -52,7 +54,8 @@ fun YouTubeCdPlayer(
                 modifier = modifier,
                 videoId = videoId,
                 stateListener = stateListener,
-                youtubeState = youtubeState
+                youtubeState = youtubeState,
+                autoPlay = autoPlay
             )
             GlideImage(
                 modifier = modifier
@@ -64,7 +67,7 @@ fun YouTubeCdPlayer(
         }
         Box(modifier = Modifier
             .clickableWithoutRipple {
-                changeYoutubeState(
+                stateListener(
                     if (isPlaying) YoutubeState.PAUSED else YoutubeState.PLAYING
                 )
             }

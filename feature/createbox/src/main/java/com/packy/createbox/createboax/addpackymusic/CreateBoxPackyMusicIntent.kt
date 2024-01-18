@@ -11,22 +11,20 @@ sealed interface CreateBoxPackyMusicIntent : MviIntent {
     data object OnCloseClick : CreateBoxPackyMusicIntent
     data object OnSaveClick : CreateBoxPackyMusicIntent
     data class ChangeMusic(val index: Int) : CreateBoxPackyMusicIntent
-
-    data class ChangeMusicState(val state: YoutubeState) : CreateBoxPackyMusicIntent
+    data class ChangeMusicState(val index: Int, val state: YoutubeState) : CreateBoxPackyMusicIntent
 }
 
 data class PackyMusic(
     val title: String,
     val hashTag: List<String>,
     val videoId: String,
-    val thumbnail: String
+    val thumbnail: String,
+    val state: YoutubeState
 )
 
 data class CreateBoxPackyMusicState(
-    val currentTitle: String,
-    val currentHashTag: List<String>,
     val currentMusicIndex: Int,
-    val musicState: YoutubeState
+    val music: List<PackyMusic>
 ) : UiState
 
 sealed interface CreateBoxPackyMusicEffect : SideEffect {

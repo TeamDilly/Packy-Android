@@ -76,6 +76,7 @@ hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-comp
 #compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
@@ -114,7 +115,7 @@ kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakaoSd
 youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "youtube-player" }
 
 [bundles]
-compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide"]
+compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide", "compose-ui-util"]
 test = ["test-junit", "test-android-junit", "test-android-espresso"]
 
 [plugins]

@@ -1,11 +1,13 @@
 package com.packy.core.widget.youtube
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,11 +30,17 @@ fun YoutubePlayer(
     modifier: Modifier = Modifier,
     videoId: String,
     stateListener: (YoutubeState) -> Unit = {},
-    youtubeState: YoutubeState
+    youtubeState: YoutubeState,
+    autoPlay: Boolean = true,
 ) {
-   var player by remember {
-       mutableStateOf<YouTubePlayer?>(null)
-   }
+    var player by remember {
+        mutableStateOf<YouTubePlayer?>(null)
+    }
+    DisposableEffect(null) {
+        this.onDispose {
+            player?.pause()
+        }
+    }
     if (youtubeState == YoutubeState.PLAYING) {
         player?.play()
     }
@@ -40,8 +48,7 @@ fun YoutubePlayer(
         player?.pause()
     }
     AndroidView(
-        modifier = modifier
-            .fillMaxSize(),
+        modifier = modifier,
         factory = {
             val view = YouTubePlayerView(it)
             view.enableAutomaticInitialization = false
@@ -51,12 +58,12 @@ fun YoutubePlayer(
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         super.onReady(youTubePlayer)
                         youTubePlayer.loadVideo(videoId, 0f)
-                        stateListener(YoutubeState.PLAYING)
+                        stateListener(if (autoPlay) YoutubeState.PLAYING else YoutubeState.PAUSED)
                         player = youTubePlayer
                     }
                 },
                 playerOptions = IFramePlayerOptions.Builder()
-                    .autoplay(1)
+                    .autoplay(if (autoPlay) 1 else 0)
                     .controls(0)
                     .ccLoadPolicy(0)
                     .ivLoadPolicy(3)

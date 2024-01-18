@@ -9,10 +9,8 @@ import javax.inject.Inject
 class CreateBoxPackyMusicViewModel @Inject constructor() :
     MviViewModel<CreateBoxPackyMusicIntent, CreateBoxPackyMusicState, CreateBoxPackyMusicEffect>() {
     override fun createInitialState(): CreateBoxPackyMusicState = CreateBoxPackyMusicState(
-        currentTitle = "",
-        currentHashTag = emptyList(),
         currentMusicIndex = 0,
-        musicState = YoutubeState.INIT
+        music = dumyMusic
     )
 
     override fun handleIntent() {
@@ -27,7 +25,13 @@ class CreateBoxPackyMusicViewModel @Inject constructor() :
         }
 
         subscribeStateIntent<CreateBoxPackyMusicIntent.ChangeMusicState> { state, intent ->
-            state.copy(musicState = intent.state)
+            val newMusicList = state.music.toMutableList().apply {
+                this.replaceAll { music ->
+                    music.copy(state = YoutubeState.PAUSED)
+                }
+                this[intent.index] = this[intent.index].copy(state = intent.state)
+            }
+            state.copy(music = newMusicList)
         }
         subscribeStateIntent<CreateBoxPackyMusicIntent.ChangeMusic> { state, intent ->
             state.copy(currentMusicIndex = intent.index)
@@ -40,25 +44,29 @@ class CreateBoxPackyMusicViewModel @Inject constructor() :
                 title = "Dynamite",
                 hashTag = listOf("#BTS", "#Dynamite"),
                 videoId = "gdZLi9oWNZg",
-                thumbnail = "https://i.ytimg.com/vi/gqmtefROI_0/maxresdefault.jpg"
+                thumbnail = "https://i.ytimg.com/vi/gqmtefROI_0/maxresdefault.jpg",
+                state = YoutubeState.INIT
             ),
             PackyMusic(
                 title = "Butter",
                 hashTag = listOf("#BTS", "#Butter"),
                 videoId = "WMweEpGlu_U",
-                thumbnail = "https://i.ytimg.com/vi/WMweEpGlu_U/maxresdefault.jpg"
+                thumbnail = "https://i.ytimg.com/vi/WMweEpGlu_U/maxresdefault.jpg",
+                state = YoutubeState.INIT
             ),
             PackyMusic(
                 title = "Permission to Dance",
                 hashTag = listOf("#BTS", "#PermissionToDance"),
                 videoId = "CuklIb9d3fI",
-                thumbnail = "https://i.ytimg.com/vi/CuklIb9d3fI/maxresdefault.jpg"
+                thumbnail = "https://i.ytimg.com/vi/CuklIb9d3fI/maxresdefault.jpg",
+                state = YoutubeState.INIT
             ),
             PackyMusic(
                 title = "Life Goes On",
                 hashTag = listOf("#BTS", "#LifeGoesOn"),
                 videoId = "2CGPWmTqYkU",
-                thumbnail = "https://i.ytimg.com/vi/2CGPWmTqYkU/maxresdefault.jpg"
+                thumbnail = "https://i.ytimg.com/vi/2CGPWmTqYkU/maxresdefault.jpg",
+                state = YoutubeState.INIT
             ),
         )
     }

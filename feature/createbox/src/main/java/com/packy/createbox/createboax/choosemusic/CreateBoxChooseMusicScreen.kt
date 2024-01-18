@@ -39,11 +39,11 @@ fun CreateBoxChooseMusicScreen(
             when (effect) {
                 CreateBoxChooseMusicEffect.CloseBottomSheet -> closeBottomSheet()
                 CreateBoxChooseMusicEffect.MoveToPackyMusic -> navController.navigate(
-                    CreateBoxBottomSheetRoute.CREATE_BOX_ADD_YOUR_MUSIC
+                    CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PACKY_MUSIC
                 )
 
                 CreateBoxChooseMusicEffect.MoveToYourMusic -> navController.navigate(
-                    CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PACKY_MUSIC
+                    CreateBoxBottomSheetRoute.CREATE_BOX_ADD_YOUR_MUSIC
                 )
             }
         }
@@ -74,8 +74,8 @@ fun CreateBoxChooseMusicScreen(
             }
             Spacer(height = 8.dp)
             ChooseMusicBox(
-                title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
-                description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
+                title = Strings.CHOOSE_PACKY_MUSIC_TITLE,
+                description = Strings.CHOOSE_PACKY_MUSIC_DESCRIPTION,
             ) {
                 viewModel.emitIntent(CreateBoxChooseMusicIntent.OnPackyMusicClick)
             }

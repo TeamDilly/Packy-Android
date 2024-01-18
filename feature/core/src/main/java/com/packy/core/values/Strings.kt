@@ -6,6 +6,7 @@ object Strings {
     const val NEXT = "다음"
     const val SKIP = "건너뛰기"
     const val SAVE = "저장"
+    const val CONFIRM = "확인"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
@@ -35,4 +36,10 @@ object Strings {
     const val CHOOSE_YOUR_MUSIC_DESCRIPTION = "유튜브 링크로 음악을 넣어주세요"
     const val CHOOSE_PACKY_MUSIC_TITLE = "패키의 음악으로 담기"
     const val CHOOSE_PACKY_MUSIC_DESCRIPTION = "다양한 테마의 음악들을 준비했어요!"
+
+    const val CREATE_BOX_ADD_MUSIC_TITLE = "들려주고 싶은 음악"
+    const val CREATE_BOX_ADD_MUSIC_DESCRIPTION = "유튜브 영상 url을 넣어주세요"
+    const val CREATE_BOX_ADD_MUSIC_PLACE_HOLDER = "링크를 붙여주세요"
+    const val CREATE_BOX_ADD_MUSIC_FAIL_URL = "올바른 url을 입력해주세요"
+
 }

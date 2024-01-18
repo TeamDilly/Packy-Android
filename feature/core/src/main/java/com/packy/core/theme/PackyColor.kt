@@ -33,6 +33,7 @@ interface PackyColor {
     val pink300: Color
     val pink200: Color
     val pink100: Color
+    val errorText: Color
 }
 
 internal val lightPackyColor = object: PackyColor {
@@ -63,6 +64,7 @@ internal val lightPackyColor = object: PackyColor {
     override val pink300: Color = Color(0xFFFFC5DC)
     override val pink200: Color = Color(0xFFFFD5E5)
     override val pink100: Color = Color(0xFFFFE8F1)
+    override val errorText: Color = Color(0xFFF34248)
 }
 
 @SuppressLint("CompositionLocalNaming")

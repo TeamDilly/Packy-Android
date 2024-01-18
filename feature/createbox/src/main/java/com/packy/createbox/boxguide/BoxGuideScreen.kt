@@ -2,15 +2,18 @@ package com.packy.createbox.boxguide
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -37,10 +40,6 @@ fun BoxGuideScreen(
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(null) {
-        scaffoldState.bottomSheetState.expand()
-    }
-
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
@@ -63,10 +62,38 @@ fun BoxGuideScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Column(
-
-            ) {
-
+            Column {
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .clickable {
+                        scope.launch {
+                            scaffoldState.bottomSheetState.expand()
+                        }
+                    }) {
+                    Text(text = "음악추가하기")
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    Text(text = "편지쓰기")
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    Text(text = "추억 사진 담기")
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    Text(text = "선물 추가하기")
+                }
             }
             if (scaffoldState.bottomSheetState.isVisible) {
                 Box(

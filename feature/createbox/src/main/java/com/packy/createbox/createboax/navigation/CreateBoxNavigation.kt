@@ -30,10 +30,11 @@ fun CreateBoxNavHost(
 
 fun NavGraphBuilder.createBoxBottomSheetNavGraph(
     navController: NavHostController,
-    closeBottomSheet: () -> Unit
+    closeBottomSheet: () -> Unit,
+    startDestination: String = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC
 ) {
     navigation(
-        startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC,
+        startDestination = startDestination,
         route = CreateBoxBottomSheetRoute.CREATE_BOX_BOTTOM_SHEET_NAV_GRAPH
     ) {
         composable(

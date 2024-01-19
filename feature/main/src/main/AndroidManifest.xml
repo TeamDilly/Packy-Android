@@ -4,8 +4,7 @@
     <application>
         <activity
             android:name="com.packy.root.RootActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

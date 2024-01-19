@@ -81,16 +81,21 @@ fun PackyTextField(
             maxLines = maxLines,
             minLines = minLines,
             singleLine = singleLine,
-
             decorationBox = { innerTextField ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(modifier = Modifier.weight(1f)) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    ) {
                         if (placeholder != null && value.isEmpty()) {
                             Text(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
                                 text = placeholder,
                                 style = PackyTheme.typography.body04.copy(
                                     textAlign = textAlign

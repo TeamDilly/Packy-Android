@@ -1,8 +1,7 @@
 package com.packy.data.usecase.auth
 
-import com.packy.data.local.AccountPrefManager
 import com.packy.domain.model.auth.SignUp
-import com.packy.domain.repository.SignUpRepository
+import com.packy.domain.repository.auth.SignUpRepository
 import com.packy.domain.usecase.auth.SignUpUseCase
 import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow

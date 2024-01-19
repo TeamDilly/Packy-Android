@@ -25,7 +25,7 @@ class RootActivity : ComponentActivity() {
                 ) {
                     PackyNavHost(
                         navController = rememberNavController(),
-                        startDestination = CreateBoxRoute.CREATE_BOX_NAV_GRAPH
+                        startDestination = OnboardingRoute.ONBOARDING_NAV_GRAPH
                     )
                 }
             }

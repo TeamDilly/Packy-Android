@@ -25,7 +25,7 @@ class ResourceCall<T>(
                     when (response.code()) {
                         in HTTP_SUCCESS_RANGE_START..HTTP_SUCCESS_RANGE_END -> {
                             response.body()?.let {
-                                println(it)
+                                println("LOGEE, $it")
                                 callback.onResponse(
                                     this@ResourceCall,
                                     Response.success(Resource.NullResult())

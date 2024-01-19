@@ -1,7 +1,9 @@
 package com.packy.lib.utils
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 sealed class Resource<T>(
     @SerialName("data") val data: T? = null,
     @SerialName("message") val message: String? = null,

@@ -1,11 +1,10 @@
 package com.packy.data.repository.auth
 
 import com.packy.data.local.AccountPrefManager
-import com.packy.data.model.auth.SignUpDto
 import com.packy.data.model.auth.SignUpRequest
 import com.packy.data.remote.auth.SignUpService
 import com.packy.domain.model.auth.SignUp
-import com.packy.domain.repository.SignUpRepository
+import com.packy.domain.repository.auth.SignUpRepository
 import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -27,7 +26,7 @@ class SignUpRepositoryImp @Inject constructor(
         return flow {
             emit(Resource.Loading())
             api.signUp(
-                SignUpRequest(
+                signUpRequest = SignUpRequest(
                     nickname = signUp.nickname,
                     profileImg = signUp.profileImg,
                     provider = signUp.provider,

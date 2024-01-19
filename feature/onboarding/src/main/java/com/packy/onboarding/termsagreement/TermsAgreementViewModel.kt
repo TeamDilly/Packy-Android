@@ -63,7 +63,6 @@ class TermsAgreementViewModel @Inject constructor(
                     marketingAgreement = currentState.enabledNotification
                 )
             )
-            Log.d("LOGEE", "handleIntent: ${signUpUseCase.getUserSignUpInfo().first()}")
             signUpUseCase
                 .signUp(signUpUseCase.getUserSignUpInfo().first())
                 .collect { resource ->

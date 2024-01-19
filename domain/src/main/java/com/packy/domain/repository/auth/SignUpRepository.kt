@@ -1,4 +1,4 @@
-package com.packy.domain.repository
+package com.packy.domain.repository.auth
 
 import com.packy.lib.utils.Resource
 import com.packy.domain.model.auth.SignUp

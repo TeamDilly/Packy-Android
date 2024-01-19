@@ -1,7 +1,7 @@
 package com.packy.di.youtube
 
 import com.packy.data.repository.youtube.YoutubeRepositoryImp
-import com.packy.domain.repository.YoutubeRepository
+import com.packy.domain.repository.youtube.YoutubeRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

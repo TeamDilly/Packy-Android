@@ -1,4 +1,4 @@
-package com.packy.domain.repository
+package com.packy.domain.repository.youtube
 
 import com.packy.domain.model.youtube.YoutubeInfo
 

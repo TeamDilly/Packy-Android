@@ -4,7 +4,7 @@ import com.packy.data.remote.auth.SignUpService
 import com.packy.data.repository.auth.SignUpRepositoryImp
 import com.packy.data.usecase.auth.SignUpUseCaseImp
 import com.packy.di.network.Packy
-import com.packy.domain.repository.SignUpRepository
+import com.packy.domain.repository.auth.SignUpRepository
 import com.packy.domain.usecase.auth.SignUpUseCase
 import dagger.Binds
 import dagger.Module
@@ -25,11 +25,11 @@ object SignUpServiceModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class SignRepositoryModule {
+abstract class SignUpRepositoryModule {
 
     @Binds
-    abstract fun bindSignRepository(signUpRepository: SignUpRepositoryImp): SignUpRepository
+    abstract fun bindSignUpRepository(signUpRepository: SignUpRepositoryImp): SignUpRepository
 
     @Binds
-    abstract fun bindSignUseCase(signUpUseCase: SignUpUseCaseImp): SignUpUseCase
+    abstract fun bindSignUpUseCase(signUpUseCase: SignUpUseCaseImp): SignUpUseCase
 }

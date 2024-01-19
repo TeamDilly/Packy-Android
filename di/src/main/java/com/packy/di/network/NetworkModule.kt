@@ -2,8 +2,9 @@ package com.packy.di.network
 
 import com.packy.di.common.NetworkConstant
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.packy.common.network.ResourceAdapterFactory
 import com.packy.di.BuildConfig
+import com.packy.lib.network.PackyJsonAdapter
+import com.packy.lib.network.ResourceAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -68,12 +69,11 @@ internal object NetworkModule {
     @Packy
     fun providerPackyRetorfit(
         okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory,
     ): Retrofit {
         return Retrofit.Builder()
-            .addCallAdapterFactory(ResourceAdapterFactory())
             .baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(converterFactory)
+            .addConverterFactory(PackyJsonAdapter("application/json".toMediaType()))
+            .addCallAdapterFactory(ResourceAdapterFactory())
             .client(okHttpClient)
             .build()
     }

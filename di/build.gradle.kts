@@ -29,6 +29,7 @@ dependencies {
     implementation(project(":library:pref"))
     implementation(project(":library:account"))
     implementation(project(":common-android"))
+    implementation(project(":lib"))
 
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)

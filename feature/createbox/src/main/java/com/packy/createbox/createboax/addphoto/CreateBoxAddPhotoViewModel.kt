@@ -18,4 +18,8 @@ class CreateBoxAddPhotoViewModel @Inject constructor(
             sendEffect(CreateBoxAddPhotoEffect.CloseBottomSheet)
         }
     }
+
+    companion object{
+        const val MAX_ONBOARDING_PAGE_SIZE = 2
+    }
 }

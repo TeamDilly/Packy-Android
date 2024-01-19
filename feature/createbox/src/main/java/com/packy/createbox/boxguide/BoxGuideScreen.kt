@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
@@ -40,7 +41,7 @@ fun BoxGuideScreen(
     val bottomSheetState = SheetState(skipHiddenState = false, skipPartiallyExpanded = false)
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
     val scope = rememberCoroutineScope()
-    var startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_BOTTOM_SHEET_NAV_GRAPH
+    var startDestination by remember { mutableStateOf(CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PHOTO) }
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
@@ -109,6 +110,7 @@ fun BoxGuideScreen(
             if (scaffoldState.bottomSheetState.isVisible) {
                 Box(
                     modifier = Modifier
+                        .clickableWithoutRipple {}
                         .fillMaxSize()
                         .background(
                             PackyTheme.color.black.copy(alpha = 0.6f)

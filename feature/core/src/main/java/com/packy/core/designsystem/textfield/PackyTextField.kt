@@ -21,7 +21,10 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.packy.core.theme.PackyTheme
 import com.packy.feature.core.R
@@ -31,6 +34,8 @@ fun PackyTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
+    textAlign: TextAlign = TextAlign.Start,
+    textFieldColor: Color = PackyTheme.color.gray100,
     placeholder: String? = null,
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
@@ -60,7 +65,7 @@ fun PackyTextField(
             modifier = Modifier
                 .height(50.dp)
                 .background(
-                    color = PackyTheme.color.gray100,
+                    color = textFieldColor,
                     shape = RoundedCornerShape(8.dp)
                 )
                 .fillMaxWidth()
@@ -69,7 +74,10 @@ fun PackyTextField(
             onValueChange = {
                 onValueChange(it.take(maxValues))
             },
-            textStyle = PackyTheme.typography.body04.copy(color = PackyTheme.color.gray900),
+            textStyle = PackyTheme.typography.body04.copy(
+                color = PackyTheme.color.gray900,
+                textAlign = textAlign
+            ),
             maxLines = maxLines,
             minLines = minLines,
             singleLine = singleLine,
@@ -84,8 +92,12 @@ fun PackyTextField(
                         if (placeholder != null && value.isEmpty()) {
                             Text(
                                 text = placeholder,
-                                style = PackyTheme.typography.body04,
-                                color = PackyTheme.color.gray400.copy(alpha = 0.5f),
+                                style = PackyTheme.typography.body04.copy(
+                                    textAlign = textAlign
+                                ),
+                                color = PackyTheme.color.gray400.copy(
+                                    alpha = 0.5f,
+                                ),
                             )
                         }
                         innerTextField()

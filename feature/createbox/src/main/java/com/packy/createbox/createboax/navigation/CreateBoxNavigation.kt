@@ -24,9 +24,13 @@ fun CreateBoxNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = startDestination
+        startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_BOTTOM_SHEET_NAV_GRAPH
     ) {
-        createBoxBottomSheetNavGraph(navController, closeBottomSheet, startDestination)
+        createBoxBottomSheetNavGraph(
+            navController,
+            closeBottomSheet,
+            startDestination
+        )
     }
 }
 

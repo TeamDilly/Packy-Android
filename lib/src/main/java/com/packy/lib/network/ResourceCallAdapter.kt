@@ -1,4 +1,4 @@
-package com.packy.common.network
+package com.packy.lib.network
 
 import com.packy.lib.utils.Resource
 import retrofit2.Call

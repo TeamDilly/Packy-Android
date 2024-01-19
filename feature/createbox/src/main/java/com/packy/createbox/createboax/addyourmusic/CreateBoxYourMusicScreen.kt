@@ -51,10 +51,6 @@ fun CreateBoxYourMusicScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 CreateBoxYourMusicEffect.CloseBottomSheet -> closeBottomSheet()
-                CreateBoxYourMusicEffect.MoveToAddPhoto -> navController.navigate(
-                    CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PHOTO
-                )
-
                 CreateBoxYourMusicEffect.MoveToBack -> navController.popBackStack()
             }
         }

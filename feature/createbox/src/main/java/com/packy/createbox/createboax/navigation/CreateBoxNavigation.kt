@@ -10,21 +10,23 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.packy.core.animations.PaginationAnimation
 import com.packy.createbox.createboax.addpackymusic.CreateBoxPackyMusicScreen
+import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.addyourmusic.CreateBoxYourMusicScreen
 import com.packy.createbox.createboax.choosemusic.CreateBoxChooseMusicScreen
 
 @Composable
 fun CreateBoxNavHost(
     modifier: Modifier = Modifier,
-    closeBottomSheet: () -> Unit
+    startDestination: String,
+    closeBottomSheet: () -> Unit,
 ) {
     val navController = rememberNavController()
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_BOTTOM_SHEET_NAV_GRAPH
+        startDestination = startDestination
     ) {
-        createBoxBottomSheetNavGraph(navController, closeBottomSheet)
+        createBoxBottomSheetNavGraph(navController, closeBottomSheet, startDestination)
     }
 }
 
@@ -73,7 +75,10 @@ fun NavGraphBuilder.createBoxBottomSheetNavGraph(
                 PaginationAnimation.slidInTop()
             }
         ) {
-
+            CreateBoxAddPhotoScreen(
+                navController = navController,
+                closeBottomSheet = closeBottomSheet
+            )
         }
         composable(
             route = CreateBoxBottomSheetRoute.CREATE_BOX_ADD_LATTER,

@@ -10,7 +10,7 @@ sealed interface CreateBoxYourMusicIntent : MviIntent {
     data object OnSaveClick : CreateBoxYourMusicIntent
     data class OnYoutubeLinkChange(val newLink: String) : CreateBoxYourMusicIntent
     data object OnValidateCheckYoutubeLink : CreateBoxYourMusicIntent
-    data object OnYoutubeCancelClick: CreateBoxYourMusicIntent
+    data object OnYoutubeCancelClick : CreateBoxYourMusicIntent
 }
 
 data class CreateBoxYourMusicState(
@@ -21,5 +21,4 @@ data class CreateBoxYourMusicState(
 sealed interface CreateBoxYourMusicEffect : SideEffect {
     data object CloseBottomSheet : CreateBoxYourMusicEffect
     data object MoveToBack : CreateBoxYourMusicEffect
-    data object MoveToAddPhoto : CreateBoxYourMusicEffect
 }

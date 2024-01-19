@@ -44,4 +44,7 @@ object Strings {
 
     const val CREATE_BOX_ADD_PACKY_MUSIC_TITLE = "패키가 준비한 음악"
     const val CREATE_BOX_ADD_PACKY_MUSIC_DESCRIPTION = "음악을 선택해주세요"
+
+    const val CREATE_BOX_ADD_PHOTO_TITLE = "추억을 담은 사진"
+    const val CREATE_BOX_ADD_PHOTO_DESCRIPTION = "추억을 담은 사진"
 }

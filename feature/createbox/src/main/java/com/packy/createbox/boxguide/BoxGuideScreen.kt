@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.packy.core.theme.PackyTheme
+import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
 import kotlinx.coroutines.launch
 
@@ -39,6 +40,7 @@ fun BoxGuideScreen(
     val bottomSheetState = SheetState(skipHiddenState = false, skipPartiallyExpanded = false)
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
     val scope = rememberCoroutineScope()
+    var startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_BOTTOM_SHEET_NAV_GRAPH
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
@@ -47,7 +49,8 @@ fun BoxGuideScreen(
         sheetDragHandle = null,
         sheetContent = {
             CreateBoxNavHost(
-                modifier = Modifier.background(PackyTheme.color.white)
+                modifier = Modifier.background(PackyTheme.color.white),
+                startDestination = startDestination
             ) {
                 scope.launch {
                     scaffoldState.bottomSheetState.hide()
@@ -68,9 +71,11 @@ fun BoxGuideScreen(
                     .weight(1f)
                     .clickable {
                         scope.launch {
+                            startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC
                             scaffoldState.bottomSheetState.expand()
                         }
-                    }) {
+                    }
+                ) {
                     Text(text = "음악추가하기")
                 }
                 Box(
@@ -84,6 +89,12 @@ fun BoxGuideScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
+                        .clickable {
+                            scope.launch {
+                                startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PHOTO
+                                scaffoldState.bottomSheetState.expand()
+                            }
+                        }
                 ) {
                     Text(text = "추억 사진 담기")
                 }

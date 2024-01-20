@@ -17,7 +17,7 @@ android {
             buildConfigField(
                 "String",
                 "BASE_URL",
-                "\"http://packy-dev.ap-northeast-2.elasticbeanstalk.com/\""
+                "\"https://dev.packyforyou.shop/\""
             )
         }
     }

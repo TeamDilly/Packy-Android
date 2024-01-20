@@ -16,7 +16,7 @@ class PackyJsonAdapter(
         type: Type,
         annotations: Array<out Annotation>,
         retrofit: Retrofit
-    ): Converter<ResponseBody, *> = Converter { value: ResponseBody -> value }
+    ): Converter<ResponseBody, *> = Converter { value: ResponseBody -> value.string() }
 
     override fun requestBodyConverter(
         type: Type,

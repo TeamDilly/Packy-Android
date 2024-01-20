@@ -1,12 +1,24 @@
 package com.packy.onboarding.onboarding
 
+import androidx.lifecycle.viewModelScope
+import com.packy.domain.usecase.music.SuggestionMusicUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OnboardingViewModel @Inject constructor() :
+class OnboardingViewModel @Inject constructor(
+    private val musicUseCase: SuggestionMusicUseCase
+) :
     MviViewModel<OnboardingIntent, OnboardingState, OnboardingEffect>() {
+
+    init {
+        viewModelScope.launch {
+            musicUseCase.suggestionMusic().collect {}
+        }
+    }
+
     override fun createInitialState(): OnboardingState = OnboardingState(
         currentPage = 0
     )

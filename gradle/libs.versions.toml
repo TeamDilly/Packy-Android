@@ -100,6 +100,9 @@ coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 
 androidx-data-store = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "data-store" }
 
+#kotlin
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+
 #test
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-android-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidJunit" }

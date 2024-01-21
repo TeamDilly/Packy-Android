@@ -13,6 +13,7 @@ import com.packy.onboarding.termsagreement.TermsAgreementScreen
 
 fun NavGraphBuilder.onboardingNavGraph(
     navController: NavHostController,
+    loggedIn: () -> Unit
 ) {
     navigation(
         startDestination = OnboardingRoute.ONBOARDING,
@@ -32,7 +33,7 @@ fun NavGraphBuilder.onboardingNavGraph(
                 PaginationAnimation.slidInToStart()
             }
         ) {
-            LoginScreen(navController = navController)
+            LoginScreen(navController = navController, loggedIn = loggedIn)
         }
         composable(
             route = OnboardingRoute.SIGNUP_NICKNAME,

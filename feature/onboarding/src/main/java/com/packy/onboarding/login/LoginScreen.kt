@@ -1,5 +1,6 @@
 package com.packy.onboarding.login
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,15 +27,18 @@ import com.packy.onboarding.navigation.OnboardingRoute
 fun LoginScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
+    loggedIn: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
+            println("LOGEE: $effect")
             when (effect) {
                 LoginEffect.KakaoLoginFail ->{
                   // FIXME : 로그인 실패 처리
                 }
-                LoginEffect.KakaoLoginSuccess -> navController.navigate(OnboardingRoute.SIGNUP_NICKNAME)
+                LoginEffect.KakaoLoginSuccess -> loggedIn()
+                LoginEffect.KakaoLoginSuccessNotUser -> navController.navigate(OnboardingRoute.SIGNUP_NICKNAME)
             }
         }
     }

@@ -19,13 +19,21 @@ class RootActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PackyTheme {
+                val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = PackyTheme.color.white
                 ) {
                     PackyNavHost(
-                        navController = rememberNavController(),
-                        startDestination = OnboardingRoute.ONBOARDING_NAV_GRAPH
+                        navController =navController,
+                        startDestination = OnboardingRoute.ONBOARDING_NAV_GRAPH ,
+                        loggedIn = {
+                            navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH){
+                                popUpTo(OnboardingRoute.ONBOARDING_NAV_GRAPH){
+                                    inclusive = true
+                                }
+                            }
+                        }
                     )
                 }
             }

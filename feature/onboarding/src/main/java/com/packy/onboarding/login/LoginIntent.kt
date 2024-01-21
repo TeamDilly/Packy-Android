@@ -19,5 +19,6 @@ data class LoginState(
 
 sealed interface LoginEffect : SideEffect {
     data object KakaoLoginSuccess : LoginEffect
+    data object KakaoLoginSuccessNotUser : LoginEffect
     data object KakaoLoginFail : LoginEffect
 }

@@ -2,7 +2,7 @@ package com.packy.di
 
 import android.accounts.AccountManager
 import android.content.Context
-import com.packy.di.authenticator.ExampleAuthenticatorKey
+import com.packy.di.authenticator.PackyAuthenticatorKey
 import com.packy.account.AccountManagerHelper
 import dagger.Module
 import dagger.Provides
@@ -28,6 +28,6 @@ class AccountManagerModule {
     ): AccountManagerHelper =
         AccountManagerHelper(
             accountManager,
-            ExampleAuthenticatorKey,
+            PackyAuthenticatorKey,
         )
 }

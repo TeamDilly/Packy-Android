@@ -11,14 +11,15 @@ import com.packy.onboarding.navigation.onboardingNavGraph
 fun PackyNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String
+    startDestination: String,
+    loggedIn: () -> Unit
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
         startDestination = startDestination,
     ) {
-        onboardingNavGraph(navController)
+        onboardingNavGraph(navController, loggedIn)
         createBoxNavGraph(navController)
     }
 }

@@ -6,4 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SignIn(
     @SerialName("status") val status: String
-)
+){
+    enum class AuthStatus {
+        NOT_REGISTERED, REGISTERED, WITHDRAWAL, BLACKLIST;
+    }
+}

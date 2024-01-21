@@ -53,12 +53,15 @@ class AccountManagerHelper(
      * @param token 저장할 토큰.
      */
     fun setAuthToken(email: String, password: String? = null, token: String) {
-        val account = Account(email, authKey.accountType)
         val accounts = accountManager.getAccountsByType(authKey.accountType)
         if (accounts.isEmpty()) {
-            accountManager.addAccountExplicitly(account, password, Bundle())
+            val account = Account(email, authKey.accountType)
+            accountManager.addAccountExplicitly(account, password, null)
+            accountManager.setAuthToken(account, authKey.authTokenType, token)
+        } else {
+            val account = accounts.firstOrNull { it.type == authKey.accountType }
+            accountManager.setAuthToken(account, authKey.authTokenType, token)
         }
-        accountManager.setAuthToken(account, authKey.authTokenType, token)
     }
 
     private suspend inline fun <R> AccountManager.callAsync(crossinline operation: AccountManager?.(CoroutineAccountManagerCallback<R>) -> Unit): R {

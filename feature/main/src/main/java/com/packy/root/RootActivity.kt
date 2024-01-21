@@ -6,17 +6,16 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.packy.core.theme.PackyTheme
-import com.packy.createbox.navigation.CreateBoxRoute
-import com.packy.onboarding.navigation.OnboardingRoute
-import com.packy.root.navigation.PackyNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RootActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             PackyTheme {
                 val navController = rememberNavController()

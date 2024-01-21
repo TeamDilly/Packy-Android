@@ -15,6 +15,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -29,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.designsystem.snackbar.PackySnackBarHost
 import com.packy.core.theme.PackyTheme
 import com.packy.createbox.createboax.addlatter.CreateBoxLatterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
@@ -46,16 +49,38 @@ fun BoxGuideScreen(
     val bottomSheetState = SheetState(skipHiddenState = false, skipPartiallyExpanded = false)
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
     val scope = rememberCoroutineScope()
+    var snackBarVisible by remember { mutableStateOf(false) }
 
     var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.ADD_MUSIC) }
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
+        snackbarHost = PackySnackBarHost,
         sheetPeekHeight = 0.dp,
         sheetSwipeEnabled = false,
         sheetDragHandle = null,
         sheetContent = {
-            BottomSheetNav(bottomSheetRoute, scope, scaffoldState, navController)
+            BottomSheetNav(
+                bottomSheetRoute = bottomSheetRoute,
+                closeBottomSheet = {
+                    scope.launch {
+                        scaffoldState.bottomSheetState.hide()
+                    }
+                },
+                showSnackbar = {
+                    scope.launch {
+                        if(!snackBarVisible){
+                            snackBarVisible = true
+                            scaffoldState.snackbarHostState.showSnackbar(
+                                message = it,
+                                duration = SnackbarDuration.Short
+                            ).let {
+                                snackBarVisible = false
+                            }
+                        }
+                    }
+                }
+            )
         }) { innerPadding ->
         BackHandler(enabled = scaffoldState.bottomSheetState.isVisible) {
             scope.launch {
@@ -137,19 +162,16 @@ fun BoxGuideScreen(
 @Composable
 private fun BottomSheetNav(
     bottomSheetRoute: BoxGuideBottomSheetRoute,
-    scope: CoroutineScope,
-    scaffoldState: BottomSheetScaffoldState,
-    navController: NavController
+    closeBottomSheet: () -> Unit,
+    showSnackbar: (String) -> Unit,
 ) {
-    val closeBottomSheet: () -> Unit = {
-        scope.launch {
-            scaffoldState.bottomSheetState.hide()
-        }
-    }
     when (bottomSheetRoute) {
         BoxGuideBottomSheetRoute.ADD_GIFT -> Unit
         BoxGuideBottomSheetRoute.ADD_LATTER -> {
-            CreateBoxLatterScreen(closeBottomSheet = closeBottomSheet)
+            CreateBoxLatterScreen(
+                closeBottomSheet = closeBottomSheet,
+                showSnackbar = showSnackbar
+            )
         }
 
         BoxGuideBottomSheetRoute.ADD_MUSIC -> {

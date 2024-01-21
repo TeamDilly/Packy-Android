@@ -26,4 +26,5 @@ data class CreateBoxLatterState(
 sealed interface CreateBoxLatterEffect : SideEffect {
     data object CloseBottomSheet : CreateBoxLatterEffect
     data object SaveLatter : CreateBoxLatterEffect
+    data object OverFlowLatterText : CreateBoxLatterEffect
 }

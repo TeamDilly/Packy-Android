@@ -16,7 +16,6 @@ class LatterRepositoryImp @Inject constructor(
     override suspend fun getLatterEnvelope(): Flow<Resource<List<LatterEnvelope>>> = flow {
         emit(Resource.Loading())
         val latterEnvelope = api.getLatterEnvelope()
-        println("LOGEE LatterRepositoryImp: $latterEnvelope")
         emit(latterEnvelope.map { it.toEntity() })
     }
 }

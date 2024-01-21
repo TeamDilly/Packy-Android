@@ -5,9 +5,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,15 +21,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
+import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.textfield.PackyTextField
@@ -34,6 +42,7 @@ import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Constant
 import com.packy.core.values.Strings
+import com.packy.core.values.Strings.CREATE_BOX_ADD_LATTER_OVER_FLOW_LATTER_TEXT
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.feature.core.R
@@ -43,6 +52,7 @@ import com.packy.mvi.ext.emitMviIntent
 fun CreateBoxLatterScreen(
     modifier: Modifier = Modifier,
     closeBottomSheet: () -> Unit,
+    showSnackbar: (String) -> Unit,
     viewModel: CreateBoxLatterViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -59,6 +69,10 @@ fun CreateBoxLatterScreen(
 
                 CreateBoxLatterEffect.SaveLatter -> {
                     closeBottomSheet()
+                }
+
+                CreateBoxLatterEffect.OverFlowLatterText -> {
+                    showSnackbar(CREATE_BOX_ADD_LATTER_OVER_FLOW_LATTER_TEXT)
                 }
             }
         }
@@ -128,6 +142,7 @@ private fun LatterForm(
     text: String,
     onValueChange: emitMviIntent<CreateBoxLatterIntent>,
 ) {
+
     Box {
         PackyTextField(
             value = text,
@@ -143,7 +158,6 @@ private fun LatterForm(
             textFieldColor = PackyTheme.color.gray100,
             placeholder = Strings.CREATE_BOX_ADD_LATTER_PLACEHOLDER,
             textAlign = TextAlign.Center,
-            maxValues = Constant.MAX_LATTER_TEXT,
             maxLines = Constant.MAX_LATTER_LINES,
         )
         Text(
@@ -174,10 +188,12 @@ private fun Envelope(
     Surface(
         modifier = modifier
             .height(78.dp)
-            .width(78.dp),
+            .width(78.dp)
+            .clickableWithoutRipple {
+                onClick(CreateBoxLatterIntent.ChangeEnvelope(envelope.id))
+            },
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(border, PackyTheme.color.gray900),
-        onClick = { onClick(CreateBoxLatterIntent.ChangeEnvelope(envelope.id)) },
     ) {
         GlideImage(
             modifier = Modifier

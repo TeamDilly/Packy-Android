@@ -1,6 +1,7 @@
 package com.packy.createbox.createboax.addlatter
 
 import androidx.lifecycle.viewModelScope
+import com.packy.core.values.Constant
 import com.packy.domain.usecase.createbox.LatterUseCase
 import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.map
@@ -50,7 +51,18 @@ class CreateBoxLatterViewModel @Inject constructor(
             state.copy(envelopeId = intent.envelopeId)
         }
         subscribeStateIntent<CreateBoxLatterIntent.ChangeLatterText> { state, intent ->
-            state.copy(latterText = intent.latter)
+            println("intent.latter.length ${intent.latter.length}")
+            println("intent.latter ${intent.latter.lines().size}")
+            if (intent.latter.length <= Constant.MAX_LATTER_TEXT) {
+                if (intent.latter.lines().size <= Constant.MAX_LATTER_LINES + 1) {
+                    state.copy(latterText = intent.latter)
+                } else {
+                    state
+                }
+            } else {
+                sendEffect(CreateBoxLatterEffect.OverFlowLatterText)
+                state
+            }
         }
         subscribeStateIntent<CreateBoxLatterIntent.GetEnvelope> { state, intent ->
             state.copy(envelopeList = intent.envelopeList)

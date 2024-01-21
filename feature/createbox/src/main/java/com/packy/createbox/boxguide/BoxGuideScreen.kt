@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -29,8 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
+import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,19 +46,15 @@ fun BoxGuideScreen(
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
     val scope = rememberCoroutineScope()
 
+    var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.ADD_MUSIC) }
+
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
         sheetSwipeEnabled = false,
         sheetDragHandle = null,
         sheetContent = {
-            CreateBoxNavHost(
-                modifier = Modifier.background(PackyTheme.color.white),
-            ) {
-                scope.launch {
-                    scaffoldState.bottomSheetState.hide()
-                }
-            }
+            BottomSheetNav(bottomSheetRoute, scope, scaffoldState, navController)
         }) { innerPadding ->
         BackHandler(enabled = scaffoldState.bottomSheetState.isVisible) {
             scope.launch {
@@ -76,6 +75,7 @@ fun BoxGuideScreen(
                     .weight(1f)
                     .clickable {
                         scope.launch {
+                            bottomSheetRoute = BoxGuideBottomSheetRoute.ADD_MUSIC
                             scaffoldState.bottomSheetState.expand()
                         }
                     }
@@ -95,6 +95,7 @@ fun BoxGuideScreen(
                         .weight(1f)
                         .clickable {
                             scope.launch {
+                                bottomSheetRoute = BoxGuideBottomSheetRoute.ADD_PHOTO
                                 scaffoldState.bottomSheetState.expand()
                             }
                         }
@@ -123,4 +124,34 @@ fun BoxGuideScreen(
 
     }
 
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BottomSheetNav(
+    bottomSheetRoute: BoxGuideBottomSheetRoute,
+    scope: CoroutineScope,
+    scaffoldState: BottomSheetScaffoldState,
+    navController: NavController
+) {
+    val closeBottomSheet: () -> Unit = {
+        scope.launch {
+            scaffoldState.bottomSheetState.hide()
+        }
+    }
+    when (bottomSheetRoute) {
+        BoxGuideBottomSheetRoute.ADD_GIFT -> Unit
+        BoxGuideBottomSheetRoute.ADD_LATTER -> Unit
+        BoxGuideBottomSheetRoute.ADD_MUSIC -> {
+            CreateBoxNavHost(
+                modifier = Modifier.background(PackyTheme.color.white),
+                closeBottomSheet = closeBottomSheet
+            )
+        }
+
+        BoxGuideBottomSheetRoute.ADD_PHOTO ->
+            CreateBoxAddPhotoScreen(
+                navController = navController, closeBottomSheet = closeBottomSheet
+            )
+    }
 }

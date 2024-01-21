@@ -47,41 +47,34 @@ fun PackyTextField(
         onValueChange("")
     },
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center
-    ) {
-        if (label != null) {
-            Text(
-                text = label,
-                style = PackyTheme.typography.body04,
-                color = PackyTheme.color.gray800,
+    BasicTextField(
+        modifier = Modifier
+            .height(50.dp)
+            .background(
+                color = textFieldColor,
+                shape = RoundedCornerShape(8.dp)
             )
-            Spacer(modifier = Modifier.height(height = 4.dp))
-        }
-        BasicTextField(
-            modifier = Modifier
-                .height(50.dp)
-                .background(
-                    color = textFieldColor,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-            value = value,
-            onValueChange = {
-                onValueChange(it.take(maxValues))
-            },
-            textStyle = PackyTheme.typography.body04.copy(
-                color = PackyTheme.color.gray900,
-                textAlign = textAlign
-            ),
-            maxLines = maxLines,
-            minLines = minLines,
-            singleLine = singleLine,
-            decorationBox = { innerTextField ->
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        value = value,
+        onValueChange = {
+            onValueChange(it.take(maxValues))
+        },
+        textStyle = PackyTheme.typography.body04.copy(
+            color = PackyTheme.color.gray900,
+            textAlign = textAlign
+        ),
+        maxLines = maxLines,
+        minLines = minLines,
+        singleLine = singleLine,
+        decorationBox = { innerTextField ->
+            Column(
+                modifier = modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Label(label)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start,
@@ -90,44 +83,76 @@ fun PackyTextField(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f)
-                    ) {
-                        if (placeholder != null && value.isEmpty()) {
-                            Text(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                text = placeholder,
-                                style = PackyTheme.typography.body04.copy(
-                                    textAlign = textAlign
-                                ),
-                                color = PackyTheme.color.gray400.copy(
-                                    alpha = 0.5f,
-                                ),
-                            )
+                            .weight(1f),
+                        contentAlignment = when (textAlign) {
+                            TextAlign.Start -> Alignment.CenterStart
+                            TextAlign.Center -> Alignment.Center
+                            TextAlign.End -> Alignment.CenterEnd
+                            else -> Alignment.CenterStart
                         }
+                    ) {
+                        Placeholder(placeholder, value, textAlign)
                         innerTextField()
                     }
                     if (showTrailingIcon && value.isNotEmpty()) {
                         Spacer(modifier = Modifier.width(width = 8.dp))
-                        IconButton(
-                            onClick = trailingIconOnClick,
-                            modifier = Modifier
-                                .background(
-                                    color = PackyTheme.color.gray400,
-                                    shape = CircleShape
-                                )
-                                .size(16.dp)
-                        ) {
-                            Icon(
-                                modifier = Modifier.size(12.dp),
-                                painter = painterResource(id = R.drawable.cancle),
-                                contentDescription = "text field trailing icon",
-                                tint = PackyTheme.color.white
-                            )
-                        }
+                        CloseButton(trailingIconOnClick)
                     }
                 }
             }
+        }
+    )
+}
+
+@Composable
+private fun CloseButton(trailingIconOnClick: () -> Unit) {
+    IconButton(
+        onClick = trailingIconOnClick,
+        modifier = Modifier
+            .background(
+                color = PackyTheme.color.gray400,
+                shape = CircleShape
+            )
+            .size(16.dp)
+    ) {
+        Icon(
+            modifier = Modifier.size(12.dp),
+            painter = painterResource(id = R.drawable.cancle),
+            contentDescription = "text field trailing icon",
+            tint = PackyTheme.color.white
         )
+    }
+}
+
+@Composable
+private fun Placeholder(
+    placeholder: String?,
+    value: String,
+    textAlign: TextAlign
+) {
+    if (placeholder != null && value.isEmpty()) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth(),
+            text = placeholder,
+            style = PackyTheme.typography.body04.copy(
+                textAlign = textAlign
+            ),
+            color = PackyTheme.color.gray400.copy(
+                alpha = 0.5f,
+            ),
+        )
+    }
+}
+
+@Composable
+private fun Label(label: String?) {
+    if (label != null) {
+        Text(
+            text = label,
+            style = PackyTheme.typography.body04,
+            color = PackyTheme.color.gray800,
+        )
+        Spacer(modifier = Modifier.height(height = 4.dp))
     }
 }

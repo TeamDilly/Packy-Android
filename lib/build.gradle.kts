@@ -12,4 +12,5 @@ dependencies{
     implementation(libs.retrofit)
     implementation(libs.retrofit.kotlin.serialization.converter)
     implementation(libs.kotlin.stdlib)
+    implementation(libs.bundles.ktor)
 }

@@ -40,6 +40,8 @@ coroutine = "1.7.3"
 data-store = "1.0.0"
 #https://bumptech.github.io/glide/int/compose.html
 compose-glide = "1.0.0-beta01"
+#https://github.com/ktorio/ktor/releases
+ktor = "2.3.7"
 
 #test
 #https://mvnrepository.com/artifact/junit/junit
@@ -89,6 +91,11 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofit-kotlin-serialization-converter" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+ktor-client-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 
 #serialization
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization-json" }
@@ -119,6 +126,8 @@ youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", na
 
 [bundles]
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide", "compose-ui-util"]
+ktor-android = ["ktor-core","ktor-client-android", "ktor-client-serialization", "ktor-client-logging", "ktor-negotiation"]
+ktor = ["ktor-client-serialization", "ktor-client-logging", "ktor-negotiation"]
 test = ["test-junit", "test-android-junit", "test-android-espresso"]
 
 [plugins]

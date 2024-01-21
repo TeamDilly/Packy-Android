@@ -33,6 +33,7 @@ class ResourceCall<T>(
                                 ?: EMPTY_MESSAGE
                             val code =
                                 jsonElement.jsonObject["code"]?.jsonPrimitive?.content ?: EMPTY_CODE
+
                             @Suppress("UNCHECKED_CAST")
                             val data = jsonElement.jsonObject["data"]?.let { it as? T }
 
@@ -50,7 +51,7 @@ class ResourceCall<T>(
                             } else {
                                 callback.onResponse(
                                     this@ResourceCall,
-                                    Response.success(Resource.NullResult())
+                                    Response.success(Resource.NullResult(message, code))
                                 )
                             }
                         }
@@ -65,6 +66,7 @@ class ResourceCall<T>(
                                 val code =
                                     jsonElement.jsonObject["code"]?.jsonPrimitive?.content
                                         ?: EMPTY_CODE
+
                                 @Suppress("UNCHECKED_CAST")
                                 val data = jsonElement.jsonObject["data"]?.let { it as? T }
 
@@ -81,7 +83,12 @@ class ResourceCall<T>(
                             } else {
                                 callback.onResponse(
                                     this@ResourceCall,
-                                    Response.success(Resource.NullResult())
+                                    Response.success(
+                                        Resource.NullResult(
+                                            message = "Empty Body",
+                                            code = "EMPTY_BODY"
+                                        )
+                                    )
                                 )
                             }
                         }

@@ -16,7 +16,7 @@ class SignInRepositoryImp @Inject constructor(
     override suspend fun signIn(token: String): Flow<Resource<SignIn>> {
         val signDto = api.signIn(token = token)
         return flow {
-            // FIXME
+            emit(signDto.map { it.toEntity() })
         }
     }
 }

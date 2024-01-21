@@ -2,13 +2,21 @@ package com.packy.data.remote.auth
 
 import com.packy.data.model.auth.SignInDto
 import com.packy.lib.utils.Resource
-import retrofit2.http.GET
-import retrofit2.http.Header
+import com.packy.lib.utils.toResource
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import javax.inject.Inject
 
-interface SignInService {
-
-    @GET("api/v1/auth/sign-in/kakao")
-    suspend fun signIn(
-        @Header("Authorization") token: String
-    ): Resource<SignInDto>
+class SignInService @Inject constructor(
+    private val httpClient: HttpClient
+) {
+    suspend fun signIn(token: String): Resource<SignInDto> {
+        val response = httpClient.get(urlString = "api/v1/auth/sign-in/kakao") {
+            header("Authorization", token)
+        }.toResource<SignInDto>()
+        return response
+    }
 }
+
+

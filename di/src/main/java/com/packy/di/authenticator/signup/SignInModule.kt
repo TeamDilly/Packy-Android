@@ -11,16 +11,15 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
+import io.ktor.client.HttpClient
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object SignInServiceModule {
     @Provides
-    fun providerSignInService(
-        @Packy retrofit: Retrofit
-    ): SignInService =
-        retrofit.create(SignInService::class.java)
+    @Singleton
+    fun provideSignInService(httpClient: HttpClient): SignInService = SignInService(httpClient)
 }
 
 @Module

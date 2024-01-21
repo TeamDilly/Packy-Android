@@ -31,8 +31,8 @@ class LoginViewModel @Inject constructor(
                     is KakaoAuth.KakaoLoginSuccess -> {
                         viewModelScope.launch {
                             signInUseCase.signIn(kakaoAuth.token)
-                                .collect{
-
+                                .collect {
+                                    println("LOGEE $it")
                                 }
                         }
                     }

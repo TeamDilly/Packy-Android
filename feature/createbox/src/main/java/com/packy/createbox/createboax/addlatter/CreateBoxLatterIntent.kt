@@ -8,10 +8,10 @@ sealed interface CreateBoxLatterIntent : MviIntent {
     data object OnCloseClick : CreateBoxLatterIntent
     data object OnSaveClick : CreateBoxLatterIntent
     data class ChangeLatterText(val latter: String) : CreateBoxLatterIntent
-    data class ChangeLatterEnvelope(val envelopeId: Int) : CreateBoxLatterIntent
+    data class ChangeEnvelope(val envelopeId: Int) : CreateBoxLatterIntent
 }
 
-data class LatterItem(
+data class EnvelopeItem(
     val id: Int,
     val imageUri: String
 )
@@ -19,7 +19,7 @@ data class LatterItem(
 data class CreateBoxLatterState(
     val latterText: String,
     val envelopeId: Int,
-    val envelopeList: List<LatterItem>
+    val envelopeList: List<EnvelopeItem>
 ): UiState
 
 sealed interface CreateBoxLatterEffect: SideEffect{

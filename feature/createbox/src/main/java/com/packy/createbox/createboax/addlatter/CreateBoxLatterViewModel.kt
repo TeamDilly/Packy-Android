@@ -20,7 +20,7 @@ class CreateBoxLatterViewModel @Inject constructor() :
         subscribeIntent<CreateBoxLatterIntent.OnSaveClick> {
             sendEffect(CreateBoxLatterEffect.SaveLatter)
         }
-        subscribeStateIntent<CreateBoxLatterIntent.ChangeLatterEnvelope> { state, intent ->
+        subscribeStateIntent<CreateBoxLatterIntent.ChangeEnvelope> { state, intent ->
             state.copy(envelopeId = intent.envelopeId)
         }
         subscribeStateIntent<CreateBoxLatterIntent.ChangeLatterText> { state, intent ->

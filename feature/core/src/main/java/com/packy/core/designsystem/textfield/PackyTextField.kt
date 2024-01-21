@@ -14,11 +14,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,61 +50,69 @@ fun PackyTextField(
         onValueChange("")
     },
 ) {
-    BasicTextField(
-        modifier = Modifier
-            .height(50.dp)
-            .background(
-                color = textFieldColor,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 14.dp),
-        value = value,
-        onValueChange = {
-            onValueChange(it.take(maxValues))
-        },
-        textStyle = PackyTheme.typography.body04.copy(
-            color = PackyTheme.color.gray900,
-            textAlign = textAlign
-        ),
-        maxLines = maxLines,
-        minLines = minLines,
-        singleLine = singleLine,
-        decorationBox = { innerTextField ->
-            Column(
-                modifier = modifier
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Label(label)
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
+    val customTextSelectionColors = TextSelectionColors(
+        handleColor = PackyTheme.color.gray900,
+        backgroundColor = PackyTheme.color.gray400
+    )
+
+    CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
+
+        BasicTextField(
+            modifier = modifier
+                .height(50.dp)
+                .background(
+                    color = textFieldColor,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            value = value,
+            onValueChange = {
+                onValueChange(it.take(maxValues))
+            },
+            textStyle = PackyTheme.typography.body04.copy(
+                color = PackyTheme.color.gray900,
+                textAlign = textAlign
+            ),
+            maxLines = maxLines,
+            minLines = minLines,
+            singleLine = singleLine,
+            decorationBox = { innerTextField ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        contentAlignment = when (textAlign) {
-                            TextAlign.Start -> Alignment.CenterStart
-                            TextAlign.Center -> Alignment.Center
-                            TextAlign.End -> Alignment.CenterEnd
-                            else -> Alignment.CenterStart
-                        }
+                    Label(label)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Placeholder(placeholder, value, textAlign)
-                        innerTextField()
-                    }
-                    if (showTrailingIcon && value.isNotEmpty()) {
-                        Spacer(modifier = Modifier.width(width = 8.dp))
-                        CloseButton(trailingIconOnClick)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            contentAlignment = when (textAlign) {
+                                TextAlign.Start -> Alignment.CenterStart
+                                TextAlign.Center -> Alignment.Center
+                                TextAlign.End -> Alignment.CenterEnd
+                                else -> Alignment.CenterStart
+                            }
+                        ) {
+                            Placeholder(placeholder, value, textAlign)
+                            innerTextField()
+                        }
+                        if (showTrailingIcon && value.isNotEmpty()) {
+                            Spacer(modifier = Modifier.width(width = 8.dp))
+                            CloseButton(trailingIconOnClick)
+                        }
                     }
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable

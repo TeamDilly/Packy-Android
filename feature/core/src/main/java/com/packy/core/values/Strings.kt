@@ -48,4 +48,9 @@ object Strings {
     const val CREATE_BOX_ADD_PHOTO_TITLE = "추억을 담은 사진"
     const val CREATE_BOX_ADD_PHOTO_DESCRIPTION = "추억을 담은 사진"
     const val CREATE_BOX_ADD_PHOTO_PLACEHOLDER = "사진 속 추억을 적어주세요"
+
+    const val CREATE_BOX_ADD_LATTER_TITLE = "편지쓰기"
+    const val CREATE_BOX_ADD_LATTER_DESCRIPTION = "마음을 담은 편지를 써보아요"
+    const val CREATE_BOX_ADD_LATTER_PLACEHOLDER =
+        "편지에 어떤 마음을 담아볼까요?\n따뜻한 인사, 잊지 못할 추억, 고마웠던 순간까지\n모두 좋아요 :)"
 }

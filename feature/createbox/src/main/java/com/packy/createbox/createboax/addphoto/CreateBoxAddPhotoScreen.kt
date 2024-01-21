@@ -56,14 +56,9 @@ import com.packy.mvi.ext.emitMviIntent
 @Composable
 fun CreateBoxAddPhotoScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
     closeBottomSheet: () -> Unit,
     viewModel: CreateBoxAddPhotoViewModel = hiltViewModel()
 ) {
-
-    val pagerState = rememberPagerState(pageCount = {
-        CreateBoxAddPhotoViewModel.MAX_ONBOARDING_PAGE_SIZE
-    })
 
     val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(null) {

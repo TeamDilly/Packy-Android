@@ -115,7 +115,7 @@ fun CreateBoxYourMusicScreen(
                 text = Strings.SAVE,
                 enabled = viewModel.currentState.validationYoutubeLink == true
             ) {
-                viewModel.emitIntent(CreateBoxYourMusicIntent.OnSaveClick)
+                viewModel.emitIntentThrottle(CreateBoxYourMusicIntent.OnSaveClick)
             }
             Spacer(height = 16.dp)
         }

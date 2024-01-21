@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
+import com.packy.createbox.createboax.addlatter.CreateBoxLatterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
@@ -86,6 +87,12 @@ fun BoxGuideScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
+                        .clickable {
+                            scope.launch {
+                                bottomSheetRoute = BoxGuideBottomSheetRoute.ADD_LATTER
+                                scaffoldState.bottomSheetState.expand()
+                            }
+                        }
                 ) {
                     Text(text = "편지쓰기")
                 }
@@ -141,7 +148,10 @@ private fun BottomSheetNav(
     }
     when (bottomSheetRoute) {
         BoxGuideBottomSheetRoute.ADD_GIFT -> Unit
-        BoxGuideBottomSheetRoute.ADD_LATTER -> Unit
+        BoxGuideBottomSheetRoute.ADD_LATTER -> {
+            CreateBoxLatterScreen(closeBottomSheet = closeBottomSheet)
+        }
+
         BoxGuideBottomSheetRoute.ADD_MUSIC -> {
             CreateBoxNavHost(
                 modifier = Modifier.background(PackyTheme.color.white),
@@ -150,8 +160,6 @@ private fun BottomSheetNav(
         }
 
         BoxGuideBottomSheetRoute.ADD_PHOTO ->
-            CreateBoxAddPhotoScreen(
-                navController = navController, closeBottomSheet = closeBottomSheet
-            )
+            CreateBoxAddPhotoScreen(closeBottomSheet = closeBottomSheet)
     }
 }

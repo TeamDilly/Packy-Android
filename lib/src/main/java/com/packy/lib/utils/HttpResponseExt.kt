@@ -28,31 +28,34 @@ fun HttpStatusCode.isServerError(): Boolean =
     value in (HTTP_SERVER_ERROR_RANGE_START until HTTP_SERVER_ERROR_RANGE_END)
 
 suspend inline fun<reified T> HttpResponse.toResource(): Resource<T> {
-
-    if (status.isSuccess()) {
-        val json = body<String>()
-        val jsonElement = Json.parseToJsonElement(json)
-        val message = jsonElement.jsonObject["message"]?.jsonPrimitive?.content
-            ?: EMPTY_MESSAGE
-        val code =
-            jsonElement.jsonObject["code"]?.jsonPrimitive?.content ?: EMPTY_CODE
-        val data = jsonElement.jsonObject["data"]?.let {
-            Json.decodeFromJsonElement<T>(it)
-        }
-        return if (data != null) {
-            Resource.Success(data = data, message = message, code = code)
+    try {
+        if (status.isSuccess()) {
+            val json = body<String>()
+            val jsonElement = Json.parseToJsonElement(json)
+            val message = jsonElement.jsonObject["message"]?.jsonPrimitive?.content
+                ?: EMPTY_MESSAGE
+            val code =
+                jsonElement.jsonObject["code"]?.jsonPrimitive?.content ?: EMPTY_CODE
+            val data = jsonElement.jsonObject["data"]?.let {
+                Json.decodeFromJsonElement<T>(it)
+            }
+            return if (data != null) {
+                Resource.Success(data = data, message = message, code = code)
+            } else {
+                Resource.NullResult<T>(message = message, code = code)
+            }
+        } else if (status.isClientError()) {
+            val json = body<String>()
+            val jsonElement = Json.parseToJsonElement(json)
+            val message = jsonElement.jsonObject["message"]?.jsonPrimitive?.content
+                ?: EMPTY_MESSAGE
+            val code =
+                jsonElement.jsonObject["code"]?.jsonPrimitive?.content ?: EMPTY_CODE
+            return Resource.ApiError(data = null, message = message, code = code)
         } else {
-            Resource.NullResult<T>(message = message, code = code)
+            return Resource.NetworkError(throwable = Throwable("Network Error"))
         }
-    } else if (status.isClientError()) {
-        val json = body<String>()
-        val jsonElement = Json.parseToJsonElement(json)
-        val message = jsonElement.jsonObject["message"]?.jsonPrimitive?.content
-            ?: EMPTY_MESSAGE
-        val code =
-            jsonElement.jsonObject["code"]?.jsonPrimitive?.content ?: EMPTY_CODE
-        return Resource.ApiError(data = null, message = message, code = code)
-    } else {
-        return Resource.NetworkError(throwable = Throwable("Network Error"))
+    } catch (e: Exception) {
+        return Resource.NetworkError(throwable = e)
     }
 }

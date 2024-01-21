@@ -21,6 +21,11 @@ android {
             )
         }
     }
+    packaging{
+        resources {
+            excludes.add("META-INF/INDEX.LIST")
+        }
+    }
 }
 
 dependencies {

@@ -96,6 +96,7 @@ ktor-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation"
 ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
 ktor-client-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 
 #serialization
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization-json" }
@@ -127,8 +128,8 @@ youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", na
 [bundles]
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide", "compose-ui-util"]
 ktor-android = ["ktor-core","ktor-client-android", "ktor-client-serialization", "ktor-client-logging", "ktor-negotiation"]
-ktor = ["ktor-client-serialization", "ktor-client-logging", "ktor-negotiation"]
-test = ["test-junit", "test-android-junit", "test-android-espresso"]
+ktor = ["ktor-client-serialization", "ktor-client-logging", "ktor-negotiation", "ktor-client-cio"]
+test = ["test-junit", "test-android-junit", "test-android-espresso", "ktor-client-cio"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

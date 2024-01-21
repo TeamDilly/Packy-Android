@@ -24,16 +24,8 @@ class RootActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = PackyTheme.color.white
                 ) {
-                    PackyNavHost(
-                        navController =navController,
-                        startDestination = OnboardingRoute.ONBOARDING_NAV_GRAPH ,
-                        loggedIn = {
-                            navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH){
-                                popUpTo(OnboardingRoute.ONBOARDING_NAV_GRAPH){
-                                    inclusive = true
-                                }
-                            }
-                        }
+                    RootCompose(
+                        navController = navController
                     )
                 }
             }

@@ -1,0 +1,32 @@
+package com.packy.root
+
+import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.packy.createbox.navigation.CreateBoxRoute
+import com.packy.onboarding.navigation.OnboardingRoute
+import com.packy.root.navigation.PackyNavHost
+
+@Composable
+fun RootCompose(
+    navController: NavHostController,
+    viewModel: RootComposeViewModel = hiltViewModel()
+) {
+    val startDestination = if (viewModel.checkUserStatusOnAppEntry() == UserState.REGISTERED) {
+        CreateBoxRoute.CREATE_BOX_NAV_GRAPH
+    } else {
+        OnboardingRoute.ONBOARDING_NAV_GRAPH
+    }
+    PackyNavHost(
+        navController = navController,
+        startDestination = startDestination,
+        loggedIn = {
+            navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH) {
+                popUpTo(OnboardingRoute.ONBOARDING_NAV_GRAPH) {
+                    inclusive = true
+                }
+            }
+        }
+    )
+}

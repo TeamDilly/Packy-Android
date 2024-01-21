@@ -32,7 +32,6 @@ fun LoginScreen(
 ) {
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
-            println("LOGEE: $effect")
             when (effect) {
                 LoginEffect.KakaoLoginFail ->{
                   // FIXME : 로그인 실패 처리

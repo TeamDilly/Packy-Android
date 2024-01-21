@@ -42,6 +42,7 @@ internal object NetworkModule {
             install(DefaultRequest) {
                 url(BuildConfig.BASE_URL)
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
+
             }
             install(ContentNegotiation) {
                 json(Json {

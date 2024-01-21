@@ -53,4 +53,5 @@ object Strings {
     const val CREATE_BOX_ADD_LATTER_DESCRIPTION = "마음을 담은 편지를 써보아요"
     const val CREATE_BOX_ADD_LATTER_PLACEHOLDER =
         "편지에 어떤 마음을 담아볼까요?\n따뜻한 인사, 잊지 못할 추억, 고마웠던 순간까지\n모두 좋아요 :)"
+    const val CREATE_BOX_ADD_LATTER_OVER_FLOW_LATTER_TEXT = "최대 200자까지 작성할 수 있어요"
 }

@@ -2,6 +2,7 @@ package com.packy.di.network
 
 import com.packy.di.common.NetworkConstant
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.packy.account.AccountManagerHelper
 import com.packy.di.BuildConfig
 import com.packy.lib.network.PackyJsonAdapter
 import com.packy.lib.network.ResourceAdapterFactory
@@ -34,7 +35,9 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideKtorClient(): HttpClient {
+    fun provideKtorClient(
+        accountManagerHelper: AccountManagerHelper,
+    ): HttpClient {
         return HttpClient(Android) {
             install(Logging) {
                 level = LogLevel.ALL
@@ -42,6 +45,9 @@ internal object NetworkModule {
             install(DefaultRequest) {
                 url(BuildConfig.BASE_URL)
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
+                accountManagerHelper.getAutToken()?.let {
+                    header("Authorization", it)
+                }
 
             }
             install(ContentNegotiation) {

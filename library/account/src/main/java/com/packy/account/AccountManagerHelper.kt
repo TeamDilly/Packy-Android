@@ -36,6 +36,11 @@ class AccountManagerHelper(
         return accounts.firstOrNull { it.type == authKey.accountType }
     }
 
+    fun getAutToken(): String? {
+        val account = getAccount() ?: return null
+        return accountManager.peekAuthToken(account, authKey.authTokenType)
+    }
+
     /**
      * @return authToken을 찾아서 반환 한다.
      */

@@ -17,7 +17,6 @@ import com.packy.createbox.createboax.choosemusic.CreateBoxChooseMusicScreen
 @Composable
 fun CreateBoxNavHost(
     modifier: Modifier = Modifier,
-    startDestination: String,
     closeBottomSheet: () -> Unit,
 ) {
     val navController = rememberNavController()
@@ -29,7 +28,6 @@ fun CreateBoxNavHost(
         createBoxBottomSheetNavGraph(
             navController,
             closeBottomSheet,
-            startDestination
         )
     }
 }
@@ -37,10 +35,9 @@ fun CreateBoxNavHost(
 fun NavGraphBuilder.createBoxBottomSheetNavGraph(
     navController: NavHostController,
     closeBottomSheet: () -> Unit,
-    startDestination: String = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC
 ) {
     navigation(
-        startDestination = startDestination,
+        startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC,
         route = CreateBoxBottomSheetRoute.CREATE_BOX_BOTTOM_SHEET_NAV_GRAPH
     ) {
         composable(
@@ -73,32 +70,6 @@ fun NavGraphBuilder.createBoxBottomSheetNavGraph(
                 closeBottomSheet = closeBottomSheet
             )
         }
-        composable(
-            route = CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PHOTO,
-            enterTransition = {
-                PaginationAnimation.slidInTop()
-            }
-        ) {
-            CreateBoxAddPhotoScreen(
-                navController = navController,
-                closeBottomSheet = closeBottomSheet
-            )
-        }
-        composable(
-            route = CreateBoxBottomSheetRoute.CREATE_BOX_ADD_LATTER,
-            enterTransition = {
-                PaginationAnimation.slidInTop()
-            }
-        ) {
-
-        }
-        composable(
-            route = CreateBoxBottomSheetRoute.CREATE_BOX_ADD_GIFT,
-            enterTransition = {
-                PaginationAnimation.slidInTop()
-            }
-        ) {
-        }
     }
 }
 
@@ -108,7 +79,4 @@ object CreateBoxBottomSheetRoute {
     const val CREATE_BOX_CHOOSE_MUSIC = "createBoxChooseMusic"
     const val CREATE_BOX_ADD_YOUR_MUSIC = "createBoxAddYourMusic"
     const val CREATE_BOX_ADD_PACKY_MUSIC = "createBoxAddPackyMusic"
-    const val CREATE_BOX_ADD_PHOTO = "createBoxAddPhoto"
-    const val CREATE_BOX_ADD_LATTER = "createBoxAddLetter"
-    const val CREATE_BOX_ADD_GIFT = "createBoxAddGift"
 }

@@ -21,4 +21,6 @@ data class CreateBoxYourMusicState(
 sealed interface CreateBoxYourMusicEffect : SideEffect {
     data object CloseBottomSheet : CreateBoxYourMusicEffect
     data object MoveToBack : CreateBoxYourMusicEffect
+
+    data object SaveMusic : CreateBoxYourMusicEffect
 }

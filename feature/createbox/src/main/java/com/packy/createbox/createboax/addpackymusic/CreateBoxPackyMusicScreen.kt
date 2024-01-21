@@ -1,34 +1,22 @@
 package com.packy.createbox.createboax.addpackymusic
 
-import android.util.Log
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,7 +25,6 @@ import com.packy.core.common.Spacer
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
-import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.youtube.YouTubeCdPlayer
 import com.packy.core.widget.youtube.YoutubeState
@@ -65,10 +52,13 @@ fun CreateBoxPackyMusicScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 CreateBoxPackyMusicEffect.CloseBottomSheet -> closeBottomSheet()
-                CreateBoxPackyMusicEffect.MoveToAddPhoto -> navController.navigate(
-                    CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PHOTO
-                )
-
+                CreateBoxPackyMusicEffect.SaveMusic -> {
+                    closeBottomSheet()
+                    navController.popBackStack(
+                        route = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC,
+                        inclusive = true
+                    )
+                }
                 CreateBoxPackyMusicEffect.MoveToBack -> navController.popBackStack()
             }
         }

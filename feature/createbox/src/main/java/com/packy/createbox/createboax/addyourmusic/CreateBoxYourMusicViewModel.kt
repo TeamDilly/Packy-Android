@@ -24,7 +24,7 @@ class CreateBoxYourMusicViewModel @Inject constructor() :
             state.copy(youtubeLink = intent.newLink, validationYoutubeLink = null)
         }
         subscribeIntent<CreateBoxYourMusicIntent.OnSaveClick> {
-
+            sendEffect(CreateBoxYourMusicEffect.SaveMusic)
         }
         subscribeStateIntent<CreateBoxYourMusicIntent.OnValidateCheckYoutubeLink> { state, _ ->
             val validationLink = state.youtubeLink.validationYoutubeVideoId()

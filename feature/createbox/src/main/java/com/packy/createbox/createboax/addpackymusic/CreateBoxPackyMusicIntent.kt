@@ -30,5 +30,5 @@ data class CreateBoxPackyMusicState(
 sealed interface CreateBoxPackyMusicEffect : SideEffect {
     data object CloseBottomSheet : CreateBoxPackyMusicEffect
     data object MoveToBack : CreateBoxPackyMusicEffect
-    data object MoveToAddPhoto : CreateBoxPackyMusicEffect
+    data object SaveMusic : CreateBoxPackyMusicEffect
 }

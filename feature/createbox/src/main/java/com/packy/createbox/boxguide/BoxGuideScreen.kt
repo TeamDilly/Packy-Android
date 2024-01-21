@@ -1,5 +1,6 @@
 package com.packy.createbox.boxguide
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,7 +42,6 @@ fun BoxGuideScreen(
     val bottomSheetState = SheetState(skipHiddenState = false, skipPartiallyExpanded = false)
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
     val scope = rememberCoroutineScope()
-    var startDestination by remember { mutableStateOf(CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PHOTO) }
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
@@ -51,13 +51,17 @@ fun BoxGuideScreen(
         sheetContent = {
             CreateBoxNavHost(
                 modifier = Modifier.background(PackyTheme.color.white),
-                startDestination = startDestination
             ) {
                 scope.launch {
                     scaffoldState.bottomSheetState.hide()
                 }
             }
         }) { innerPadding ->
+        BackHandler(enabled = scaffoldState.bottomSheetState.isVisible) {
+            scope.launch {
+                scaffoldState.bottomSheetState.hide()
+            }
+        }
         Box(
             modifier = modifier
                 .background(
@@ -72,7 +76,6 @@ fun BoxGuideScreen(
                     .weight(1f)
                     .clickable {
                         scope.launch {
-                            startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC
                             scaffoldState.bottomSheetState.expand()
                         }
                     }
@@ -92,7 +95,6 @@ fun BoxGuideScreen(
                         .weight(1f)
                         .clickable {
                             scope.launch {
-                                startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PHOTO
                                 scaffoldState.bottomSheetState.expand()
                             }
                         }

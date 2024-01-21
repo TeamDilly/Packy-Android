@@ -52,6 +52,13 @@ fun CreateBoxYourMusicScreen(
             when (effect) {
                 CreateBoxYourMusicEffect.CloseBottomSheet -> closeBottomSheet()
                 CreateBoxYourMusicEffect.MoveToBack -> navController.popBackStack()
+                CreateBoxYourMusicEffect.SaveMusic -> {
+                    closeBottomSheet()
+                    navController.popBackStack(
+                        route = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC,
+                        inclusive = true
+                    )
+                }
             }
         }
     }

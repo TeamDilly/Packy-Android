@@ -45,17 +45,21 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
     init {
         this.handleIntent()
         subscribeIntent()
+        this.onCreate()
     }
+
+    protected open fun onCreate(){}
+
 
     protected abstract fun handleIntent()
 
-    protected fun setState(state: State){
+    protected fun setState(state: State) {
         viewModelScope.launch {
             _uiState.emit(state)
         }
     }
 
-    protected fun setState(builder: () -> State){
+    protected fun setState(builder: () -> State) {
         setState(builder())
     }
 

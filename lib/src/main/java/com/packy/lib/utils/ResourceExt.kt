@@ -1,5 +1,9 @@
 package com.packy.lib.utils
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
+
 fun <T, R> Resource<T>.map(
     mapper: (T) -> R
 ): Resource<R> = when (this) {
@@ -9,3 +13,6 @@ fun <T, R> Resource<T>.map(
     is Resource.NullResult -> Resource.NullResult(message, code)
     is Resource.Loading -> Resource.Loading()
 }
+
+fun <T> Flow<Resource<T>>.filterSuccess(): Flow<Resource.Success<T>> =
+    filterIsInstance<Resource.Success<T>>()

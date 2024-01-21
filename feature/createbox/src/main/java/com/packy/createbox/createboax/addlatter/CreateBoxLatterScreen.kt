@@ -21,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,7 +38,6 @@ import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
-import com.packy.mvi.mvi.MviIntent
 
 @Composable
 fun CreateBoxLatterScreen(
@@ -48,6 +46,10 @@ fun CreateBoxLatterScreen(
     viewModel: CreateBoxLatterViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    LaunchedEffect(viewModel) {
+        viewModel.getLatterEnvelope()
+    }
+
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -160,7 +162,7 @@ private fun LatterForm(
 private fun Envelope(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
-    envelope: EnvelopeItem,
+    envelope: LatterEnvelopeItem,
     onClick: emitMviIntent<CreateBoxLatterIntent>,
 ) {
     val border = if (isSelected) {

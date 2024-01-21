@@ -10,8 +10,8 @@ import javax.inject.Inject
 class LatterService @Inject constructor(
     private val httpClient: HttpClient
 ) {
-    suspend fun getLatterEnvelope(): Resource<LatterEnvelopeDto> =
-        httpClient.get(urlString = "api/v1/admin/design/latters")
-            .toResource<LatterEnvelopeDto>()
+    suspend fun getLatterEnvelope(): Resource<List<LatterEnvelopeDto>> =
+        httpClient.get(urlString = "api/v1/admin/design/letters")
+            .toResource<List<LatterEnvelopeDto>>()
 
 }

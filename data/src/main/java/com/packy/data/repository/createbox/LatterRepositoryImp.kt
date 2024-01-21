@@ -13,9 +13,10 @@ import javax.inject.Inject
 class LatterRepositoryImp @Inject constructor(
     private val api: LatterService
 ) : LatterRepository {
-    override suspend fun getLatterEnvelope(): Flow<Resource<LatterEnvelope>> = flow {
+    override suspend fun getLatterEnvelope(): Flow<Resource<List<LatterEnvelope>>> = flow {
         emit(Resource.Loading())
         val latterEnvelope = api.getLatterEnvelope()
+        println("LOGEE LatterRepositoryImp: $latterEnvelope")
         emit(latterEnvelope.map { it.toEntity() })
     }
 }

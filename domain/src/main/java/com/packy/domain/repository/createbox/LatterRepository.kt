@@ -5,5 +5,5 @@ import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface LatterRepository {
-    suspend fun getLatterEnvelope() : Flow<Resource<LatterEnvelope>>
+    suspend fun getLatterEnvelope() : Flow<Resource<List<LatterEnvelope>>>
 }

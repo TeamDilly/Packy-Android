@@ -14,3 +14,5 @@ data class LatterEnvelopeDto(
 fun LatterEnvelopeDto.toEntity() = LatterEnvelope(
     envelope, id, letterPaper
 )
+
+fun List<LatterEnvelopeDto>.toEntity(): List<LatterEnvelope> = this.map { it.toEntity() }

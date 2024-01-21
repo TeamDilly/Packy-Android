@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class LatterUseCaseImp @Inject constructor(
     private val latterRepository: LatterRepository
-):  LatterUseCase{
-    override suspend fun getLatterEnvelope(): Flow<Resource<LatterEnvelope>> =
+) : LatterUseCase {
+    override suspend fun getLatterEnvelope(): Flow<Resource<List<LatterEnvelope>>> =
         latterRepository.getLatterEnvelope()
 }

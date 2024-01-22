@@ -1,9 +1,10 @@
 package com.packy.domain.model.youtube
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class YoutubeInfo (
-    val thumbnail: String,
-    val title: String
+    @SerialName("thumbnail") val thumbnail: String,
+    @SerialName("title") val title: String
 )

@@ -19,21 +19,12 @@ import javax.inject.Inject
 
 class MusicRepositoryImp @Inject constructor(
     private val api: MusicService,
-    private val youtubeApi: YoutubeService
 ) : MusicRepository {
     override suspend fun suggestionMusic(): Flow<Resource<List<Music>>> = flow {
         CoroutineScope(Dispatchers.IO).launch {
-            println("LOGEE $youtubeApi")
             emit(Resource.Loading())
             val suggestionMusic = api.suggestionMusic()
             if (suggestionMusic is Resource.Success) {
-                val youtubeDeferredList = suggestionMusic.data.map {
-                    async {
-                        val youTubeInfo = youtubeApi.getYoutubeInfo(it.youtubeUrl)
-                        println("LOGEE $youTubeInfo")
-                    }
-                }
-                val youtubeInfo = youtubeDeferredList.awaitAll()
                 suggestionMusic.map {
 
                 }

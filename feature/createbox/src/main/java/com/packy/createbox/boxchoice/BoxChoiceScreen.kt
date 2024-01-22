@@ -93,7 +93,8 @@ fun BoxChoiceScreen(
             PackyButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
+                    .height(48.dp)
+                    .padding(horizontal = 24.dp),
                 style = buttonStyle.large.black,
                 text = Strings.SAVE,
                 enabled = uiState.selectedBox != null

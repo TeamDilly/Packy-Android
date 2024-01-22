@@ -105,6 +105,7 @@ fun BoxAddInfoScreen(
                     .padding(horizontal = 24.dp)
                     .imePadding()
                     .fillMaxWidth(),
+                enabled = uiState.toName.isNotEmpty() && uiState.fromName.isNotEmpty(),
                 style = buttonStyle.large.black,
                 text = Strings.NEXT,
                 onClick = {

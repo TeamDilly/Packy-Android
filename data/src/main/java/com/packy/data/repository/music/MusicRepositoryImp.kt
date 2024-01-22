@@ -1,7 +1,9 @@
 package com.packy.data.repository.music
 
 import com.packy.data.model.createbox.toEntity
+import com.packy.data.model.music.SuggestionMusicDto
 import com.packy.data.model.music.toEntity
+import com.packy.data.model.youtube.YoutubeInfoDto
 import com.packy.data.remote.music.MusicService
 import com.packy.data.remote.youtube.YoutubeService
 import com.packy.domain.model.music.Music
@@ -12,32 +14,42 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MusicRepositoryImp @Inject constructor(
     private val api: MusicService,
+    private val youtubeService: YoutubeService
 ) : MusicRepository {
     override suspend fun suggestionMusic(): Flow<Resource<List<Music>>> = flow {
-        CoroutineScope(Dispatchers.IO).launch {
-            emit(Resource.Loading())
-            val suggestionMusic = api.suggestionMusic()
-            if (suggestionMusic is Resource.Success) {
-                suggestionMusic.map {
-
-                }
-            } else {
-                emit(
-                    Resource.ApiError(
-                        data = null,
-                        code = suggestionMusic.code,
-                        message = suggestionMusic.message
-                    )
+        emit(Resource.Loading())
+        val suggestionMusic = api.suggestionMusic()
+        if (suggestionMusic is Resource.Success) {
+            val youtubeInfo = getMusicInfo(suggestionMusic.data)
+            emit(suggestionMusic.map { it.toEntity(youtubeInfo) })
+        } else {
+            emit(
+                Resource.ApiError(
+                    data = null,
+                    code = suggestionMusic.code,
+                    message = suggestionMusic.message
                 )
-            }
+            )
         }
     }
 
+    private suspend fun getMusicInfo(music: List<SuggestionMusicDto>): List<Pair<Int, YoutubeInfoDto>> =
+        coroutineScope {
+            music.map { music ->
+                async {
+                    val youtubeInfo = youtubeService.getYoutubeInfo(music.youtubeUrl)
+                    music.id to youtubeInfo
+                }
+            }.awaitAll()
+        }
 }

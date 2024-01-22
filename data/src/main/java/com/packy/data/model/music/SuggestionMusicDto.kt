@@ -1,5 +1,6 @@
 package com.packy.data.model.music
 
+import com.packy.data.model.youtube.YoutubeInfoDto
 import com.packy.domain.model.music.Music
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -18,5 +19,9 @@ fun SuggestionMusicDto.toEntity(title: String): Music = Music(
     youtubeUri = youtubeUrl,
 )
 
-//fun List<SuggestionMusicDto>.toEntity(title: List<String>): List<Music> =
-//    this.mapIndexed { it.toEntity(tite.) }
+fun List<SuggestionMusicDto>.toEntity(list: List<Pair<Int, YoutubeInfoDto>>): List<Music> =
+    this.mapNotNull { music ->
+        val youtubeInfo =
+            list.firstOrNull { it.first == music.id }?.second ?: return@mapNotNull null
+        music.toEntity(youtubeInfo.title)
+    }

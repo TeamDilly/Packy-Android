@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,8 +32,8 @@ import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.dotted.DottedDivider
+import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
-import com.packy.mvi.ext.emitMviIntent
 
 @Composable
 fun BoxAddInfoScreen(
@@ -42,6 +43,15 @@ fun BoxAddInfoScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val isKeyboardOpen by keyboardAsState()
+
+    LaunchedEffect(null) {
+        viewModel.effect.collect{ effect ->
+            when(effect){
+                BoxAddInfoEffect.MoveToBack -> navController.popBackStack()
+                BoxAddInfoEffect.SaveBoxInfo -> navController.navigate(CreateBoxRoute.BOX_CHOICE)
+            }
+        }
+    }
 
     Scaffold(
         topBar = {

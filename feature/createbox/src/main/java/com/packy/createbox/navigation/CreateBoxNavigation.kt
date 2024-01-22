@@ -5,10 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.packy.core.animations.PaginationAnimation
+import com.packy.createbox.boxaddinfo.BoxAddInfoScreen
 import com.packy.createbox.boxchoice.BoxChoiceScreen
 import com.packy.createbox.boxguide.BoxGuideScreen
-import com.packy.createbox.boxstart.BoxStartScreen
-import kotlinx.coroutines.flow.SharingCommand
 
 
 fun NavGraphBuilder.createBoxNavGraph(
@@ -19,12 +18,12 @@ fun NavGraphBuilder.createBoxNavGraph(
         route = CreateBoxRoute.CREATE_BOX_NAV_GRAPH
     ){
         composable(
-            route = CreateBoxRoute.BOX_START,
+            route = CreateBoxRoute.BOX_ADD_INFO,
             enterTransition = {
                 PaginationAnimation.slidInTop()
             }
         ){
-            BoxStartScreen(navController = navController)
+            BoxAddInfoScreen(navController = navController)
         }
         composable(
             route = CreateBoxRoute.BOX_CHOICE,
@@ -50,5 +49,5 @@ object CreateBoxRoute{
 
     const val BOX_CHOICE = "boxChoice"
     const val BOX_GUIDE = "boxGuide"
-    const val BOX_START = "boxStart"
+    const val BOX_ADD_INFO = "boxAddInfo"
 }

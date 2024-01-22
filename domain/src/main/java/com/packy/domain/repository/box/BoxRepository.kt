@@ -5,5 +5,5 @@ import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface BoxRepository {
-    suspend fun getBoxDesign(): Flow<Resource<BoxDesign>>
+    suspend fun getBoxDesign(): Flow<Resource<List<BoxDesign>>>
 }

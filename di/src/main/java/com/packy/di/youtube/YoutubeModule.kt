@@ -1,3 +1,5 @@
+package com.packy.di.youtube
+
 import com.packy.data.remote.youtube.YoutubeService
 import com.packy.data.repository.youtube.YoutubeRepositoryImp
 import com.packy.data.usecase.youtube.YoutubeUseCaseImp

@@ -92,7 +92,7 @@ fun BoxAddInfoScreen(
                 }
                 DottedDivider(modifier = Modifier.padding(vertical = 16.dp))
                 AddInfoForm(
-                    text = uiState.toName,
+                    text = uiState.fromName,
                     title = Strings.BOX_ADD_INFO_RECEIVER
                 ) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeFromName(it))

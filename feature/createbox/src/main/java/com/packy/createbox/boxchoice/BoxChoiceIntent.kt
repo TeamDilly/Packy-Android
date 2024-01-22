@@ -1,5 +1,6 @@
 package com.packy.createbox.boxchoice
 
+import com.packy.domain.model.box.BoxDesign
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
@@ -12,12 +13,6 @@ sealed interface BoxChoiceIntent : MviIntent {
 
     data class ChangeSelectBox(val selectedBox: BoxDesign) : BoxChoiceIntent
 }
-
-data class BoxDesign(
-    val id: Int,
-    val boxTopUri: String,
-    val boxBottomUri: String,
-)
 
 data class BoxChoiceState(
     val selectedBox: BoxDesign?,

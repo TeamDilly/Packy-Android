@@ -11,10 +11,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,6 +42,10 @@ fun BoxChoiceScreen(
     viewModel: BoxChoiceViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(viewModel) {
+        viewModel.getBoxDesign()
+    }
 
     Scaffold(
         topBar = {
@@ -77,6 +85,7 @@ fun BoxChoiceScreen(
                     .padding(horizontal = 75.dp)
                     .aspectRatio(1f),
                 model = uiState.selectedBox?.boxTopUri,
+                contentScale = ContentScale.Crop,
                 contentDescription = "Selected Box"
             )
             Spacer(height = 40.dp)
@@ -87,7 +96,14 @@ fun BoxChoiceScreen(
                     .padding(horizontal = 40.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-
+                items(uiState.boxDesignList) { boxDesign ->
+                    GlideImage(
+                        modifier = Modifier.clip(RoundedCornerShape(12.dp)),
+                        model = boxDesign.boxTopUri,
+                        contentScale = ContentScale.Crop,
+                        contentDescription = "Box Design"
+                    )
+                }
             }
             Spacer(1f)
             PackyButton(

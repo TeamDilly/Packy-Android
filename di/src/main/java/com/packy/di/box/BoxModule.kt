@@ -3,6 +3,7 @@ package com.packy.di.box
 import com.packy.data.remote.box.BoxService
 import com.packy.data.repository.box.BoxRepositoryImp
 import com.packy.data.usecase.box.GetBoxDesignUseCaseImp
+import com.packy.di.network.Packy
 import com.packy.domain.repository.box.BoxRepository
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import dagger.Binds
@@ -18,7 +19,10 @@ import javax.inject.Singleton
 object BoxServiceModule {
     @Provides
     @Singleton
-    fun provideBoxService(httpClient: HttpClient): BoxService = BoxService(httpClient)
+    fun provideBoxService(
+        @Packy httpClient: HttpClient
+    ): BoxService =
+        BoxService(httpClient)
 }
 
 @Module

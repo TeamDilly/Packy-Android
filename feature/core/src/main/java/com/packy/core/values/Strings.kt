@@ -30,6 +30,13 @@ object Strings {
     const val TERMS_AGREEMENT_PERSONAL_ALLOW = "(필수) 개인정보 수집 및 이용안내"
     const val TERMS_AGREEMENT_NOTIFICATION_ALLOW = "(선택) 이벤트 및 마케팅 수신 동의"
 
+    // box add info
+    const val BOX_ADD_INFO_TITLE = "패키와 함께 마음을 담은\n선물박스를 만들어볼까요?"
+    const val BOX_ADD_INFO_DESCRIPTION = "보내는 사람과 받는 사람의 이름을 적어주세요"
+    const val BOX_ADD_INFO_SENDER = "To."
+    const val BOX_ADD_INFO_RECEIVER = "From."
+    const val BOX_ADD_INFO_PLACEHOLDER = "6자까지 입력할 수 있어요"
+
     // crateBox
     const val CRATE_BOX_MUSIC = "음악 추가하기"
     const val CHOOSE_YOUR_MUSIC_TITLE = "직접 음악 선택하기"

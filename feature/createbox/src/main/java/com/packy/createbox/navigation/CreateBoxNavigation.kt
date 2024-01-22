@@ -15,7 +15,7 @@ fun NavGraphBuilder.createBoxNavGraph(
 ) {
     navigation(
         startDestination = CreateBoxRoute.BOX_ADD_INFO,
-        route = CreateBoxRoute.CREATE_BOX_NAV_GRAPH
+        route = CreateBoxRoute.CREATE_BOX_NAV_GRAPH,
     ){
         composable(
             route = CreateBoxRoute.BOX_ADD_INFO,
@@ -29,6 +29,9 @@ fun NavGraphBuilder.createBoxNavGraph(
             route = CreateBoxRoute.BOX_CHOICE,
             enterTransition = {
                 PaginationAnimation.slidInToStart()
+            },
+            exitTransition = {
+                PaginationAnimation.slidOutToEnd()
             }
         ){
             BoxChoiceScreen(navController = navController)

@@ -45,8 +45,8 @@ fun BoxAddInfoScreen(
     val isKeyboardOpen by keyboardAsState()
 
     LaunchedEffect(null) {
-        viewModel.effect.collect{ effect ->
-            when(effect){
+        viewModel.effect.collect { effect ->
+            when (effect) {
                 BoxAddInfoEffect.MoveToBack -> navController.popBackStack()
                 BoxAddInfoEffect.SaveBoxInfo -> navController.navigate(CreateBoxRoute.BOX_CHOICE)
             }
@@ -59,7 +59,7 @@ fun BoxAddInfoScreen(
                 .startIconButton(
                     icon = R.drawable.arrow_left
                 ) {
-                    navController.popBackStack()
+                    viewModel.emitIntent(BoxAddInfoIntent.OnBackClick)
                 }
                 .build(
                     modifier = Modifier.padding(top = 12.dp)
@@ -84,11 +84,17 @@ fun BoxAddInfoScreen(
                     )
                     .clip(RoundedCornerShape(16.dp)),
             ) {
-                AddInfoForm(uiState.toName) {
+                AddInfoForm(
+                    text = uiState.toName,
+                    title = Strings.BOX_ADD_INFO_SENDER
+                ) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeToName(it))
                 }
                 DottedDivider(modifier = Modifier.padding(vertical = 16.dp))
-                AddInfoForm(uiState.fromName) {
+                AddInfoForm(
+                    text = uiState.toName,
+                    title = Strings.BOX_ADD_INFO_RECEIVER
+                ) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeFromName(it))
                 }
             }
@@ -133,6 +139,7 @@ private fun ColumnScope.BoxAddInfoTitle() {
 @Composable
 private fun AddInfoForm(
     text: String,
+    title: String,
     onChange: (String) -> Unit
 ) {
     Row(
@@ -140,7 +147,7 @@ private fun AddInfoForm(
     ) {
         Spacer(width = 20.dp)
         Text(
-            text = Strings.BOX_ADD_INFO_SENDER,
+            text = title,
             style = PackyTheme.typography.body02,
             color = PackyTheme.color.gray900
         )

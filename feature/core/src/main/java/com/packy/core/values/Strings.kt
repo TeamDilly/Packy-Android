@@ -37,6 +37,9 @@ object Strings {
     const val BOX_ADD_INFO_RECEIVER = "From."
     const val BOX_ADD_INFO_PLACEHOLDER = "6자까지 입력할 수 있어요"
 
+    // box choice
+    const val BOX_CHOICE_TITLE = "마음에 드는 선물박스를\n골라주세요"
+
     // crateBox
     const val CRATE_BOX_MUSIC = "음악 추가하기"
     const val CHOOSE_YOUR_MUSIC_TITLE = "직접 음악 선택하기"

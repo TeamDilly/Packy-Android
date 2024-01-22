@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,16 +25,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.packy.core.common.Spacer
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
+import com.packy.core.designsystem.indicator.PackyIndicator
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
-import com.packy.core.widget.youtube.YouTubeCdPlayer
 import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.YoutubeState
 import com.packy.createbox.createboax.common.BottomSheetTitle
@@ -43,8 +41,6 @@ import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
-import java.sql.RowId
-import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -130,6 +126,13 @@ fun CreateBoxPackyMusicScreen(
                     }
                 }
             }
+            Spacer(32.dp)
+            PackyIndicator(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 24.dp),
+                pagerState = pagerState
+            )
             Spacer(1f)
             PackyButton(
                 modifier = Modifier.padding(horizontal = 24.dp),
@@ -150,7 +153,6 @@ private fun YoutubePlayerFrom(
     stateChange: emitMviIntent<CreateBoxPackyMusicIntent>,
     index: Int
 ) {
-    println("YoutubePlayerFrom: $packMusic")
     Column(
         modifier = modifier
             .fillMaxWidth()

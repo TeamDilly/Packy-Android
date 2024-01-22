@@ -10,16 +10,17 @@ sealed interface BoxChoiceIntent : MviIntent {
 
     data object OnSaveClick : BoxChoiceIntent
 
-    data class ChangeSelectBox(val selectedBoxId: Int) : BoxChoiceIntent
+    data class ChangeSelectBox(val selectedBox: BoxDesign) : BoxChoiceIntent
 }
 
 data class BoxDesign(
     val id: Int,
-    val imageUri: String
+    val boxTopUri: String,
+    val boxBottomUri: String,
 )
 
 data class BoxChoiceState(
-    val selectedBoxId: Int?,
+    val selectedBox: BoxDesign?,
     val boxDesignList: List<BoxDesign>
 ) : UiState
 

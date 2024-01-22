@@ -8,7 +8,7 @@ import javax.inject.Inject
 class BoxChoiceViewModel @Inject constructor() :
     MviViewModel<BoxChoiceIntent, BoxChoiceState, BoxChoiceEffect>() {
     override fun createInitialState(): BoxChoiceState = BoxChoiceState(
-        selectedBoxId = null,
+        selectedBox = null,
         boxDesignList = emptyList()
     )
 
@@ -17,7 +17,7 @@ class BoxChoiceViewModel @Inject constructor() :
         subscribeIntent<BoxChoiceIntent.OnCloseClick> { sendEffect(BoxChoiceEffect.CloseCreateBox) }
         subscribeIntent<BoxChoiceIntent.OnSaveClick> { sendEffect(BoxChoiceEffect.SaveBoxInfo) }
         subscribeStateIntent<BoxChoiceIntent.ChangeSelectBox> { state, intent ->
-            state.copy(selectedBoxId = intent.selectedBoxId)
+            state.copy(selectedBox = intent.selectedBox)
         }
     }
 }

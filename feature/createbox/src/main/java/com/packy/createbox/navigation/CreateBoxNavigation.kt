@@ -14,7 +14,7 @@ fun NavGraphBuilder.createBoxNavGraph(
     navController: NavHostController,
 ) {
     navigation(
-        startDestination = CreateBoxRoute.BOX_GUIDE,
+        startDestination = CreateBoxRoute.BOX_ADD_INFO,
         route = CreateBoxRoute.CREATE_BOX_NAV_GRAPH
     ){
         composable(

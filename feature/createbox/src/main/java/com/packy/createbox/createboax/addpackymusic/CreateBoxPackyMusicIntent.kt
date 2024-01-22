@@ -17,8 +17,7 @@ sealed interface CreateBoxPackyMusicIntent : MviIntent {
 data class PackyMusic(
     val title: String,
     val hashTag: List<String>,
-    val videoId: String,
-    val thumbnail: String,
+    val videoId: String?,
     val state: YoutubeState
 )
 

@@ -3,8 +3,15 @@ package com.packy.createbox.createboax.addpackymusic
 import androidx.lifecycle.viewModelScope
 import com.packy.core.widget.youtube.YoutubeState
 import com.packy.domain.usecase.music.SuggestionMusicUseCase
+import com.packy.lib.utils.filterSuccess
+import com.packy.lib.utils.map
+import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,17 +20,10 @@ class CreateBoxPackyMusicViewModel @Inject constructor(
     private val suggestionMusicUseCase: SuggestionMusicUseCase
 ) :
     MviViewModel<CreateBoxPackyMusicIntent, CreateBoxPackyMusicState, CreateBoxPackyMusicEffect>() {
-        init {
-            viewModelScope.launch {
-                suggestionMusicUseCase.suggestionMusic()
-                    .collect{
-                        println("LOGEE resource $it")
-                    }
-            }
-        }
+
     override fun createInitialState(): CreateBoxPackyMusicState = CreateBoxPackyMusicState(
         currentMusicIndex = 0,
-        music = dumyMusic
+        music = emptyList()
     )
 
     override fun handleIntent() {
@@ -51,36 +51,23 @@ class CreateBoxPackyMusicViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        val dumyMusic: List<PackyMusic> = listOf(
-            PackyMusic(
-                title = "Dynamite",
-                hashTag = listOf("#BTS", "#Dynamite"),
-                videoId = "gdZLi9oWNZg",
-                thumbnail = "https://i.ytimg.com/vi/gqmtefROI_0/maxresdefault.jpg",
-                state = YoutubeState.INIT
-            ),
-            PackyMusic(
-                title = "Butter",
-                hashTag = listOf("#BTS", "#Butter"),
-                videoId = "WMweEpGlu_U",
-                thumbnail = "https://i.ytimg.com/vi/WMweEpGlu_U/maxresdefault.jpg",
-                state = YoutubeState.INIT
-            ),
-            PackyMusic(
-                title = "Permission to Dance",
-                hashTag = listOf("#BTS", "#PermissionToDance"),
-                videoId = "CuklIb9d3fI",
-                thumbnail = "https://i.ytimg.com/vi/CuklIb9d3fI/maxresdefault.jpg",
-                state = YoutubeState.INIT
-            ),
-            PackyMusic(
-                title = "Life Goes On",
-                hashTag = listOf("#BTS", "#LifeGoesOn"),
-                videoId = "2CGPWmTqYkU",
-                thumbnail = "https://i.ytimg.com/vi/2CGPWmTqYkU/maxresdefault.jpg",
-                state = YoutubeState.INIT
-            ),
-        )
+    fun getSuggestionMusic() {
+        viewModelScope.launch {
+            val packyMusicList = suggestionMusicUseCase.suggestionMusic()
+                .filterSuccess()
+                .unwrapResource()
+                .single()
+                .map { music ->
+                    PackyMusic(
+                        title = music.title,
+                        hashTag = music.hashtags,
+                        videoId = music.videoId,
+                        state = YoutubeState.INIT
+                    )
+                }
+            setState {
+                it.copy(music = packyMusicList)
+            }
+        }
     }
 }

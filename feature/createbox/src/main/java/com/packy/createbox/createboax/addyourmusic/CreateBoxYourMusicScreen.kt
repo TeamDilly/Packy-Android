@@ -32,11 +32,11 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.YoutubeState
-import com.packy.core.widget.youtube.extractYouTubeVideoId
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.feature.core.R
+import com.packy.lib.ext.extractYouTubeVideoId
 import com.packy.mvi.ext.emitMviIntent
 
 @Composable

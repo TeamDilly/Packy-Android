@@ -3,6 +3,7 @@ package com.packy.lib.utils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
 
 fun <T, R> Resource<T>.map(
     mapper: (T) -> R
@@ -16,3 +17,5 @@ fun <T, R> Resource<T>.map(
 
 fun <T> Flow<Resource<T>>.filterSuccess(): Flow<Resource.Success<T>> =
     filterIsInstance<Resource.Success<T>>()
+
+fun <T> Flow<Resource.Success<T>>.unwrapResource(): Flow<T> = this.map { it.data }

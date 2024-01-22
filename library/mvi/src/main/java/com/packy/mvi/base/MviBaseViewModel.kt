@@ -48,7 +48,7 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
         this.onCreate()
     }
 
-    protected open fun onCreate(){}
+    protected open fun onCreate() {}
 
 
     protected abstract fun handleIntent()
@@ -59,8 +59,8 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
         }
     }
 
-    protected fun setState(builder: () -> State) {
-        setState(builder())
+    protected fun setState(builder: (State) -> State) {
+        setState(builder(currentState))
     }
 
     fun emitIntent(intent: Intent) {

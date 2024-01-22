@@ -1,4 +1,4 @@
-package com.packy.core.widget.youtube
+package com.packy.lib.ext
 
 fun extractYouTubeVideoId(url: String): String? {
     val videoIdKey = "v="

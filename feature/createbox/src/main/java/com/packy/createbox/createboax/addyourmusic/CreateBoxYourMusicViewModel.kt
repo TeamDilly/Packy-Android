@@ -1,6 +1,6 @@
 package com.packy.createbox.createboax.addyourmusic
 
-import com.packy.core.widget.youtube.validationYoutubeVideoId
+import com.packy.lib.ext.validationYoutubeVideoId
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

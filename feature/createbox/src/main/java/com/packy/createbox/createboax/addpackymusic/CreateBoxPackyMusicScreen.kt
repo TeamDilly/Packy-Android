@@ -1,6 +1,7 @@
 package com.packy.createbox.createboax.addpackymusic
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,13 +27,16 @@ import com.packy.core.common.Spacer
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
+import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.youtube.YouTubeCdPlayer
+import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.YoutubeState
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.feature.core.R
+import com.packy.mvi.ext.emitMviIntent
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -44,9 +49,12 @@ fun CreateBoxPackyMusicScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val pagerState = rememberPagerState(pageCount = {
-        CreateBoxPackyMusicViewModel.dumyMusic.size
+        uiState.music.size
     })
 
+    LaunchedEffect(viewModel) {
+        viewModel.getSuggestionMusic()
+    }
 
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
@@ -59,6 +67,7 @@ fun CreateBoxPackyMusicScreen(
                         inclusive = true
                     )
                 }
+
                 CreateBoxPackyMusicEffect.MoveToBack -> navController.popBackStack()
             }
         }
@@ -95,8 +104,7 @@ fun CreateBoxPackyMusicScreen(
                     .fillMaxWidth()
                     .weight(1f),
                 state = pagerState,
-                beyondBoundsPageCount = 2,
-                contentPadding = PaddingValues(horizontal = 70.dp)
+                contentPadding = PaddingValues(horizontal = 24.dp)
             ) { index ->
                 if (pagerState.currentPage != index) {
                     CreateBoxPackyMusicIntent.ChangeMusicState(
@@ -104,35 +112,17 @@ fun CreateBoxPackyMusicScreen(
                         YoutubeState.PAUSED
                     )
                 }
-                val pageOffset = (
-                        (pagerState.currentPage - index) + pagerState
-                            .currentPageOffsetFraction
-                        ).absoluteValue
-                Box(modifier = Modifier.fillMaxSize()) {
-                    YouTubeCdPlayer(
-                        modifier = Modifier
-                            .size(
-                                180.dp * lerp(
-                                    start = 0.88f,
-                                    stop = 1f,
-                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                )
-                            )
-                            .align(Alignment.Center),
-                        videoId = uiState.music[index].videoId,
-                        thumbnail = uiState.music[index].thumbnail,
-                        youtubeState = uiState.music[index].state,
-                        stateListener = { state ->
-                            viewModel.emitIntent(
-                                CreateBoxPackyMusicIntent.ChangeMusicState(
-                                    index,
-                                    state
-                                )
-                            )
-                        },
-                        autoPlay = false
-                    )
+                uiState.music.getOrNull(index)?.let { packMusic ->
+                    packMusic.videoId?.let { videoId ->
+                        YoutubePlayer(
+                            videoId = videoId,
+                            packMusic = packMusic,
+                            stateChange = viewModel::emitIntent,
+                            index = index
+                        )
+                    }
                 }
+
             }
             Spacer(1f)
             PackyButton(
@@ -143,5 +133,36 @@ fun CreateBoxPackyMusicScreen(
             }
             Spacer(height = 16.dp)
         }
+    }
+}
+
+@Composable
+private fun YoutubePlayer(
+    modifier: Modifier = Modifier,
+    videoId: String,
+    packMusic: PackyMusic,
+    stateChange: emitMviIntent<CreateBoxPackyMusicIntent>,
+    index: Int
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                color = PackyTheme.color.gray100,
+                shape = RoundedCornerShape(16.dp)
+            )
+    ) {
+        YoutubePlayer(
+            videoId = videoId,
+            youtubeState = packMusic.state,
+            stateListener = { state ->
+                stateChange(
+                    CreateBoxPackyMusicIntent.ChangeMusicState(
+                        index,
+                        state
+                    )
+                )
+            },
+        )
     }
 }

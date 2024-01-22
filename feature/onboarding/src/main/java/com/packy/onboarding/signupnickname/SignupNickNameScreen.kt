@@ -21,6 +21,7 @@ import com.packy.core.values.Strings.SIGNUP_NICK_NAME_MAX_VALUE
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.textfield.PackyTextField
+import com.packy.core.values.Constant.MAX_NICK_NAME_LENGTH
 import com.packy.onboarding.navigation.OnboardingRoute
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -69,7 +70,7 @@ fun SignupNickNameScreen(
                 },
                 showTrailingIcon = uiState.inputNickName?.isNotEmpty() ?: false,
                 placeholder = SIGNUP_NICK_NAME_MAX_VALUE,
-                maxValues = 6
+                maxValues = MAX_NICK_NAME_LENGTH
             )
             Spacer(1f)
             PackyButton(

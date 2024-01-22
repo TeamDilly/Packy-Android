@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class RootActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             PackyTheme {
                 val navController = rememberNavController()

@@ -11,16 +11,18 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
+import io.ktor.client.HttpClient
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object MusicServiceModule {
     @Provides
+    @Singleton
     fun providerMusicService(
-        @Packy retrofit: Retrofit
+        @Packy httpClient: HttpClient
     ): MusicService =
-        retrofit.create(MusicService::class.java)
+        MusicService(httpClient)
 }
 
 @Module

@@ -19,7 +19,9 @@ import javax.inject.Singleton
 object SignInServiceModule {
     @Provides
     @Singleton
-    fun provideSignInService(httpClient: HttpClient): SignInService = SignInService(httpClient)
+    fun provideSignInService(
+        @Packy httpClient: HttpClient
+    ): SignInService = SignInService(httpClient)
 }
 
 @Module

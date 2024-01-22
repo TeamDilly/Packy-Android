@@ -3,6 +3,7 @@ package com.packy.di.createbox
 import com.packy.data.remote.createbox.LatterService
 import com.packy.data.repository.createbox.LatterRepositoryImp
 import com.packy.data.usecase.createbox.LatterUseCaseImp
+import com.packy.di.network.Packy
 import com.packy.domain.repository.createbox.LatterRepository
 import com.packy.domain.usecase.createbox.LatterUseCase
 import dagger.Binds
@@ -18,7 +19,9 @@ import javax.inject.Singleton
 object LatterServiceModule {
     @Provides
     @Singleton
-    fun provideLatterService(httpClient: HttpClient): LatterService = LatterService(httpClient)
+    fun provideLatterService(
+        @Packy httpClient: HttpClient
+    ): LatterService = LatterService(httpClient)
 }
 
 @Module

@@ -35,13 +35,12 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object NetworkModule {
+object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideKtorClient(
-        accountManagerHelper: AccountManagerHelper,
-    ): HttpClient {
+    @Default
+    fun provideHttpClient(): HttpClient {
         return HttpClient(Android) {
             install(ContentNegotiation) {
                 json(Json {
@@ -58,13 +57,41 @@ internal object NetworkModule {
                 }
                 level = LogLevel.ALL
             }
+        }
+    }
+
+    @Provides
+    @Singleton
+    @Packy
+    fun provideKtorClient(
+        @Default httpClient: HttpClient,
+        accountManagerHelper: AccountManagerHelper,
+    ): HttpClient {
+        return httpClient.config {
             install(DefaultRequest) {
                 url(BuildConfig.BASE_URL)
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 accountManagerHelper.getAutToken()?.let {
                     header("Authorization", it)
                 }
+            }
+        }
+    }
 
+    @Provides
+    @Singleton
+    @Youtube
+    fun provideYoutubeKtorClient(
+        @Default httpClient: HttpClient,
+        accountManagerHelper: AccountManagerHelper,
+    ): HttpClient {
+        return httpClient.config {
+            install(DefaultRequest) {
+                url("https://www.youtube.com/")
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                accountManagerHelper.getAutToken()?.let {
+                    header("Authorization", it)
+                }
             }
         }
     }
@@ -100,21 +127,6 @@ internal object NetworkModule {
 
     @Provides
     @Singleton
-    @Youtube
-    fun providerYoutubeRetrofit(
-        okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory,
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://www.youtube.com/")
-            .addConverterFactory(converterFactory)
-            .client(okHttpClient)
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    @Packy
     fun providerPackyRetorfit(
         okHttpClient: OkHttpClient,
     ): Retrofit {

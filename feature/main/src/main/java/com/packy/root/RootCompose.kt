@@ -1,6 +1,7 @@
 package com.packy.root
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -10,6 +11,7 @@ import com.packy.root.navigation.PackyNavHost
 
 @Composable
 fun RootCompose(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     viewModel: RootComposeViewModel = hiltViewModel()
 ) {
@@ -19,6 +21,7 @@ fun RootCompose(
         OnboardingRoute.ONBOARDING_NAV_GRAPH
     }
     PackyNavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = startDestination,
         loggedIn = {

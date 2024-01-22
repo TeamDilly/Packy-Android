@@ -1,14 +1,22 @@
 package com.packy.data.remote.youtube
 
 import com.packy.data.model.youtube.YoutubeInfoDto
-import retrofit2.http.GET
-import retrofit2.http.Query
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.client.request.url
+import javax.inject.Inject
 
-interface YoutubeService {
+class YoutubeService @Inject constructor(
+    private val httpClient: HttpClient
+) {
 
-    @GET("oembed")
     suspend fun getYoutubeInfo(
-        @Query("url") url: String,
-        @Query("format") format: String = "json"
-    ): YoutubeInfoDto
+        url: String,
+    ): YoutubeInfoDto = httpClient.get {
+        url("oembed")
+        parameter("url", url)
+        parameter("format", "json")
+    }.body()
 }

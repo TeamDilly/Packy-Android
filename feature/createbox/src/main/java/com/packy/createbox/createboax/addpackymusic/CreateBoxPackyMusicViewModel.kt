@@ -1,13 +1,26 @@
 package com.packy.createbox.createboax.addpackymusic
 
+import androidx.lifecycle.viewModelScope
 import com.packy.core.widget.youtube.YoutubeState
+import com.packy.domain.usecase.music.SuggestionMusicUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateBoxPackyMusicViewModel @Inject constructor() :
+class CreateBoxPackyMusicViewModel @Inject constructor(
+    private val suggestionMusicUseCase: SuggestionMusicUseCase
+) :
     MviViewModel<CreateBoxPackyMusicIntent, CreateBoxPackyMusicState, CreateBoxPackyMusicEffect>() {
+        init {
+            viewModelScope.launch {
+                suggestionMusicUseCase.suggestionMusic()
+                    .collect{
+                        println("LOGEE resource $it")
+                    }
+            }
+        }
     override fun createInitialState(): CreateBoxPackyMusicState = CreateBoxPackyMusicState(
         currentMusicIndex = 0,
         music = dumyMusic

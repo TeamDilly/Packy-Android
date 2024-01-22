@@ -18,7 +18,7 @@ import retrofit2.Retrofit
 object SignUpServiceModule {
     @Provides
     fun providerSignUpService(
-        @Packy retrofit: Retrofit
+        retrofit: Retrofit
     ): SignUpService =
         retrofit.create(SignUpService::class.java)
 }

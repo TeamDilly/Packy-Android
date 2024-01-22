@@ -1,11 +1,17 @@
 package com.packy.data.remote.music
 
-import com.packy.data.model.music.SuggestionMusic
+import com.packy.data.model.music.SuggestionMusicDto
 import com.packy.lib.utils.Resource
-import retrofit2.http.GET
+import com.packy.lib.utils.toResource
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+import javax.inject.Inject
 
-interface MusicService {
+class MusicService @Inject constructor(
+    private val httpClient: HttpClient
+) {
 
-    @GET("api/v1/admin/music")
-    suspend fun suggestionMusic(): Resource<List<SuggestionMusic>>
+    suspend fun suggestionMusic(): Resource<List<SuggestionMusicDto>> =
+        httpClient.get(urlString = "api/v1/admin/music")
+            .toResource()
 }

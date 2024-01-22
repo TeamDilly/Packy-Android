@@ -12,8 +12,8 @@ import kotlinx.serialization.KSerializer as KSerializer1
 @Serializable
 sealed class Resource<T>(
     @SerialName("data") open val data: T? = null,
-    @SerialName("message") open val message: String? = null,
-    @SerialName("code") open val code: String? = null
+    @SerialName("message") open val message: String = EMPTY_MESSAGE,
+    @SerialName("code") open val code: String = EMPTY_CODE
 ) {
 
     data class Success<T>(

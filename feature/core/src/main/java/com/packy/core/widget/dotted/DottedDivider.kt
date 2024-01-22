@@ -15,7 +15,7 @@ import com.packy.core.theme.PackyTheme
 
 @Composable
 fun DottedDivider(
-    thickness: Dp,
+    thickness: Dp = 1.dp,
     color: Color = PackyTheme.color.gray400,
     phase: Float = 10f,
     intervals: FloatArray = floatArrayOf(10f, 10f),

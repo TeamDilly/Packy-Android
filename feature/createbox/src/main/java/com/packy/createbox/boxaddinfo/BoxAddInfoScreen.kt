@@ -1,8 +1,12 @@
 package com.packy.createbox.boxaddinfo
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
@@ -19,10 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.packy.core.common.Spacer
+import com.packy.core.common.keyboardAsState
+import com.packy.core.designsystem.button.PackyButton
+import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.textfield.PackyTextField
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.core.widget.dotted.DottedDivider
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
 
@@ -33,6 +41,7 @@ fun BoxAddInfoScreen(
     viewModel: BoxAddInfoViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val isKeyboardOpen by keyboardAsState()
 
     Scaffold(
         topBar = {
@@ -53,18 +62,9 @@ fun BoxAddInfoScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(height = 24.dp)
-            Text(
-                text = Strings.BOX_ADD_INFO_TITLE,
-                style = PackyTheme.typography.heading01.copy(textAlign = TextAlign.Center),
-                color = PackyTheme.color.gray900
-            )
-            Spacer(height = 8.dp)
-            Text(
-                text = Strings.BOX_ADD_INFO_DESCRIPTION,
-                style = PackyTheme.typography.body04,
-                color = PackyTheme.color.gray600
-            )
-            Spacer(height = 37.dp)
+            AnimatedVisibility(!isKeyboardOpen) {
+                BoxAddInfoTitle()
+            }
             Column(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
@@ -77,11 +77,46 @@ fun BoxAddInfoScreen(
                 AddInfoForm(uiState.toName) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeToName(it))
                 }
+                DottedDivider(modifier = Modifier.padding(vertical = 16.dp))
                 AddInfoForm(uiState.fromName) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeFromName(it))
                 }
             }
+            Spacer(height = 20.dp)
+            Spacer(1f)
+            PackyButton(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .imePadding()
+                    .fillMaxWidth(),
+                style = buttonStyle.large.black,
+                text = Strings.NEXT,
+                onClick = {
+                    viewModel.emitIntent(BoxAddInfoIntent.OnSaveButtonClick)
+                }
+            )
+            Spacer(height = 16.dp)
         }
+    }
+}
+
+@Composable
+private fun ColumnScope.BoxAddInfoTitle() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = Strings.BOX_ADD_INFO_TITLE,
+            style = PackyTheme.typography.heading01.copy(textAlign = TextAlign.Center),
+            color = PackyTheme.color.gray900
+        )
+        Spacer(height = 8.dp)
+        Text(
+            text = Strings.BOX_ADD_INFO_DESCRIPTION,
+            style = PackyTheme.typography.body04,
+            color = PackyTheme.color.gray600
+        )
+        Spacer(height = 40.dp)
     }
 }
 

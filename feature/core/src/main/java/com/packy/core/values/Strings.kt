@@ -7,6 +7,7 @@ object Strings {
     const val SKIP = "건너뛰기"
     const val SAVE = "저장"
     const val CONFIRM = "확인"
+    const val COMPLETE = "완성"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"

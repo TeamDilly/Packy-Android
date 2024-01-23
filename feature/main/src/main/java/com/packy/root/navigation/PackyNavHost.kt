@@ -11,6 +11,7 @@ import com.packy.onboarding.navigation.onboardingNavGraph
 fun PackyNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    closeCreateBox: () -> Unit,
     startDestination: String,
     loggedIn: () -> Unit
 ) {
@@ -19,7 +20,13 @@ fun PackyNavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
-        onboardingNavGraph(navController, loggedIn)
-        createBoxNavGraph(navController)
+        onboardingNavGraph(
+            navController,
+            loggedIn
+        )
+        createBoxNavGraph(
+            navController,
+            closeCreateBox
+        )
     }
 }

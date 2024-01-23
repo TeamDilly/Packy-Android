@@ -30,6 +30,9 @@ fun RootCompose(
                     inclusive = true
                 }
             }
+        },
+        closeCreateBox = {
+            // FIXME : 박스만들기 이탈화면 구현 필요
         }
     )
 }

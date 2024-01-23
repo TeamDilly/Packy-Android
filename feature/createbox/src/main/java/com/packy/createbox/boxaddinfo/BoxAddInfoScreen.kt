@@ -39,6 +39,7 @@ import com.packy.feature.core.R
 fun BoxAddInfoScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
+    closeCreateBox: () -> Unit,
     viewModel: BoxAddInfoViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()

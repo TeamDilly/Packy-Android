@@ -32,6 +32,7 @@ import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.createbox.createboax.addlatter.CreateBoxLatterIntent
+import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -39,12 +40,27 @@ import com.packy.feature.core.R
 fun BoxChoiceScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
+    closeCreateBox: () -> Unit,
     viewModel: BoxChoiceViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(viewModel) {
         viewModel.getBoxDesign()
+    }
+
+    LaunchedEffect(null) {
+        viewModel.effect.collect{ effect ->
+            when(effect){
+                BoxChoiceEffect.CloseCreateBox -> closeCreateBox()
+                BoxChoiceEffect.MoveToBack -> {
+                    navController.popBackStack()
+                }
+                BoxChoiceEffect.SaveBoxInfo -> {
+                    CreateBoxRoute.BOX_GUIDE
+                }
+            }
+        }
     }
 
     Scaffold(

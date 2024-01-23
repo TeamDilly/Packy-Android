@@ -13,31 +13,41 @@ import com.packy.createbox.boxguide.BoxGuideScreen
 
 fun NavGraphBuilder.createBoxNavGraph(
     navController: NavHostController,
+    closeCreateBox: () -> Unit
 ) {
     navigation(
         startDestination = CreateBoxRoute.BOX_ADD_INFO,
         route = CreateBoxRoute.CREATE_BOX_NAV_GRAPH,
-    ){
+    ) {
         asRootComposable(
             route = CreateBoxRoute.BOX_ADD_INFO,
 
-        ){
-            BoxAddInfoScreen(navController = navController)
+            ) {
+            BoxAddInfoScreen(
+                navController = navController,
+                closeCreateBox = closeCreateBox
+            )
         }
         asPagingComposable(
             route = CreateBoxRoute.BOX_CHOICE,
-        ){
-            BoxChoiceScreen(navController = navController)
+        ) {
+            BoxChoiceScreen(
+                navController = navController,
+                closeCreateBox = closeCreateBox
+            )
         }
         asPagingComposable(
             route = CreateBoxRoute.BOX_GUIDE,
-        ){
-            BoxGuideScreen(navController = navController)
+        ) {
+            BoxGuideScreen(
+                navController = navController,
+                closeCreateBox = closeCreateBox
+            )
         }
     }
 }
 
-object CreateBoxRoute{
+object CreateBoxRoute {
     const val CREATE_BOX_NAV_GRAPH = "createBoxNavGraph"
 
     const val BOX_CHOICE = "boxChoice"

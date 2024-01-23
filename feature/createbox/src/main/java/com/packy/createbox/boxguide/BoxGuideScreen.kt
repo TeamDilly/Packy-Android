@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun BoxGuideScreen(
     modifier: Modifier = Modifier,
+    closeCreateBox: () -> Unit,
     navController: NavController,
 ) {
     val bottomSheetState = SheetState(skipHiddenState = false, skipPartiallyExpanded = false)

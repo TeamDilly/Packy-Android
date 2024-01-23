@@ -16,6 +16,11 @@ class BoxGuideViewModel @Inject constructor() :
     )
 
     override fun handleIntent() {
-
+        subscribeIntent<BoxGuideIntent.OnBackClick> { sendEffect(BoxGuideEffect.MoveToBack) }
+        subscribeIntent<BoxGuideIntent.OnSaveClick> { sendEffect(BoxGuideEffect.SaveBox) }
+        subscribeIntent<BoxGuideIntent.ShowBottomSheet> { sendEffect(BoxGuideEffect.ShowBottomSheet(it.boxGuideBottomSheetRoute)) }
+        subscribeStateIntent<BoxGuideIntent.ChangeBoxContent>{ state, intent ->
+            intent.boxGuideState
+        }
     }
 }

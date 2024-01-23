@@ -7,7 +7,6 @@ import com.packy.mvi.mvi.UiState
 sealed interface BoxGuideIntent : MviIntent {
     data object OnSaveClick : BoxGuideIntent
     data object OnBackClick : BoxGuideIntent
-    data object OnChangedBoxClick : BoxGuideIntent
     data class ShowBottomSheet(
         val boxGuideBottomSheetRoute: BoxGuideBottomSheetRoute
     ) : BoxGuideIntent
@@ -50,7 +49,7 @@ data class BoxGuideState(
 
 sealed interface BoxGuideEffect : SideEffect {
     data object MoveToBack : BoxGuideEffect
-    data object SaveBoxInfo : BoxGuideEffect
+    data object SaveBox : BoxGuideEffect
     data object OnChangedBox : BoxGuideEffect
     data class ShowBottomSheet(
         val boxGuideBottomSheetRoute: BoxGuideBottomSheetRoute

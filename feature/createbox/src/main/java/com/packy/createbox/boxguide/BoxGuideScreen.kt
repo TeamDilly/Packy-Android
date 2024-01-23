@@ -26,6 +26,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -75,6 +76,22 @@ fun BoxGuideScreen(
     var snackBarVisible by remember { mutableStateOf(false) }
 
     var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.ADD_MUSIC) }
+
+    LaunchedEffect(null) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is BoxGuideEffect.MoveToBack -> navController.popBackStack()
+                is BoxGuideEffect.OnChangedBox -> TODO()
+                is BoxGuideEffect.SaveBox -> TODO()
+                is BoxGuideEffect.ShowBottomSheet -> {
+                    bottomSheetRoute = effect.boxGuideBottomSheetRoute
+                    scope.launch {
+                        scaffoldState.bottomSheetState.expand()
+                    }
+                }
+            }
+        }
+    }
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
@@ -148,6 +165,9 @@ fun BoxGuideScreen(
                                 icon = R.drawable.photo,
                                 title = Strings.BOX_GUIDE_PHOTO
                             )
+                        },
+                        onClick = {
+                            viewModel.emitIntent(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_PHOTO))
                         }
                     )
                     Spacer(28.dp)
@@ -184,6 +204,9 @@ fun BoxGuideScreen(
                                 icon = R.drawable.envelope,
                                 title = Strings.BOX_GUIDE_LATTER
                             )
+                        },
+                        onClick = {
+                            viewModel.emitIntent(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_LATTER))
                         }
                     )
                 }
@@ -203,6 +226,9 @@ fun BoxGuideScreen(
                             title = Strings.BOX_GUIDE_MUSIC
                         )
                     },
+                    onClick = {
+                        viewModel.emitIntent(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_MUSIC))
+                    }
                 )
                 Spacer(1f)
                 BottomNavButton(
@@ -316,11 +342,13 @@ private fun BoxPlaceholder(
 private fun BoxGuideContent(
     modifier: Modifier = Modifier,
     inclination: Float = 0f,
+    onClick: () -> Unit = {},
     placeholder: @Composable () -> Unit,
     content: (@Composable () -> Unit)? = null,
 ) {
     Box(
         modifier = modifier
+            .clickableWithoutRipple(onClick = onClick)
     ) {
         Box(
             modifier = Modifier
@@ -472,5 +500,6 @@ private fun BottomSheetNav(
 
         BoxGuideBottomSheetRoute.ADD_STICKER_1 -> TODO()
         BoxGuideBottomSheetRoute.ADD_ADD_STICKER_2 -> TODO()
+        BoxGuideBottomSheetRoute.CHANGE_BOX -> TODO()
     }
 }

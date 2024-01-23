@@ -1,10 +1,14 @@
 package com.packy.createbox.boxguide
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,20 +32,29 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.snackbar.PackySnackBarHost
 import com.packy.core.theme.PackyTheme
+import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
+import com.packy.core.widget.dotted.dottedStroke
+import com.packy.feature.core.R
 import com.packy.createbox.createboax.addlatter.CreateBoxLatterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
-import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
 import kotlinx.coroutines.launch
 
@@ -109,6 +122,131 @@ fun BoxGuideScreen(
                 title = "To.이호이호이호",
                 onBackClick = viewModel::emitIntentThrottle,
                 onSaveClick = viewModel::emitIntentThrottle,
+            )
+            Spacer(height = 31.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Row(
+                    modifier = Modifier,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Spacer(32.dp)
+                    BoxGuideContent(
+                        modifier = Modifier
+                            .aspectRatio(160f / 192f)
+                            .fillMaxWidth()
+                            .weight(2f),
+                        inclination = -3f,
+                        placeholder = {
+                            BoxPlaceholder(
+                                icon = R.drawable.photo,
+                                title = Strings.BOX_GUIDE_PHOTO
+                            )
+                        }
+                    )
+                    Spacer(28.dp)
+                    Sticker(
+                        modifier = Modifier
+                            .aspectRatio(1f / 1f)
+                            .weight(1f),
+                        inclination = 10f,
+                        stickerUri = null
+                    )
+                    Spacer(32.dp)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun BoxPlaceholder(
+    modifier: Modifier = Modifier,
+    @DrawableRes icon: Int,
+    title: String,
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Icon(
+            painter = painterResource(id = icon),
+            contentDescription = "box guide placeholder icon",
+            tint = PackyTheme.color.white,
+        )
+        Spacer(height = 12.dp)
+        Text(
+            text = title,
+            style = PackyTheme.typography.body04,
+            color = PackyTheme.color.white
+        )
+    }
+}
+
+@Composable
+private fun BoxGuideContent(
+    modifier: Modifier = Modifier,
+    inclination: Float = 0f,
+    placeholder: @Composable () -> Unit,
+    content: (@Composable () -> Unit)? = null,
+) {
+    Box(
+        modifier = modifier
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .height(1.dp)
+                .rotate(inclination)
+                .drawBehind {
+                    drawRoundRect(
+                        color = Color.White.copy(alpha = 0.3f),
+                        style = dottedStroke,
+                        cornerRadius = CornerRadius(8.dp.toPx())
+                    )
+                }
+        )
+        Box(
+            modifier = Modifier.align(Alignment.Center)
+        ) {
+            if (content != null) {
+                content()
+            } else {
+                placeholder()
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+private fun Sticker(
+    modifier: Modifier = Modifier,
+    stickerUri: String? = null,
+    inclination: Float = 0f,
+) {
+    Box(modifier = modifier) {
+        if (stickerUri != null) {
+            GlideImage(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .rotate(inclination),
+                model = stickerUri,
+                contentDescription = "sticker image",
+                contentScale = ContentScale.Crop,
+            )
+        } else {
+            Icon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .align(Alignment.Center),
+                painter = painterResource(id = R.drawable.plus_square_dashed),
+                contentDescription = "sticker placeholder icon",
+                tint = PackyTheme.color.white,
             )
         }
     }
@@ -206,5 +344,8 @@ private fun BottomSheetNav(
 
         BoxGuideBottomSheetRoute.ADD_PHOTO ->
             CreateBoxAddPhotoScreen(closeBottomSheet = closeBottomSheet)
+
+        BoxGuideBottomSheetRoute.ADD_STICKER_1 -> TODO()
+        BoxGuideBottomSheetRoute.ADD_ADD_STICKER_2 -> TODO()
     }
 }

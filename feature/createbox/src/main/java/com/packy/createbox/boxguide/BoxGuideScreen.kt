@@ -34,25 +34,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.snackbar.PackySnackBarHost
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
-import com.packy.core.widget.dotted.dottedStroke
+import com.packy.createbox.boxguide.widget.BoxGuideContent
+import com.packy.createbox.boxguide.widget.BoxPlaceholder
+import com.packy.createbox.boxguide.widget.StickerForm
 import com.packy.feature.core.R
 import com.packy.createbox.createboax.addlatter.CreateBoxLatterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
@@ -171,7 +166,7 @@ fun BoxGuideScreen(
                         }
                     )
                     Spacer(28.dp)
-                    Sticker(
+                    StickerForm(
                         modifier = Modifier
                             .aspectRatio(1f / 1f)
                             .weight(28f),
@@ -185,7 +180,7 @@ fun BoxGuideScreen(
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Sticker(
+                    StickerForm(
                         modifier = Modifier
                             .aspectRatio(1f / 1f)
                             .weight(30f),
@@ -310,98 +305,6 @@ private fun BottomButton(
         contentAlignment = Alignment.Center
     ) {
         content()
-    }
-}
-
-@Composable
-private fun BoxPlaceholder(
-    modifier: Modifier = Modifier,
-    @DrawableRes icon: Int,
-    title: String,
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Icon(
-            painter = painterResource(id = icon),
-            contentDescription = "box guide placeholder icon",
-            tint = PackyTheme.color.white,
-        )
-        Spacer(height = 12.dp)
-        Text(
-            text = title,
-            style = PackyTheme.typography.body04,
-            color = PackyTheme.color.white
-        )
-    }
-}
-
-@Composable
-private fun BoxGuideContent(
-    modifier: Modifier = Modifier,
-    inclination: Float = 0f,
-    onClick: () -> Unit = {},
-    placeholder: @Composable () -> Unit,
-    content: (@Composable () -> Unit)? = null,
-) {
-    Box(
-        modifier = modifier
-            .clickableWithoutRipple(onClick = onClick)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .height(1.dp)
-                .rotate(inclination)
-                .drawBehind {
-                    drawRoundRect(
-                        color = Color.White.copy(alpha = 0.3f),
-                        style = dottedStroke,
-                        cornerRadius = CornerRadius(8.dp.toPx())
-                    )
-                }
-        )
-        Box(
-            modifier = Modifier.align(Alignment.Center)
-        ) {
-            if (content != null) {
-                content()
-            } else {
-                placeholder()
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-private fun Sticker(
-    modifier: Modifier = Modifier,
-    stickerUri: String? = null,
-    inclination: Float = 0f,
-) {
-    Box(modifier = modifier) {
-        if (stickerUri != null) {
-            GlideImage(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .rotate(inclination),
-                model = stickerUri,
-                contentDescription = "sticker image",
-                contentScale = ContentScale.Crop,
-            )
-        } else {
-            Icon(
-                modifier = Modifier
-                    .size(24.dp)
-                    .align(Alignment.Center),
-                painter = painterResource(id = R.drawable.plus_square_dashed),
-                contentDescription = "sticker placeholder icon",
-                tint = PackyTheme.color.white,
-            )
-        }
     }
 }
 

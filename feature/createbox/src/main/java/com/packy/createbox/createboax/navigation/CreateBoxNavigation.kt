@@ -8,9 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.packy.core.animations.PaginationAnimation
+import com.packy.core.animations.asPagingComposable
 import com.packy.createbox.createboax.addpackymusic.CreateBoxPackyMusicScreen
-import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.addyourmusic.CreateBoxYourMusicScreen
 import com.packy.createbox.createboax.choosemusic.CreateBoxChooseMusicScreen
 
@@ -48,22 +47,16 @@ fun NavGraphBuilder.createBoxBottomSheetNavGraph(
                 closeBottomSheet = closeBottomSheet
             )
         }
-        composable(
+        asPagingComposable(
             route = CreateBoxBottomSheetRoute.CREATE_BOX_ADD_YOUR_MUSIC,
-            enterTransition = {
-                PaginationAnimation.slidInTop()
-            }
         ) {
             CreateBoxYourMusicScreen(
                 navController = navController,
                 closeBottomSheet = closeBottomSheet
             )
         }
-        composable(
+        asPagingComposable(
             route = CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PACKY_MUSIC,
-            enterTransition = {
-                PaginationAnimation.slidInTop()
-            }
         ) {
             CreateBoxPackyMusicScreen(
                 navController = navController,

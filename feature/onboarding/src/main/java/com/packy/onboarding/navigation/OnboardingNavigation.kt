@@ -2,9 +2,9 @@ package com.packy.onboarding.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.packy.core.animations.PaginationAnimation
+import com.packy.core.animations.asPagingComposable
+import com.packy.core.animations.asRootComposable
 import com.packy.onboarding.login.LoginScreen
 import com.packy.onboarding.onboarding.OnboardingScreen
 import com.packy.onboarding.signupnickname.SignupNickNameScreen
@@ -19,43 +19,28 @@ fun NavGraphBuilder.onboardingNavGraph(
         startDestination = OnboardingRoute.ONBOARDING,
         route = OnboardingRoute.ONBOARDING_NAV_GRAPH,
     ) {
-        composable(
+        asRootComposable(
             route = OnboardingRoute.ONBOARDING,
-            enterTransition = {
-                PaginationAnimation.slidInTop()
-            }
         ) {
             OnboardingScreen(navController = navController)
         }
-        composable(
+        asPagingComposable(
             route = OnboardingRoute.LOGIN,
-            enterTransition = {
-                PaginationAnimation.slidInToStart()
-            }
         ) {
             LoginScreen(navController = navController, loggedIn = loggedIn)
         }
-        composable(
+        asPagingComposable(
             route = OnboardingRoute.SIGNUP_NICKNAME,
-            enterTransition = {
-                PaginationAnimation.slidInToStart()
-            }
         ) {
             SignupNickNameScreen(navController = navController)
         }
-        composable(
+        asPagingComposable(
             route = OnboardingRoute.SIGNUP_PROFILE,
-            enterTransition = {
-                PaginationAnimation.slidInToStart()
-            }
         ) {
             SignupProfileScreen(navController = navController)
         }
-        composable(
+        asPagingComposable(
             route = OnboardingRoute.TERMS_AGREEMENT,
-            enterTransition = {
-                PaginationAnimation.slidInToStart()
-            }
         ) {
             TermsAgreementScreen(navController = navController)
         }

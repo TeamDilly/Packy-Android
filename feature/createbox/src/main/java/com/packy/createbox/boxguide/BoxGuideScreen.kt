@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -126,19 +127,21 @@ fun BoxGuideScreen(
             Spacer(height = 31.dp)
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Center
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
             ) {
                 Row(
-                    modifier = Modifier,
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Spacer(32.dp)
                     BoxGuideContent(
                         modifier = Modifier
                             .aspectRatio(160f / 192f)
                             .fillMaxWidth()
-                            .weight(2f),
+                            .weight(38f),
                         inclination = -3f,
                         placeholder = {
                             BoxPlaceholder(
@@ -151,12 +154,56 @@ fun BoxGuideScreen(
                     Sticker(
                         modifier = Modifier
                             .aspectRatio(1f / 1f)
-                            .weight(1f),
+                            .weight(28f),
                         inclination = 10f,
                         stickerUri = null
                     )
-                    Spacer(32.dp)
                 }
+                Spacer(height = 20.dp)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Sticker(
+                        modifier = Modifier
+                            .aspectRatio(1f / 1f)
+                            .weight(30f),
+                        inclination = -10f,
+                        stickerUri = null
+                    )
+                    Spacer(22.dp)
+                    BoxGuideContent(
+                        modifier = Modifier
+                            .aspectRatio(180f / 150f)
+                            .fillMaxWidth()
+                            .weight(42f),
+                        inclination = 3f,
+                        placeholder = {
+                            BoxPlaceholder(
+                                icon = R.drawable.envelope,
+                                title = Strings.BOX_GUIDE_LATTER
+                            )
+                        }
+                    )
+                }
+                Spacer(height = 29.dp)
+                BoxGuideContent(
+                    modifier = Modifier
+                        .heightIn(
+                            min = 0.dp,
+                            max = 146.dp
+                        )
+                        .aspectRatio(16f / 9f)
+                        .fillMaxWidth(),
+                    inclination = 0f,
+                    placeholder = {
+                        BoxPlaceholder(
+                            icon = R.drawable.music_note,
+                            title = Strings.BOX_GUIDE_MUSIC
+                        )
+                    },
+                )
             }
         }
     }

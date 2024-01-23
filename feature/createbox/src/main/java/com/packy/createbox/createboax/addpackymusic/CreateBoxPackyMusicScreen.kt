@@ -106,8 +106,8 @@ fun CreateBoxPackyMusicScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 state = pagerState,
-                contentPadding = PaddingValues(horizontal = 24.dp),
-                pageSpacing = 24.dp
+                contentPadding = PaddingValues(horizontal = 44.dp),
+                pageSpacing = 16.dp
             ) { index ->
                 if (pagerState.currentPage != index) {
                     CreateBoxPackyMusicIntent.ChangeMusicState(

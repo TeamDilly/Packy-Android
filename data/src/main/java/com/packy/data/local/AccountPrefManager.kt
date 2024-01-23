@@ -25,6 +25,8 @@ class AccountPrefManager @Inject constructor(
         ), SignUp::class
     )
 
+
+
     companion object {
         const val ACCOUNT_PREF = "accountPref"
     }

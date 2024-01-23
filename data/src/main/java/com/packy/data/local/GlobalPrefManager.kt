@@ -14,6 +14,6 @@ class GlobalPrefManager @Inject constructor(
     val globalSample = createNonNullPreferencePrefItem("globalSample", "String2", String::class)
 
     companion object {
-        const val DEVICE_PREF = "devicePref"
+        const val DEVICE_PREF = "globalPref"
     }
 }

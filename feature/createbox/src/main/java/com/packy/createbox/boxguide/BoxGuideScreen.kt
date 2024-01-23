@@ -1,43 +1,48 @@
 package com.packy.createbox.boxguide
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.snackbar.PackySnackBarHost
 import com.packy.core.theme.PackyTheme
+import com.packy.core.values.Strings.COMPLETE
 import com.packy.createbox.createboax.addlatter.CreateBoxLatterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
-import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
-import kotlinx.coroutines.CoroutineScope
+import com.packy.feature.core.R
+import com.packy.mvi.ext.emitMviIntent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,8 +51,12 @@ fun BoxGuideScreen(
     modifier: Modifier = Modifier,
     closeCreateBox: () -> Unit,
     navController: NavController,
+    viewModel: BoxGuideViewModel = hiltViewModel()
 ) {
-    val bottomSheetState = SheetState(skipHiddenState = false, skipPartiallyExpanded = false)
+    val bottomSheetState = SheetState(
+        skipHiddenState = false,
+        skipPartiallyExpanded = false
+    )
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
     val scope = rememberCoroutineScope()
     var snackBarVisible by remember { mutableStateOf(false) }
@@ -70,7 +79,7 @@ fun BoxGuideScreen(
                 },
                 showSnackbar = {
                     scope.launch {
-                        if(!snackBarVisible){
+                        if (!snackBarVisible) {
                             snackBarVisible = true
                             scaffoldState.snackbarHostState.showSnackbar(
                                 message = it,
@@ -82,84 +91,97 @@ fun BoxGuideScreen(
                     }
                 }
             )
-        }) { innerPadding ->
+        }
+    ) { innerPadding ->
         BackHandler(enabled = scaffoldState.bottomSheetState.isVisible) {
             scope.launch {
                 scaffoldState.bottomSheetState.hide()
             }
         }
-        Box(
+        Column(
             modifier = modifier
-                .background(
-                    PackyTheme.color.purple500
-                )
                 .fillMaxSize()
                 .padding(innerPadding)
+                .background(PackyTheme.color.gray900)
         ) {
-            Column {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .clickable {
-                        scope.launch {
-                            bottomSheetRoute = BoxGuideBottomSheetRoute.ADD_MUSIC
-                            scaffoldState.bottomSheetState.expand()
-                        }
-                    }
-                ) {
-                    Text(text = "음악추가하기")
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .clickable {
-                            scope.launch {
-                                bottomSheetRoute = BoxGuideBottomSheetRoute.ADD_LATTER
-                                scaffoldState.bottomSheetState.expand()
-                            }
-                        }
-                ) {
-                    Text(text = "편지쓰기")
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .clickable {
-                            scope.launch {
-                                bottomSheetRoute = BoxGuideBottomSheetRoute.ADD_PHOTO
-                                scaffoldState.bottomSheetState.expand()
-                            }
-                        }
-                ) {
-                    Text(text = "추억 사진 담기")
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
-                    Text(text = "선물 추가하기")
-                }
-            }
-            if (scaffoldState.bottomSheetState.isVisible) {
-                Box(
-                    modifier = Modifier
-                        .clickableWithoutRipple {}
-                        .fillMaxSize()
-                        .background(
-                            PackyTheme.color.black.copy(alpha = 0.6f)
-                        )
-                )
-            }
+            Spacer(height = 8.dp)
+            TopBar(
+                title = "To.이호이호이호",
+                onBackClick = viewModel::emitIntentThrottle,
+                onSaveClick = viewModel::emitIntentThrottle,
+            )
         }
-
     }
-
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBar(
+    title: String,
+    onBackClick: emitMviIntent<BoxGuideIntent>,
+    onSaveClick: emitMviIntent<BoxGuideIntent>
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 16.dp,
+                vertical = 4.dp
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(
+                    color = PackyTheme.color.white,
+                    shape = CircleShape
+                )
+                .clickableWithoutRipple {
+                    onBackClick(BoxGuideIntent.OnBackClick)
+                }
+        ) {
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(24.dp),
+                painter = painterResource(id = R.drawable.arrow_left),
+                contentDescription = "back guide screen"
+            )
+        }
+        Spacer(width = 16.dp)
+        Text(
+            modifier = Modifier.weight(1f),
+            text = title,
+            style = PackyTheme.typography.body02.copy(
+                textAlign = TextAlign.Start
+            ),
+            color = PackyTheme.color.white
+        )
+        Spacer(width = 16.dp)
+        Box(modifier = Modifier
+            .width(60.dp)
+            .height(40.dp)
+            .background(
+                color = PackyTheme.color.white,
+                shape = RoundedCornerShape(80.dp)
+            )
+            .clickableWithoutRipple {
+                onSaveClick(BoxGuideIntent.OnSaveClick)
+            }
+        )
+        {
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = COMPLETE,
+                style = PackyTheme.typography.body02.copy(
+                    textAlign = TextAlign.Center
+                ),
+                color = PackyTheme.color.gray600
+            )
+        }
+    }
+}
+
 @Composable
 private fun BottomSheetNav(
     bottomSheetRoute: BoxGuideBottomSheetRoute,

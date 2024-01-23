@@ -63,7 +63,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun BoxGuideScreen(
     modifier: Modifier = Modifier,
-    closeCreateBox: () -> Unit,
     navController: NavController,
     viewModel: BoxGuideViewModel = hiltViewModel()
 ) {
@@ -116,7 +115,8 @@ fun BoxGuideScreen(
             modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(PackyTheme.color.gray900)
+                .background(PackyTheme.color.gray900),
+            verticalArrangement = Arrangement.Center,
         ) {
             Spacer(height = 8.dp)
             TopBar(
@@ -204,8 +204,86 @@ fun BoxGuideScreen(
                         )
                     },
                 )
+                Spacer(1f)
+                BottomNavButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Spacer(height = 49.dp)
             }
         }
+    }
+}
+
+@Composable
+private fun BottomNavButton(
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .padding(horizontal = 8.dp),
+    ) {
+        BottomButton(
+            modifier = Modifier
+                .height(50.dp)
+                .weight(1f),
+            onClick = {
+
+            },
+        ) {
+            Text(
+                text = Strings.BOX_GUIDE_CHANGE_BOX,
+                style = PackyTheme.typography.body04,
+                color = PackyTheme.color.white
+            )
+        }
+        Spacer(width = 16.dp)
+        BottomButton(
+            modifier = Modifier
+                .height(50.dp)
+                .weight(1f),
+            onClick = {
+
+            },
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.plus),
+                    contentDescription = "box guide add gift button",
+                    tint = PackyTheme.color.white,
+                )
+                Spacer(width = 8.dp)
+                Text(
+                    text = Strings.BOX_GUIDE_GIFT,
+                    style = PackyTheme.typography.body04,
+                    color = PackyTheme.color.white
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun BottomButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    content: @Composable () -> Unit = {},
+) {
+    Box(
+        modifier = modifier
+            .background(
+                color = PackyTheme.color.black.copy(alpha = 0.3f),
+                shape = RoundedCornerShape(100.dp)
+            )
+            .clickableWithoutRipple(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        content()
     }
 }
 

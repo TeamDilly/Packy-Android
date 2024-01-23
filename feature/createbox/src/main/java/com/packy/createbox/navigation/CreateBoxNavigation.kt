@@ -41,7 +41,6 @@ fun NavGraphBuilder.createBoxNavGraph(
         ) {
             BoxGuideScreen(
                 navController = navController,
-                closeCreateBox = closeCreateBox
             )
         }
     }

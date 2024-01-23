@@ -45,6 +45,8 @@ object Strings {
     const val BOX_GUIDE_PHOTO = "추억 사진 담기"
     const val BOX_GUIDE_LATTER = "편지 쓰기"
     const val BOX_GUIDE_MUSIC = "음악 추가하기"
+    const val BOX_GUIDE_GIFT = "선물 담기"
+    const val BOX_GUIDE_CHANGE_BOX = "박스 다시 고르기"
 
     // crateBox
     const val CRATE_BOX_MUSIC = "음악 추가하기"

@@ -1,7 +1,7 @@
 package com.packy.di.createbox
 
 import com.packy.data.remote.createbox.LetterService
-import com.packy.data.repository.createbox.LetterRepositoryImp
+import com.packy.data.repository.letter.LetterRepositoryImp
 import com.packy.data.usecase.createbox.GetLetterSenderReceiverUseCaseImp
 import com.packy.data.usecase.createbox.LetterUseCaseImp
 import com.packy.di.network.Packy

@@ -1,4 +1,4 @@
-package com.packy.data.repository.createbox
+package com.packy.data.repository.letter
 
 import com.packy.data.local.AccountPrefManager
 import com.packy.data.model.createbox.LetterSenderReceiverDto
@@ -20,8 +20,8 @@ class LetterRepositoryImp @Inject constructor(
 ) : LetterRepository {
     override suspend fun getLetterEnvelope(): Flow<Resource<List<LetterEnvelope>>> = flow {
         emit(Resource.Loading())
-        val LetterEnvelope = api.getLetterEnvelope()
-        emit(LetterEnvelope.map { it.toEntity() })
+        val letterEnvelope = api.getLetterEnvelope()
+        emit(letterEnvelope.map { it.toEntity() })
     }
 
     override suspend fun getLetterSenderReceiver(): Flow<LetterSenderReceiver?> =

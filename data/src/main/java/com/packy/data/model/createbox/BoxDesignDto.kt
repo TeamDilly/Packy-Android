@@ -20,3 +20,4 @@ fun BoxDesignDto.toEntity(): BoxDesign = BoxDesign(
     boxPart = boxPart,
     boxBottom = boxBottom
 )
+

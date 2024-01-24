@@ -37,17 +37,17 @@ class AccountPrefManager @Inject constructor(
         null,
         LetterSenderReceiverDto::class
     )
-    val boxDesign = createMemoryPrefItem(
+    val boxDesign = createMemoryPrefItem<BoxDesignDto>(
         "boxDesign",
         null,
         BoxDesignDto::class
     )
-    val shouldShowBoxMotion = createNonNullMemoryPrefItem(
+    val shouldShowBoxMotion = createNonNullMemoryPrefItem<Boolean>(
         "shouldShowBoxMotion",
         true,
         Boolean::class
     )
-    val shouldShowBoxTutorial = createNonNullMemoryPrefItem(
+    val shouldShowBoxTutorial = createNonNullMemoryPrefItem<Boolean>(
         "shouldShowBoxTutorial",
         true,
         Boolean::class

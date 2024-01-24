@@ -52,6 +52,7 @@ import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
 import com.packy.createbox.boxguide.widget.BoxGuideContent
 import com.packy.createbox.boxguide.widget.BoxPlaceholder
+import com.packy.createbox.boxguide.widget.PhotoForm
 import com.packy.createbox.boxguide.widget.StickerForm
 import com.packy.feature.core.R
 import com.packy.createbox.createboax.addlatter.CreateBoxLatterScreen
@@ -180,26 +181,7 @@ fun BoxGuideScreen(
                         },
                         content = uiState.photo?.let { photo ->
                             {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .background(
-                                            color = PackyTheme.color.white
-                                        )
-                                        .padding(
-                                            horizontal = 8.dp,
-                                        )
-                                        .padding(
-                                            top = 8.dp,
-                                            bottom = 40.dp
-                                        )
-                                ) {
-                                    GlideImage(
-                                        model = photo.photoUrl,
-                                        contentDescription = "box guide photo",
-                                        contentScale = ContentScale.Crop
-                                    )
-                                }
+                                PhotoForm(photo)
                             }
                         },
                         onClick = {

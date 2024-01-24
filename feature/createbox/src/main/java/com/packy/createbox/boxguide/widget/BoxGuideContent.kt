@@ -43,7 +43,9 @@ fun BoxGuideContent(
             modifier = Modifier.align(Alignment.Center)
         ) {
             if (content != null) {
-                content()
+                Box(modifier = Modifier.rotate(inclination)) {
+                    content()
+                }
             } else {
                 placeholder()
             }

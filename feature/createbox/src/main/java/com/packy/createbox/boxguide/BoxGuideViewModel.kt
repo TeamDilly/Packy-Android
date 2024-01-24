@@ -19,8 +19,12 @@ class BoxGuideViewModel @Inject constructor() :
         subscribeIntent<BoxGuideIntent.OnBackClick> { sendEffect(BoxGuideEffect.MoveToBack) }
         subscribeIntent<BoxGuideIntent.OnSaveClick> { sendEffect(BoxGuideEffect.SaveBox) }
         subscribeIntent<BoxGuideIntent.ShowBottomSheet> { sendEffect(BoxGuideEffect.ShowBottomSheet(it.boxGuideBottomSheetRoute)) }
-        subscribeStateIntent<BoxGuideIntent.ChangeBoxContent>{ state, intent ->
-            intent.boxGuideState
+        subscribeStateIntent<BoxGuideIntent.SavePhoto>{ state, intent ->
+           val photo =Photo(
+               photoUrl = intent.imageUri,
+               contentDescription = intent.contentDescription
+           )
+            state.copy(photo = photo)
         }
     }
 }

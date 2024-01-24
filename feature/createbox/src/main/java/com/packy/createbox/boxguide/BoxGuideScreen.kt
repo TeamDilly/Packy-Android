@@ -1,5 +1,6 @@
 package com.packy.createbox.boxguide
 
+import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -27,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,11 +36,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.snackbar.PackySnackBarHost
@@ -55,13 +60,17 @@ import com.packy.createbox.createboax.navigation.CreateBoxNavHost
 import com.packy.mvi.ext.emitMviIntent
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalGlideComposeApi::class
+)
 @Composable
 fun BoxGuideScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: BoxGuideViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     val bottomSheetState = SheetState(
         skipHiddenState = false,
         skipPartiallyExpanded = false
@@ -114,6 +123,14 @@ fun BoxGuideScreen(
                             }
                         }
                     }
+                },
+                savePhoto = { uri, description ->
+                    viewModel.emitIntent(
+                        BoxGuideIntent.SavePhoto(
+                            uri,
+                            description
+                        )
+                    )
                 }
             )
         }
@@ -160,6 +177,30 @@ fun BoxGuideScreen(
                                 icon = R.drawable.photo,
                                 title = Strings.BOX_GUIDE_PHOTO
                             )
+                        },
+                        content = uiState.photo?.let { photo ->
+                            {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(
+                                            color = PackyTheme.color.white
+                                        )
+                                        .padding(
+                                            horizontal = 8.dp,
+                                        )
+                                        .padding(
+                                            top = 8.dp,
+                                            bottom = 40.dp
+                                        )
+                                ) {
+                                    GlideImage(
+                                        model = photo.photoUrl,
+                                        contentDescription = "box guide photo",
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
+                            }
                         },
                         onClick = {
                             viewModel.emitIntent(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_PHOTO))
@@ -274,6 +315,7 @@ private fun BottomNavButton(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
+                    modifier = Modifier.size(16.dp),
                     painter = painterResource(id = R.drawable.plus),
                     contentDescription = "box guide add gift button",
                     tint = PackyTheme.color.white,
@@ -381,6 +423,7 @@ private fun BottomSheetNav(
     bottomSheetRoute: BoxGuideBottomSheetRoute,
     closeBottomSheet: () -> Unit,
     showSnackbar: (String) -> Unit,
+    savePhoto: (Uri, String) -> Unit,
 ) {
     when (bottomSheetRoute) {
         BoxGuideBottomSheetRoute.ADD_GIFT -> Unit
@@ -399,7 +442,10 @@ private fun BottomSheetNav(
         }
 
         BoxGuideBottomSheetRoute.ADD_PHOTO ->
-            CreateBoxAddPhotoScreen(closeBottomSheet = closeBottomSheet)
+            CreateBoxAddPhotoScreen(
+                closeBottomSheet = closeBottomSheet,
+                savePhoto = savePhoto
+            )
 
         BoxGuideBottomSheetRoute.ADD_STICKER_1 -> TODO()
         BoxGuideBottomSheetRoute.ADD_ADD_STICKER_2 -> TODO()

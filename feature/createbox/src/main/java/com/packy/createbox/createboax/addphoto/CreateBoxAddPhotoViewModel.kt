@@ -1,6 +1,5 @@
 package com.packy.createbox.createboax.addphoto
 
-import com.packy.core.widget.youtube.YoutubeState
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -10,26 +9,32 @@ class CreateBoxAddPhotoViewModel @Inject constructor() :
     MviViewModel<CreateBoxAddPhotoIntent, CreateBoxAddPhotoState, CreateBoxAddPhotoEffect>() {
     override fun createInitialState(): CreateBoxAddPhotoState = CreateBoxAddPhotoState(
         emptyImageItem,
-        isSavable = false
     )
 
     override fun handleIntent() {
         subscribeIntent<CreateBoxAddPhotoIntent.OnCloseClick> {
             sendEffect(CreateBoxAddPhotoEffect.CloseBottomSheet)
         }
+        subscribeIntent<CreateBoxAddPhotoIntent.OnSaveClick> {
+            sendEffect(
+                CreateBoxAddPhotoEffect.SavePhotoItem(
+                    currentState.photoItem
+                )
+            )
+        }
         subscribeStateIntent<CreateBoxAddPhotoIntent.ChangeDescription> { state, intent ->
-            state.copy(imageItem = state.imageItem.copy(contentDescription = intent.newDescription))
+            state.copy(photoItem = state.photoItem.copy(contentDescription = intent.newDescription))
         }
         subscribeStateIntent<CreateBoxAddPhotoIntent.ChangeImageUri> { state, intent ->
-            state.copy(imageItem = state.imageItem.copy(imageUri = intent.imageUri))
+            state.copy(photoItem = state.photoItem.copy(imageUri = intent.imageUri))
         }
         subscribeStateIntent<CreateBoxAddPhotoIntent.OnCancelImageClick> { state, _ ->
-            state.copy(imageItem = emptyImageItem)
+            state.copy(photoItem = emptyImageItem)
         }
     }
 
     companion object {
-        val emptyImageItem = ImageItem(
+        val emptyImageItem = PhotoItem(
             null,
             null
         )

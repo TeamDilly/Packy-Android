@@ -1,8 +1,10 @@
 package com.packy.createbox.boxguide
 
+import android.net.Uri
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
+import retrofit2.http.Url
 
 sealed interface BoxGuideIntent : MviIntent {
     data object OnSaveClick : BoxGuideIntent
@@ -11,14 +13,15 @@ sealed interface BoxGuideIntent : MviIntent {
         val boxGuideBottomSheetRoute: BoxGuideBottomSheetRoute
     ) : BoxGuideIntent
 
-    data class ChangeBoxContent(
-        val boxGuideState: BoxGuideState
+    data class SavePhoto(
+        val imageUri: Uri,
+        val contentDescription: String
     ) : BoxGuideIntent
 }
 
 data class Photo(
-    val photoUrl: String,
-    val description: String
+    val photoUrl: Uri,
+    val contentDescription: String
 )
 
 data class Envelope(

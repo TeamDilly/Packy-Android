@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.addphoto
 
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,7 +26,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
@@ -48,6 +48,7 @@ import com.packy.mvi.ext.emitMviIntent
 fun CreateBoxAddPhotoScreen(
     modifier: Modifier = Modifier,
     closeBottomSheet: () -> Unit,
+    savePhoto: (Uri, String) -> Unit,
     viewModel: CreateBoxAddPhotoViewModel = hiltViewModel()
 ) {
 
@@ -56,9 +57,21 @@ fun CreateBoxAddPhotoScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 CreateBoxAddPhotoEffect.CloseBottomSheet -> closeBottomSheet()
+                is CreateBoxAddPhotoEffect.SavePhotoItem -> {
+                    savePhoto(
+                        /**
+                         * SavePhotoItem을 호출할떄는 [CreateBoxAddPhotoState]
+                         * 의 `isSavable`을 확인하고 호출해야합니다.
+                         * */
+                        effect.photoItem.imageUri!!,
+                        effect.photoItem.contentDescription!!
+                    )
+                    closeBottomSheet()
+                }
             }
         }
     }
+
     Column(
         modifier = modifier
             .fillMaxSize(),
@@ -80,7 +93,7 @@ fun CreateBoxAddPhotoScreen(
         Spacer(height = 32.dp)
         Box(modifier = Modifier.padding(horizontal = 40.dp)) {
             PhotoFrame(
-                imageItem = uiState.imageItem,
+                imageItem = uiState.photoItem,
                 closeBottomSheet = viewModel::emitIntent,
                 getPhotoUri = viewModel::emitIntent,
                 changeDescription = viewModel::emitIntent,
@@ -105,7 +118,7 @@ fun CreateBoxAddPhotoScreen(
 @Composable
 private fun PhotoFrame(
     modifier: Modifier = Modifier,
-    imageItem: ImageItem,
+    imageItem: PhotoItem,
     closeBottomSheet: emitMviIntent<CreateBoxAddPhotoIntent>,
     getPhotoUri: emitMviIntent<CreateBoxAddPhotoIntent>,
     changeDescription: emitMviIntent<CreateBoxAddPhotoIntent>,

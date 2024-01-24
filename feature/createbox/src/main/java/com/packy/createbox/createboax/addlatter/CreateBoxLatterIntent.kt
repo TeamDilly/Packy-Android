@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.addlatter
 
+import com.packy.domain.model.createbox.LatterEnvelope
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
@@ -9,20 +10,15 @@ sealed interface CreateBoxLatterIntent : MviIntent {
     data object OnSaveClick : CreateBoxLatterIntent
     data class ChangeLatterText(val latter: String) : CreateBoxLatterIntent
     data class ChangeEnvelope(val envelopeId: Int) : CreateBoxLatterIntent
-    data class GetEnvelope(val envelopeList: List<LatterEnvelopeItem>) : CreateBoxLatterIntent
+    data class GetEnvelope(val envelopeList: List<LatterEnvelope>) : CreateBoxLatterIntent
 }
-
-data class LatterEnvelopeItem(
-    val id: Int,
-    val imageUri: String
-)
 
 data class CreateBoxLatterState(
     val latterText: String,
     val envelopeId: Int,
-    val envelopeList: List<LatterEnvelopeItem>
+    val envelopeList: List<LatterEnvelope>
 ) : UiState{
-    fun getLatterEnvelopeItem(): LatterEnvelopeItem? = envelopeList.firstOrNull{
+    fun getLatterEnvelope(): LatterEnvelope? = envelopeList.firstOrNull{
         it.id == envelopeId
     }
 }

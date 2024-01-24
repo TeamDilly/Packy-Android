@@ -6,13 +6,15 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LatterEnvelopeDto(
-    @SerialName("envelope") val envelope: String,
+    @SerialName("imgUrl") val imgUrl: String,
     @SerialName("id") val id: Int,
-    @SerialName("letterPaper") val letterPaper: String,
+    @SerialName("sequence") val sequence: Int,
 )
 
 fun LatterEnvelopeDto.toEntity() = LatterEnvelope(
-    envelope, id, letterPaper
+    imgUrl = imgUrl,
+    id = id,
+    sequence = sequence,
 )
 
 fun List<LatterEnvelopeDto>.toEntity(): List<LatterEnvelope> = this.map { it.toEntity() }

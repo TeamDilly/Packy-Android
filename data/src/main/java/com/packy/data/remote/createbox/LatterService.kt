@@ -11,7 +11,7 @@ class LatterService @Inject constructor(
     private val httpClient: HttpClient
 ) {
     suspend fun getLatterEnvelope(): Resource<List<LatterEnvelopeDto>> =
-        httpClient.get(urlString = "api/v1/admin/design/letters")
+        httpClient.get(urlString = "/api/v1/admin/design/envelopes")
             .toResource<List<LatterEnvelopeDto>>()
 
 }

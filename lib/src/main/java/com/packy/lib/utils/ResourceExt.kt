@@ -1,8 +1,10 @@
 package com.packy.lib.utils
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.map
 
 fun <T, R> Resource<T>.map(
@@ -17,5 +19,15 @@ fun <T, R> Resource<T>.map(
 
 fun <T> Flow<Resource<T>>.filterSuccess(): Flow<Resource.Success<T>> =
     filterIsInstance<Resource.Success<T>>()
+
+fun <T> Flow<Resource<T>>.catchError(
+    catchErrorFunction: (Resource<T>) -> Unit
+): Flow<Resource<T>> =
+    filter {  resource ->
+        resource !is Resource.Success<T> && resource !is Resource.Loading
+    }.map {
+        catchErrorFunction(it)
+        it
+    }
 
 fun <T> Flow<Resource.Success<T>>.unwrapResource(): Flow<T> = this.map { it.data }

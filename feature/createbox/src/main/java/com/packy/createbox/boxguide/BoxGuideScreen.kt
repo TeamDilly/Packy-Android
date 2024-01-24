@@ -93,7 +93,6 @@ fun BoxGuideScreen(
 
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
-            println("LOGEE $effect")
             when (effect) {
                 is BoxGuideEffect.MoveToBack -> navController.popBackStack()
                 is BoxGuideEffect.OnChangedBox -> TODO()

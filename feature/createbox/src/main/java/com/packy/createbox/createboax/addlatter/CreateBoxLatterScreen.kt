@@ -45,6 +45,7 @@ import com.packy.core.values.Strings
 import com.packy.core.values.Strings.CREATE_BOX_ADD_LATTER_OVER_FLOW_LATTER_TEXT
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
+import com.packy.domain.model.createbox.LatterEnvelope
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
 
@@ -185,7 +186,7 @@ private fun LatterForm(
 private fun Envelope(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
-    envelope: LatterEnvelopeItem,
+    envelope: LatterEnvelope,
     onClick: emitMviIntent<CreateBoxLatterIntent>,
 ) {
     val border = if (isSelected) {
@@ -211,7 +212,7 @@ private fun Envelope(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(8.dp),
-            model = envelope.imageUri,
+            model = envelope.imgUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )

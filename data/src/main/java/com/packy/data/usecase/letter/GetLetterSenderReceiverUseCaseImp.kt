@@ -1,4 +1,4 @@
-package com.packy.data.usecase.createbox
+package com.packy.data.usecase.letter
 
 import com.packy.domain.model.createbox.LetterSenderReceiver
 import com.packy.domain.repository.letter.LetterRepository

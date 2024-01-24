@@ -1,9 +1,9 @@
-package com.packy.di.createbox
+package com.packy.di.letter
 
 import com.packy.data.remote.createbox.LetterService
 import com.packy.data.repository.letter.LetterRepositoryImp
-import com.packy.data.usecase.createbox.GetLetterSenderReceiverUseCaseImp
-import com.packy.data.usecase.createbox.LetterUseCaseImp
+import com.packy.data.usecase.letter.GetLetterSenderReceiverUseCaseImp
+import com.packy.data.usecase.letter.LetterUseCaseImp
 import com.packy.di.network.Packy
 import com.packy.domain.repository.letter.LetterRepository
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase

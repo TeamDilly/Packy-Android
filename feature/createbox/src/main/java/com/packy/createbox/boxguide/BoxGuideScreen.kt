@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -256,22 +257,7 @@ fun BoxGuideScreen(
                         },
                         content = uiState.latter?.let { latter ->
                             {
-                                Box(modifier = Modifier.fillMaxSize()) {
-                                    Text(
-                                        text = latter.latterContent.removeNewlines(),
-                                        style = PackyTheme.typography.body06,
-                                        color = PackyTheme.color.gray900
-                                    )
-                                    GlideImage(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .scale(0.85f)
-                                            .align(Alignment.BottomEnd),
-                                        model = latter.envelope.envelopeUrl,
-                                        contentDescription = "box guide latter",
-                                        contentScale = ContentScale.Crop
-                                    )
-                                }
+                                LatterForm(latter)
                             }
                         },
                         onClick = {
@@ -320,6 +306,38 @@ fun BoxGuideScreen(
 }
 
 @Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun LatterForm(latter: Latter) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxSize(0.85f)
+                .background(
+                    color = PackyTheme.color.white,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .align(Alignment.TopStart)
+                .padding(horizontal = 10.dp, vertical = 6.dp),
+            text = latter.latterContent.removeNewlines(),
+            style = PackyTheme.typography.body06,
+            color = PackyTheme.color.gray900
+        )
+        GlideImage(
+            modifier = Modifier
+                .fillMaxSize(0.85f)
+                .align(Alignment.BottomEnd),
+            model = latter.envelope.envelopeUrl,
+            contentDescription = "box guide latter",
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+
+@Composable
 private fun MusicForm(
     modifier: Modifier = Modifier,
     youtubeUri: String,
@@ -332,6 +350,7 @@ private fun MusicForm(
             YoutubePlayer(
                 modifier = Modifier
                     .fillMaxSize()
+                    .aspectRatio(16f / 9f)
                     .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 videoId = youtubeVideoId,

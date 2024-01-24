@@ -28,7 +28,10 @@ fun BoxGuideContent(
         contentAlignment = Alignment.Center
     ) {
         if (content != null) {
-            Box(modifier = Modifier.rotate(inclination)) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .rotate(inclination)
+            ) {
                 content()
             }
         } else {

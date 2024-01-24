@@ -89,10 +89,11 @@ fun BoxGuideScreen(
     val scope = rememberCoroutineScope()
     var snackBarVisible by remember { mutableStateOf(false) }
 
-    var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.ADD_MUSIC) }
+    var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.EMPTY) }
 
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
+            println("LOGEE $effect")
             when (effect) {
                 is BoxGuideEffect.MoveToBack -> navController.popBackStack()
                 is BoxGuideEffect.OnChangedBox -> TODO()
@@ -119,6 +120,7 @@ fun BoxGuideScreen(
                 closeBottomSheet = {
                     scope.launch {
                         scaffoldState.bottomSheetState.hide()
+                        bottomSheetRoute = BoxGuideBottomSheetRoute.EMPTY
                     }
                 },
                 showSnackbar = {
@@ -168,6 +170,7 @@ fun BoxGuideScreen(
         BackHandler(enabled = scaffoldState.bottomSheetState.isVisible) {
             scope.launch {
                 scaffoldState.bottomSheetState.hide()
+                bottomSheetRoute = BoxGuideBottomSheetRoute.EMPTY
             }
         }
         Column(
@@ -214,7 +217,7 @@ fun BoxGuideScreen(
                             }
                         },
                         onClick = {
-                            viewModel.emitIntent(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_PHOTO))
+                            viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_PHOTO))
                         }
                     )
                     Spacer(28.dp)
@@ -273,7 +276,7 @@ fun BoxGuideScreen(
                             }
                         },
                         onClick = {
-                            viewModel.emitIntent(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_LATTER))
+                            viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_LATTER))
                         }
                     )
                 }
@@ -303,7 +306,7 @@ fun BoxGuideScreen(
                         }
                     },
                     onClick = {
-                        viewModel.emitIntent(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_MUSIC))
+                        viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_MUSIC))
                     }
                 )
                 Spacer(1f)
@@ -523,5 +526,6 @@ private fun BottomSheetNav(
         BoxGuideBottomSheetRoute.ADD_STICKER_1 -> TODO()
         BoxGuideBottomSheetRoute.ADD_ADD_STICKER_2 -> TODO()
         BoxGuideBottomSheetRoute.CHANGE_BOX -> TODO()
+        BoxGuideBottomSheetRoute.EMPTY -> Box(modifier = Modifier.height(1.dp))
     }
 }

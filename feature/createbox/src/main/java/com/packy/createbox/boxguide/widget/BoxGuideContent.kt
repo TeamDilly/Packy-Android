@@ -24,7 +24,10 @@ fun BoxGuideContent(
 ) {
     Box(
         modifier = modifier
-            .clickableWithoutRipple(onClick = onClick),
+            .clickableWithoutRipple(onClick = {
+                println("clickableWithoutRipple")
+                onClick()
+            }),
         contentAlignment = Alignment.Center
     ) {
         if (content != null) {

@@ -7,5 +7,6 @@ enum class BoxGuideBottomSheetRoute {
     ADD_PHOTO,
     ADD_STICKER_1,
     ADD_ADD_STICKER_2,
-    CHANGE_BOX
+    CHANGE_BOX,
+    EMPTY
 }

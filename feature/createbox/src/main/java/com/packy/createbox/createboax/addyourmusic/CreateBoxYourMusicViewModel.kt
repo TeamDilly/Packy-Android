@@ -21,11 +21,12 @@ class CreateBoxYourMusicViewModel @Inject constructor() :
             sendEffect(CreateBoxYourMusicEffect.CloseBottomSheet)
         }
         subscribeStateIntent<CreateBoxYourMusicIntent.OnYoutubeLinkChange> { state, intent ->
-            state.copy(youtubeLink = intent.newLink, validationYoutubeLink = null)
+            state.copy(
+                youtubeLink = intent.newLink,
+                validationYoutubeLink = null
+            )
         }
-        subscribeIntent<CreateBoxYourMusicIntent.OnSaveClick> {
-            sendEffect(CreateBoxYourMusicEffect.SaveMusic)
-        }
+        subscribeIntent<CreateBoxYourMusicIntent.OnSaveClick>(saveYoutubeMusic())
         subscribeStateIntent<CreateBoxYourMusicIntent.OnValidateCheckYoutubeLink> { state, _ ->
             val validationLink = state.youtubeLink.validationYoutubeVideoId()
             state.copy(
@@ -39,4 +40,12 @@ class CreateBoxYourMusicViewModel @Inject constructor() :
             )
         }
     }
+
+    private fun saveYoutubeMusic(): suspend (CreateBoxYourMusicIntent.OnSaveClick) -> Unit =
+        {
+            val youtubeUri = currentState.youtubeLink
+            if (currentState.validationYoutubeLink == true) {
+                sendEffect(CreateBoxYourMusicEffect.SaveMusic(youtubeUri))
+            }
+        }
 }

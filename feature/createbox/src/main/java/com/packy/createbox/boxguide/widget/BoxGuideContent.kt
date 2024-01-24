@@ -24,31 +24,28 @@ fun BoxGuideContent(
 ) {
     Box(
         modifier = modifier
-            .clickableWithoutRipple(onClick = onClick)
+            .clickableWithoutRipple(onClick = onClick),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .height(1.dp)
-                .rotate(inclination)
-                .drawBehind {
-                    drawRoundRect(
-                        color = Color.White.copy(alpha = 0.3f),
-                        style = dottedStroke,
-                        cornerRadius = CornerRadius(8.dp.toPx())
-                    )
-                }
-        )
-        Box(
-            modifier = Modifier.align(Alignment.Center)
-        ) {
-            if (content != null) {
-                Box(modifier = Modifier.rotate(inclination)) {
-                    content()
-                }
-            } else {
-                placeholder()
+        if (content != null) {
+            Box(modifier = Modifier.rotate(inclination)) {
+                content()
             }
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .height(1.dp)
+                    .rotate(inclination)
+                    .drawBehind {
+                        drawRoundRect(
+                            color = Color.White.copy(alpha = 0.3f),
+                            style = dottedStroke,
+                            cornerRadius = CornerRadius(8.dp.toPx())
+                        )
+                    }
+            )
+            placeholder()
         }
     }
 }

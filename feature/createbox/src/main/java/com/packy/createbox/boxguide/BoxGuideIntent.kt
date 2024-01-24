@@ -1,6 +1,7 @@
 package com.packy.createbox.boxguide
 
 import android.net.Uri
+import com.packy.core.widget.youtube.YoutubeState
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
@@ -21,6 +22,12 @@ sealed interface BoxGuideIntent : MviIntent {
     data class SaveLatter(
         val latter: Latter
     ) : BoxGuideIntent
+
+    data class SaveMusic(
+        val youtubeUrl: String
+    ) : BoxGuideIntent
+
+    data object ClearMusic: BoxGuideIntent
 }
 
 data class Photo(
@@ -47,6 +54,7 @@ data class BoxGuideState(
     val photo: Photo?,
     val latter: Latter?,
     val youtubeUrl: String?,
+    val youtubeState: YoutubeState = YoutubeState.INIT,
     val sticker1: Sticker?,
     val sticker2: Sticker?,
 ) : UiState {

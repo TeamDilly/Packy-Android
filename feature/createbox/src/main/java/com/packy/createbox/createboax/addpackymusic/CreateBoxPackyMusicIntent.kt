@@ -18,16 +18,21 @@ data class PackyMusic(
     val title: String,
     val hashTag: List<String>,
     val videoId: String?,
-    val state: YoutubeState
+    val state: YoutubeState,
+    val youtubeMusicUri: String
 )
 
 data class CreateBoxPackyMusicState(
     val currentMusicIndex: Int,
     val music: List<PackyMusic>
-) : UiState
+) : UiState{
+    fun getMusicUri() = music[currentMusicIndex].youtubeMusicUri
+}
 
 sealed interface CreateBoxPackyMusicEffect : SideEffect {
     data object CloseBottomSheet : CreateBoxPackyMusicEffect
     data object MoveToBack : CreateBoxPackyMusicEffect
-    data object SaveMusic : CreateBoxPackyMusicEffect
+    data class SaveMusic(
+        val youtubeMusic: String
+    ) : CreateBoxPackyMusicEffect
 }

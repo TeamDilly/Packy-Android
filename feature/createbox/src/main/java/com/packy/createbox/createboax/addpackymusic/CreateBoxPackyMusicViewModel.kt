@@ -34,7 +34,8 @@ class CreateBoxPackyMusicViewModel @Inject constructor(
             sendEffect(CreateBoxPackyMusicEffect.CloseBottomSheet)
         }
         subscribeIntent<CreateBoxPackyMusicIntent.OnSaveClick> {
-
+            val youtubeMusic = currentState.getMusicUri()
+            sendEffect(CreateBoxPackyMusicEffect.SaveMusic(youtubeMusic))
         }
 
         subscribeStateIntent<CreateBoxPackyMusicIntent.ChangeMusicState> { state, intent ->
@@ -62,7 +63,8 @@ class CreateBoxPackyMusicViewModel @Inject constructor(
                         title = music.title,
                         hashTag = music.hashtags,
                         videoId = music.videoId,
-                        state = YoutubeState.INIT
+                        state = YoutubeState.INIT,
+                        youtubeMusicUri = music.youtubeUri
                     )
                 }
             setState {

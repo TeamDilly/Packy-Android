@@ -44,6 +44,7 @@ fun CreateBoxYourMusicScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     closeBottomSheet: () -> Unit,
+    saveMusic: (String) -> Unit,
     viewModel: CreateBoxYourMusicViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -52,7 +53,8 @@ fun CreateBoxYourMusicScreen(
             when (effect) {
                 CreateBoxYourMusicEffect.CloseBottomSheet -> closeBottomSheet()
                 CreateBoxYourMusicEffect.MoveToBack -> navController.popBackStack()
-                CreateBoxYourMusicEffect.SaveMusic -> {
+                is CreateBoxYourMusicEffect.SaveMusic -> {
+                    saveMusic(effect.youtubeLink)
                     closeBottomSheet()
                     navController.popBackStack(
                         route = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC,

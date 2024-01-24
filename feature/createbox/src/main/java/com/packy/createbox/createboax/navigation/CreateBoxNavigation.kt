@@ -17,6 +17,7 @@ import com.packy.createbox.createboax.choosemusic.CreateBoxChooseMusicScreen
 fun CreateBoxNavHost(
     modifier: Modifier = Modifier,
     closeBottomSheet: () -> Unit,
+    saveMusic: (String) -> Unit,
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -27,6 +28,7 @@ fun CreateBoxNavHost(
         createBoxBottomSheetNavGraph(
             navController,
             closeBottomSheet,
+            saveMusic
         )
     }
 }
@@ -34,6 +36,7 @@ fun CreateBoxNavHost(
 fun NavGraphBuilder.createBoxBottomSheetNavGraph(
     navController: NavHostController,
     closeBottomSheet: () -> Unit,
+    saveMusic: (String) -> Unit,
 ) {
     navigation(
         startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC,
@@ -44,7 +47,7 @@ fun NavGraphBuilder.createBoxBottomSheetNavGraph(
         ) {
             CreateBoxChooseMusicScreen(
                 navController = navController,
-                closeBottomSheet = closeBottomSheet
+                closeBottomSheet = closeBottomSheet,
             )
         }
         asPagingComposable(
@@ -52,7 +55,8 @@ fun NavGraphBuilder.createBoxBottomSheetNavGraph(
         ) {
             CreateBoxYourMusicScreen(
                 navController = navController,
-                closeBottomSheet = closeBottomSheet
+                closeBottomSheet = closeBottomSheet,
+                saveMusic = saveMusic
             )
         }
         asPagingComposable(
@@ -60,7 +64,8 @@ fun NavGraphBuilder.createBoxBottomSheetNavGraph(
         ) {
             CreateBoxPackyMusicScreen(
                 navController = navController,
-                closeBottomSheet = closeBottomSheet
+                closeBottomSheet = closeBottomSheet,
+                saveMusic = saveMusic
             )
         }
     }

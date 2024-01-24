@@ -36,6 +36,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -47,10 +48,14 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.designsystem.iconbutton.PackyCloseIconButton
+import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.designsystem.snackbar.PackySnackBarHost
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
+import com.packy.core.widget.youtube.YoutubePlayer
+import com.packy.core.widget.youtube.YoutubeState
 import com.packy.createbox.boxguide.widget.BoxGuideContent
 import com.packy.createbox.boxguide.widget.BoxPlaceholder
 import com.packy.createbox.boxguide.widget.PhotoForm
@@ -59,7 +64,9 @@ import com.packy.feature.core.R
 import com.packy.createbox.createboax.addlatter.CreateBoxLatterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
+import com.packy.lib.ext.extractYouTubeVideoId
 import com.packy.lib.ext.removeNewlines
+import com.packy.lib.ext.validationYoutubeVideoId
 import com.packy.mvi.ext.emitMviIntent
 import kotlinx.coroutines.launch
 
@@ -145,6 +152,13 @@ fun BoxGuideScreen(
                                     envelopeUri,
                                 )
                             )
+                        )
+                    )
+                },
+                saveMusic = { youtubeUrl ->
+                    viewModel.emitIntent(
+                        BoxGuideIntent.SaveMusic(
+                            youtubeUrl
                         )
                     )
                 }
@@ -279,6 +293,15 @@ fun BoxGuideScreen(
                             title = Strings.BOX_GUIDE_MUSIC
                         )
                     },
+                    content = uiState.youtubeUrl?.let { youtubeUri ->
+                        {
+                            MusicForm(
+                                youtubeUri = youtubeUri,
+                                youtubeState = uiState.youtubeState,
+                                clearMusic = viewModel::emitIntentThrottle
+                            )
+                        }
+                    },
                     onClick = {
                         viewModel.emitIntent(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_MUSIC))
                     }
@@ -289,6 +312,35 @@ fun BoxGuideScreen(
                         .fillMaxWidth()
                 )
                 Spacer(height = 28.dp)
+            }
+        }
+    }
+}
+
+@Composable
+private fun MusicForm(
+    modifier: Modifier = Modifier,
+    youtubeUri: String,
+    youtubeState: YoutubeState,
+    clearMusic: emitMviIntent<BoxGuideIntent>,
+) {
+    val youtubeVideoId = extractYouTubeVideoId(youtubeUri)
+    if (youtubeVideoId != null) {
+        Box(modifier = modifier.fillMaxSize()) {
+            YoutubePlayer(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(4.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                videoId = youtubeVideoId,
+                youtubeState = youtubeState,
+            )
+            PackyCloseIconButton(
+                modifier = Modifier
+                    .align(Alignment.TopEnd),
+                style = closeIconButtonStyle.medium.white
+            ) {
+                clearMusic(BoxGuideIntent.ClearMusic)
             }
         }
     }
@@ -442,6 +494,7 @@ private fun BottomSheetNav(
     showSnackbar: (String) -> Unit,
     savePhoto: (Uri, String) -> Unit,
     saveLatter: (Int, String, String) -> Unit,
+    saveMusic: (String) -> Unit,
 ) {
     when (bottomSheetRoute) {
         BoxGuideBottomSheetRoute.ADD_GIFT -> Unit
@@ -456,7 +509,8 @@ private fun BottomSheetNav(
         BoxGuideBottomSheetRoute.ADD_MUSIC -> {
             CreateBoxNavHost(
                 modifier = Modifier.background(PackyTheme.color.white),
-                closeBottomSheet = closeBottomSheet
+                closeBottomSheet = closeBottomSheet,
+                saveMusic = saveMusic
             )
         }
 

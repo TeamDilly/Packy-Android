@@ -100,7 +100,7 @@ fun BoxChoiceScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 75.dp)
                     .aspectRatio(1f),
-                model = uiState.selectedBox?.boxTopUri,
+                model = uiState.selectedBox?.boxFull,
                 contentScale = ContentScale.Crop,
                 contentDescription = "Selected Box"
             )
@@ -115,7 +115,7 @@ fun BoxChoiceScreen(
                 items(uiState.boxDesignList) { boxDesign ->
                     GlideImage(
                         modifier = Modifier.clip(RoundedCornerShape(12.dp)),
-                        model = boxDesign.boxTopUri,
+                        model = boxDesign.boxFull,
                         contentScale = ContentScale.Crop,
                         contentDescription = "Box Design"
                     )

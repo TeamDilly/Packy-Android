@@ -7,12 +7,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class BoxDesignDto(
     @SerialName("id") val id: Int,
-    @SerialName("boxTop") val boxTop: String,
+    @SerialName("sequence") val sequence: Int,
+    @SerialName("boxFull") val boxFull: String,
+    @SerialName("boxPart") val boxPart: String,
     @SerialName("boxBottom") val boxBottom: String
 )
 
 fun BoxDesignDto.toEntity(): BoxDesign = BoxDesign(
-    id = this.id,
-    boxTopUri = this.boxTop,
-    boxBottomUri = this.boxBottom
+    id = id,
+    sequence = sequence,
+    boxFull = boxFull,
+    boxPart = boxPart,
+    boxBottom = boxBottom
 )

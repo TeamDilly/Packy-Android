@@ -53,6 +53,7 @@ fun CreateBoxLatterScreen(
     modifier: Modifier = Modifier,
     closeBottomSheet: () -> Unit,
     showSnackbar: (String) -> Unit,
+    saveLatter: (Int, String, String) -> Unit,
     viewModel: CreateBoxLatterViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -67,7 +68,12 @@ fun CreateBoxLatterScreen(
                     closeBottomSheet()
                 }
 
-                CreateBoxLatterEffect.SaveLatter -> {
+                is CreateBoxLatterEffect.SaveLatter -> {
+                    saveLatter(
+                        effect.envelopId,
+                        effect.envelopUri,
+                        effect.latterText
+                    )
                     closeBottomSheet()
                 }
 
@@ -162,7 +168,10 @@ private fun LatterForm(
         )
         Text(
             modifier = Modifier
-                .padding(bottom = 16.dp, end = 16.dp)
+                .padding(
+                    bottom = 16.dp,
+                    end = 16.dp
+                )
                 .align(Alignment.BottomEnd),
             text = "${text.length}/${Constant.MAX_LATTER_TEXT}",
             style = PackyTheme.typography.body04,
@@ -193,7 +202,10 @@ private fun Envelope(
                 onClick(CreateBoxLatterIntent.ChangeEnvelope(envelope.id))
             },
         shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(border, PackyTheme.color.gray900),
+        border = BorderStroke(
+            border,
+            PackyTheme.color.gray900
+        ),
     ) {
         GlideImage(
             modifier = Modifier

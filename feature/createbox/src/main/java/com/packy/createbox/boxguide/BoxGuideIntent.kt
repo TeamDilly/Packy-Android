@@ -17,6 +17,10 @@ sealed interface BoxGuideIntent : MviIntent {
         val imageUri: Uri,
         val contentDescription: String
     ) : BoxGuideIntent
+
+    data class SaveLatter(
+        val latter: Latter
+    ) : BoxGuideIntent
 }
 
 data class Photo(
@@ -26,7 +30,7 @@ data class Photo(
 
 data class Envelope(
     val envelopeId: Int,
-    val envelopeUrl: String
+    val envelopeUrl: String,
 )
 
 data class Latter(

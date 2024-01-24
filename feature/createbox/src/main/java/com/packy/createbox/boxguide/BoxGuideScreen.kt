@@ -36,6 +36,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -58,12 +59,13 @@ import com.packy.feature.core.R
 import com.packy.createbox.createboax.addlatter.CreateBoxLatterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
+import com.packy.lib.ext.removeNewlines
 import com.packy.mvi.ext.emitMviIntent
 import kotlinx.coroutines.launch
 
 @OptIn(
     ExperimentalMaterial3Api::class,
-    ExperimentalGlideComposeApi::class
+    ExperimentalGlideComposeApi::class,
 )
 @Composable
 fun BoxGuideScreen(
@@ -130,6 +132,19 @@ fun BoxGuideScreen(
                         BoxGuideIntent.SavePhoto(
                             uri,
                             description
+                        )
+                    )
+                },
+                saveLatter = { envelopeId, envelopeUri, latterText ->
+                    viewModel.emitIntent(
+                        BoxGuideIntent.SaveLatter(
+                            Latter(
+                                latterContent = latterText,
+                                envelope = Envelope(
+                                    envelopeId,
+                                    envelopeUri,
+                                )
+                            )
                         )
                     )
                 }
@@ -222,6 +237,26 @@ fun BoxGuideScreen(
                                 icon = R.drawable.envelope,
                                 title = Strings.BOX_GUIDE_LATTER
                             )
+                        },
+                        content = uiState.latter?.let { latter ->
+                            {
+                                Box(modifier = Modifier.fillMaxSize()) {
+                                    Text(
+                                        text = latter.latterContent.removeNewlines(),
+                                        style = PackyTheme.typography.body06,
+                                        color = PackyTheme.color.gray900
+                                    )
+                                    GlideImage(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .scale(0.85f)
+                                            .align(Alignment.BottomEnd),
+                                        model = latter.envelope.envelopeUrl,
+                                        contentDescription = "box guide latter",
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
+                            }
                         },
                         onClick = {
                             viewModel.emitIntent(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_LATTER))
@@ -406,13 +441,15 @@ private fun BottomSheetNav(
     closeBottomSheet: () -> Unit,
     showSnackbar: (String) -> Unit,
     savePhoto: (Uri, String) -> Unit,
+    saveLatter: (Int, String, String) -> Unit,
 ) {
     when (bottomSheetRoute) {
         BoxGuideBottomSheetRoute.ADD_GIFT -> Unit
         BoxGuideBottomSheetRoute.ADD_LATTER -> {
             CreateBoxLatterScreen(
                 closeBottomSheet = closeBottomSheet,
-                showSnackbar = showSnackbar
+                showSnackbar = showSnackbar,
+                saveLatter = saveLatter
             )
         }
 

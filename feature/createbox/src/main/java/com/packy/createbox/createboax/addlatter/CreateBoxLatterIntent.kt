@@ -21,10 +21,18 @@ data class CreateBoxLatterState(
     val latterText: String,
     val envelopeId: Int,
     val envelopeList: List<LatterEnvelopeItem>
-) : UiState
+) : UiState{
+    fun getLatterEnvelopeItem(): LatterEnvelopeItem? = envelopeList.firstOrNull{
+        it.id == envelopeId
+    }
+}
 
 sealed interface CreateBoxLatterEffect : SideEffect {
     data object CloseBottomSheet : CreateBoxLatterEffect
-    data object SaveLatter : CreateBoxLatterEffect
+    data class SaveLatter(
+        val envelopId: Int,
+        val envelopUri: String,
+        val latterText: String,
+    ): CreateBoxLatterEffect
     data object OverFlowLatterText : CreateBoxLatterEffect
 }

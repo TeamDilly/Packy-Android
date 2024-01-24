@@ -14,3 +14,7 @@ fun extractYouTubeVideoId(url: String): String? {
 }
 
 fun String.validationYoutubeVideoId() = extractYouTubeVideoId(this) != null
+
+fun String.removeNewlines(): String {
+    return this.replace(Regex("[\n\r]"), "")
+}

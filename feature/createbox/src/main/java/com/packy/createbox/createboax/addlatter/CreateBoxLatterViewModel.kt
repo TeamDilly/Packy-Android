@@ -45,7 +45,16 @@ class CreateBoxLatterViewModel @Inject constructor(
             sendEffect(CreateBoxLatterEffect.CloseBottomSheet)
         }
         subscribeIntent<CreateBoxLatterIntent.OnSaveClick> {
-            sendEffect(CreateBoxLatterEffect.SaveLatter)
+            val envelopeItem = currentState.getLatterEnvelopeItem()
+            if (envelopeItem != null) {
+                sendEffect(
+                    CreateBoxLatterEffect.SaveLatter(
+                        envelopId = envelopeItem.id,
+                        envelopUri = envelopeItem.imageUri,
+                        latterText = currentState.latterText
+                    )
+                )
+            }
         }
         subscribeStateIntent<CreateBoxLatterIntent.ChangeEnvelope> { state, intent ->
             state.copy(envelopeId = intent.envelopeId)

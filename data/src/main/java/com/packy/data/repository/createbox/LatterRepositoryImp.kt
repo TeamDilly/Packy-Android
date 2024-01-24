@@ -1,13 +1,12 @@
 package com.packy.data.repository.createbox
 
 import com.packy.data.local.AccountPrefManager
-import com.packy.data.local.GlobalPrefManager
 import com.packy.data.model.createbox.LetterSenderReceiverDto
 import com.packy.data.model.createbox.toEntity
 import com.packy.data.remote.createbox.LetterService
 import com.packy.domain.model.createbox.LetterEnvelope
 import com.packy.domain.model.createbox.LetterSenderReceiver
-import com.packy.domain.repository.createbox.LetterRepository
+import com.packy.domain.repository.letter.LetterRepository
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.map
 import kotlinx.coroutines.flow.Flow
@@ -26,10 +25,10 @@ class LetterRepositoryImp @Inject constructor(
     }
 
     override suspend fun getLetterSenderReceiver(): Flow<LetterSenderReceiver?> =
-        prefManager.LetterSenderReceiver.getData().map { it?.toEntity() }
+        prefManager.letterSenderReceiver.getData().map { it?.toEntity() }
 
     override suspend fun setLetterSenderReceiver(letterSenderReceiver: LetterSenderReceiver) {
-        prefManager.LetterSenderReceiver.putData(
+        prefManager.letterSenderReceiver.putData(
             LetterSenderReceiverDto(
                 receiver = letterSenderReceiver.receiver,
                 sender = letterSenderReceiver.sender

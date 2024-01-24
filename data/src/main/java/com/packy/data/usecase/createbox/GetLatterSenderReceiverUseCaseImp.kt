@@ -1,8 +1,8 @@
 package com.packy.data.usecase.createbox
 
 import com.packy.domain.model.createbox.LetterSenderReceiver
-import com.packy.domain.repository.createbox.LetterRepository
-import com.packy.domain.usecase.createbox.GetLetterSenderReceiverUseCase
+import com.packy.domain.repository.letter.LetterRepository
+import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

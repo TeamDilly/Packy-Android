@@ -1,4 +1,4 @@
-package com.packy.data.model
+package com.packy.data.model.createbox
 
 import com.packy.domain.model.box.BoxDesign
 import kotlinx.serialization.SerialName

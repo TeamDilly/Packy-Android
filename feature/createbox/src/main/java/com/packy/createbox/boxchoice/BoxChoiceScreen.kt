@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
+import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
@@ -50,14 +51,15 @@ fun BoxChoiceScreen(
     }
 
     LaunchedEffect(null) {
-        viewModel.effect.collect{ effect ->
-            when(effect){
+        viewModel.effect.collect { effect ->
+            when (effect) {
                 BoxChoiceEffect.CloseCreateBox -> closeCreateBox()
                 BoxChoiceEffect.MoveToBack -> {
                     navController.popBackStack()
                 }
+
                 BoxChoiceEffect.SaveBoxInfo -> {
-                    CreateBoxRoute.BOX_GUIDE
+                    navController
                 }
             }
         }
@@ -114,7 +116,11 @@ fun BoxChoiceScreen(
             ) {
                 items(uiState.boxDesignList) { boxDesign ->
                     GlideImage(
-                        modifier = Modifier.clip(RoundedCornerShape(12.dp)),
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickableWithoutRipple {
+                                viewModel.emitIntent(BoxChoiceIntent.ChangeSelectBox(boxDesign))
+                            },
                         model = boxDesign.boxFull,
                         contentScale = ContentScale.Crop,
                         contentDescription = "Box Design"

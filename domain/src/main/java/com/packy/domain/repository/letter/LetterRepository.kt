@@ -1,4 +1,4 @@
-package com.packy.domain.repository.createbox
+package com.packy.domain.repository.letter
 
 import com.packy.domain.model.createbox.LetterEnvelope
 import com.packy.domain.model.createbox.LetterSenderReceiver

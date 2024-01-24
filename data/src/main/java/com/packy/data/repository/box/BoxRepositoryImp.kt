@@ -1,6 +1,6 @@
 package com.packy.data.repository.box
 
-import com.packy.data.model.toEntity
+import com.packy.data.model.createbox.toEntity
 import com.packy.data.remote.box.BoxService
 import com.packy.domain.model.box.BoxDesign
 import com.packy.domain.repository.box.BoxRepository

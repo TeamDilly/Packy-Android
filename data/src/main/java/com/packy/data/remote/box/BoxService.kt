@@ -1,6 +1,6 @@
 package com.packy.data.remote.box
 
-import com.packy.data.model.BoxDesignDto
+import com.packy.data.model.createbox.BoxDesignDto
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.toResource
 import io.ktor.client.HttpClient

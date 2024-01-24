@@ -3,7 +3,7 @@ package com.packy.createbox.boxaddinfo
 import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Constant.MAX_NICK_NAME_LENGTH
 import com.packy.domain.model.createbox.LetterSenderReceiver
-import com.packy.domain.usecase.createbox.GetLetterSenderReceiverUseCase
+import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull

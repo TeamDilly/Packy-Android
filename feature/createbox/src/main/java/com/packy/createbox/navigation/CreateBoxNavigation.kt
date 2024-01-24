@@ -4,11 +4,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.packy.core.animations.asFadeInComposable
 import com.packy.core.animations.asPagingComposable
 import com.packy.core.animations.asRootComposable
 import com.packy.createbox.boxaddinfo.BoxAddInfoScreen
 import com.packy.createbox.boxchoice.BoxChoiceScreen
 import com.packy.createbox.boxguide.BoxGuideScreen
+import com.packy.createbox.boxmotion.BoxMotionScreen
 
 
 fun NavGraphBuilder.createBoxNavGraph(
@@ -43,6 +45,11 @@ fun NavGraphBuilder.createBoxNavGraph(
                 navController = navController,
             )
         }
+        asFadeInComposable(
+            route = CreateBoxRoute.BOX_MOTION
+        ){
+            BoxMotionScreen()
+        }
     }
 }
 
@@ -52,4 +59,5 @@ object CreateBoxRoute {
     const val BOX_CHOICE = "boxChoice"
     const val BOX_GUIDE = "boxGuide"
     const val BOX_ADD_INFO = "boxAddInfo"
+    const val BOX_MOTION = "boxMotion"
 }

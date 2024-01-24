@@ -1,6 +1,7 @@
 package com.packy.data.local
 
 import android.content.Context
+import com.packy.data.model.createbox.BoxDesignDto
 import com.packy.data.model.createbox.LetterSenderReceiverDto
 import com.packy.domain.model.auth.SignUp
 import com.packy.pref.manager.PrefManager
@@ -31,10 +32,25 @@ class AccountPrefManager @Inject constructor(
         SignUp::class
     )
 
-    val LetterSenderReceiver = createMemoryPrefItem<LetterSenderReceiverDto>(
+    val letterSenderReceiver = createMemoryPrefItem<LetterSenderReceiverDto>(
         "LetterSenderReceiver",
         null,
         LetterSenderReceiverDto::class
+    )
+    val boxDesign = createMemoryPrefItem(
+        "boxDesign",
+        null,
+        BoxDesignDto::class
+    )
+    val shouldShowBoxMotion = createNonNullMemoryPrefItem(
+        "shouldShowBoxMotion",
+        true,
+        Boolean::class
+    )
+    val shouldShowBoxTutorial = createNonNullMemoryPrefItem(
+        "shouldShowBoxTutorial",
+        true,
+        Boolean::class
     )
 
     companion object {

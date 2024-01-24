@@ -7,6 +7,8 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
@@ -75,6 +77,34 @@ fun NavGraphBuilder.asRootComposable(
     popExitTransition = {
         slideOutOfContainer(
             towards = AnimatedContentTransitionScope.SlideDirection.Down,
+            animationSpec = tween(300)
+        )
+    },
+    content = content
+)
+
+fun NavGraphBuilder.asFadeInComposable(
+    route: String,
+    arguments: List<NamedNavArgument> = emptyList(),
+    deepLinks: List<NavDeepLink> = emptyList(),
+    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+) = this.composable(
+    route = route,
+    arguments = arguments,
+    deepLinks = deepLinks,
+    enterTransition = {
+        fadeIn(
+            animationSpec = tween(300)
+        )
+    },
+    exitTransition = {
+        fadeOut(
+            animationSpec = tween(300)
+        )
+    },
+    popEnterTransition = null,
+    popExitTransition = {
+        fadeOut(
             animationSpec = tween(300)
         )
     },

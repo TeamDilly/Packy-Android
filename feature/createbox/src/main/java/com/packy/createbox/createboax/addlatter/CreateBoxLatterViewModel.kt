@@ -2,10 +2,8 @@ package com.packy.createbox.createboax.addLetter
 
 import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Constant
-import com.packy.domain.usecase.createbox.LetterUseCase
-import com.packy.lib.utils.catchError
+import com.packy.domain.usecase.letter.LetterUseCase
 import com.packy.lib.utils.filterSuccess
-import com.packy.lib.utils.map
 import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

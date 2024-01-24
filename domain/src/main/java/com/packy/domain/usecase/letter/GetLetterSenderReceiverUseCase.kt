@@ -1,4 +1,4 @@
-package com.packy.domain.usecase.createbox
+package com.packy.domain.usecase.letter
 
 import com.packy.domain.model.createbox.LetterSenderReceiver
 import kotlinx.coroutines.flow.Flow

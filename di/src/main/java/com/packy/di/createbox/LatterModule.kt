@@ -5,9 +5,9 @@ import com.packy.data.repository.createbox.LetterRepositoryImp
 import com.packy.data.usecase.createbox.GetLetterSenderReceiverUseCaseImp
 import com.packy.data.usecase.createbox.LetterUseCaseImp
 import com.packy.di.network.Packy
-import com.packy.domain.repository.createbox.LetterRepository
-import com.packy.domain.usecase.createbox.GetLetterSenderReceiverUseCase
-import com.packy.domain.usecase.createbox.LetterUseCase
+import com.packy.domain.repository.letter.LetterRepository
+import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
+import com.packy.domain.usecase.letter.LetterUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

@@ -230,7 +230,7 @@ fun BoxGuideScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-                Spacer(height = 49.dp)
+                Spacer(height = 28.dp)
             }
         }
     }

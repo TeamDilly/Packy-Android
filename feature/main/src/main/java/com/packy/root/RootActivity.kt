@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.captionBar
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Surface
@@ -25,7 +27,8 @@ class RootActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
-                        .windowInsetsPadding(WindowInsets.statusBars),
+                        .windowInsetsPadding(WindowInsets.statusBars)
+                        .windowInsetsPadding(WindowInsets.navigationBars),
                     color = PackyTheme.color.white
                 ) {
                     RootCompose(

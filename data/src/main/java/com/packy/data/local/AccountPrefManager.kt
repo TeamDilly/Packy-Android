@@ -31,8 +31,8 @@ class AccountPrefManager @Inject constructor(
         SignUp::class
     )
 
-    val latterSenderReceiver = createMemoryPrefItem<LetterSenderReceiverDto>(
-        "latterSenderReceiver",
+    val LetterSenderReceiver = createMemoryPrefItem<LetterSenderReceiverDto>(
+        "LetterSenderReceiver",
         null,
         LetterSenderReceiverDto::class
     )

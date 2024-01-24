@@ -9,7 +9,7 @@ class BoxGuideViewModel @Inject constructor() :
     MviViewModel<BoxGuideIntent, BoxGuideState, BoxGuideEffect>() {
     override fun createInitialState(): BoxGuideState = BoxGuideState(
         photo = null,
-        latter = null,
+        Letter = null,
         youtubeUrl = null,
         sticker1 = null,
         sticker2 = null,
@@ -20,7 +20,7 @@ class BoxGuideViewModel @Inject constructor() :
         subscribeIntent<BoxGuideIntent.OnSaveClick> { sendEffect(BoxGuideEffect.SaveBox) }
         subscribeIntent<BoxGuideIntent.ShowBottomSheet> { sendEffect(BoxGuideEffect.ShowBottomSheet(it.boxGuideBottomSheetRoute)) }
         subscribeStateIntent<BoxGuideIntent.SavePhoto>(savePhoto())
-        subscribeStateIntent<BoxGuideIntent.SaveLatter>(saveLatterBoxGuideStateSuspendFunction2())
+        subscribeStateIntent<BoxGuideIntent.SaveLetter>(saveLetterBoxGuideStateSuspendFunction2())
         subscribeStateIntent<BoxGuideIntent.SaveMusic>(saveYoutubeMusic())
         subscribeStateIntent<BoxGuideIntent.ClearMusic>(clearYoutubeMusic())
     }
@@ -35,9 +35,9 @@ class BoxGuideViewModel @Inject constructor() :
             state.copy(youtubeUrl = intent.youtubeUrl)
         }
 
-    private fun saveLatterBoxGuideStateSuspendFunction2(): suspend (BoxGuideState, BoxGuideIntent.SaveLatter) -> BoxGuideState =
+    private fun saveLetterBoxGuideStateSuspendFunction2(): suspend (BoxGuideState, BoxGuideIntent.SaveLetter) -> BoxGuideState =
         { state, intent ->
-            state.copy(latter = intent.latter)
+            state.copy(Letter = intent.Letter)
         }
 
     private fun savePhoto(): suspend (BoxGuideState, BoxGuideIntent.SavePhoto) -> BoxGuideState =

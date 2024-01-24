@@ -1,15 +1,15 @@
 package com.packy.data.usecase.createbox
 
-import com.packy.domain.model.createbox.LatterEnvelope
-import com.packy.domain.repository.createbox.LatterRepository
-import com.packy.domain.usecase.createbox.LatterUseCase
+import com.packy.domain.model.createbox.LetterEnvelope
+import com.packy.domain.repository.createbox.LetterRepository
+import com.packy.domain.usecase.createbox.LetterUseCase
 import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class LatterUseCaseImp @Inject constructor(
-    private val latterRepository: LatterRepository
-) : LatterUseCase {
-    override suspend fun getLatterEnvelope(): Flow<Resource<List<LatterEnvelope>>> =
-        latterRepository.getLatterEnvelope()
+class LetterUseCaseImp @Inject constructor(
+    private val LetterRepository: LetterRepository
+) : LetterUseCase {
+    override suspend fun getLetterEnvelope(): Flow<Resource<List<LetterEnvelope>>> =
+        LetterRepository.getLetterEnvelope()
 }

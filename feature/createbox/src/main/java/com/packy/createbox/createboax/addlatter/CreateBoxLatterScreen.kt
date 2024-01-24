@@ -1,4 +1,4 @@
-package com.packy.createbox.createboax.addlatter
+package com.packy.createbox.createboax.addLetter
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -42,44 +42,44 @@ import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Constant
 import com.packy.core.values.Strings
-import com.packy.core.values.Strings.CREATE_BOX_ADD_LATTER_OVER_FLOW_LATTER_TEXT
+import com.packy.core.values.Strings.CREATE_BOX_ADD_Letter_OVER_FLOW_Letter_TEXT
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
-import com.packy.domain.model.createbox.LatterEnvelope
+import com.packy.domain.model.createbox.LetterEnvelope
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
 
 @Composable
-fun CreateBoxLatterScreen(
+fun CreateBoxLetterScreen(
     modifier: Modifier = Modifier,
     closeBottomSheet: () -> Unit,
     showSnackbar: (String) -> Unit,
-    saveLatter: (Int, String, String) -> Unit,
-    viewModel: CreateBoxLatterViewModel = hiltViewModel()
+    saveLetter: (Int, String, String) -> Unit,
+    viewModel: CreateBoxLetterViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(viewModel) {
-        viewModel.getLatterEnvelope()
+        viewModel.getLetterEnvelope()
     }
 
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                CreateBoxLatterEffect.CloseBottomSheet -> {
+                CreateBoxLetterEffect.CloseBottomSheet -> {
                     closeBottomSheet()
                 }
 
-                is CreateBoxLatterEffect.SaveLatter -> {
-                    saveLatter(
+                is CreateBoxLetterEffect.SaveLetter -> {
+                    saveLetter(
                         effect.envelopId,
                         effect.envelopUri,
-                        effect.latterText
+                        effect.LetterText
                     )
                     closeBottomSheet()
                 }
 
-                CreateBoxLatterEffect.OverFlowLatterText -> {
-                    showSnackbar(CREATE_BOX_ADD_LATTER_OVER_FLOW_LATTER_TEXT)
+                CreateBoxLetterEffect.OverFlowLetterText -> {
+                    showSnackbar(CREATE_BOX_ADD_Letter_OVER_FLOW_Letter_TEXT)
                 }
             }
         }
@@ -92,14 +92,14 @@ fun CreateBoxLatterScreen(
         Spacer(height = 12.dp)
         PackyTopBar.Builder()
             .endIconButton(icon = R.drawable.cancle) {
-                viewModel.emitIntent(CreateBoxLatterIntent.OnCloseClick)
+                viewModel.emitIntent(CreateBoxLetterIntent.OnCloseClick)
             }
             .build()
         Spacer(height = 9.dp)
         BottomSheetTitle(
             BottomSheetTitleContent(
-                title = Strings.CREATE_BOX_ADD_LATTER_TITLE,
-                description = Strings.CREATE_BOX_ADD_LATTER_DESCRIPTION,
+                title = Strings.CREATE_BOX_ADD_Letter_TITLE,
+                description = Strings.CREATE_BOX_ADD_Letter_DESCRIPTION,
             )
         )
         Column(
@@ -109,8 +109,8 @@ fun CreateBoxLatterScreen(
         ) {
 
             Spacer(height = 32.dp)
-            LatterForm(
-                uiState.latterText,
+            LetterForm(
+                uiState.LetterText,
                 viewModel::emitIntent,
             )
             Spacer(height = 16.dp)
@@ -135,9 +135,9 @@ fun CreateBoxLatterScreen(
                     .height(48.dp),
                 style = buttonStyle.large.black,
                 text = Strings.SAVE,
-                enabled = uiState.latterText.isNotEmpty()
+                enabled = uiState.LetterText.isNotEmpty()
             ) {
-                viewModel.emitIntentThrottle(CreateBoxLatterIntent.OnSaveClick)
+                viewModel.emitIntentThrottle(CreateBoxLetterIntent.OnSaveClick)
             }
             Spacer(16.dp)
         }
@@ -145,15 +145,15 @@ fun CreateBoxLatterScreen(
 }
 
 @Composable
-private fun LatterForm(
+private fun LetterForm(
     text: String,
-    onValueChange: emitMviIntent<CreateBoxLatterIntent>,
+    onValueChange: emitMviIntent<CreateBoxLetterIntent>,
 ) {
 
     Box {
         PackyTextField(
             value = text,
-            onValueChange = { onValueChange(CreateBoxLatterIntent.ChangeLatterText(it)) },
+            onValueChange = { onValueChange(CreateBoxLetterIntent.ChangeLetterText(it)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
@@ -163,9 +163,9 @@ private fun LatterForm(
                     shape = RoundedCornerShape(16.dp)
                 ),
             textFieldColor = PackyTheme.color.gray100,
-            placeholder = Strings.CREATE_BOX_ADD_LATTER_PLACEHOLDER,
+            placeholder = Strings.CREATE_BOX_ADD_Letter_PLACEHOLDER,
             textAlign = TextAlign.Center,
-            maxLines = Constant.MAX_LATTER_LINES,
+            maxLines = Constant.MAX_Letter_LINES,
         )
         Text(
             modifier = Modifier
@@ -174,7 +174,7 @@ private fun LatterForm(
                     end = 16.dp
                 )
                 .align(Alignment.BottomEnd),
-            text = "${text.length}/${Constant.MAX_LATTER_TEXT}",
+            text = "${text.length}/${Constant.MAX_Letter_TEXT}",
             style = PackyTheme.typography.body04,
             color = PackyTheme.color.gray600,
         )
@@ -186,8 +186,8 @@ private fun LatterForm(
 private fun Envelope(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
-    envelope: LatterEnvelope,
-    onClick: emitMviIntent<CreateBoxLatterIntent>,
+    envelope: LetterEnvelope,
+    onClick: emitMviIntent<CreateBoxLetterIntent>,
 ) {
     val border = if (isSelected) {
         3.dp
@@ -200,7 +200,7 @@ private fun Envelope(
             .height(78.dp)
             .width(78.dp)
             .clickableWithoutRipple {
-                onClick(CreateBoxLatterIntent.ChangeEnvelope(envelope.id))
+                onClick(CreateBoxLetterIntent.ChangeEnvelope(envelope.id))
             },
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(

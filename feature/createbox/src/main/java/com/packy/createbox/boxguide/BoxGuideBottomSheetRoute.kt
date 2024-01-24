@@ -2,7 +2,7 @@ package com.packy.createbox.boxguide
 
 enum class BoxGuideBottomSheetRoute {
     ADD_GIFT,
-    ADD_LATTER,
+    ADD_Letter,
     ADD_MUSIC,
     ADD_PHOTO,
     ADD_STICKER_1,

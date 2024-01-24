@@ -19,8 +19,8 @@ sealed interface BoxGuideIntent : MviIntent {
         val contentDescription: String
     ) : BoxGuideIntent
 
-    data class SaveLatter(
-        val latter: Latter
+    data class SaveLetter(
+        val Letter: Letter
     ) : BoxGuideIntent
 
     data class SaveMusic(
@@ -40,8 +40,8 @@ data class Envelope(
     val envelopeUrl: String,
 )
 
-data class Latter(
-    val latterContent: String,
+data class Letter(
+    val LetterContent: String,
     val envelope: Envelope
 )
 
@@ -52,14 +52,14 @@ data class Sticker(
 
 data class BoxGuideState(
     val photo: Photo?,
-    val latter: Latter?,
+    val Letter: Letter?,
     val youtubeUrl: String?,
     val youtubeState: YoutubeState = YoutubeState.INIT,
     val sticker1: Sticker?,
     val sticker2: Sticker?,
 ) : UiState {
     fun isBoxComplete() =
-        this.photo != null && this.latter != null && this.youtubeUrl != null && sticker1 != null && this.sticker2 != null
+        this.photo != null && this.Letter != null && this.youtubeUrl != null && sticker1 != null && this.sticker2 != null
 }
 
 sealed interface BoxGuideEffect : SideEffect {

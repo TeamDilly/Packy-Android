@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LatterEnvelope(
+data class LetterEnvelope(
     @SerialName("imgUrl") val imgUrl: String,
     @SerialName("id") val id: Int,
     @SerialName("sequence") val sequence: Int,

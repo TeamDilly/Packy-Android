@@ -44,7 +44,7 @@ fun BoxAddInfoScreen(
     val isKeyboardOpen by keyboardAsState()
 
     LaunchedEffect(null) {
-        viewModel.getLatterSenderReceiver()
+        viewModel.getLetterSenderReceiver()
         viewModel.effect.collect { effect ->
             when (effect) {
                 BoxAddInfoEffect.MoveToBack -> navController.popBackStack()

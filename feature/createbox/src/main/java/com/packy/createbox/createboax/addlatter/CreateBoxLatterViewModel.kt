@@ -1,8 +1,8 @@
-package com.packy.createbox.createboax.addlatter
+package com.packy.createbox.createboax.addLetter
 
 import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Constant
-import com.packy.domain.usecase.createbox.LatterUseCase
+import com.packy.domain.usecase.createbox.LetterUseCase
 import com.packy.lib.utils.catchError
 import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.map
@@ -14,62 +14,62 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateBoxLatterViewModel @Inject constructor(
-    private val latterUseCase: LatterUseCase
+class CreateBoxLetterViewModel @Inject constructor(
+    private val LetterUseCase: LetterUseCase
 ) :
-    MviViewModel<CreateBoxLatterIntent, CreateBoxLatterState, CreateBoxLatterEffect>() {
+    MviViewModel<CreateBoxLetterIntent, CreateBoxLetterState, CreateBoxLetterEffect>() {
 
-    fun getLatterEnvelope() {
+    fun getLetterEnvelope() {
         viewModelScope.launch {
-            val envelopeList = latterUseCase.getLatterEnvelope()
+            val envelopeList = LetterUseCase.getLetterEnvelope()
                 .filterSuccess()
                 .unwrapResource()
                 .single()
                 .sortedBy { it.sequence }
             emitIntent(
-                CreateBoxLatterIntent.GetEnvelope(envelopeList)
+                CreateBoxLetterIntent.GetEnvelope(envelopeList)
             )
         }
     }
 
-    override fun createInitialState(): CreateBoxLatterState = CreateBoxLatterState(
-        latterText = "",
+    override fun createInitialState(): CreateBoxLetterState = CreateBoxLetterState(
+        LetterText = "",
         envelopeId = 1,
         envelopeList = emptyList()
     )
 
     override fun handleIntent() {
-        subscribeIntent<CreateBoxLatterIntent.OnCloseClick> {
-            sendEffect(CreateBoxLatterEffect.CloseBottomSheet)
+        subscribeIntent<CreateBoxLetterIntent.OnCloseClick> {
+            sendEffect(CreateBoxLetterEffect.CloseBottomSheet)
         }
-        subscribeIntent<CreateBoxLatterIntent.OnSaveClick> {
-            val envelopeItem = currentState.getLatterEnvelope()
+        subscribeIntent<CreateBoxLetterIntent.OnSaveClick> {
+            val envelopeItem = currentState.getLetterEnvelope()
             if (envelopeItem != null) {
                 sendEffect(
-                    CreateBoxLatterEffect.SaveLatter(
+                    CreateBoxLetterEffect.SaveLetter(
                         envelopId = envelopeItem.id,
                         envelopUri = envelopeItem.imgUrl,
-                        latterText = currentState.latterText
+                        LetterText = currentState.LetterText
                     )
                 )
             }
         }
-        subscribeStateIntent<CreateBoxLatterIntent.ChangeEnvelope> { state, intent ->
+        subscribeStateIntent<CreateBoxLetterIntent.ChangeEnvelope> { state, intent ->
             state.copy(envelopeId = intent.envelopeId)
         }
-        subscribeStateIntent<CreateBoxLatterIntent.ChangeLatterText> { state, intent ->
-            if (intent.latter.length <= Constant.MAX_LATTER_TEXT) {
-                if (intent.latter.lines().size <= Constant.MAX_LATTER_LINES + 1) {
-                    state.copy(latterText = intent.latter)
+        subscribeStateIntent<CreateBoxLetterIntent.ChangeLetterText> { state, intent ->
+            if (intent.Letter.length <= Constant.MAX_Letter_TEXT) {
+                if (intent.Letter.lines().size <= Constant.MAX_Letter_LINES + 1) {
+                    state.copy(LetterText = intent.Letter)
                 } else {
                     state
                 }
             } else {
-                sendEffect(CreateBoxLatterEffect.OverFlowLatterText)
+                sendEffect(CreateBoxLetterEffect.OverFlowLetterText)
                 state
             }
         }
-        subscribeStateIntent<CreateBoxLatterIntent.GetEnvelope> { state, intent ->
+        subscribeStateIntent<CreateBoxLetterIntent.GetEnvelope> { state, intent ->
             state.copy(envelopeList = intent.envelopeList)
         }
     }

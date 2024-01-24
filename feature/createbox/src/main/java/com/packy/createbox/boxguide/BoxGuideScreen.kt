@@ -62,7 +62,7 @@ import com.packy.createbox.boxguide.widget.BoxPlaceholder
 import com.packy.createbox.boxguide.widget.PhotoForm
 import com.packy.createbox.boxguide.widget.StickerForm
 import com.packy.feature.core.R
-import com.packy.createbox.createboax.addlatter.CreateBoxLatterScreen
+import com.packy.createbox.createboax.addLetter.CreateBoxLetterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
 import com.packy.lib.ext.extractYouTubeVideoId
@@ -144,11 +144,11 @@ fun BoxGuideScreen(
                         )
                     )
                 },
-                saveLatter = { envelopeId, envelopeUri, latterText ->
+                saveLetter = { envelopeId, envelopeUri, LetterText ->
                     viewModel.emitIntent(
-                        BoxGuideIntent.SaveLatter(
-                            Latter(
-                                latterContent = latterText,
+                        BoxGuideIntent.SaveLetter(
+                            Letter(
+                                LetterContent = LetterText,
                                 envelope = Envelope(
                                     envelopeId,
                                     envelopeUri,
@@ -252,16 +252,16 @@ fun BoxGuideScreen(
                         placeholder = {
                             BoxPlaceholder(
                                 icon = R.drawable.envelope,
-                                title = Strings.BOX_GUIDE_LATTER
+                                title = Strings.BOX_GUIDE_Letter
                             )
                         },
-                        content = uiState.latter?.let { latter ->
+                        content = uiState.Letter?.let { Letter ->
                             {
-                                LatterForm(latter)
+                                LetterForm(Letter)
                             }
                         },
                         onClick = {
-                            viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_LATTER))
+                            viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_Letter))
                         }
                     )
                 }
@@ -307,7 +307,7 @@ fun BoxGuideScreen(
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun LatterForm(latter: Latter) {
+private fun LetterForm(Letter: Letter) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -321,7 +321,7 @@ private fun LatterForm(latter: Latter) {
                 )
                 .align(Alignment.TopStart)
                 .padding(horizontal = 10.dp, vertical = 6.dp),
-            text = latter.latterContent.removeNewlines(),
+            text = Letter.LetterContent.removeNewlines(),
             style = PackyTheme.typography.body06,
             color = PackyTheme.color.gray900
         )
@@ -329,8 +329,8 @@ private fun LatterForm(latter: Latter) {
             modifier = Modifier
                 .fillMaxSize(0.85f)
                 .align(Alignment.BottomEnd),
-            model = latter.envelope.envelopeUrl,
-            contentDescription = "box guide latter",
+            model = Letter.envelope.envelopeUrl,
+            contentDescription = "box guide Letter",
             contentScale = ContentScale.Crop
         )
     }
@@ -514,16 +514,16 @@ private fun BottomSheetNav(
     closeBottomSheet: () -> Unit,
     showSnackbar: (String) -> Unit,
     savePhoto: (Uri, String) -> Unit,
-    saveLatter: (Int, String, String) -> Unit,
+    saveLetter: (Int, String, String) -> Unit,
     saveMusic: (String) -> Unit,
 ) {
     when (bottomSheetRoute) {
         BoxGuideBottomSheetRoute.ADD_GIFT -> Unit
-        BoxGuideBottomSheetRoute.ADD_LATTER -> {
-            CreateBoxLatterScreen(
+        BoxGuideBottomSheetRoute.ADD_Letter -> {
+            CreateBoxLetterScreen(
                 closeBottomSheet = closeBottomSheet,
                 showSnackbar = showSnackbar,
-                saveLatter = saveLatter
+                saveLetter = saveLetter
             )
         }
 

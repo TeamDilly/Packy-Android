@@ -3,7 +3,7 @@ package com.packy.createbox.boxaddinfo
 import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Constant.MAX_NICK_NAME_LENGTH
 import com.packy.domain.model.createbox.LetterSenderReceiver
-import com.packy.domain.usecase.createbox.GetLatterSenderReceiverUseCase
+import com.packy.domain.usecase.createbox.GetLetterSenderReceiverUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoxAddInfoViewModel @Inject constructor(
-    private val useCase: GetLatterSenderReceiverUseCase
+    private val useCase: GetLetterSenderReceiverUseCase
 ) :
     MviViewModel<BoxAddInfoIntent, BoxAddInfoState, BoxAddInfoEffect>() {
     override fun createInitialState(): BoxAddInfoState = BoxAddInfoState(
@@ -52,9 +52,9 @@ class BoxAddInfoViewModel @Inject constructor(
         }
     }
 
-    fun getLatterSenderReceiver() {
+    fun getLetterSenderReceiver() {
         viewModelScope.launch {
-            useCase.getLatterSenderReceiver()
+            useCase.getLetterSenderReceiver()
                 .filterNotNull()
                 .collect {
                     setState(currentState)
@@ -64,7 +64,7 @@ class BoxAddInfoViewModel @Inject constructor(
 
     private fun setLetterSenderReceiver() {
         viewModelScope.launch {
-            useCase.setLatterSenderReceiver(
+            useCase.setLetterSenderReceiver(
                 currentState.letterSenderReceiver
             )
         }

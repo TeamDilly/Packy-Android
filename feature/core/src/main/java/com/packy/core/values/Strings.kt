@@ -43,7 +43,7 @@ object Strings {
 
     // box guide
     const val BOX_GUIDE_PHOTO = "추억 사진 담기"
-    const val BOX_GUIDE_LATTER = "편지 쓰기"
+    const val BOX_GUIDE_Letter = "편지 쓰기"
     const val BOX_GUIDE_MUSIC = "음악 추가하기"
     const val BOX_GUIDE_GIFT = "선물 담기"
     const val BOX_GUIDE_CHANGE_BOX = "박스 다시 고르기"
@@ -67,9 +67,9 @@ object Strings {
     const val CREATE_BOX_ADD_PHOTO_DESCRIPTION = "추억을 담은 사진"
     const val CREATE_BOX_ADD_PHOTO_PLACEHOLDER = "사진 속 추억을 적어주세요"
 
-    const val CREATE_BOX_ADD_LATTER_TITLE = "편지쓰기"
-    const val CREATE_BOX_ADD_LATTER_DESCRIPTION = "마음을 담은 편지를 써보아요"
-    const val CREATE_BOX_ADD_LATTER_PLACEHOLDER =
+    const val CREATE_BOX_ADD_Letter_TITLE = "편지쓰기"
+    const val CREATE_BOX_ADD_Letter_DESCRIPTION = "마음을 담은 편지를 써보아요"
+    const val CREATE_BOX_ADD_Letter_PLACEHOLDER =
         "편지에 어떤 마음을 담아볼까요?\n따뜻한 인사, 잊지 못할 추억, 고마웠던 순간까지\n모두 좋아요 :)"
-    const val CREATE_BOX_ADD_LATTER_OVER_FLOW_LATTER_TEXT = "최대 200자까지 작성할 수 있어요"
+    const val CREATE_BOX_ADD_Letter_OVER_FLOW_Letter_TEXT = "최대 200자까지 작성할 수 있어요"
 }

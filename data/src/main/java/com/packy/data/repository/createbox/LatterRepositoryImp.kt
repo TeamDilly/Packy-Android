@@ -2,6 +2,7 @@ package com.packy.data.repository.createbox
 
 import com.packy.data.local.AccountPrefManager
 import com.packy.data.local.GlobalPrefManager
+import com.packy.data.model.createbox.LetterSenderReceiverDto
 import com.packy.data.model.createbox.toEntity
 import com.packy.data.remote.createbox.LatterService
 import com.packy.domain.model.createbox.LatterEnvelope
@@ -26,4 +27,13 @@ class LatterRepositoryImp @Inject constructor(
 
     override suspend fun getLatterSenderReceiver(): Flow<LetterSenderReceiver?> =
         prefManager.latterSenderReceiver.getData().map { it?.toEntity() }
+
+    override suspend fun setLatterSenderReceiver(letterSenderReceiver: LetterSenderReceiver) {
+        prefManager.latterSenderReceiver.putData(
+            LetterSenderReceiverDto(
+                receiver = letterSenderReceiver.receiver,
+                sender = letterSenderReceiver.sender
+            )
+        )
+    }
 }

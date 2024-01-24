@@ -3,7 +3,6 @@ package com.packy.createbox.boxaddinfo
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -16,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +44,7 @@ fun BoxAddInfoScreen(
     val isKeyboardOpen by keyboardAsState()
 
     LaunchedEffect(null) {
+        viewModel.getLatterSenderReceiver()
         viewModel.effect.collect { effect ->
             when (effect) {
                 BoxAddInfoEffect.MoveToBack -> navController.popBackStack()
@@ -86,17 +85,17 @@ fun BoxAddInfoScreen(
                     .clip(RoundedCornerShape(16.dp)),
             ) {
                 AddInfoForm(
-                    text = uiState.toName,
+                    text = uiState.letterSenderReceiver.receiver,
                     title = Strings.BOX_ADD_INFO_SENDER
                 ) {
-                    viewModel.emitIntent(BoxAddInfoIntent.ChangeToName(it))
+                    viewModel.emitIntent(BoxAddInfoIntent.ChangeReceiver(it))
                 }
                 DottedDivider(modifier = Modifier.padding(vertical = 16.dp))
                 AddInfoForm(
-                    text = uiState.fromName,
+                    text = uiState.letterSenderReceiver.sender,
                     title = Strings.BOX_ADD_INFO_RECEIVER
                 ) {
-                    viewModel.emitIntent(BoxAddInfoIntent.ChangeFromName(it))
+                    viewModel.emitIntent(BoxAddInfoIntent.ChangeSender(it))
                 }
             }
             Spacer(height = 20.dp)
@@ -106,7 +105,7 @@ fun BoxAddInfoScreen(
                     .padding(horizontal = 24.dp)
                     .imePadding()
                     .fillMaxWidth(),
-                enabled = uiState.toName.isNotEmpty() && uiState.fromName.isNotEmpty(),
+                enabled = uiState.isSavable(),
                 style = buttonStyle.large.black,
                 text = Strings.NEXT,
                 onClick = {
@@ -119,7 +118,7 @@ fun BoxAddInfoScreen(
 }
 
 @Composable
-private fun ColumnScope.BoxAddInfoTitle() {
+private fun BoxAddInfoTitle() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

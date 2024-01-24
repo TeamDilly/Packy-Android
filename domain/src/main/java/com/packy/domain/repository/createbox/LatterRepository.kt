@@ -9,4 +9,6 @@ interface LatterRepository {
     suspend fun getLatterEnvelope() : Flow<Resource<List<LatterEnvelope>>>
 
     suspend fun getLatterSenderReceiver() : Flow<LetterSenderReceiver?>
+
+    suspend fun setLatterSenderReceiver(letterSenderReceiver: LetterSenderReceiver): Unit
 }

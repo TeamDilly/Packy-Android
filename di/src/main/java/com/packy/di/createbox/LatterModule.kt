@@ -2,9 +2,11 @@ package com.packy.di.createbox
 
 import com.packy.data.remote.createbox.LatterService
 import com.packy.data.repository.createbox.LatterRepositoryImp
+import com.packy.data.usecase.createbox.GetLatterSenderReceiverImp
 import com.packy.data.usecase.createbox.LatterUseCaseImp
 import com.packy.di.network.Packy
 import com.packy.domain.repository.createbox.LatterRepository
+import com.packy.domain.usecase.createbox.GetLatterSenderReceiver
 import com.packy.domain.usecase.createbox.LatterUseCase
 import dagger.Binds
 import dagger.Module
@@ -33,4 +35,7 @@ abstract class LatterRepositoryModule {
 
     @Binds
     abstract fun bindLatterUseCase(latterUseCase: LatterUseCaseImp): LatterUseCase
+
+    @Binds
+    abstract fun bindGetLatterSenderReceiver(useCase: GetLatterSenderReceiverImp): GetLatterSenderReceiver
 }

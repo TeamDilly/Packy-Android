@@ -31,10 +31,10 @@ object LetterServiceModule {
 abstract class LetterRepositoryModule {
 
     @Binds
-    abstract fun bindLetterRepository(LetterRepository: LetterRepositoryImp): LetterRepository
+    abstract fun bindLetterRepository(letterRepository: LetterRepositoryImp): LetterRepository
 
     @Binds
-    abstract fun bindLetterUseCase(LetterUseCase: LetterUseCaseImp): LetterUseCase
+    abstract fun bindLetterUseCase(letterUseCase: LetterUseCaseImp): LetterUseCase
 
     @Binds
     abstract fun bindGetLetterSenderReceiver(useCase: GetLetterSenderReceiverUseCaseImp): GetLetterSenderReceiverUseCase

@@ -32,7 +32,6 @@ import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
-import com.packy.createbox.createboax.addLetter.CreateBoxLetterIntent
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
 
@@ -58,8 +57,12 @@ fun BoxChoiceScreen(
                     navController.popBackStack()
                 }
 
-                BoxChoiceEffect.SaveBoxInfo -> {
-                    navController
+                is BoxChoiceEffect.SaveBoxInfo -> {
+                    if(effect.shouldShowBoxMotion){
+                        navController.navigate(CreateBoxRoute.BOX_MOTION)
+                    }else{
+                        navController.navigate(CreateBoxRoute.BOX_GUIDE)
+                    }
                 }
             }
         }

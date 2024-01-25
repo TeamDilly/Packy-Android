@@ -23,5 +23,7 @@ sealed interface BoxChoiceEffect : SideEffect {
     data object MoveToBack : BoxChoiceEffect
     data object CloseCreateBox : BoxChoiceEffect
 
-    data object SaveBoxInfo : BoxChoiceEffect
+    data class SaveBoxInfo(
+        val shouldShowBoxMotion: Boolean
+    ): BoxChoiceEffect
 }

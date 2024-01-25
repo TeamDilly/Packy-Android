@@ -7,6 +7,7 @@ import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,7 +56,7 @@ class BoxAddInfoViewModel @Inject constructor(
     fun getLetterSenderReceiver() {
         viewModelScope.launch {
             useCase.getLetterSenderReceiver()
-                .filterNotNull()
+                .take(1)
                 .collect {
                     setState(currentState)
                 }

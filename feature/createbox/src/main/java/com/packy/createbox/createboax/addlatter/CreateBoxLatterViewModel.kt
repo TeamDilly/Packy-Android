@@ -1,7 +1,10 @@
-package com.packy.createbox.createboax.addLetter
+package com.packy.createbox.createboax.addlatter
 
 import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Constant
+import com.packy.createbox.createboax.addLetter.CreateBoxLetterEffect
+import com.packy.createbox.createboax.addLetter.CreateBoxLetterIntent
+import com.packy.createbox.createboax.addLetter.CreateBoxLetterState
 import com.packy.domain.usecase.letter.LetterUseCase
 import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.unwrapResource
@@ -13,13 +16,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateBoxLetterViewModel @Inject constructor(
-    private val LetterUseCase: LetterUseCase
+    private val letterUseCase: LetterUseCase
 ) :
     MviViewModel<CreateBoxLetterIntent, CreateBoxLetterState, CreateBoxLetterEffect>() {
 
     fun getLetterEnvelope() {
         viewModelScope.launch {
-            val envelopeList = LetterUseCase.getLetterEnvelope()
+            val envelopeList = letterUseCase.getLetterEnvelope()
                 .filterSuccess()
                 .unwrapResource()
                 .single()

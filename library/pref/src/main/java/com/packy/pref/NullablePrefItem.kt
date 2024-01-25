@@ -21,7 +21,9 @@ data class NullablePrefItem<T>(
     }
 
     suspend fun getData(): Flow<T?> {
+        getPrefItem(prefStrategy)
         val memoryResult = memoryNullablePref.get(key, defaultValue, type).first()
+
         return if (memoryResult == defaultValue) {
             dataStoreNullablePref.get(key, defaultValue, type)
         } else {
@@ -44,6 +46,5 @@ data class NullablePrefItem<T>(
     private fun getPrefItem(strategy: PrefStrategy) = when (strategy) {
         PrefStrategy.MEMORY_ONLY -> listOf(memoryNullablePref)
         PrefStrategy.FILE_ONLY -> listOf(dataStoreNullablePref)
-        PrefStrategy.BOTH_MEMORY_AND_FILE -> listOf(memoryNullablePref, dataStoreNullablePref)
     }
 }

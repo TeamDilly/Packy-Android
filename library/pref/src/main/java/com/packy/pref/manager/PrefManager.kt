@@ -21,16 +21,6 @@ open class PrefManager(
     private val dataStoreNonNullPref: NonNullPref = DataStoreNonNullPref(appContext, domainName)
     private val memoryNonNullPref: NonNullPref = MemoryNonNullPref()
 
-    fun <T> createPrefItem(key: String, defaultValue: T?, type: KClass<*>) =
-        NullablePrefItem(
-            key = key,
-            defaultValue = defaultValue,
-            prefStrategy = PrefStrategy.BOTH_MEMORY_AND_FILE,
-            dataStoreNullablePref = dataStoreNullablePref,
-            memoryNullablePref = memoryNullablePref,
-            type = type,
-        )
-
     fun <T> createMemoryPrefItem(key: String, defaultValue: T?, type: KClass<*>) =
         NullablePrefItem(
             key = key,
@@ -48,16 +38,6 @@ open class PrefManager(
             prefStrategy = PrefStrategy.FILE_ONLY,
             dataStoreNullablePref = dataStoreNullablePref,
             memoryNullablePref = memoryNullablePref,
-            type = type,
-        )
-
-    fun <T> createNonNullPrefItem(key: String, defaultValue: T, type: KClass<*>) =
-        NonNullPrefItem(
-            key = key,
-            defaultValue = defaultValue,
-            prefStrategy = PrefStrategy.BOTH_MEMORY_AND_FILE,
-            dataStoreNonNullPref = dataStoreNonNullPref,
-            memoryNonNullPref = memoryNonNullPref,
             type = type,
         )
 

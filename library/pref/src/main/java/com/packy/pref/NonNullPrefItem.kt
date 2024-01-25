@@ -15,35 +15,39 @@ data class NonNullPrefItem<T>(
 ) {
 
     suspend fun putData(data: T) {
-        getPrefItem(prefStrategy).forEach {
-            it.put(key, data)
-        }
+        getPrefItem(prefStrategy).put(
+            key,
+            data
+        )
     }
 
     suspend fun getData(): Flow<T> {
-        val memoryResult = memoryNonNullPref.get(key, defaultValue, type).first()
-        return if (memoryResult == defaultValue) {
-            dataStoreNonNullPref.get(key, defaultValue, type)
-        } else {
-            memoryNonNullPref.get(key, defaultValue, type)
-        }
+        return getPrefItem(prefStrategy).get(
+            key,
+            defaultValue,
+            type
+        )
     }
 
-    suspend fun clear(key: String, strategy: PrefStrategy) {
-        getPrefItem(strategy).forEach {
-            it.clear(key, type)
-        }
+    suspend fun clear(
+        key: String,
+        strategy: PrefStrategy
+    ) {
+        getPrefItem(strategy).clear(
+            key,
+            type
+        )
     }
 
-    suspend fun clearAll(key: String, strategy: PrefStrategy) {
-        getPrefItem(strategy).forEach {
-            it.clearAll()
-        }
+    suspend fun clearAll(
+        key: String,
+        strategy: PrefStrategy
+    ) {
+        getPrefItem(strategy).clearAll()
     }
 
     private fun getPrefItem(strategy: PrefStrategy) = when (strategy) {
-        PrefStrategy.MEMORY_ONLY -> listOf(memoryNonNullPref)
-        PrefStrategy.FILE_ONLY -> listOf(dataStoreNonNullPref)
-        PrefStrategy.BOTH_MEMORY_AND_FILE -> listOf(memoryNonNullPref, dataStoreNonNullPref)
+        PrefStrategy.MEMORY_ONLY -> memoryNonNullPref
+        PrefStrategy.FILE_ONLY -> dataStoreNonNullPref
     }
 }

@@ -34,7 +34,10 @@ class BoxChoiceViewModel @Inject constructor(
                     .take(1)
                     .map { shouldShowBoxMotion ->
                         createBoxFlagUseCase.shownShowBoxMotion()
-                        BoxChoiceEffect.SaveBoxInfo(shouldShowBoxMotion)
+                        BoxChoiceEffect.SaveBoxInfo(
+                            shouldShowBoxMotion,
+                            currentState.selectedBox
+                        )
                     }
                     .collect { effect ->
                         sendEffect(effect)

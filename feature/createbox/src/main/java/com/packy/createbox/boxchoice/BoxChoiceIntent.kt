@@ -24,6 +24,7 @@ sealed interface BoxChoiceEffect : SideEffect {
     data object CloseCreateBox : BoxChoiceEffect
 
     data class SaveBoxInfo(
-        val shouldShowBoxMotion: Boolean
+        val shouldShowBoxMotion: Boolean,
+        val boxDesign: BoxDesign?
     ): BoxChoiceEffect
 }

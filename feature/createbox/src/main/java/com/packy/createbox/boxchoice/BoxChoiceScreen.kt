@@ -34,6 +34,8 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -58,8 +60,20 @@ fun BoxChoiceScreen(
                 }
 
                 is BoxChoiceEffect.SaveBoxInfo -> {
-                    if (effect.shouldShowBoxMotion) {
-                        navController.navigate(CreateBoxRoute.BOX_MOTION)
+                    val boxDesign = effect.boxDesign
+                    if (effect.shouldShowBoxMotion && boxDesign != null) {
+                        navController.navigate(
+                            CreateBoxRoute.getBoxMotionRoute(
+                                boxFull = URLEncoder.encode(
+                                    boxDesign.boxFull,
+                                    StandardCharsets.UTF_8.toString()
+                                ),
+                                boxBottom = URLEncoder.encode(
+                                    boxDesign.boxBottom,
+                                    StandardCharsets.UTF_8.toString()
+                                ),
+                            )
+                        )
                     } else {
                         navController.navigate(CreateBoxRoute.BOX_GUIDE_PAGING)
                     }

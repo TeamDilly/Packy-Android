@@ -19,7 +19,7 @@ fun NavGraphBuilder.createBoxNavGraph(
     closeCreateBox: () -> Unit
 ) {
     navigation(
-        startDestination = CreateBoxRoute.BOX_ADD_INFO,
+        startDestination = CreateBoxRoute.BOX_CHOICE,
         route = CreateBoxRoute.CREATE_BOX_NAV_GRAPH,
     ) {
         asRootComposable(
@@ -54,10 +54,16 @@ fun NavGraphBuilder.createBoxNavGraph(
             )
         }
         asPagingComposable(
-            route = CreateBoxRoute.BOX_MOTION
+
+            route = CreateBoxRoute.BOX_MOTION + "/{boxFull}/{boxBottom}",
         ){
+            val boxPart = it.arguments?.getString("boxFull")
+            val boxBottom = it.arguments?.getString("boxBottom")
+
             BoxMotionScreen(
                 navController = navController,
+                boxFull = boxPart,
+                boxBottom = boxBottom
             )
         }
     }
@@ -71,4 +77,5 @@ object CreateBoxRoute {
     const val BOX_GUIDE_FADE_IN = "boxGuidePagingFadeIn"
     const val BOX_ADD_INFO = "boxAddInfo"
     const val BOX_MOTION = "boxMotion"
+    fun getBoxMotionRoute(boxFull: String, boxBottom: String) = "$BOX_MOTION/$boxFull/$boxBottom"
 }

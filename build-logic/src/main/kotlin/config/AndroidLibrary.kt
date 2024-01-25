@@ -16,8 +16,6 @@ internal fun Project.configureAndroidLibrary() {
     dependencies {
         add("implementation", libs.findLibrary("androidx.lifecycle.viewmodel.compose").get())
         add("implementation" , libs.findLibrary("okhttp").get())
-        add("implementation", libs.findLibrary("retrofit").get())
-        add("implementation", libs.findLibrary("retrofit.kotlin.serialization.converter").get())
     }
 
 }

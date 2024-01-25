@@ -12,7 +12,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
-import retrofit2.Retrofit
 
 @Module
 @InstallIn(SingletonComponent::class)

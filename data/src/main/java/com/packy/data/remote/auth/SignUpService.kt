@@ -8,10 +8,6 @@ import com.packy.lib.utils.toResource
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.header
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
 import javax.inject.Inject
 
 class SignUpService @Inject constructor(

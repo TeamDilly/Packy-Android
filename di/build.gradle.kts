@@ -40,6 +40,5 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.retrofit)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.retrofit.kotlin.serialization.converter)
     implementation(libs.bundles.ktor.android)
 }

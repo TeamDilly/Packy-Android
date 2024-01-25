@@ -5,7 +5,6 @@ import com.packy.core.widget.youtube.YoutubeState
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
-import retrofit2.http.Url
 
 sealed interface BoxGuideIntent : MviIntent {
     data object OnSaveClick : BoxGuideIntent

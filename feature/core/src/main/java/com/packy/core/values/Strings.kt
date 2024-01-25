@@ -34,8 +34,8 @@ object Strings {
     // box add info
     const val BOX_ADD_INFO_TITLE = "패키와 함께 마음을 담은\n선물박스를 만들어볼까요?"
     const val BOX_ADD_INFO_DESCRIPTION = "보내는 사람과 받는 사람의 이름을 적어주세요"
-    const val BOX_ADD_INFO_SENDER = "To."
-    const val BOX_ADD_INFO_RECEIVER = "From."
+    const val BOX_ADD_INFO_SENDER = "From."
+    const val BOX_ADD_INFO_RECEIVER = "To."
     const val BOX_ADD_INFO_PLACEHOLDER = "6자까지 입력할 수 있어요"
 
     // box choice

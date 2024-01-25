@@ -63,6 +63,7 @@ fun BoxMotionScreen(
         navController.navigate(CreateBoxRoute.BOX_GUIDE_FADE_IN) {
             val currentRoute = navController.currentBackStackEntry?.destination?.route
             currentRoute?.let { popUpTo(it) { inclusive = true } }
+            launchSingleTop = true
         }
     }
     val transition = updateTransition(

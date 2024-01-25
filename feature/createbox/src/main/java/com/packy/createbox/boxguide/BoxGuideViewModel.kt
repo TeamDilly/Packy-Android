@@ -1,13 +1,23 @@
 package com.packy.createbox.boxguide
 
+import androidx.lifecycle.viewModelScope
+import com.packy.core.values.Strings
+import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BoxGuideViewModel @Inject constructor() :
+class BoxGuideViewModel @Inject constructor(
+    private val useCase: GetLetterSenderReceiverUseCase
+) :
     MviViewModel<BoxGuideIntent, BoxGuideState, BoxGuideEffect>() {
     override fun createInitialState(): BoxGuideState = BoxGuideState(
+        title = "",
         photo = null,
         Letter = null,
         youtubeUrl = null,
@@ -23,6 +33,17 @@ class BoxGuideViewModel @Inject constructor() :
         subscribeStateIntent<BoxGuideIntent.SaveLetter>(saveLetterBoxGuideStateSuspendFunction2())
         subscribeStateIntent<BoxGuideIntent.SaveMusic>(saveYoutubeMusic())
         subscribeStateIntent<BoxGuideIntent.ClearMusic>(clearYoutubeMusic())
+    }
+
+    fun getLetterSenderReceiver() {
+        viewModelScope.launch {
+            useCase.getLetterSenderReceiver()
+                .distinctUntilChanged()
+                .filterNotNull()
+                .collect {
+                    setState(currentState.copy(title = "${Strings.BOX_ADD_INFO_RECEIVER} ${it.receiver}"))
+                }
+        }
     }
 
     private fun clearYoutubeMusic(): suspend (BoxGuideState, BoxGuideIntent.ClearMusic) -> BoxGuideState =

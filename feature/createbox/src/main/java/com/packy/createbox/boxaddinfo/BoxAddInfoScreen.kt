@@ -86,14 +86,14 @@ fun BoxAddInfoScreen(
             ) {
                 AddInfoForm(
                     text = uiState.letterSenderReceiver.receiver,
-                    title = Strings.BOX_ADD_INFO_SENDER
+                    title = Strings.BOX_ADD_INFO_RECEIVER
                 ) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeReceiver(it))
                 }
                 DottedDivider(modifier = Modifier.padding(vertical = 16.dp))
                 AddInfoForm(
                     text = uiState.letterSenderReceiver.sender,
-                    title = Strings.BOX_ADD_INFO_RECEIVER
+                    title = Strings.BOX_ADD_INFO_SENDER
                 ) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeSender(it))
                 }

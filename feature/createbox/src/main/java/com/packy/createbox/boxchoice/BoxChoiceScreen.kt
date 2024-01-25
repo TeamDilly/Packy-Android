@@ -75,7 +75,9 @@ fun BoxChoiceScreen(
                             )
                         )
                     } else {
-                        navController.navigate(CreateBoxRoute.BOX_GUIDE_PAGING)
+                        navController.navigate(CreateBoxRoute.BOX_GUIDE_PAGING){
+                            launchSingleTop = true
+                        }
                     }
                 }
             }

@@ -50,6 +50,7 @@ data class Sticker(
 )
 
 data class BoxGuideState(
+    val title: String,
     val photo: Photo?,
     val Letter: Letter?,
     val youtubeUrl: String?,

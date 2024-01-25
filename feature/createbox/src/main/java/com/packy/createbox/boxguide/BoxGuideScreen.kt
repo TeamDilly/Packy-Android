@@ -92,6 +92,7 @@ fun BoxGuideScreen(
     var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.EMPTY) }
 
     LaunchedEffect(null) {
+        viewModel.getLetterSenderReceiver()
         viewModel.effect.collect { effect ->
             when (effect) {
                 is BoxGuideEffect.MoveToBack -> navController.popBackStack()
@@ -181,7 +182,7 @@ fun BoxGuideScreen(
         ) {
             Spacer(height = 8.dp)
             TopBar(
-                title = "To.이호이호이호",
+                title = uiState.title,
                 onBackClick = viewModel::emitIntentThrottle,
                 onSaveClick = viewModel::emitIntentThrottle,
             )

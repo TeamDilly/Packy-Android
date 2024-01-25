@@ -11,6 +11,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.HttpClient
 import retrofit2.Retrofit
 
 @Module
@@ -18,9 +19,8 @@ import retrofit2.Retrofit
 object SignUpServiceModule {
     @Provides
     fun providerSignUpService(
-        retrofit: Retrofit
-    ): SignUpService =
-        retrofit.create(SignUpService::class.java)
+        @Packy httpClient: HttpClient
+    ): SignUpService = SignUpService(httpClient)
 }
 
 @Module

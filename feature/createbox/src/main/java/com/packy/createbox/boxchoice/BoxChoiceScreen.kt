@@ -58,10 +58,10 @@ fun BoxChoiceScreen(
                 }
 
                 is BoxChoiceEffect.SaveBoxInfo -> {
-                    if(effect.shouldShowBoxMotion){
+                    if (effect.shouldShowBoxMotion) {
                         navController.navigate(CreateBoxRoute.BOX_MOTION)
-                    }else{
-                        navController.navigate(CreateBoxRoute.BOX_GUIDE)
+                    } else {
+                        navController.navigate(CreateBoxRoute.BOX_GUIDE_PAGING)
                     }
                 }
             }

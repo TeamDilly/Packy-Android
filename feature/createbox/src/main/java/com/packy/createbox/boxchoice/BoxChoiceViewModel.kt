@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoxChoiceViewModel @Inject constructor(
-    private val getBoxDesignUseCase: GetBoxDesignUseCase
+    private val getBoxDesignUseCase: GetBoxDesignUseCase,
 ) :
     MviViewModel<BoxChoiceIntent, BoxChoiceState, BoxChoiceEffect>() {
     override fun createInitialState(): BoxChoiceState = BoxChoiceState(

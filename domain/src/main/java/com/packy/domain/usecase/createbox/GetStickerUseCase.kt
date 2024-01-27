@@ -1,6 +1,5 @@
 package com.packy.domain.usecase.createbox
 
-import com.packy.domain.model.createbox.Sticker
 import com.packy.domain.model.createbox.StickerList
 import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow

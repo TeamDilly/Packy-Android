@@ -3,6 +3,7 @@ package com.packy.di.createbox
 import com.packy.data.remote.createbox.StickerService
 import com.packy.data.repository.createbox.StickerRepositoryImp
 import com.packy.data.usecase.createbox.GetStickerUseCaseImp
+import com.packy.di.network.Packy
 import com.packy.domain.repository.createbox.StickerRepository
 import com.packy.domain.usecase.createbox.GetStickerUseCase
 import dagger.Binds
@@ -18,7 +19,9 @@ import javax.inject.Singleton
 object StickerServiceModule {
     @Provides
     @Singleton
-    fun provideStickerService(httpClient: HttpClient): StickerService = StickerService(httpClient)
+    fun provideStickerService(
+        @Packy httpClient: HttpClient
+    ): StickerService = StickerService(httpClient)
 }
 
 @Module

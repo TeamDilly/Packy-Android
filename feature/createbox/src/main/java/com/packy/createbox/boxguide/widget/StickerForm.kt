@@ -22,6 +22,7 @@ fun StickerForm(
     modifier: Modifier = Modifier,
     stickerUri: String? = null,
     inclination: Float = 0f,
+    onClick: () -> Unit
 ) {
     Box(modifier = modifier) {
         if (stickerUri != null) {

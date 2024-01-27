@@ -2,14 +2,12 @@ package com.packy.createbox.boxguide
 
 import android.net.Uri
 import androidx.activity.compose.BackHandler
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,9 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,10 +60,10 @@ import com.packy.createbox.boxguide.widget.StickerForm
 import com.packy.feature.core.R
 import com.packy.createbox.createboax.addLetter.CreateBoxLetterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
+import com.packy.createbox.createboax.addsticker.CreateBoxStickerScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
 import com.packy.lib.ext.extractYouTubeVideoId
 import com.packy.lib.ext.removeNewlines
-import com.packy.lib.ext.validationYoutubeVideoId
 import com.packy.mvi.ext.emitMviIntent
 import kotlinx.coroutines.launch
 
@@ -226,7 +222,8 @@ fun BoxGuideScreen(
                             .aspectRatio(1f / 1f)
                             .weight(28f),
                         inclination = 10f,
-                        stickerUri = null
+                        stickerUri = null,
+                        onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_1)) }
                     )
                 }
                 Spacer(height = 20.dp)
@@ -240,7 +237,8 @@ fun BoxGuideScreen(
                             .aspectRatio(1f / 1f)
                             .weight(30f),
                         inclination = -10f,
-                        stickerUri = null
+                        stickerUri = null,
+                        onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_2)) }
                     )
                     Spacer(22.dp)
                     BoxGuideContent(
@@ -261,7 +259,7 @@ fun BoxGuideScreen(
                             }
                         },
                         onClick = {
-                            viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_Letter))
+                            viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_LATTER))
                         }
                     )
                 }
@@ -307,7 +305,7 @@ fun BoxGuideScreen(
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun LetterForm(Letter: Letter) {
+private fun LetterForm(letter: Letter) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -320,8 +318,11 @@ private fun LetterForm(Letter: Letter) {
                     shape = RoundedCornerShape(8.dp)
                 )
                 .align(Alignment.TopStart)
-                .padding(horizontal = 10.dp, vertical = 6.dp),
-            text = Letter.LetterContent.removeNewlines(),
+                .padding(
+                    horizontal = 10.dp,
+                    vertical = 6.dp
+                ),
+            text = letter.LetterContent.removeNewlines(),
             style = PackyTheme.typography.body06,
             color = PackyTheme.color.gray900
         )
@@ -329,7 +330,7 @@ private fun LetterForm(Letter: Letter) {
             modifier = Modifier
                 .fillMaxSize(0.85f)
                 .align(Alignment.BottomEnd),
-            model = Letter.envelope.envelopeUrl,
+            model = letter.envelope.envelopeUrl,
             contentDescription = "box guide Letter",
             contentScale = ContentScale.Crop
         )
@@ -518,8 +519,8 @@ private fun BottomSheetNav(
     saveMusic: (String) -> Unit,
 ) {
     when (bottomSheetRoute) {
-        BoxGuideBottomSheetRoute.ADD_GIFT -> Unit
-        BoxGuideBottomSheetRoute.ADD_Letter -> {
+        BoxGuideBottomSheetRoute.ADD_GIFT -> Box(modifier = Modifier.fillMaxSize())
+        BoxGuideBottomSheetRoute.ADD_LATTER -> {
             CreateBoxLetterScreen(
                 closeBottomSheet = closeBottomSheet,
                 showSnackbar = showSnackbar,
@@ -541,9 +542,19 @@ private fun BottomSheetNav(
                 savePhoto = savePhoto
             )
 
-        BoxGuideBottomSheetRoute.ADD_STICKER_1 -> TODO()
-        BoxGuideBottomSheetRoute.ADD_ADD_STICKER_2 -> TODO()
-        BoxGuideBottomSheetRoute.CHANGE_BOX -> TODO()
-        BoxGuideBottomSheetRoute.EMPTY -> Box(modifier = Modifier.height(1.dp))
+        BoxGuideBottomSheetRoute.ADD_STICKER_1 -> CreateBoxStickerScreen(
+            stickerIndex = 1,
+            selectedSticker = null
+        )
+
+        BoxGuideBottomSheetRoute.ADD_STICKER_2 -> CreateBoxStickerScreen(
+            stickerIndex = 1,
+            selectedSticker = null
+        )
+
+        BoxGuideBottomSheetRoute.CHANGE_BOX -> Unit
+        BoxGuideBottomSheetRoute.EMPTY -> {
+            closeBottomSheet()
+        }
     }
 }

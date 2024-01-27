@@ -5,11 +5,19 @@ import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
 
-sealed interface CreateBoxStickerIntent : MviIntent {}
+sealed interface CreateBoxStickerIntent : MviIntent {
+
+}
+
+data class SelectedSticker(
+    val selectedSticker1 : Sticker?,
+    val selectedSticker2 : Sticker?,
+)
 
 data class CreateBoxStickerState(
-    val selectedSticker: Sticker?,
-    val stickerList: List<Sticker>
+    val selectedSticker: SelectedSticker?,
+    val stickerList: List<Sticker>,
+    val lastPage: Boolean
 ) : UiState
 
 sealed interface CreateBoxStickerEffect : SideEffect {}

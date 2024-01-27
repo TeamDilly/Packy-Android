@@ -30,7 +30,7 @@ class BoxGuideViewModel @Inject constructor(
         subscribeIntent<BoxGuideIntent.OnSaveClick> { sendEffect(BoxGuideEffect.SaveBox) }
         subscribeIntent<BoxGuideIntent.ShowBottomSheet> { sendEffect(BoxGuideEffect.ShowBottomSheet(it.boxGuideBottomSheetRoute)) }
         subscribeStateIntent<BoxGuideIntent.SavePhoto>(savePhoto())
-        subscribeStateIntent<BoxGuideIntent.SaveLetter>(saveLetterBoxGuideStateSuspendFunction2())
+        subscribeStateIntent<BoxGuideIntent.SaveLetter>(saveLetterBoxGuideState())
         subscribeStateIntent<BoxGuideIntent.SaveMusic>(saveYoutubeMusic())
         subscribeStateIntent<BoxGuideIntent.ClearMusic>(clearYoutubeMusic())
     }
@@ -56,9 +56,9 @@ class BoxGuideViewModel @Inject constructor(
             state.copy(youtubeUrl = intent.youtubeUrl)
         }
 
-    private fun saveLetterBoxGuideStateSuspendFunction2(): suspend (BoxGuideState, BoxGuideIntent.SaveLetter) -> BoxGuideState =
+    private fun saveLetterBoxGuideState(): suspend (BoxGuideState, BoxGuideIntent.SaveLetter) -> BoxGuideState =
         { state, intent ->
-            state.copy(Letter = intent.Letter)
+            state.copy(Letter = intent.letter)
         }
 
     private fun savePhoto(): suspend (BoxGuideState, BoxGuideIntent.SavePhoto) -> BoxGuideState =

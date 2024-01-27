@@ -19,7 +19,7 @@ sealed interface BoxGuideIntent : MviIntent {
     ) : BoxGuideIntent
 
     data class SaveLetter(
-        val Letter: Letter
+        val letter: Letter
     ) : BoxGuideIntent
 
     data class SaveMusic(

@@ -38,13 +38,15 @@ class SignUpRepositoryImp @Inject constructor(
                 ),
                 token = signUp.token
             )
-            val accessToken = signUpResource.data?.accessToken
-            accessToken?.let { token ->
+
+            if (signUpResource is Resource.Success) {
                 accountManagerHelper.setAuthToken(
                     email = "Packy",
-                    token = token
+                    token = signUpResource.data.accessToken,
+                    refreshToken = signUpResource.data.refreshToken
                 )
             }
+
             this.emit(signUpResource.map { Unit })
         }
     }

@@ -7,5 +7,4 @@ import kotlinx.serialization.Serializable
 data class Sticker(
     @SerialName("id") val id: Int,
     @SerialName("imgUrl") val imgUrl: String,
-    @SerialName("sequence") val sequence: Int
 )

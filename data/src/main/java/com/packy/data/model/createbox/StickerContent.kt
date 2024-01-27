@@ -1,7 +1,17 @@
 package com.packy.data.model.createbox
 
+import com.packy.domain.model.createbox.Sticker
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class StickerContent(
-    val id: Int,
-    val imgUrl: String,
-    val sequence: Int
+    @SerialName("id") val id: Int,
+    @SerialName("imgUrl") val imgUrl: String,
+    @SerialName("sequence") val sequence: Int
+)
+
+fun StickerContent.toEntity() = Sticker(
+    id = this.id,
+    imgUrl = this.imgUrl,
 )

@@ -3,6 +3,7 @@ package com.packy.di.network
 import android.util.Log
 import com.packy.account.AccountManagerHelper
 import com.packy.di.BuildConfig
+import com.packy.di.authenticator.model.RefreshTokenRequest
 import com.packy.di.authenticator.model.TokenInfo
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.toResource
@@ -22,6 +23,8 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
@@ -60,12 +63,15 @@ object NetworkModule {
             install(Auth) {
                 bearer {
                     refreshTokens {
+                        val accessToken = accountManagerHelper.getAutToken()
                         val refreshToken = accountManagerHelper.getRefreshToken()
-                        refreshToken?.let {
-                            val token = client.get(urlString = "/api/v1/auth/reissue") {
-                                header(
-                                    "Authorization",
-                                    refreshToken
+                        if (accessToken != null && refreshToken != null) {
+                            val token = client.post(urlString = "/api/v1/auth/reissue") {
+                                setBody(
+                                    RefreshTokenRequest(
+                                        accessToken = accessToken,
+                                        refreshToken = refreshToken
+                                    )
                                 )
                             }.toResource<TokenInfo>()
 
@@ -77,12 +83,14 @@ object NetworkModule {
                                 )
 
                                 BearerTokens(
-                                    accessToken =  token.data.accessToken,
+                                    accessToken = token.data.accessToken,
                                     refreshToken = token.data.refreshToken
                                 )
                             } else {
                                 null
                             }
+                        } else {
+                            null
                         }
                     }
                 }

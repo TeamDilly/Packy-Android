@@ -7,4 +7,7 @@ object PackyAuthenticatorKey: AuthenticatorKey {
         get() = "com.Packy"
     override val authTokenType: String
         get() = "PackyUser"
+
+    override val refreshToken: String
+        get() = "refreshToken"
 }

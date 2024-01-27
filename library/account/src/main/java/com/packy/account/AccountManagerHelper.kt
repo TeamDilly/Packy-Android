@@ -41,6 +41,11 @@ class AccountManagerHelper(
         return accountManager.peekAuthToken(account, authKey.authTokenType)
     }
 
+    fun getRefreshToken(): String? {
+        val account = getAccount() ?: return null
+        return accountManager.getUserData(account, authKey.refreshToken)
+    }
+
     /**
      * @return authToken을 찾아서 반환 한다.
      */
@@ -57,15 +62,17 @@ class AccountManagerHelper(
      * @param password Account password 필수 적이지 않음.
      * @param token 저장할 토큰.
      */
-    fun setAuthToken(email: String, password: String? = null, token: String) {
+    fun setAuthToken(email: String, password: String? = null, token: String, refreshToken: String? = null) {
         val accounts = accountManager.getAccountsByType(authKey.accountType)
         if (accounts.isEmpty()) {
             val account = Account(email, authKey.accountType)
             accountManager.addAccountExplicitly(account, password, null)
             accountManager.setAuthToken(account, authKey.authTokenType, token)
+            accountManager.setUserData(account, authKey.refreshToken, refreshToken)
         } else {
             val account = accounts.firstOrNull { it.type == authKey.accountType }
             accountManager.setAuthToken(account, authKey.authTokenType, token)
+            accountManager.setUserData(account, authKey.refreshToken, refreshToken)
         }
     }
 

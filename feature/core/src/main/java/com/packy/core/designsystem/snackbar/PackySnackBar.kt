@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.packy.core.theme.PackyTheme
 
-val PackySnackBarHost: @Composable (SnackbarHostState) -> Unit =
-    { snackBarHostState ->
+@Composable
+fun PackySnackBarHost(snackBarHostState: SnackbarHostState){
         SnackbarHost(
             modifier = Modifier
                 .imePadding(),

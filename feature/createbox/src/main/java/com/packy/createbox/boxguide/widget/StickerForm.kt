@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
 import com.packy.feature.core.R
 
@@ -24,7 +25,9 @@ fun StickerForm(
     inclination: Float = 0f,
     onClick: () -> Unit
 ) {
-    Box(modifier = modifier) {
+    Box(modifier = modifier.clickableWithoutRipple{
+        onClick()
+    }) {
         if (stickerUri != null) {
             GlideImage(
                 modifier = Modifier

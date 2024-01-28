@@ -67,6 +67,7 @@ class CreateBoxPackyMusicViewModel @Inject constructor(
                         youtubeMusicUri = music.youtubeUri
                     )
                 }
+
             setState {
                 it.copy(music = packyMusicList)
             }

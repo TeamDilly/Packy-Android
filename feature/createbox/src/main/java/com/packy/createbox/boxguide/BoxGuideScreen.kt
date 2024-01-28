@@ -1,7 +1,6 @@
 package com.packy.createbox.boxguide
 
 import android.net.Uri
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,13 +16,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -47,7 +45,6 @@ import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.iconbutton.PackyCloseIconButton
 import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
-import com.packy.core.designsystem.snackbar.PackySnackBarHost
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
@@ -58,7 +55,7 @@ import com.packy.createbox.boxguide.widget.BoxPlaceholder
 import com.packy.createbox.boxguide.widget.PhotoForm
 import com.packy.createbox.boxguide.widget.StickerForm
 import com.packy.feature.core.R
-import com.packy.createbox.createboax.addLetter.CreateBoxLetterScreen
+import com.packy.createbox.createboax.addlatter.CreateBoxLetterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.addsticker.CreateBoxStickerScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
@@ -76,14 +73,14 @@ fun BoxGuideScreen(
     navController: NavController,
     viewModel: BoxGuideViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    val bottomSheetState = SheetState(
-        skipHiddenState = false,
-        skipPartiallyExpanded = false
-    )
-    val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
     val scope = rememberCoroutineScope()
-    var snackBarVisible by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsState()
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+    var showBottomSheet by remember { mutableStateOf(false) }
+
 
     var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.EMPTY) }
 
@@ -97,78 +94,14 @@ fun BoxGuideScreen(
                 is BoxGuideEffect.ShowBottomSheet -> {
                     bottomSheetRoute = effect.boxGuideBottomSheetRoute
                     scope.launch {
-                        scaffoldState.bottomSheetState.expand()
+                        showBottomSheet = true
                     }
                 }
             }
         }
     }
 
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        snackbarHost = PackySnackBarHost,
-        sheetPeekHeight = 0.dp,
-        sheetSwipeEnabled = false,
-        sheetDragHandle = null,
-        sheetContent = {
-            BottomSheetNav(
-                bottomSheetRoute = bottomSheetRoute,
-                closeBottomSheet = {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.hide()
-                        bottomSheetRoute = BoxGuideBottomSheetRoute.EMPTY
-                    }
-                },
-                showSnackbar = {
-                    scope.launch {
-                        if (!snackBarVisible) {
-                            snackBarVisible = true
-                            scaffoldState.snackbarHostState.showSnackbar(
-                                message = it,
-                                duration = SnackbarDuration.Short
-                            ).let {
-                                snackBarVisible = false
-                            }
-                        }
-                    }
-                },
-                savePhoto = { uri, description ->
-                    viewModel.emitIntent(
-                        BoxGuideIntent.SavePhoto(
-                            uri,
-                            description
-                        )
-                    )
-                },
-                saveLetter = { envelopeId, envelopeUri, LetterText ->
-                    viewModel.emitIntent(
-                        BoxGuideIntent.SaveLetter(
-                            Letter(
-                                LetterContent = LetterText,
-                                envelope = Envelope(
-                                    envelopeId,
-                                    envelopeUri,
-                                )
-                            )
-                        )
-                    )
-                },
-                saveMusic = { youtubeUrl ->
-                    viewModel.emitIntent(
-                        BoxGuideIntent.SaveMusic(
-                            youtubeUrl
-                        )
-                    )
-                }
-            )
-        }
-    ) { innerPadding ->
-        BackHandler(enabled = scaffoldState.bottomSheetState.isVisible) {
-            scope.launch {
-                scaffoldState.bottomSheetState.hide()
-                bottomSheetRoute = BoxGuideBottomSheetRoute.EMPTY
-            }
-        }
+    Scaffold { innerPadding ->
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -176,6 +109,54 @@ fun BoxGuideScreen(
                 .background(PackyTheme.color.gray900),
             verticalArrangement = Arrangement.Center,
         ) {
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        showBottomSheet = false
+                    },
+                    dragHandle = null,
+                    sheetState = sheetState
+                ) {
+                    BottomSheetNav(
+                        bottomSheetRoute = bottomSheetRoute,
+                        closeBottomSheet = {
+                            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                                if (!sheetState.isVisible) {
+                                    showBottomSheet = false
+                                }
+                            }
+                        },
+                        savePhoto = { uri, description ->
+                            viewModel.emitIntent(
+                                BoxGuideIntent.SavePhoto(
+                                    uri,
+                                    description
+                                )
+                            )
+                        },
+                        saveLetter = { envelopeId, envelopeUri, letterText ->
+                            viewModel.emitIntent(
+                                BoxGuideIntent.SaveLetter(
+                                    Letter(
+                                        LetterContent = letterText,
+                                        envelope = Envelope(
+                                            envelopeId,
+                                            envelopeUri,
+                                        )
+                                    )
+                                )
+                            )
+                        },
+                        saveMusic = { youtubeUrl ->
+                            viewModel.emitIntent(
+                                BoxGuideIntent.SaveMusic(
+                                    youtubeUrl
+                                )
+                            )
+                        }
+                    )
+                }
+            }
             Spacer(height = 8.dp)
             TopBar(
                 title = uiState.title,
@@ -513,7 +494,6 @@ private fun TopBar(
 private fun BottomSheetNav(
     bottomSheetRoute: BoxGuideBottomSheetRoute,
     closeBottomSheet: () -> Unit,
-    showSnackbar: (String) -> Unit,
     savePhoto: (Uri, String) -> Unit,
     saveLetter: (Int, String, String) -> Unit,
     saveMusic: (String) -> Unit,
@@ -523,7 +503,6 @@ private fun BottomSheetNav(
         BoxGuideBottomSheetRoute.ADD_LATTER -> {
             CreateBoxLetterScreen(
                 closeBottomSheet = closeBottomSheet,
-                showSnackbar = showSnackbar,
                 saveLetter = saveLetter
             )
         }
@@ -548,7 +527,7 @@ private fun BottomSheetNav(
         )
 
         BoxGuideBottomSheetRoute.ADD_STICKER_2 -> CreateBoxStickerScreen(
-            stickerIndex = 1,
+            stickerIndex = 2,
             selectedSticker = null
         )
 

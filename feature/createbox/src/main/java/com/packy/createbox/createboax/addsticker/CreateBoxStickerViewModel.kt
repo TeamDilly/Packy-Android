@@ -2,13 +2,12 @@ package com.packy.createbox.createboax.addsticker
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.packy.domain.usecase.createbox.GetStickerUseCase
-import com.packy.lib.utils.filterSuccess
-import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,9 +26,10 @@ class CreateBoxStickerViewModel @Inject constructor(
     }
 
     fun getSticker() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getStickerUseCase.getSticker()
                 .distinctUntilChanged()
+                .cachedIn(viewModelScope)
                 .collect {
                     setState(
                         currentState.copy(

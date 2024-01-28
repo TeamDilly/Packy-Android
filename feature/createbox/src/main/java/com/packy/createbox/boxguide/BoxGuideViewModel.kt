@@ -5,9 +5,9 @@ import com.packy.core.values.Strings
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class BoxGuideViewModel @Inject constructor(
     }
 
     fun getLetterSenderReceiver() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             useCase.getLetterSenderReceiver()
                 .distinctUntilChanged()
                 .filterNotNull()

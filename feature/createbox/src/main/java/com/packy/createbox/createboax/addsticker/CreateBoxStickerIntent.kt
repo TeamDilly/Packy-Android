@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.addsticker
 
+import androidx.paging.PagingData
 import com.packy.domain.model.createbox.Sticker
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
@@ -16,8 +17,7 @@ data class SelectedSticker(
 
 data class CreateBoxStickerState(
     val selectedSticker: SelectedSticker?,
-    val stickerList: List<Sticker>,
-    val lastPage: Boolean
+    val stickerList: PagingData<Sticker>,
 ) : UiState
 
 sealed interface CreateBoxStickerEffect : SideEffect {

@@ -10,4 +10,5 @@ java {
 
 dependencies{
     implementation(project(":lib"))
+    implementation(libs.paging.common)
 }

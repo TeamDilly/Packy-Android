@@ -1,6 +1,7 @@
 package com.packy.createbox.createboax.addsticker
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,19 +15,29 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
@@ -34,6 +45,7 @@ import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.domain.model.createbox.Sticker
+import kotlinx.coroutines.flow.map
 import java.util.concurrent.Flow
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -46,6 +58,9 @@ fun CreateBoxStickerScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
+    val stickerPagingItems: LazyPagingItems<Sticker> =
+        viewModel.uiState.map { it.stickerList }.collectAsLazyPagingItems()
+    val state: LazyGridState = rememberLazyGridState()
 
     LaunchedEffect(null) {
         viewModel.getSticker()
@@ -58,6 +73,7 @@ fun CreateBoxStickerScreen(
                 color = PackyTheme.color.white,
             )
             .padding(horizontal = 24.dp),
+        state = state,
         columns = GridCells.Fixed(3),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -99,7 +115,7 @@ fun CreateBoxStickerScreen(
                 )
             }
         }
-        items(uiState.stickerList) { sticker ->
+        items(stickerPagingItems.itemCount) { index ->
             Box(
                 modifier = Modifier
                     .size(106.dp)
@@ -112,7 +128,7 @@ fun CreateBoxStickerScreen(
             ) {
                 GlideImage(
                     modifier = Modifier.fillMaxSize(),
-                    model = sticker.imgUrl,
+                    model = stickerPagingItems[index]?.imgUrl ?: "",
                     contentDescription = "sticker image",
                     contentScale = ContentScale.Crop
                 )

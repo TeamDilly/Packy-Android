@@ -1,11 +1,13 @@
 package com.packy.createbox.createboax.addsticker
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.packy.domain.usecase.createbox.GetStickerUseCase
 import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,8 +19,7 @@ class CreateBoxStickerViewModel @Inject constructor(
     MviViewModel<CreateBoxStickerIntent, CreateBoxStickerState, CreateBoxStickerEffect>() {
     override fun createInitialState(): CreateBoxStickerState = CreateBoxStickerState(
         selectedSticker = null,
-        stickerList = emptyList(),
-        lastPage = false
+        stickerList = PagingData.empty(),
     )
 
     override fun handleIntent() {
@@ -27,36 +28,15 @@ class CreateBoxStickerViewModel @Inject constructor(
 
     fun getSticker() {
         viewModelScope.launch {
-
-            val stickerList = getStickerUseCase.getSticker(null)
-                .filterSuccess()
-                .unwrapResource()
-                .single()
-
-            setState(
-                currentState.copy(
-                    stickerList = stickerList.stickers,
-                    lastPage = stickerList.last
-                )
-            )
-        }
-    }
-
-    fun addSticker(id: Int){
-        viewModelScope.launch {
-            val stickerList = getStickerUseCase.getSticker(id)
-                .filterSuccess()
-                .unwrapResource()
-                .single()
-
-            val selectedSticker = stickerList.stickers + stickerList.stickers
-            setState(
-                currentState.copy(
-                    stickerList = selectedSticker,
-                    lastPage = stickerList.last
-                )
-            )
-
+            getStickerUseCase.getSticker()
+                .distinctUntilChanged()
+                .collect {
+                    setState(
+                        currentState.copy(
+                            stickerList = it,
+                        )
+                    )
+                }
         }
     }
 }

@@ -16,4 +16,5 @@ dependencies {
     implementation(project(":lib"))
 
     implementation(libs.accompanist)
+    implementation(libs.bundles.paging)
 }

@@ -492,6 +492,7 @@ private fun TopBar(
 
 @Composable
 private fun BottomSheetNav(
+    modifier: Modifier = Modifier,
     bottomSheetRoute: BoxGuideBottomSheetRoute,
     closeBottomSheet: () -> Unit,
     savePhoto: (Uri, String) -> Unit,

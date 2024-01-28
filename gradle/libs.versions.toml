@@ -40,6 +40,8 @@ data-store = "1.0.0"
 compose-glide = "1.0.0-beta01"
 #https://github.com/ktorio/ktor/releases
 ktor = "2.3.7"
+#https://developer.android.com/jetpack/androidx/releases/paging
+paging = "3.2.1"
 
 #test
 #https://mvnrepository.com/artifact/junit/junit
@@ -128,10 +130,17 @@ youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", na
 
 #system control
 accompanist = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
+
+#paging
+paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
+paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "paging" }
+
 [bundles]
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide", "compose-ui-util"]
 ktor-android = ["ktor-core","ktor-client-android", "ktor-client-serialization", "ktor-client-logging", "ktor-negotiation", "ktor-auth"]
 ktor = ["ktor-client-serialization", "ktor-client-logging", "ktor-negotiation", "ktor-client-cio", "ktor-auth"]
+paging = ["paging", "paging-compose"]
 test = ["test-junit", "test-android-junit", "test-android-espresso", "ktor-client-cio"]
 
 [plugins]

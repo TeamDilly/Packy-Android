@@ -1,5 +1,7 @@
 package com.packy.data.usecase.createbox
 
+import androidx.paging.PagingData
+import com.packy.domain.model.createbox.Sticker
 import com.packy.domain.model.createbox.StickerList
 import com.packy.domain.repository.createbox.StickerRepository
 import com.packy.domain.usecase.createbox.GetStickerUseCase
@@ -10,6 +12,6 @@ import javax.inject.Inject
 class GetStickerUseCaseImp @Inject constructor(
     private val repository: StickerRepository
 ) : GetStickerUseCase {
-    override suspend fun getSticker(id: Int?): Flow<Resource<StickerList>> =
-        repository.getSticker(id)
+    override suspend fun getSticker(): Flow<PagingData<Sticker>> =
+        repository.getSticker()
 }

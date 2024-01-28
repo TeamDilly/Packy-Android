@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,6 +60,8 @@ import com.packy.createbox.createboax.addlatter.CreateBoxLetterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.addsticker.CreateBoxStickerScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
+import com.packy.domain.model.createbox.SelectedSticker
+import com.packy.domain.model.createbox.Sticker
 import com.packy.lib.ext.extractYouTubeVideoId
 import com.packy.lib.ext.removeNewlines
 import com.packy.mvi.ext.emitMviIntent
@@ -155,7 +158,7 @@ fun BoxGuideScreen(
                             .aspectRatio(1f / 1f)
                             .weight(28f),
                         inclination = 10f,
-                        stickerUri = null,
+                        stickerUri = uiState.selectedSticker.sticker1?.imgUrl,
                         onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_1)) }
                     )
                 }
@@ -170,7 +173,7 @@ fun BoxGuideScreen(
                             .aspectRatio(1f / 1f)
                             .weight(30f),
                         inclination = -10f,
-                        stickerUri = null,
+                        stickerUri = uiState.selectedSticker.sticker2?.imgUrl,
                         onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_2)) }
                     )
                     Spacer(22.dp)
@@ -186,9 +189,9 @@ fun BoxGuideScreen(
                                 title = Strings.BOX_GUIDE_Letter
                             )
                         },
-                        content = uiState.Letter?.let { Letter ->
+                        content = uiState.letter?.let { letter ->
                             {
-                                LetterForm(Letter)
+                                LetterForm(letter)
                             }
                         },
                         onClick = {
@@ -263,7 +266,7 @@ fun BoxGuideScreen(
                         viewModel.emitIntent(
                             BoxGuideIntent.SaveLetter(
                                 Letter(
-                                    LetterContent = letterText,
+                                    letterContent = letterText,
                                     envelope = Envelope(
                                         envelopeId,
                                         envelopeUri,
@@ -278,7 +281,16 @@ fun BoxGuideScreen(
                                 youtubeUrl
                             )
                         )
-                    }
+                    },
+                    onSaveSticker = { index, sticker ->
+                        viewModel.emitIntent(
+                            BoxGuideIntent.SaveSticker(
+                                index,
+                                sticker
+                            )
+                        )
+                    },
+                    selectSticker = uiState.selectedSticker
                 )
             }
         }
@@ -304,7 +316,7 @@ private fun LetterForm(letter: Letter) {
                     horizontal = 10.dp,
                     vertical = 6.dp
                 ),
-            text = letter.LetterContent.removeNewlines(),
+            text = letter.letterContent.removeNewlines(),
             style = PackyTheme.typography.body06,
             color = PackyTheme.color.gray900
         )
@@ -499,6 +511,8 @@ private fun BottomSheetNav(
     savePhoto: (Uri, String) -> Unit,
     saveLetter: (Int, String, String) -> Unit,
     saveMusic: (String) -> Unit,
+    onSaveSticker: (Int, Sticker?) -> Unit,
+    selectSticker: SelectedSticker,
 ) {
     when (bottomSheetRoute) {
         BoxGuideBottomSheetRoute.ADD_GIFT -> Box(modifier = Modifier.fillMaxSize())
@@ -525,12 +539,26 @@ private fun BottomSheetNav(
 
         BoxGuideBottomSheetRoute.ADD_STICKER_1 -> CreateBoxStickerScreen(
             stickerIndex = 1,
-            selectedSticker = null
+            selectedSticker = selectSticker,
+            closeBottomSheet = closeBottomSheet,
+            onSaveSticker = {
+                onSaveSticker(
+                    1,
+                    it
+                )
+            },
         )
 
         BoxGuideBottomSheetRoute.ADD_STICKER_2 -> CreateBoxStickerScreen(
             stickerIndex = 2,
-            selectedSticker = null
+            selectedSticker = selectSticker,
+            closeBottomSheet = closeBottomSheet,
+            onSaveSticker = {
+                onSaveSticker(
+                    2,
+                    it
+                )
+            },
         )
 
         BoxGuideBottomSheetRoute.CHANGE_BOX -> Unit

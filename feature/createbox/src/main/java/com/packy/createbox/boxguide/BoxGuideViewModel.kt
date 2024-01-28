@@ -2,6 +2,7 @@ package com.packy.createbox.boxguide
 
 import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Strings
+import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,10 +20,12 @@ class BoxGuideViewModel @Inject constructor(
     override fun createInitialState(): BoxGuideState = BoxGuideState(
         title = "",
         photo = null,
-        Letter = null,
+        letter = null,
         youtubeUrl = null,
-        sticker1 = null,
-        sticker2 = null,
+        selectedSticker = SelectedSticker(
+            sticker1 = null,
+            sticker2 = null
+        )
     )
 
     override fun handleIntent() {
@@ -33,7 +36,19 @@ class BoxGuideViewModel @Inject constructor(
         subscribeStateIntent<BoxGuideIntent.SaveLetter>(saveLetterBoxGuideState())
         subscribeStateIntent<BoxGuideIntent.SaveMusic>(saveYoutubeMusic())
         subscribeStateIntent<BoxGuideIntent.ClearMusic>(clearYoutubeMusic())
+        subscribeStateIntent<BoxGuideIntent.SaveSticker>(saveSticker())
     }
+
+    private fun saveSticker(): suspend (BoxGuideState, BoxGuideIntent.SaveSticker) -> BoxGuideState =
+        { state, intent ->
+            when (intent.index) {
+                1 -> state.copy(selectedSticker = state.selectedSticker.copy(sticker1 = intent.sticker))
+                2 -> state.copy(selectedSticker = state.selectedSticker.copy(sticker2 = intent.sticker))
+                else -> state
+            }
+            println("LOGEE  state ${state}")
+            state
+        }
 
     fun getLetterSenderReceiver() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -58,7 +73,7 @@ class BoxGuideViewModel @Inject constructor(
 
     private fun saveLetterBoxGuideState(): suspend (BoxGuideState, BoxGuideIntent.SaveLetter) -> BoxGuideState =
         { state, intent ->
-            state.copy(Letter = intent.letter)
+            state.copy(letter = intent.letter)
         }
 
     private fun savePhoto(): suspend (BoxGuideState, BoxGuideIntent.SavePhoto) -> BoxGuideState =

@@ -1,12 +1,9 @@
 package com.packy.createbox.createboax.addsticker
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,23 +14,20 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
@@ -44,15 +38,18 @@ import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.domain.model.createbox.Sticker
+import com.packy.mvi.ext.emitMviIntent
 import kotlinx.coroutines.flow.map
-import java.util.concurrent.Flow
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CreateBoxStickerScreen(
     stickerIndex: Int,
-    selectedSticker: Sticker?,
+    selectedSticker: SelectedSticker,
+    closeBottomSheet: () -> Unit,
+    onSaveSticker: (Sticker?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateBoxStickerViewModel = hiltViewModel()
 ) {
@@ -63,7 +60,26 @@ fun CreateBoxStickerScreen(
     val state: LazyGridState = rememberLazyGridState()
 
     LaunchedEffect(null) {
-        viewModel.getSticker()
+        viewModel.initState(
+            stickerIndex,
+            selectedSticker
+        )
+        viewModel.getSticker(selectedSticker)
+    }
+
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is CreateBoxStickerEffect.OnSaveSticker -> {
+                    closeBottomSheet()
+                }
+
+                is CreateBoxStickerEffect.OnChangeSticker -> {
+                    onSaveSticker(effect.sticker)
+                    closeBottomSheet()
+                }
+            }
+        }
     }
 
     LazyVerticalGrid(
@@ -115,22 +131,88 @@ fun CreateBoxStickerScreen(
                 )
             }
         }
+        uiState.selectedSticker?.sticker1?.let { sticker ->
+            item {
+                StickerForm(
+                    onClick = viewModel::emitIntentThrottle,
+                    isStickerSelected = viewModel.isStickerSelected(sticker) != null,
+                    sticker = sticker,
+                    stickerIndex = viewModel.isStickerSelected(sticker) ?: 0
+                )
+            }
+        }
+        uiState.selectedSticker?.sticker2?.let { sticker ->
+            item {
+                StickerForm(
+                    onClick = viewModel::emitIntentThrottle,
+                    isStickerSelected = viewModel.isStickerSelected(sticker) != null,
+                    sticker = sticker,
+                    stickerIndex = viewModel.isStickerSelected(sticker) ?: 0
+                )
+            }
+        }
         items(stickerPagingItems.itemCount) { index ->
+            stickerPagingItems[index]?.let { sticker ->
+                StickerForm(
+                    onClick = viewModel::emitIntentThrottle,
+                    isStickerSelected = viewModel.isStickerSelected(sticker) != null,
+                    sticker = sticker,
+                    stickerIndex = viewModel.isStickerSelected(sticker) ?: 0
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun StickerForm(
+    onClick: emitMviIntent<CreateBoxStickerIntent>,
+    isStickerSelected: Boolean,
+    sticker: Sticker,
+    stickerIndex: Int
+) {
+    Box(
+        modifier = Modifier
+            .size(106.dp)
+            .background(
+                color = PackyTheme.color.gray100,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .padding(8.dp)
+            .clickableWithoutRipple {
+                onClick(
+                    CreateBoxStickerIntent.OnStickerClick(
+                        sticker = sticker
+                    )
+                )
+            },
+        contentAlignment = Alignment.Center
+    ) {
+
+        GlideImage(
+            modifier = Modifier.fillMaxSize(),
+            model = sticker.imgUrl,
+            contentDescription = "sticker image",
+            contentScale = ContentScale.Crop
+        )
+        if (isStickerSelected) {
             Box(
                 modifier = Modifier
-                    .size(106.dp)
+                    .size(24.dp)
                     .background(
-                        color = PackyTheme.color.gray100,
-                        shape = RoundedCornerShape(12.dp)
+                        color = PackyTheme.color.gray900,
+                        shape = CircleShape
                     )
-                    .padding(8.dp),
-                contentAlignment = Alignment.Center
+                    .align(Alignment.TopEnd),
             ) {
-                GlideImage(
-                    modifier = Modifier.fillMaxSize(),
-                    model = stickerPagingItems[index]?.imgUrl ?: "",
-                    contentDescription = "sticker image",
-                    contentScale = ContentScale.Crop
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.Center),
+                    text = stickerIndex.toString(),
+                    color = PackyTheme.color.white,
+                    textAlign = TextAlign.Center,
                 )
             }
         }

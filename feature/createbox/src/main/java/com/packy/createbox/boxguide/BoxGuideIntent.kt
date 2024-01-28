@@ -2,6 +2,8 @@ package com.packy.createbox.boxguide
 
 import android.net.Uri
 import com.packy.core.widget.youtube.YoutubeState
+import com.packy.domain.model.createbox.SelectedSticker
+import com.packy.domain.model.createbox.Sticker
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
@@ -26,7 +28,12 @@ sealed interface BoxGuideIntent : MviIntent {
         val youtubeUrl: String
     ) : BoxGuideIntent
 
-    data object ClearMusic: BoxGuideIntent
+    data class SaveSticker(
+        val index: Int,
+        val sticker: Sticker?
+    ) : BoxGuideIntent
+
+    data object ClearMusic : BoxGuideIntent
 }
 
 data class Photo(
@@ -40,26 +47,20 @@ data class Envelope(
 )
 
 data class Letter(
-    val LetterContent: String,
+    val letterContent: String,
     val envelope: Envelope
-)
-
-data class Sticker(
-    val stickerId: Int,
-    val stickerUri: String,
 )
 
 data class BoxGuideState(
     val title: String,
     val photo: Photo?,
-    val Letter: Letter?,
+    val letter: Letter?,
     val youtubeUrl: String?,
     val youtubeState: YoutubeState = YoutubeState.INIT,
-    val sticker1: Sticker?,
-    val sticker2: Sticker?,
+    val selectedSticker: SelectedSticker
 ) : UiState {
     fun isBoxComplete() =
-        this.photo != null && this.Letter != null && this.youtubeUrl != null && sticker1 != null && this.sticker2 != null
+        this.photo != null && this.letter != null && this.youtubeUrl != null && this.selectedSticker?.isStickerComplete() == true
 }
 
 sealed interface BoxGuideEffect : SideEffect {

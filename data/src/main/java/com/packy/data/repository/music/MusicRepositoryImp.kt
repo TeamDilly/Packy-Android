@@ -30,8 +30,7 @@ class MusicRepositoryImp @Inject constructor(
         emit(Resource.Loading())
         val suggestionMusic = api.suggestionMusic()
         if (suggestionMusic is Resource.Success) {
-            val youtubeInfo = getMusicInfo(suggestionMusic.data)
-            emit(suggestionMusic.map { it.toEntity(youtubeInfo) })
+            emit(suggestionMusic.map { it.toEntity() })
         } else {
             emit(
                 Resource.ApiError(
@@ -42,14 +41,4 @@ class MusicRepositoryImp @Inject constructor(
             )
         }
     }
-
-    private suspend fun getMusicInfo(music: List<SuggestionMusicDto>): List<Pair<Int, YoutubeInfoDto>> =
-        coroutineScope {
-            music.map { music ->
-                async {
-                    val youtubeInfo = youtubeService.getYoutubeInfo(music.youtubeUrl)
-                    music.id to youtubeInfo
-                }
-            }.awaitAll()
-        }
 }

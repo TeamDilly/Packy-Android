@@ -10,6 +10,7 @@ import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
@@ -54,23 +55,25 @@ class CreateBoxPackyMusicViewModel @Inject constructor(
 
     fun getSuggestionMusic() {
         viewModelScope.launch {
-            val packyMusicList = suggestionMusicUseCase.suggestionMusic()
+            suggestionMusicUseCase.suggestionMusic()
                 .filterSuccess()
                 .unwrapResource()
-                .single()
-                .map { music ->
-                    PackyMusic(
-                        title = music.title,
-                        hashTag = music.hashtags,
-                        videoId = music.videoId,
-                        state = YoutubeState.INIT,
-                        youtubeMusicUri = music.youtubeUri
-                    )
+                .map { musics ->
+                    musics.map { music ->
+                        PackyMusic(
+                            title = music.title,
+                            hashTag = music.hashtags,
+                            videoId = music.videoId,
+                            state = YoutubeState.INIT,
+                            youtubeMusicUri = music.youtubeUri
+                        )
+                    }
                 }
-
-            setState {
-                it.copy(music = packyMusicList)
-            }
+                .collect { packyMusicList ->
+                    setState {
+                        it.copy(music = packyMusicList)
+                    }
+                }
         }
     }
 }

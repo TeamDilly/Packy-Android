@@ -168,7 +168,8 @@ private fun YoutubePlayerFrom(
                 color = PackyTheme.color.gray100,
                 shape = RoundedCornerShape(16.dp)
             )
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(16.dp)),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         YoutubePlayer(
             modifier = Modifier
@@ -187,6 +188,9 @@ private fun YoutubePlayerFrom(
         )
         Spacer(height = 16.dp)
         Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
             text = packMusic.title,
             style = PackyTheme.typography.body01.copy(
                 textAlign = TextAlign.Center,

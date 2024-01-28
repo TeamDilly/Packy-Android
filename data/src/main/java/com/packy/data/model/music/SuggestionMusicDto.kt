@@ -9,23 +9,22 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SuggestionMusicDto(
+    @SerialName("title") val title: String,
     @SerialName("hashtags") val hashtags: List<String>,
     @SerialName("id") val id: Int,
     @SerialName("youtubeUrl") val youtubeUrl: String,
     @SerialName("sequence") val sequence: Int
 )
 
-fun SuggestionMusicDto.toEntity(youtubeInfoDto: YoutubeInfoDto): Music = Music(
+fun SuggestionMusicDto.toEntity(): Music = Music(
     id = this.id,
-    title = youtubeInfoDto.title,
+    title = this.title,
     hashtags = this.hashtags,
     youtubeUri = youtubeUrl,
     videoId = extractYouTubeVideoId(youtubeUrl),
 )
 
-fun List<SuggestionMusicDto>.toEntity(list: List<Pair<Int, YoutubeInfoDto>>): List<Music> =
-    this.mapNotNull { music ->
-        val youtubeInfo =
-            list.firstOrNull { it.first == music.id }?.second ?: return@mapNotNull null
-        music.toEntity(youtubeInfo)
+fun List<SuggestionMusicDto>.toEntity(): List<Music> =
+    this.map { music ->
+        music.toEntity()
     }

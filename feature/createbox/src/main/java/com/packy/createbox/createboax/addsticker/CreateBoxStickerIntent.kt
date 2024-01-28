@@ -6,7 +6,7 @@ import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
 
 sealed interface CreateBoxStickerIntent : MviIntent {
-
+    data object OnSaveClick: CreateBoxStickerIntent
 }
 
 data class SelectedSticker(
@@ -20,4 +20,6 @@ data class CreateBoxStickerState(
     val lastPage: Boolean
 ) : UiState
 
-sealed interface CreateBoxStickerEffect : SideEffect {}
+sealed interface CreateBoxStickerEffect : SideEffect {
+    data class OnSaveSticker(val sticker: Sticker): SideEffect
+}

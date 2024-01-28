@@ -74,4 +74,7 @@ object Strings {
     const val CREATE_BOX_ADD_Letter_OVER_FLOW_Letter_TEXT = "최대 200자까지 작성할 수 있어요"
 
     const val CREATE_BOX_MOTION_TITLE = "이제 선물박스를\n채우러 가볼까요?"
+
+    const val CREATE_BOX_STICKER_TITLE = "스티커 붙이기"
+    const val CREATE_BOX_STICKER_DESCRIPTION = "최대 2개끼지 붙일 수 있어요"
 }

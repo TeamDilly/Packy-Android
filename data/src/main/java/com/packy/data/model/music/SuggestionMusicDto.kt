@@ -11,7 +11,8 @@ import kotlinx.serialization.Serializable
 data class SuggestionMusicDto(
     @SerialName("hashtags") val hashtags: List<String>,
     @SerialName("id") val id: Int,
-    @SerialName("youtubeUrl") val youtubeUrl: String
+    @SerialName("youtubeUrl") val youtubeUrl: String,
+    @SerialName("sequence") val sequence: Int
 )
 
 fun SuggestionMusicDto.toEntity(youtubeInfoDto: YoutubeInfoDto): Music = Music(

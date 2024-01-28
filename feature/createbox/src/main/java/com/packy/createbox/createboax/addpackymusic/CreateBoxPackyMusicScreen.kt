@@ -108,22 +108,27 @@ fun CreateBoxPackyMusicScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 state = pagerState,
+                beyondBoundsPageCount = 4,
                 contentPadding = PaddingValues(horizontal = 44.dp),
                 pageSpacing = 16.dp
             ) { index ->
+                viewModel.emitIntent(CreateBoxPackyMusicIntent.ChangeMusic(pagerState.currentPage))
                 if (pagerState.currentPage != index) {
-                    CreateBoxPackyMusicIntent.ChangeMusicState(
-                        index,
-                        YoutubeState.PAUSED
+                    viewModel.emitIntent(
+                        CreateBoxPackyMusicIntent.ChangeMusicState(
+                            index,
+                            YoutubeState.PAUSED
+                        )
                     )
                 }
+
                 uiState.music.getOrNull(index)?.let { packMusic ->
                     packMusic.videoId?.let { videoId ->
                         YoutubePlayerFrom(
                             videoId = videoId,
                             packMusic = packMusic,
                             stateChange = viewModel::emitIntent,
-                            index = index
+                            index = index,
                         )
                     }
                 }
@@ -138,7 +143,8 @@ fun CreateBoxPackyMusicScreen(
             Spacer(1f)
             PackyButton(
                 modifier = Modifier.padding(horizontal = 24.dp),
-                style = buttonStyle.large.black, text = Strings.SAVE
+                style = buttonStyle.large.black,
+                text = Strings.SAVE
             ) {
                 viewModel.emitIntent(CreateBoxPackyMusicIntent.OnSaveClick)
             }
@@ -153,7 +159,7 @@ private fun YoutubePlayerFrom(
     videoId: String,
     packMusic: PackyMusic,
     stateChange: emitMviIntent<CreateBoxPackyMusicIntent>,
-    index: Int
+    index: Int,
 ) {
     Column(
         modifier = modifier
@@ -183,11 +189,12 @@ private fun YoutubePlayerFrom(
         Text(
             text = packMusic.title,
             style = PackyTheme.typography.body01.copy(
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             ),
-            color = PackyTheme.color.gray900
+            maxLines = 1,
+            color = PackyTheme.color.gray900,
         )
-        if(packMusic.hashTag.isNotEmpty()) {
+        if (packMusic.hashTag.isNotEmpty()) {
             MusicHasTag(packMusic)
         }
         Spacer(height = 16.dp)

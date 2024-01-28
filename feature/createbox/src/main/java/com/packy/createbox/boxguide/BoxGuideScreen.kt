@@ -77,10 +77,10 @@ fun BoxGuideScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
+        skipPartiallyExpanded = true,
+        confirmValueChange = { false }
     )
     var showBottomSheet by remember { mutableStateOf(false) }
-
 
     var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.EMPTY) }
 
@@ -109,54 +109,6 @@ fun BoxGuideScreen(
                 .background(PackyTheme.color.gray900),
             verticalArrangement = Arrangement.Center,
         ) {
-            if (showBottomSheet) {
-                ModalBottomSheet(
-                    onDismissRequest = {
-                        showBottomSheet = false
-                    },
-                    dragHandle = null,
-                    sheetState = sheetState
-                ) {
-                    BottomSheetNav(
-                        bottomSheetRoute = bottomSheetRoute,
-                        closeBottomSheet = {
-                            scope.launch { sheetState.hide() }.invokeOnCompletion {
-                                if (!sheetState.isVisible) {
-                                    showBottomSheet = false
-                                }
-                            }
-                        },
-                        savePhoto = { uri, description ->
-                            viewModel.emitIntent(
-                                BoxGuideIntent.SavePhoto(
-                                    uri,
-                                    description
-                                )
-                            )
-                        },
-                        saveLetter = { envelopeId, envelopeUri, letterText ->
-                            viewModel.emitIntent(
-                                BoxGuideIntent.SaveLetter(
-                                    Letter(
-                                        LetterContent = letterText,
-                                        envelope = Envelope(
-                                            envelopeId,
-                                            envelopeUri,
-                                        )
-                                    )
-                                )
-                            )
-                        },
-                        saveMusic = { youtubeUrl ->
-                            viewModel.emitIntent(
-                                BoxGuideIntent.SaveMusic(
-                                    youtubeUrl
-                                )
-                            )
-                        }
-                    )
-                }
-            }
             Spacer(height = 8.dp)
             TopBar(
                 title = uiState.title,
@@ -279,6 +231,55 @@ fun BoxGuideScreen(
                         .fillMaxWidth()
                 )
                 Spacer(height = 28.dp)
+            }
+        }
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    showBottomSheet = false
+                },
+                containerColor = PackyTheme.color.white,
+                dragHandle = null,
+                sheetState = sheetState
+            ) {
+                BottomSheetNav(
+                    bottomSheetRoute = bottomSheetRoute,
+                    closeBottomSheet = {
+                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                            if (!sheetState.isVisible) {
+                                showBottomSheet = false
+                            }
+                        }
+                    },
+                    savePhoto = { uri, description ->
+                        viewModel.emitIntent(
+                            BoxGuideIntent.SavePhoto(
+                                uri,
+                                description
+                            )
+                        )
+                    },
+                    saveLetter = { envelopeId, envelopeUri, letterText ->
+                        viewModel.emitIntent(
+                            BoxGuideIntent.SaveLetter(
+                                Letter(
+                                    LetterContent = letterText,
+                                    envelope = Envelope(
+                                        envelopeId,
+                                        envelopeUri,
+                                    )
+                                )
+                            )
+                        )
+                    },
+                    saveMusic = { youtubeUrl ->
+                        viewModel.emitIntent(
+                            BoxGuideIntent.SaveMusic(
+                                youtubeUrl
+                            )
+                        )
+                    }
+                )
             }
         }
     }

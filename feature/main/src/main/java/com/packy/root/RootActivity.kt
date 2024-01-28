@@ -26,9 +26,7 @@ class RootActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .windowInsetsPadding(WindowInsets.statusBars)
-                        .windowInsetsPadding(WindowInsets.navigationBars),
+                        .fillMaxSize(),
                     color = PackyTheme.color.white
                 ) {
                     RootCompose(

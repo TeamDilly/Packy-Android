@@ -2,10 +2,13 @@ package com.packy.createbox.boxchoice
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -104,6 +107,7 @@ fun BoxChoiceScreen(
     ) { innerPadding ->
         Column(
             modifier = modifier
+                .windowInsetsPadding(WindowInsets.statusBars)
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

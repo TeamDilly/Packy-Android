@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -24,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,12 +35,13 @@ import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
+import com.packy.core.designsystem.iconbutton.PackyCloseIconButton
+import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.CREATE_BOX_ADD_GIFT_CLOSE
 import com.packy.core.widget.image.StableIcon
-import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoIntent
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.feature.core.R
@@ -95,20 +98,34 @@ fun CreateBoxAddGiftScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1 / 1f)
+                .aspectRatio(1f)
                 .padding(horizontal = 24.dp)
                 .clip(RoundedCornerShape(16.dp))
         ) {
             if (uiState.imageUri == null) {
                 EmptyGiftForm(launcher)
             } else {
-                GlideImage(
-                    modifier = modifier
-                        .fillMaxSize(),
-                    model = uiState.imageUri,
-                    contentDescription = "Gift",
-                    contentScale = ContentScale.Crop,
-                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    GlideImage(
+                        modifier = modifier
+                            .fillMaxSize(),
+                        model = uiState.imageUri,
+                        contentDescription = "Gift",
+                        alignment = Alignment.TopCenter,
+                        contentScale = ContentScale.None,
+                    )
+                    PackyCloseIconButton(
+                        modifier = Modifier
+                            .padding(
+                                top = 12.dp,
+                                end = 12.dp
+                            )
+                            .align(Alignment.TopEnd),
+                        style = closeIconButtonStyle.medium.black
+                    ) {
+                        viewModel.emitIntent(CreateBoxAddGiftIntent.OnCancelImageClick)
+                    }
+                }
             }
         }
         Spacer(1f)
@@ -123,9 +140,12 @@ fun CreateBoxAddGiftScreen(
         Spacer(height = 8.dp)
         Text(
             text = CREATE_BOX_ADD_GIFT_CLOSE,
-            style = PackyTheme.typography.body02,
+            style = PackyTheme.typography.body02.copy(
+                textAlign = TextAlign.Center,
+            ),
             color = PackyTheme.color.gray900,
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(
                     horizontal = 14.dp,
                     vertical = 14.dp
@@ -143,10 +163,6 @@ private fun EmptyGiftForm(launcher: ManagedActivityResultLauncher<PickVisualMedi
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                color = PackyTheme.color.gray200,
-                shape = RoundedCornerShape(16.dp)
-            )
             .clickableWithoutRipple {
                 launcher.launch(
                     PickVisualMediaRequest(
@@ -155,10 +171,22 @@ private fun EmptyGiftForm(launcher: ManagedActivityResultLauncher<PickVisualMedi
                 )
             },
     ) {
-        StableIcon(
-            imageRes = R.drawable.photo,
-            tint = PackyTheme.color.gray900,
-            contentDescription = "photo"
-        )
+        Box(
+            modifier = Modifier
+                .background(
+                    color = PackyTheme.color.gray200,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            StableIcon(
+                modifier = Modifier
+                    .size(24.dp),
+                imageRes = R.drawable.photo,
+                tint = PackyTheme.color.gray900,
+                contentDescription = "photo"
+            )
+        }
     }
 }

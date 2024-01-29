@@ -231,7 +231,8 @@ fun BoxGuideScreen(
                     Spacer(1f)
                     BottomNavButton(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
+                        showBottomSheet = viewModel::emitIntentThrottle
                     )
                     Spacer(height = 28.dp)
                 }
@@ -365,6 +366,7 @@ private fun MusicForm(
 @Composable
 private fun BottomNavButton(
     modifier: Modifier = Modifier,
+    showBottomSheet: emitMviIntent<BoxGuideIntent>,
 ) {
     Row(
         modifier = modifier
@@ -377,7 +379,7 @@ private fun BottomNavButton(
                 .height(50.dp)
                 .weight(1f),
             onClick = {
-
+                showBottomSheet(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.CHANGE_BOX))
             },
         ) {
             Text(
@@ -392,7 +394,7 @@ private fun BottomNavButton(
                 .height(50.dp)
                 .weight(1f),
             onClick = {
-
+                showBottomSheet(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_GIFT))
             },
         ) {
             Row(

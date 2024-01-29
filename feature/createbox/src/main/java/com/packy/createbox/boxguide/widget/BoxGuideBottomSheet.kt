@@ -32,18 +32,8 @@ fun BoxGuideBottomSheet(
     animationDuration: Int = 300,
     content: @Composable () -> Unit
 ) {
-    val configuration = LocalConfiguration.current
 
-    val alphaValue by animateFloatAsState(
-        targetValue = if (visible) 0.6f else 0f,
-        animationSpec = tween(
-            durationMillis = animationDuration,
-            easing = LinearEasing
-        ),
-        label = ""
-    )
 
-    val density = LocalDensity.current
     Box(modifier = modifier.fillMaxSize()) {
         AnimatedVisibility(
             visible = visible,
@@ -58,7 +48,7 @@ fun BoxGuideBottomSheet(
                 .fillMaxSize()
                 .background(
                     color = PackyTheme.color.gray900.copy(
-                        alpha = alphaValue
+                        alpha = 0.6f
                     )
                 )
                 .clickableWithoutRipple {

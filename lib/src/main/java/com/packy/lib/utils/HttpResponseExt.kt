@@ -27,9 +27,15 @@ fun HttpStatusCode.isClientError(): Boolean =
 fun HttpStatusCode.isServerError(): Boolean =
     value in (HTTP_SERVER_ERROR_RANGE_START until HTTP_SERVER_ERROR_RANGE_END)
 
+
+
 suspend inline fun<reified T> HttpResponse.toResource(): Resource<T> {
     try {
         if (status.isSuccess()) {
+            val kJson = Json {
+                ignoreUnknownKeys = true
+                encodeDefaults = true
+            }
             val json = body<String>()
             val jsonElement = Json.parseToJsonElement(json)
             val message = jsonElement.jsonObject["message"]?.jsonPrimitive?.content
@@ -37,8 +43,9 @@ suspend inline fun<reified T> HttpResponse.toResource(): Resource<T> {
             val code =
                 jsonElement.jsonObject["code"]?.jsonPrimitive?.content ?: EMPTY_CODE
             val data = jsonElement.jsonObject["data"]?.let {
-                Json.decodeFromJsonElement<T>(it)
+                kJson.decodeFromJsonElement<T>(it)
             }
+
             return if (data != null) {
                 Resource.Success(data = data, message = message, code = code)
             } else {
@@ -56,6 +63,7 @@ suspend inline fun<reified T> HttpResponse.toResource(): Resource<T> {
             return Resource.NetworkError(throwable = Throwable("Network Error"))
         }
     } catch (e: Exception) {
+        println("LOGEE $e")
         return Resource.NetworkError(throwable = e)
     }
 }

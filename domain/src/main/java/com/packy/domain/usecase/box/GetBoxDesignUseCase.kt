@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetBoxDesignUseCase {
     suspend fun getBoxDesign(): Flow<Resource<List<BoxDesign>>>
-
+    suspend fun getBoxDesignLocal(): Flow<BoxDesign?>
     suspend fun setBoxDesignLocal(boxDesign: BoxDesign): Unit
 }

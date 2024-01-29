@@ -11,7 +11,8 @@ sealed interface CreateBoxChangeIntent : MviIntent {
 }
 
 data class CreateBoxChangeState(
-    val currentBox: BoxDesign?
+    val currentBox: BoxDesign?,
+    val boxDesignList: List<BoxDesign>
 ) : UiState
 
 sealed interface CreateBoxChangeEffect : SideEffect {

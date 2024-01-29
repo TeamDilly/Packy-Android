@@ -83,7 +83,7 @@ fun CreateBoxStickerScreen(
     }
 
     LazyVerticalGrid(
-        modifier = Modifier
+        modifier = modifier
             .height(290.dp)
             .background(
                 color = PackyTheme.color.white,

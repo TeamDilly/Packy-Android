@@ -11,6 +11,8 @@ class GetBoxDesignUseCaseImp @Inject constructor(
     private val repository: BoxRepository
 ) : GetBoxDesignUseCase {
     override suspend fun getBoxDesign(): Flow<Resource<List<BoxDesign>>> = repository.getBoxDesign()
+    override suspend fun getBoxDesignLocal(): Flow<BoxDesign?> = repository.getBoxDesignLocal()
+
     override suspend fun setBoxDesignLocal(boxDesign: BoxDesign) {
         repository.setBoxDesignLocal(boxDesign)
     }

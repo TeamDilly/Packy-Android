@@ -81,4 +81,7 @@ object Strings {
     const val CREATE_BOX_ADD_GIFT_TITLE = "준비한 선물이 있나요?"
     const val CREATE_BOX_ADD_GIFT_DESCRIPTION = "선물 이미지를 담아서 친구에게 보여줄 수 있어요"
     const val CREATE_BOX_ADD_GIFT_CLOSE = "안 담을래요"
+
+    const val CREATE_BOX_CHANGE_BOX_TITLE = "박스 고르기"
+    const val CREATE_BOX_CHANGE_BOX_DESCRIPTION = "마음에 드는 선물박스를 골라주세요"
 }

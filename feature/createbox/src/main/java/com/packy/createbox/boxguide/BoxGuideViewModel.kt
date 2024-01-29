@@ -3,6 +3,7 @@ package com.packy.createbox.boxguide
 import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Strings
 import com.packy.domain.model.createbox.SelectedSticker
+import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoxGuideViewModel @Inject constructor(
-    private val useCase: GetLetterSenderReceiverUseCase
+    private val getLetterSenderReceiverUseCase: GetLetterSenderReceiverUseCase,
+    private val getBoxDesignUseCase: GetBoxDesignUseCase
 ) :
     MviViewModel<BoxGuideIntent, BoxGuideState, BoxGuideEffect>() {
     override fun createInitialState(): BoxGuideState = BoxGuideState(
@@ -26,7 +28,8 @@ class BoxGuideViewModel @Inject constructor(
             sticker1 = null,
             sticker2 = null
         ),
-        gift = null
+        gift = null,
+        boxDesign = null
     )
 
     override fun handleIntent() {
@@ -39,7 +42,14 @@ class BoxGuideViewModel @Inject constructor(
         subscribeStateIntent<BoxGuideIntent.ClearMusic>(clearYoutubeMusic())
         subscribeStateIntent<BoxGuideIntent.SaveSticker>(saveSticker())
         subscribeStateIntent<BoxGuideIntent.SaveGift>(saveGift())
+        subscribeStateIntent<BoxGuideIntent.SaveBox>(saveBox())
     }
+
+    private fun saveBox(): suspend (BoxGuideState, BoxGuideIntent.SaveBox) -> BoxGuideState =
+        { state, intent ->
+            getBoxDesignUseCase.setBoxDesignLocal(intent.boxDesign)
+            state.copy(boxDesign = intent.boxDesign)
+        }
 
     private fun saveGift(): suspend (BoxGuideState, BoxGuideIntent.SaveGift) -> BoxGuideState =
         { state, intent ->
@@ -58,11 +68,26 @@ class BoxGuideViewModel @Inject constructor(
 
     fun getLetterSenderReceiver() {
         viewModelScope.launch(Dispatchers.IO) {
-            useCase.getLetterSenderReceiver()
+            getLetterSenderReceiverUseCase.getLetterSenderReceiver()
                 .distinctUntilChanged()
                 .filterNotNull()
                 .collect {
                     setState(currentState.copy(title = "${Strings.BOX_ADD_INFO_RECEIVER} ${it.receiver}"))
+                }
+        }
+    }
+
+    fun getBoxDesign() {
+        viewModelScope.launch {
+            getBoxDesignUseCase.getBoxDesignLocal()
+                .distinctUntilChanged()
+                .filterNotNull()
+                .collect { boxDesign ->
+                    setState {
+                        currentState.copy(
+                            boxDesign = boxDesign
+                        )
+                    }
                 }
         }
     }

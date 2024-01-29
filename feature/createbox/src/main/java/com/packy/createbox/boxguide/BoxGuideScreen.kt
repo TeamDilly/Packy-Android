@@ -61,12 +61,15 @@ import com.packy.feature.core.R
 import com.packy.createbox.createboax.addlatter.CreateBoxLetterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.addsticker.CreateBoxStickerScreen
+import com.packy.createbox.createboax.boxchange.CreateBoxChangeScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
+import com.packy.domain.model.box.BoxDesign
 import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.domain.model.createbox.Sticker
 import com.packy.lib.ext.extractYouTubeVideoId
 import com.packy.lib.ext.removeNewlines
 import com.packy.mvi.ext.emitMviIntent
+import com.packy.mvi.mvi.UiState
 import kotlinx.coroutines.launch
 
 @OptIn(
@@ -87,6 +90,8 @@ fun BoxGuideScreen(
 
     LaunchedEffect(null) {
         viewModel.getLetterSenderReceiver()
+        viewModel.getBoxDesign()
+
         viewModel.effect.collect { effect ->
             when (effect) {
                 is BoxGuideEffect.MoveToBack -> navController.popBackStack()
@@ -244,6 +249,7 @@ fun BoxGuideScreen(
                 }
             ) {
                 BottomSheetNav(
+                    uiState = uiState,
                     bottomSheetRoute = bottomSheetRoute,
                     closeBottomSheet = {
                         showBottomSheet = false
@@ -291,7 +297,13 @@ fun BoxGuideScreen(
                             )
                         )
                     },
-                    selectSticker = uiState.selectedSticker
+                    onSaveBox = {
+                        viewModel.emitIntent(
+                            BoxGuideIntent.SaveBox(
+                                it
+                            )
+                        )
+                    },
                 )
             }
         }
@@ -507,6 +519,7 @@ private fun TopBar(
 
 @Composable
 private fun BottomSheetNav(
+    uiState: BoxGuideState,
     modifier: Modifier = Modifier,
     bottomSheetRoute: BoxGuideBottomSheetRoute,
     closeBottomSheet: () -> Unit,
@@ -514,8 +527,8 @@ private fun BottomSheetNav(
     saveLetter: (Int, String, String) -> Unit,
     saveMusic: (String) -> Unit,
     onSaveSticker: (Int, Sticker?) -> Unit,
-    selectSticker: SelectedSticker,
     saveGift: (Uri?) -> Unit,
+    onSaveBox: (BoxDesign) -> Unit,
 ) {
     when (bottomSheetRoute) {
         BoxGuideBottomSheetRoute.ADD_GIFT -> {
@@ -548,7 +561,7 @@ private fun BottomSheetNav(
 
         BoxGuideBottomSheetRoute.ADD_STICKER_1 -> CreateBoxStickerScreen(
             stickerIndex = 1,
-            selectedSticker = selectSticker,
+            selectedSticker = uiState.selectedSticker,
             closeBottomSheet = closeBottomSheet,
             onSaveSticker = {
                 onSaveSticker(
@@ -560,7 +573,7 @@ private fun BottomSheetNav(
 
         BoxGuideBottomSheetRoute.ADD_STICKER_2 -> CreateBoxStickerScreen(
             stickerIndex = 2,
-            selectedSticker = selectSticker,
+            selectedSticker = uiState.selectedSticker,
             closeBottomSheet = closeBottomSheet,
             onSaveSticker = {
                 onSaveSticker(
@@ -570,7 +583,12 @@ private fun BottomSheetNav(
             },
         )
 
-        BoxGuideBottomSheetRoute.CHANGE_BOX -> Unit
+        BoxGuideBottomSheetRoute.CHANGE_BOX -> CreateBoxChangeScreen(
+            currentBox = uiState.boxDesign!!,
+            closeBottomSheet = closeBottomSheet,
+            onSaveBox = onSaveBox,
+        )
+
         BoxGuideBottomSheetRoute.EMPTY -> {
             closeBottomSheet()
         }

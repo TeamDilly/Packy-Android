@@ -2,6 +2,7 @@ package com.packy.createbox.boxguide
 
 import android.net.Uri
 import com.packy.core.widget.youtube.YoutubeState
+import com.packy.domain.model.box.BoxDesign
 import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.domain.model.createbox.Sticker
 import com.packy.mvi.mvi.MviIntent
@@ -37,6 +38,10 @@ sealed interface BoxGuideIntent : MviIntent {
         val imageUri: Uri?
     ) : BoxGuideIntent
 
+    data class SaveBox(
+        val boxDesign: BoxDesign
+    ) : BoxGuideIntent
+
     data object ClearMusic : BoxGuideIntent
 }
 
@@ -62,7 +67,8 @@ data class BoxGuideState(
     val youtubeUrl: String?,
     val youtubeState: YoutubeState = YoutubeState.INIT,
     val selectedSticker: SelectedSticker,
-    val gift: Uri?
+    val gift: Uri?,
+    val boxDesign: BoxDesign?
 ) : UiState {
     fun isBoxComplete() =
         this.photo != null && this.letter != null && this.youtubeUrl != null && this.selectedSticker?.isStickerComplete() == true

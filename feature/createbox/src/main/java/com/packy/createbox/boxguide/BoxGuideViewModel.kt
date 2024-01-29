@@ -46,7 +46,6 @@ class BoxGuideViewModel @Inject constructor(
                 2 -> state.copy(selectedSticker = state.selectedSticker.copy(sticker2 = intent.sticker))
                 else -> state
             }
-            println("LOGEE  state ${state}")
             state
         }
 

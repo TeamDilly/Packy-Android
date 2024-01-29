@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.addlatter
 
+import android.graphics.Color.parseColor
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -134,7 +136,8 @@ fun CreateBoxLetterScreen(
 
                 Spacer(height = 32.dp)
                 LetterForm(
-                    uiState.LetterText,
+                    uiState.letterText,
+                    uiState.getLetterEnvelope(),
                     viewModel::emitIntent,
                 )
                 Spacer(height = 16.dp)
@@ -159,7 +162,7 @@ fun CreateBoxLetterScreen(
                         .height(48.dp),
                     style = buttonStyle.large.black,
                     text = Strings.SAVE,
-                    enabled = uiState.LetterText.isNotEmpty()
+                    enabled = uiState.letterText.isNotEmpty()
                 ) {
                     viewModel.emitIntentThrottle(CreateBoxLetterIntent.OnSaveClick)
                 }
@@ -172,9 +175,9 @@ fun CreateBoxLetterScreen(
 @Composable
 private fun LetterForm(
     text: String,
+    envelope: LetterEnvelope?,
     onValueChange: emitMviIntent<CreateBoxLetterIntent>,
 ) {
-
     Box {
         PackyTextField(
             value = text,
@@ -184,7 +187,9 @@ private fun LetterForm(
                 .height(300.dp)
                 .border(
                     width = 4.dp,
-                    color = PackyTheme.color.gray200,
+                    color = envelope?.borderColorCode
+                        ?.let { Color(parseColor("#${envelope.borderColorCode}")) }
+                        ?: PackyTheme.color.gray200,
                     shape = RoundedCornerShape(16.dp)
                 ),
             textFieldColor = PackyTheme.color.gray100,

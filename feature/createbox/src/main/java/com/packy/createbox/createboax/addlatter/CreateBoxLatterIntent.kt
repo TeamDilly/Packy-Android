@@ -14,7 +14,7 @@ sealed interface CreateBoxLetterIntent : MviIntent {
 }
 
 data class CreateBoxLetterState(
-    val LetterText: String,
+    val letterText: String,
     val envelopeId: Int,
     val envelopeList: List<LetterEnvelope>
 ) : UiState{

@@ -34,7 +34,7 @@ class CreateBoxLetterViewModel @Inject constructor(
     }
 
     override fun createInitialState(): CreateBoxLetterState = CreateBoxLetterState(
-        LetterText = "",
+        letterText = "",
         envelopeId = 1,
         envelopeList = emptyList()
     )
@@ -50,7 +50,7 @@ class CreateBoxLetterViewModel @Inject constructor(
                     CreateBoxLetterEffect.SaveLetter(
                         envelopId = envelopeItem.id,
                         envelopUri = envelopeItem.imgUrl,
-                        LetterText = currentState.LetterText
+                        LetterText = currentState.letterText
                     )
                 )
             }
@@ -61,7 +61,7 @@ class CreateBoxLetterViewModel @Inject constructor(
         subscribeStateIntent<CreateBoxLetterIntent.ChangeLetterText> { state, intent ->
             if (intent.Letter.length <= Constant.MAX_Letter_TEXT) {
                 if (intent.Letter.lines().size <= Constant.MAX_Letter_LINES + 1) {
-                    state.copy(LetterText = intent.Letter)
+                    state.copy(letterText = intent.Letter)
                 } else {
                     state
                 }

@@ -49,7 +49,6 @@ fun CreateBoxChooseMusicScreen(
         }
     }
     Column {
-        Spacer(height = 12.dp)
         PackyTopBar.Builder()
             .endIconButton(icon = R.drawable.cancle) {
                 viewModel.emitIntent(CreateBoxChooseMusicIntent.OnCloseClick)

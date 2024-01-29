@@ -70,7 +70,6 @@ fun CreateBoxYourMusicScreen(
             .fillMaxSize(),
         verticalArrangement = Arrangement.Top
     ) {
-        Spacer(height = 12.dp)
         PackyTopBar.Builder()
             .startIconButton(icon = R.drawable.arrow_left) {
                 viewModel.emitIntent(CreateBoxYourMusicIntent.OnBackClick)

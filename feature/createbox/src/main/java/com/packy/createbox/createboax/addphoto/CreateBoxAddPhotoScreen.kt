@@ -77,7 +77,6 @@ fun CreateBoxAddPhotoScreen(
             .fillMaxSize(),
         verticalArrangement = Arrangement.Top,
     ) {
-        Spacer(height = 12.dp)
         PackyTopBar.Builder()
             .endIconButton(icon = R.drawable.cancle) {
                 viewModel.emitIntent(CreateBoxAddPhotoIntent.OnCloseClick)

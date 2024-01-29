@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.packy.core.common.clickableWithoutRipple
@@ -31,6 +32,8 @@ fun BoxGuideBottomSheet(
     animationDuration: Int = 300,
     content: @Composable () -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+
     val alphaValue by animateFloatAsState(
         targetValue = if (visible) 0.6f else 0f,
         animationSpec = tween(
@@ -41,29 +44,38 @@ fun BoxGuideBottomSheet(
     )
 
     val density = LocalDensity.current
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(
-                color = PackyTheme.color.gray900.copy(
-                    alpha = alphaValue
-                )
+    Box(modifier = modifier.fillMaxSize()) {
+        AnimatedVisibility(
+            visible = visible,
+            enter = fadeIn(
+                animationSpec = tween(durationMillis = animationDuration)
+            ),
+            exit = fadeOut(
+                animationSpec = tween(durationMillis = animationDuration)
             )
-            .clickableWithoutRipple {
-                changeVisible()
-            }
-    ) {
+        ) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    color = PackyTheme.color.gray900.copy(
+                        alpha = alphaValue
+                    )
+                )
+                .clickableWithoutRipple {
+                    changeVisible()
+                })
+        }
         AnimatedVisibility(
             modifier = Modifier.align(Alignment.BottomCenter),
             visible = visible,
             enter = slideInVertically(
-                initialOffsetY = { with(density) { 300.dp.roundToPx() } },
+                initialOffsetY = { it },
                 animationSpec = tween(durationMillis = animationDuration)
-            ) + fadeIn(),
+            ),
             exit = slideOutVertically(
-                targetOffsetY = { with(density) { 300.dp.roundToPx() } },
+                targetOffsetY = { it },
                 animationSpec = tween(durationMillis = animationDuration)
-            ) + fadeOut()
+            )
         ) {
             Surface(
                 modifier = Modifier

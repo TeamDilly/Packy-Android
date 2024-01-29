@@ -92,10 +92,9 @@ fun BoxGuideScreen(
                 is BoxGuideEffect.OnChangedBox -> TODO()
                 is BoxGuideEffect.SaveBox -> TODO()
                 is BoxGuideEffect.ShowBottomSheet -> {
+                    println("LOGEE ShowBottomSheet")
                     bottomSheetRoute = effect.boxGuideBottomSheetRoute
-                    scope.launch {
-                        showBottomSheet = true
-                    }
+                    showBottomSheet = true
                 }
             }
         }

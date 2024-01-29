@@ -51,6 +51,7 @@ import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
 import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.YoutubeState
+import com.packy.createbox.boxguide.widget.BoxGuideBottomSheet
 import com.packy.createbox.boxguide.widget.BoxGuideContent
 import com.packy.createbox.boxguide.widget.BoxPlaceholder
 import com.packy.createbox.boxguide.widget.PhotoForm
@@ -79,10 +80,6 @@ fun BoxGuideScreen(
     val scope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsState()
 
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
-        confirmValueChange = { false }
-    )
     var showBottomSheet by remember { mutableStateOf(false) }
 
     var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.EMPTY) }
@@ -105,154 +102,151 @@ fun BoxGuideScreen(
     }
 
     Scaffold { innerPadding ->
-        Column(
+        Box(
             modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(PackyTheme.color.gray900),
-            verticalArrangement = Arrangement.Center,
+                .background(PackyTheme.color.gray900)
         ) {
-            Spacer(height = 8.dp)
-            TopBar(
-                title = uiState.title,
-                onBackClick = viewModel::emitIntentThrottle,
-                onSaveClick = viewModel::emitIntentThrottle,
-            )
-            Spacer(height = 31.dp)
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+                    .fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    BoxGuideContent(
-                        modifier = Modifier
-                            .aspectRatio(160f / 192f)
-                            .fillMaxWidth()
-                            .weight(38f),
-                        inclination = -3f,
-                        placeholder = {
-                            BoxPlaceholder(
-                                icon = R.drawable.photo,
-                                title = Strings.BOX_GUIDE_PHOTO
-                            )
-                        },
-                        content = uiState.photo?.let { photo ->
-                            {
-                                PhotoForm(photo)
-                            }
-                        },
-                        onClick = {
-                            viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_PHOTO))
-                        }
-                    )
-                    Spacer(28.dp)
-                    StickerForm(
-                        modifier = Modifier
-                            .aspectRatio(1f / 1f)
-                            .weight(28f),
-                        inclination = 10f,
-                        stickerUri = uiState.selectedSticker.sticker1?.imgUrl,
-                        onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_1)) }
-                    )
-                }
-                Spacer(height = 20.dp)
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    StickerForm(
-                        modifier = Modifier
-                            .aspectRatio(1f / 1f)
-                            .weight(30f),
-                        inclination = -10f,
-                        stickerUri = uiState.selectedSticker.sticker2?.imgUrl,
-                        onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_2)) }
-                    )
-                    Spacer(22.dp)
-                    BoxGuideContent(
-                        modifier = Modifier
-                            .aspectRatio(180f / 150f)
-                            .fillMaxWidth()
-                            .weight(42f),
-                        inclination = 3f,
-                        placeholder = {
-                            BoxPlaceholder(
-                                icon = R.drawable.envelope,
-                                title = Strings.BOX_GUIDE_Letter
-                            )
-                        },
-                        content = uiState.letter?.let { letter ->
-                            {
-                                LetterForm(letter)
-                            }
-                        },
-                        onClick = {
-                            viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_LATTER))
-                        }
-                    )
-                }
-                Spacer(height = 29.dp)
-                BoxGuideContent(
-                    modifier = Modifier
-                        .heightIn(
-                            min = 0.dp,
-                            max = 146.dp
-                        )
-                        .aspectRatio(16f / 9f)
-                        .fillMaxWidth(),
-                    inclination = 0f,
-                    placeholder = {
-                        BoxPlaceholder(
-                            icon = R.drawable.music_note,
-                            title = Strings.BOX_GUIDE_MUSIC
-                        )
-                    },
-                    content = uiState.youtubeUrl?.let { youtubeUri ->
-                        {
-                            MusicForm(
-                                youtubeUri = youtubeUri,
-                                youtubeState = uiState.youtubeState,
-                                clearMusic = viewModel::emitIntentThrottle
-                            )
-                        }
-                    },
-                    onClick = {
-                        viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_MUSIC))
-                    }
+                Spacer(height = 8.dp)
+                TopBar(
+                    title = uiState.title,
+                    onBackClick = viewModel::emitIntentThrottle,
+                    onSaveClick = viewModel::emitIntentThrottle,
                 )
-                Spacer(1f)
-                BottomNavButton(
+                Spacer(height = 31.dp)
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                )
-                Spacer(height = 28.dp)
+                        .padding(horizontal = 32.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        BoxGuideContent(
+                            modifier = Modifier
+                                .aspectRatio(160f / 192f)
+                                .fillMaxWidth()
+                                .weight(38f),
+                            inclination = -3f,
+                            placeholder = {
+                                BoxPlaceholder(
+                                    icon = R.drawable.photo,
+                                    title = Strings.BOX_GUIDE_PHOTO
+                                )
+                            },
+                            content = uiState.photo?.let { photo ->
+                                {
+                                    PhotoForm(photo)
+                                }
+                            },
+                            onClick = {
+                                viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_PHOTO))
+                            }
+                        )
+                        Spacer(28.dp)
+                        StickerForm(
+                            modifier = Modifier
+                                .aspectRatio(1f / 1f)
+                                .weight(28f),
+                            inclination = 10f,
+                            stickerUri = uiState.selectedSticker.sticker1?.imgUrl,
+                            onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_1)) }
+                        )
+                    }
+                    Spacer(height = 20.dp)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        StickerForm(
+                            modifier = Modifier
+                                .aspectRatio(1f / 1f)
+                                .weight(30f),
+                            inclination = -10f,
+                            stickerUri = uiState.selectedSticker.sticker2?.imgUrl,
+                            onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_2)) }
+                        )
+                        Spacer(22.dp)
+                        BoxGuideContent(
+                            modifier = Modifier
+                                .aspectRatio(180f / 150f)
+                                .fillMaxWidth()
+                                .weight(42f),
+                            inclination = 3f,
+                            placeholder = {
+                                BoxPlaceholder(
+                                    icon = R.drawable.envelope,
+                                    title = Strings.BOX_GUIDE_Letter
+                                )
+                            },
+                            content = uiState.letter?.let { letter ->
+                                {
+                                    LetterForm(letter)
+                                }
+                            },
+                            onClick = {
+                                viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_LATTER))
+                            }
+                        )
+                    }
+                    Spacer(height = 29.dp)
+                    BoxGuideContent(
+                        modifier = Modifier
+                            .heightIn(
+                                min = 0.dp,
+                                max = 146.dp
+                            )
+                            .aspectRatio(16f / 9f)
+                            .fillMaxWidth(),
+                        inclination = 0f,
+                        placeholder = {
+                            BoxPlaceholder(
+                                icon = R.drawable.music_note,
+                                title = Strings.BOX_GUIDE_MUSIC
+                            )
+                        },
+                        content = uiState.youtubeUrl?.let { youtubeUri ->
+                            {
+                                MusicForm(
+                                    youtubeUri = youtubeUri,
+                                    youtubeState = uiState.youtubeState,
+                                    clearMusic = viewModel::emitIntentThrottle
+                                )
+                            }
+                        },
+                        onClick = {
+                            viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_MUSIC))
+                        }
+                    )
+                    Spacer(1f)
+                    BottomNavButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                    Spacer(height = 28.dp)
+                }
             }
-        }
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = {
+            BoxGuideBottomSheet(
+                visible = showBottomSheet,
+                changeVisible = {
                     showBottomSheet = false
-                },
-                containerColor = PackyTheme.color.white,
-                dragHandle = null,
-                sheetState = sheetState
+                }
             ) {
                 BottomSheetNav(
                     bottomSheetRoute = bottomSheetRoute,
                     closeBottomSheet = {
-                        scope.launch { sheetState.hide() }.invokeOnCompletion {
-                            if (!sheetState.isVisible) {
-                                showBottomSheet = false
-                            }
-                        }
+                        showBottomSheet = false
                     },
                     savePhoto = { uri, description ->
                         viewModel.emitIntent(

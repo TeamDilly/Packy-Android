@@ -38,6 +38,5 @@ class CreateBoxAddPhotoViewModel @Inject constructor() :
             null,
             null
         )
-        const val MAX_ONBOARDING_PAGE_SIZE = 2
     }
 }

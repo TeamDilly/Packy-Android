@@ -87,11 +87,11 @@ fun CreateBoxChangeScreen(
         }
         Spacer(height = 24.dp)
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(
-                start = 40.dp,
-                end = 40.dp,
-            )
+            modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(
+                space = 12.dp,
+                alignment = Alignment.CenterHorizontally
+            ),
         ) {
             items(uiState.boxDesignList) { boxDesign ->
                 GlideImage(

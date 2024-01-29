@@ -1,6 +1,9 @@
 package com.packy.createbox.boxguide
 
 import android.net.Uri
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,10 +21,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -74,6 +75,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(
     ExperimentalMaterial3Api::class,
+    ExperimentalGlideComposeApi::class,
 )
 @Composable
 fun BoxGuideScreen(
@@ -87,6 +89,12 @@ fun BoxGuideScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.EMPTY) }
+
+    var boxPartAnimation by remember { mutableStateOf(false) }
+
+    LaunchedEffect(boxPartAnimation) {
+        boxPartAnimation = true
+    }
 
     LaunchedEffect(null) {
         viewModel.getLetterSenderReceiver()
@@ -112,6 +120,12 @@ fun BoxGuideScreen(
                 .padding(innerPadding)
                 .background(PackyTheme.color.gray900)
         ) {
+            TopBoxPartImage(
+                modifier = Modifier.align(Alignment.TopEnd),
+                boxPartAnimation = boxPartAnimation,
+                uiState = uiState,
+            )
+
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -307,6 +321,32 @@ fun BoxGuideScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun TopBoxPartImage(
+    boxPartAnimation: Boolean,
+    uiState: BoxGuideState,
+    modifier: Modifier = Modifier,
+) {
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = boxPartAnimation,
+        enter = slideInHorizontally(
+            initialOffsetX = { it },
+            animationSpec = tween(durationMillis = 800)
+        )
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .width(280.dp)
+                .height(160.dp),
+            model = uiState.boxDesign?.boxPart,
+            contentDescription = "box guide screen",
+            contentScale = ContentScale.Crop
+        )
     }
 }
 

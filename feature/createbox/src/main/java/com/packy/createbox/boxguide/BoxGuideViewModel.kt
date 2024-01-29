@@ -25,7 +25,8 @@ class BoxGuideViewModel @Inject constructor(
         selectedSticker = SelectedSticker(
             sticker1 = null,
             sticker2 = null
-        )
+        ),
+        gift = null
     )
 
     override fun handleIntent() {
@@ -37,7 +38,13 @@ class BoxGuideViewModel @Inject constructor(
         subscribeStateIntent<BoxGuideIntent.SaveMusic>(saveYoutubeMusic())
         subscribeStateIntent<BoxGuideIntent.ClearMusic>(clearYoutubeMusic())
         subscribeStateIntent<BoxGuideIntent.SaveSticker>(saveSticker())
+        subscribeStateIntent<BoxGuideIntent.SaveGift>(saveGift())
     }
+
+    private fun saveGift(): suspend (BoxGuideState, BoxGuideIntent.SaveGift) -> BoxGuideState =
+        { state, intent ->
+            state.copy(gift = intent.imageUri)
+        }
 
     private fun saveSticker(): suspend (BoxGuideState, BoxGuideIntent.SaveSticker) -> BoxGuideState =
         { state, intent ->

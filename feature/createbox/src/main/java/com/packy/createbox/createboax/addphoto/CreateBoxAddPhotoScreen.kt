@@ -75,7 +75,6 @@ fun CreateBoxAddPhotoScreen(
     Column(
         modifier = modifier
             .fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
     ) {
         PackyTopBar.Builder()
             .endIconButton(icon = R.drawable.cancle) {

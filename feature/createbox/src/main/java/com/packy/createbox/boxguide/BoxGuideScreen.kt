@@ -56,6 +56,7 @@ import com.packy.createbox.boxguide.widget.BoxGuideContent
 import com.packy.createbox.boxguide.widget.BoxPlaceholder
 import com.packy.createbox.boxguide.widget.PhotoForm
 import com.packy.createbox.boxguide.widget.StickerForm
+import com.packy.createbox.createboax.addgift.CreateBoxAddGiftScreen
 import com.packy.feature.core.R
 import com.packy.createbox.createboax.addlatter.CreateBoxLetterScreen
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
@@ -282,6 +283,13 @@ fun BoxGuideScreen(
                             )
                         )
                     },
+                    saveGift = { uri ->
+                        viewModel.emitIntent(
+                            BoxGuideIntent.SaveGift(
+                                uri,
+                            )
+                        )
+                    },
                     selectSticker = uiState.selectedSticker
                 )
             }
@@ -505,9 +513,16 @@ private fun BottomSheetNav(
     saveMusic: (String) -> Unit,
     onSaveSticker: (Int, Sticker?) -> Unit,
     selectSticker: SelectedSticker,
+    saveGift: (Uri?) -> Unit,
 ) {
     when (bottomSheetRoute) {
-        BoxGuideBottomSheetRoute.ADD_GIFT -> Box(modifier = Modifier.fillMaxSize())
+        BoxGuideBottomSheetRoute.ADD_GIFT -> {
+            CreateBoxAddGiftScreen(
+                closeBottomSheet = closeBottomSheet,
+                saveGift = saveGift
+            )
+        }
+
         BoxGuideBottomSheetRoute.ADD_LATTER -> {
             CreateBoxLetterScreen(
                 closeBottomSheet = closeBottomSheet,

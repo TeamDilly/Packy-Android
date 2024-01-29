@@ -77,4 +77,8 @@ object Strings {
 
     const val CREATE_BOX_STICKER_TITLE = "스티커 붙이기"
     const val CREATE_BOX_STICKER_DESCRIPTION = "최대 2개끼지 붙일 수 있어요"
+
+    const val CREATE_BOX_ADD_GIFT_TITLE = "준비한 선물이 있나요?"
+    const val CREATE_BOX_ADD_GIFT_DESCRIPTION = "선물 이미지를 담아서 친구에게 보여줄 수 있어요"
+    const val CREATE_BOX_ADD_GIFT_CLOSE = "안 담을래요"
 }

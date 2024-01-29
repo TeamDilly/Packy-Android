@@ -33,6 +33,10 @@ sealed interface BoxGuideIntent : MviIntent {
         val sticker: Sticker?
     ) : BoxGuideIntent
 
+    data class SaveGift(
+        val imageUri: Uri?
+    ) : BoxGuideIntent
+
     data object ClearMusic : BoxGuideIntent
 }
 
@@ -57,7 +61,8 @@ data class BoxGuideState(
     val letter: Letter?,
     val youtubeUrl: String?,
     val youtubeState: YoutubeState = YoutubeState.INIT,
-    val selectedSticker: SelectedSticker
+    val selectedSticker: SelectedSticker,
+    val gift: Uri?
 ) : UiState {
     fun isBoxComplete() =
         this.photo != null && this.letter != null && this.youtubeUrl != null && this.selectedSticker?.isStickerComplete() == true

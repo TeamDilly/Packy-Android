@@ -2,8 +2,10 @@ package com.packy.di.createbox
 
 import com.packy.data.repository.createbox.CreateBoxRepositoryImp
 import com.packy.data.usecase.createbox.CreateBoxFlagUseCaseImp
+import com.packy.data.usecase.createbox.CreateBoxUseCaseImp
 import com.packy.domain.repository.createbox.CreateBoxRepository
 import com.packy.domain.usecase.createbox.CreateBoxFlagUseCase
+import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -21,4 +23,7 @@ abstract class CreateBoxRepositoryModule {
 
     @Binds
     abstract fun bindCreateBoxFlagUseCase(useCase: CreateBoxFlagUseCaseImp): CreateBoxFlagUseCase
+
+    @Binds
+    abstract fun bindCreateBoxUseCase(useCase: CreateBoxUseCaseImp): CreateBoxUseCase
 }

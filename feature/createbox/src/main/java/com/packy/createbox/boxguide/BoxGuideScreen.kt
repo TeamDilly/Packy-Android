@@ -73,10 +73,6 @@ import com.packy.mvi.ext.emitMviIntent
 import com.packy.mvi.mvi.UiState
 import kotlinx.coroutines.launch
 
-@OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalGlideComposeApi::class,
-)
 @Composable
 fun BoxGuideScreen(
     modifier: Modifier = Modifier,
@@ -134,6 +130,7 @@ fun BoxGuideScreen(
                 Spacer(height = 8.dp)
                 TopBar(
                     title = uiState.title,
+                    uiState = uiState,
                     onBackClick = viewModel::emitIntentThrottle,
                     onSaveClick = viewModel::emitIntentThrottle,
                 )
@@ -492,6 +489,7 @@ private fun BottomButton(
 @Composable
 private fun TopBar(
     title: String,
+    uiState: BoxGuideState,
     onBackClick: emitMviIntent<BoxGuideIntent>,
     onSaveClick: emitMviIntent<BoxGuideIntent>
 ) {
@@ -540,7 +538,9 @@ private fun TopBar(
                 color = PackyTheme.color.white,
                 shape = RoundedCornerShape(80.dp)
             )
-            .clickableWithoutRipple {
+            .clickableWithoutRipple(
+                enabled = uiState.isBoxComplete(),
+            ) {
                 onSaveClick(BoxGuideIntent.OnSaveClick)
             }
         )
@@ -551,7 +551,9 @@ private fun TopBar(
                 style = PackyTheme.typography.body02.copy(
                     textAlign = TextAlign.Center
                 ),
-                color = PackyTheme.color.gray600
+                color = if (uiState.isBoxComplete())
+                    PackyTheme.color.gray900
+                else PackyTheme.color.gray600
             )
         }
     }

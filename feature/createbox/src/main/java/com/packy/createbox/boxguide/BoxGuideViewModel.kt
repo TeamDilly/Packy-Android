@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Strings
 import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
+import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BoxGuideViewModel @Inject constructor(
     private val getLetterSenderReceiverUseCase: GetLetterSenderReceiverUseCase,
-    private val getBoxDesignUseCase: GetBoxDesignUseCase
+    private val getBoxDesignUseCase: GetBoxDesignUseCase,
+    private val createBoxUseCase: CreateBoxUseCase
 ) :
     MviViewModel<BoxGuideIntent, BoxGuideState, BoxGuideEffect>() {
     override fun createInitialState(): BoxGuideState = BoxGuideState(
@@ -34,7 +36,7 @@ class BoxGuideViewModel @Inject constructor(
 
     override fun handleIntent() {
         subscribeIntent<BoxGuideIntent.OnBackClick> { sendEffect(BoxGuideEffect.MoveToBack) }
-        subscribeIntent<BoxGuideIntent.OnSaveClick> { sendEffect(BoxGuideEffect.SaveBox) }
+        subscribeIntent<BoxGuideIntent.OnSaveClick>(createBox())
         subscribeIntent<BoxGuideIntent.ShowBottomSheet> { sendEffect(BoxGuideEffect.ShowBottomSheet(it.boxGuideBottomSheetRoute)) }
         subscribeStateIntent<BoxGuideIntent.SavePhoto>(savePhoto())
         subscribeStateIntent<BoxGuideIntent.SaveLetter>(saveLetterBoxGuideState())
@@ -43,6 +45,10 @@ class BoxGuideViewModel @Inject constructor(
         subscribeStateIntent<BoxGuideIntent.SaveSticker>(saveSticker())
         subscribeStateIntent<BoxGuideIntent.SaveGift>(saveGift())
         subscribeStateIntent<BoxGuideIntent.SaveBox>(saveBox())
+    }
+
+    private fun createBox(): suspend (BoxGuideIntent) -> Unit = {
+
     }
 
     private fun saveBox(): suspend (BoxGuideState, BoxGuideIntent.SaveBox) -> BoxGuideState =

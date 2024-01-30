@@ -4,6 +4,7 @@ import android.content.Context
 import com.packy.data.model.createbox.BoxDesignDto
 import com.packy.data.model.createbox.LetterSenderReceiverDto
 import com.packy.domain.model.auth.SignUp
+import com.packy.domain.model.createbox.box.CreateBox
 import com.packy.pref.manager.PrefManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -42,6 +43,24 @@ class AccountPrefManager @Inject constructor(
         null,
         BoxDesignDto::class
     )
+
+    val createBox = createNonNullMemoryPrefItem<CreateBox>(
+        "createBoxRequest",
+        CreateBox(
+            boxId = null,
+            envelopeId = null,
+            gift = null,
+            letterContent = null,
+            name = null,
+            photos = emptyList(),
+            receiverName = null,
+            senderName = null,
+            stickers = emptyList(),
+            youtubeUrl = null
+        ),
+        BoxDesignDto::class
+    )
+
     val shouldShowBoxMotion = createNonNullMemoryPrefItem<Boolean>(
         "shouldShowBoxMotion",
         true,

@@ -10,14 +10,18 @@ import com.packy.lib.utils.Resource
 import com.packy.lib.utils.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class BoxRepositoryImp @Inject constructor(
     private val api: BoxService,
     private val prefManager: AccountPrefManager
 ) : BoxRepository {
-    override suspend fun getBoxDesignLocal(): Flow<BoxDesign?> = prefManager.boxDesign.getData().map { it?.toEntity() }
+    override suspend fun getBoxDesignLocal(): Flow<BoxDesign?> =
+        prefManager.boxDesign.getData().map { it?.toEntity() }
+
     override suspend fun setBoxDesignLocal(boxDesign: BoxDesign) {
         prefManager.boxDesign.putData(
             BoxDesignDto(

@@ -10,6 +10,7 @@ import androidx.compose.ui.composed
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 fun Modifier.clickableWithoutRipple(
     interactionSource: MutableInteractionSource? = null,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) = composed({
     value = interactionSource
@@ -19,6 +20,7 @@ fun Modifier.clickableWithoutRipple(
         MutableInteractionSource()
     }
     clickable(
+        enabled = enabled,
         indication = null,
         interactionSource = nonNullInteractionSource,
         onClick = onClick

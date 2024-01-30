@@ -66,6 +66,15 @@ fun NavGraphBuilder.createBoxNavGraph(
                 boxBottom = boxBottom
             )
         }
+
+        asFadeInComposable(
+            route = CreateBoxRoute.BOX_ADD_TITLE
+        ){
+            BoxAddInfoScreen(
+                navController = navController,
+                closeCreateBox = closeCreateBox
+            )
+        }
     }
 }
 
@@ -77,5 +86,7 @@ object CreateBoxRoute {
     const val BOX_GUIDE_FADE_IN = "boxGuidePagingFadeIn"
     const val BOX_ADD_INFO = "boxAddInfo"
     const val BOX_MOTION = "boxMotion"
+    const val BOX_ADD_TITLE = "boxAddTitle"
+    const val BOX_SHARE= "boxShare"
     fun getBoxMotionRoute(boxFull: String, boxBottom: String) = "$BOX_MOTION/$boxFull/$boxBottom"
 }

@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LetterUseCaseImp @Inject constructor(
-    private val LetterRepository: LetterRepository
+    private val letterRepository: LetterRepository
 ) : LetterUseCase {
     override suspend fun getLetterEnvelope(): Flow<Resource<List<LetterEnvelope>>> =
-        LetterRepository.getLetterEnvelope()
+        letterRepository.getLetterEnvelope()
 }

@@ -3,6 +3,7 @@ package com.packy.createbox.boxguide
 import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Strings
 import com.packy.domain.model.createbox.SelectedSticker
+import com.packy.domain.model.createbox.box.Stickers
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
@@ -36,7 +37,7 @@ class BoxGuideViewModel @Inject constructor(
 
     override fun handleIntent() {
         subscribeIntent<BoxGuideIntent.OnBackClick> { sendEffect(BoxGuideEffect.MoveToBack) }
-        subscribeIntent<BoxGuideIntent.OnSaveClick>(createBox())
+        subscribeIntent<BoxGuideIntent.OnSaveClick>(::createBox)
         subscribeIntent<BoxGuideIntent.ShowBottomSheet> { sendEffect(BoxGuideEffect.ShowBottomSheet(it.boxGuideBottomSheetRoute)) }
         subscribeStateIntent<BoxGuideIntent.SavePhoto>(savePhoto())
         subscribeStateIntent<BoxGuideIntent.SaveLetter>(saveLetterBoxGuideState())
@@ -47,8 +48,45 @@ class BoxGuideViewModel @Inject constructor(
         subscribeStateIntent<BoxGuideIntent.SaveBox>(saveBox())
     }
 
-    private fun createBox(): suspend (BoxGuideIntent) -> Unit = {
+    private suspend fun createBox(boxGuideIntent: BoxGuideIntent) {
+        val createBox = createBoxUseCase.getCreatedBox()
+        val envelopeId = currentState.letter?.envelope?.envelopeId
+        val letterContent = currentState.letter?.letterContent
 
+        if (envelopeId == null || letterContent == null) {
+            sendEffect(BoxGuideEffect.FailedSaveBox("편지를 작성해주세요"))
+            return
+        }
+
+        val youtubeUrl = currentState.youtubeUrl
+        if (youtubeUrl == null) {
+            sendEffect(BoxGuideEffect.FailedSaveBox("음악을 선택해주세요"))
+            return
+        }
+
+        val sticker1 = currentState.selectedSticker.sticker1
+        val sticker2 = currentState.selectedSticker.sticker2
+
+        if (sticker1 == null || sticker2 == null) {
+            sendEffect(BoxGuideEffect.FailedSaveBox("스티커를 선택해주세요"))
+            return
+        }
+
+        createBox.copy(
+            envelopeId = envelopeId,
+            letterContent = letterContent,
+            youtubeUrl = youtubeUrl,
+            stickers = listOf(
+                Stickers(
+                    id = sticker1.id,
+                    location = 1
+                ),
+                Stickers(
+                    id = sticker2.id,
+                    location = 2
+                )
+            ),
+        )
     }
 
     private fun saveBox(): suspend (BoxGuideState, BoxGuideIntent.SaveBox) -> BoxGuideState =

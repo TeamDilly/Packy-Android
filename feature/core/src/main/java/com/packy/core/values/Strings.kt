@@ -8,6 +8,7 @@ object Strings {
     const val SAVE = "저장"
     const val CONFIRM = "확인"
     const val COMPLETE = "완성"
+    const val INPUT_MAX_LENGTH_12 = "12자 이내로 입력해주세요"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
@@ -67,11 +68,11 @@ object Strings {
     const val CREATE_BOX_ADD_PHOTO_DESCRIPTION = "추억을 담은 사진"
     const val CREATE_BOX_ADD_PHOTO_PLACEHOLDER = "사진 속 추억을 적어주세요"
 
-    const val CREATE_BOX_ADD_Letter_TITLE = "편지쓰기"
-    const val CREATE_BOX_ADD_Letter_DESCRIPTION = "마음을 담은 편지를 써보아요"
-    const val CREATE_BOX_ADD_Letter_PLACEHOLDER =
+    const val CREATE_BOX_ADD_LETTER_TITLE = "편지쓰기"
+    const val CREATE_BOX_ADD_LETTER_DESCRIPTION = "마음을 담은 편지를 써보아요"
+    const val CREATE_BOX_ADD_LETTER_PLACEHOLDER =
         "편지에 어떤 마음을 담아볼까요?\n따뜻한 인사, 잊지 못할 추억, 고마웠던 순간까지\n모두 좋아요 :)"
-    const val CREATE_BOX_ADD_Letter_OVER_FLOW_Letter_TEXT = "최대 200자까지 작성할 수 있어요"
+    const val CREATE_BOX_ADD_LETTER_OVER_FLOW = "최대 200자까지 작성할 수 있어요"
 
     const val CREATE_BOX_MOTION_TITLE = "이제 선물박스를\n채우러 가볼까요?"
 
@@ -84,4 +85,8 @@ object Strings {
 
     const val CREATE_BOX_CHANGE_BOX_TITLE = "박스 고르기"
     const val CREATE_BOX_CHANGE_BOX_DESCRIPTION = "마음에 드는 선물박스를 골라주세요"
+
+    const val CREATE_BOX_ADD_TITLE_TITLE = "마지막으로 선물박스에\n이름을 붙여주세요"
+    const val CREATE_BOX_ADD_TITLE_DESCRIPTION = "선물박스의 이름을 붙여 특별함을 더해요\n붙인 이름은 받는 분에게도 보여져요"
+
 }

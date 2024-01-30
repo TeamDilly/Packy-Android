@@ -43,7 +43,7 @@ import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Constant
 import com.packy.core.values.Strings
-import com.packy.core.values.Strings.CREATE_BOX_ADD_Letter_OVER_FLOW_Letter_TEXT
+import com.packy.core.values.Strings.CREATE_BOX_ADD_LETTER_OVER_FLOW
 import com.packy.createbox.createboax.addLetter.CreateBoxLetterEffect
 import com.packy.createbox.createboax.addLetter.CreateBoxLetterIntent
 import com.packy.createbox.createboax.common.BottomSheetTitle
@@ -90,7 +90,7 @@ fun CreateBoxLetterScreen(
                         if (!snackBarVisible) {
                             snackBarVisible = true
                             snackBarState.showSnackbar(
-                                message = CREATE_BOX_ADD_Letter_OVER_FLOW_Letter_TEXT,
+                                message = CREATE_BOX_ADD_LETTER_OVER_FLOW,
                                 duration = SnackbarDuration.Short
                             ).let {
                                 snackBarVisible = false
@@ -123,8 +123,8 @@ fun CreateBoxLetterScreen(
             Spacer(height = 9.dp)
             BottomSheetTitle(
                 BottomSheetTitleContent(
-                    title = Strings.CREATE_BOX_ADD_Letter_TITLE,
-                    description = Strings.CREATE_BOX_ADD_Letter_DESCRIPTION,
+                    title = Strings.CREATE_BOX_ADD_LETTER_TITLE,
+                    description = Strings.CREATE_BOX_ADD_LETTER_DESCRIPTION,
                 )
             )
             Column(
@@ -192,7 +192,7 @@ private fun LetterForm(
                     shape = RoundedCornerShape(16.dp)
                 ),
             textFieldColor = PackyTheme.color.gray100,
-            placeholder = Strings.CREATE_BOX_ADD_Letter_PLACEHOLDER,
+            placeholder = Strings.CREATE_BOX_ADD_LETTER_PLACEHOLDER,
             textAlign = TextAlign.Center,
             maxLines = Constant.MAX_Letter_LINES,
         )

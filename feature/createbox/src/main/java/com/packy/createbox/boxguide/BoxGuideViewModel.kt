@@ -7,6 +7,7 @@ import com.packy.domain.model.createbox.box.Stickers
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
+import com.packy.domain.usecase.photo.UploadImageUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,9 +20,9 @@ import javax.inject.Inject
 class BoxGuideViewModel @Inject constructor(
     private val getLetterSenderReceiverUseCase: GetLetterSenderReceiverUseCase,
     private val getBoxDesignUseCase: GetBoxDesignUseCase,
-    private val createBoxUseCase: CreateBoxUseCase
-) :
-    MviViewModel<BoxGuideIntent, BoxGuideState, BoxGuideEffect>() {
+    private val createBoxUseCase: CreateBoxUseCase,
+    private val uploadImageUseCase: UploadImageUseCase,
+) : MviViewModel<BoxGuideIntent, BoxGuideState, BoxGuideEffect>() {
     override fun createInitialState(): BoxGuideState = BoxGuideState(
         title = "",
         photo = null,
@@ -153,10 +154,15 @@ class BoxGuideViewModel @Inject constructor(
 
     private fun savePhoto(): suspend (BoxGuideState, BoxGuideIntent.SavePhoto) -> BoxGuideState =
         { state, intent ->
+            uploadImageUseCase.uploadImage(
+                fileName = intent.contentDescription,
+                uri = intent.imageUri.toString()
+            )
             val photo = Photo(
                 photoUrl = intent.imageUri,
                 contentDescription = intent.contentDescription
             )
             state.copy(photo = photo)
         }
+
 }

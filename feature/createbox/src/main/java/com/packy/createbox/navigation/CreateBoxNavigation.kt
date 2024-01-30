@@ -19,7 +19,7 @@ fun NavGraphBuilder.createBoxNavGraph(
     closeCreateBox: () -> Unit
 ) {
     navigation(
-        startDestination = CreateBoxRoute.BOX_CHOICE,
+        startDestination = CreateBoxRoute.BOX_GUIDE_FADE_IN,
         route = CreateBoxRoute.CREATE_BOX_NAV_GRAPH,
     ) {
         asRootComposable(

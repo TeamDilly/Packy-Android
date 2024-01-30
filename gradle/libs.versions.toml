@@ -42,6 +42,8 @@ compose-glide = "1.0.0-beta01"
 ktor = "2.3.7"
 #https://developer.android.com/jetpack/androidx/releases/paging
 paging = "3.2.1"
+#https://mvnrepository.com/artifact/com.google.accompanist/accompanist-permissions
+permissions = "0.34.0"
 
 #test
 #https://mvnrepository.com/artifact/junit/junit
@@ -135,6 +137,9 @@ accompanist = { group = "com.google.accompanist", name = "accompanist-systemuico
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
 paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "paging" }
+
+#permissions
+permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permissions" }
 
 [bundles]
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide", "compose-ui-util"]

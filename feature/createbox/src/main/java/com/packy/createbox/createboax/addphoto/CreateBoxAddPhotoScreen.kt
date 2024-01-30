@@ -1,6 +1,8 @@
 package com.packy.createbox.createboax.addphoto
 
+import android.Manifest
 import android.net.Uri
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,6 +39,8 @@ import com.packy.core.designsystem.iconbutton.PackyCloseIconButton
 import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.designsystem.textfield.PackyTextField
 import com.packy.core.designsystem.topbar.PackyTopBar
+import com.packy.core.permissions.checkAndRequestPermissions
+import com.packy.core.permissions.storagePermissions
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.createbox.createboax.common.BottomSheetTitle
@@ -43,7 +48,6 @@ import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CreateBoxAddPhotoScreen(
     modifier: Modifier = Modifier,
@@ -125,13 +129,30 @@ private fun PhotoFrame(
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             getPhotoUri(CreateBoxAddPhotoIntent.ChangeImageUri(imageUri = uri))
         }
+    val context = LocalContext.current
+
+    val launcherMultiplePermissions = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissionsMap ->
+        val areGranted = permissionsMap.values.reduce { acc, next -> acc && next }
+        if (areGranted) {
+            launcher.launch(
+                PickVisualMediaRequest(
+                    mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly,
+                )
+            )
+        } else {
+            // FIXME 권한 안줬을떄 처리
+        }
+    }
+
     Box(
         modifier = modifier
             .clickableWithoutRipple {
-                launcher.launch(
-                    PickVisualMediaRequest(
-                        mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly,
-                    )
+                checkAndRequestPermissions(
+                    context,
+                    storagePermissions,
+                    launcherMultiplePermissions
                 )
             }
             .background(

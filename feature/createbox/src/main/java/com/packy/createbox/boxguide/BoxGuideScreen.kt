@@ -105,6 +105,7 @@ fun BoxGuideScreen(
                     bottomSheetRoute = effect.boxGuideBottomSheetRoute
                     showBottomSheet = true
                 }
+                is BoxGuideEffect.FailedSaveBox -> TODO()
             }
         }
     }
@@ -340,7 +341,7 @@ private fun TopBoxPartImage(
             modifier = Modifier
                 .width(280.dp)
                 .height(160.dp),
-            model = uiState.boxDesign?.boxPart,
+            model = "https://packy-bucket.s3.ap-northeast-2.amazonaws.com/images/01da0ca7-ebe0-4634-818c-4f3425722774-%EB%83%A0.jpg",
             contentDescription = "box guide screen",
             contentScale = ContentScale.Crop
         )

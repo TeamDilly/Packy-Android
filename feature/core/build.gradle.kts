@@ -8,4 +8,5 @@ android {
 
 dependencies{
     implementation(libs.youtube.player)
+    implementation(libs.permissions)
 }

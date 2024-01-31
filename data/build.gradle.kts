@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":library:pref"))
     implementation(project(":library:account"))
     implementation(project(":lib"))
+    implementation(project(":common-android"))
     implementation(libs.bundles.ktor.android)
     implementation(libs.bundles.paging)
 }

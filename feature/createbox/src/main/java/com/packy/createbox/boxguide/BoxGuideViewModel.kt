@@ -154,10 +154,6 @@ class BoxGuideViewModel @Inject constructor(
 
     private fun savePhoto(): suspend (BoxGuideState, BoxGuideIntent.SavePhoto) -> BoxGuideState =
         { state, intent ->
-            uploadImageUseCase.uploadImage(
-                fileName = intent.contentDescription,
-                uri = intent.imageUri.toString()
-            )
             val photo = Photo(
                 photoUrl = intent.imageUri,
                 contentDescription = intent.contentDescription

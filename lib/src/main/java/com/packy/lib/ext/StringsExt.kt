@@ -1,5 +1,8 @@
 package com.packy.lib.ext
 
+import java.net.URI
+
+
 fun extractYouTubeVideoId(url: String): String? {
     val videoIdKey = "v="
     val index = url.indexOf(videoIdKey)
@@ -16,5 +19,8 @@ fun extractYouTubeVideoId(url: String): String? {
 fun String.validationYoutubeVideoId() = extractYouTubeVideoId(this) != null
 
 fun String.removeNewlines(): String {
-    return this.replace(Regex("[\n\r]"), "")
+    return this.replace(
+        Regex("[\n\r]"),
+        ""
+    )
 }

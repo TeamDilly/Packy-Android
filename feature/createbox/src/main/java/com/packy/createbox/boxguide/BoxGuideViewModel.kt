@@ -4,10 +4,13 @@ import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Strings
 import com.packy.createbox.common.boxDesign
 import com.packy.createbox.common.envelopId
+import com.packy.createbox.common.gift
 import com.packy.createbox.common.letterContent
+import com.packy.createbox.common.photo
 import com.packy.createbox.common.sticker
 import com.packy.createbox.common.youtubeUrl
 import com.packy.domain.model.createbox.SelectedSticker
+import com.packy.domain.model.createbox.box.Gift
 import com.packy.domain.model.createbox.box.Stickers
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
@@ -23,10 +26,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoxGuideViewModel @Inject constructor(
-    private val getLetterSenderReceiverUseCase: GetLetterSenderReceiverUseCase,
     private val getBoxDesignUseCase: GetBoxDesignUseCase,
     private val createBoxUseCase: CreateBoxUseCase,
-    private val uploadImageUseCase: UploadImageUseCase,
 ) : MviViewModel<BoxGuideIntent, BoxGuideState, BoxGuideEffect>() {
     override fun createInitialState(): BoxGuideState = BoxGuideState(
         title = "",
@@ -66,7 +67,12 @@ class BoxGuideViewModel @Inject constructor(
 
     private fun saveGift(): suspend (BoxGuideState, BoxGuideIntent.SaveGift) -> BoxGuideState =
         { state, intent ->
-
+            createBoxUseCase.gift(
+                Gift(
+                    type = "photo",
+                    url = intent.imageUri.toString()
+                )
+            )
             state.copy(gift = intent.imageUri)
         }
 
@@ -128,6 +134,13 @@ class BoxGuideViewModel @Inject constructor(
 
     private fun savePhoto(): suspend (BoxGuideState, BoxGuideIntent.SavePhoto) -> BoxGuideState =
         { state, intent ->
+            val savePhoto = com.packy.domain.model.createbox.box.Photo(
+                description = intent.contentDescription,
+                photoUrl = intent.imageUri.toString(),
+                sequence = 1
+            )
+            createBoxUseCase.photo(listOf(savePhoto))
+
             val photo = Photo(
                 photoUrl = intent.imageUri,
                 contentDescription = intent.contentDescription

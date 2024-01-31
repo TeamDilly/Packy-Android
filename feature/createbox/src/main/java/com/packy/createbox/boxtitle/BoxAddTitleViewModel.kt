@@ -36,4 +36,10 @@ class BoxAddTitleViewModel @Inject constructor(
             setState(currentState.copy(boxTitle = name ?: ""))
         }
     }
+
+    fun showCreateBox() {
+        viewModelScope.launch {
+            println("LOGEE ${createBoxUseCase.getCreatedBox()}")
+        }
+    }
 }

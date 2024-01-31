@@ -63,7 +63,6 @@ suspend inline fun<reified T> HttpResponse.toResource(): Resource<T> {
             return Resource.NetworkError(throwable = Throwable("Network Error"))
         }
     } catch (e: Exception) {
-        println("LOGEE $e")
         return Resource.NetworkError(throwable = e)
     }
 }

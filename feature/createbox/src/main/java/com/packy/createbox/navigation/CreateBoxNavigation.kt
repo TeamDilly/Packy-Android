@@ -2,7 +2,6 @@ package com.packy.createbox.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.packy.core.animations.asFadeInComposable
 import com.packy.core.animations.asFadeInSlidOutComposable
@@ -12,14 +11,14 @@ import com.packy.createbox.boxaddinfo.BoxAddInfoScreen
 import com.packy.createbox.boxchoice.BoxChoiceScreen
 import com.packy.createbox.boxguide.BoxGuideScreen
 import com.packy.createbox.boxmotion.BoxMotionScreen
-
+import com.packy.createbox.boxtitle.BoxAddTitleScreen
 
 fun NavGraphBuilder.createBoxNavGraph(
     navController: NavHostController,
     closeCreateBox: () -> Unit
 ) {
     navigation(
-        startDestination = CreateBoxRoute.BOX_GUIDE_FADE_IN,
+        startDestination = CreateBoxRoute.BOX_ADD_INFO,
         route = CreateBoxRoute.CREATE_BOX_NAV_GRAPH,
     ) {
         asRootComposable(
@@ -48,7 +47,7 @@ fun NavGraphBuilder.createBoxNavGraph(
         }
         asFadeInSlidOutComposable(
             route = CreateBoxRoute.BOX_GUIDE_FADE_IN
-        ){
+        ) {
             BoxGuideScreen(
                 navController = navController,
             )
@@ -56,7 +55,7 @@ fun NavGraphBuilder.createBoxNavGraph(
         asPagingComposable(
 
             route = CreateBoxRoute.BOX_MOTION + "/{boxFull}/{boxBottom}",
-        ){
+        ) {
             val boxPart = it.arguments?.getString("boxFull")
             val boxBottom = it.arguments?.getString("boxBottom")
 
@@ -69,10 +68,9 @@ fun NavGraphBuilder.createBoxNavGraph(
 
         asFadeInComposable(
             route = CreateBoxRoute.BOX_ADD_TITLE
-        ){
-            BoxAddInfoScreen(
+        ) {
+            BoxAddTitleScreen(
                 navController = navController,
-                closeCreateBox = closeCreateBox
             )
         }
     }
@@ -87,6 +85,9 @@ object CreateBoxRoute {
     const val BOX_ADD_INFO = "boxAddInfo"
     const val BOX_MOTION = "boxMotion"
     const val BOX_ADD_TITLE = "boxAddTitle"
-    const val BOX_SHARE= "boxShare"
-    fun getBoxMotionRoute(boxFull: String, boxBottom: String) = "$BOX_MOTION/$boxFull/$boxBottom"
+    const val BOX_SHARE = "boxShare"
+    fun getBoxMotionRoute(
+        boxFull: String,
+        boxBottom: String
+    ) = "$BOX_MOTION/$boxFull/$boxBottom"
 }

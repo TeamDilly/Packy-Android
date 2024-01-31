@@ -64,6 +64,7 @@ import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.addsticker.CreateBoxStickerScreen
 import com.packy.createbox.createboax.boxchange.CreateBoxChangeScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
+import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.domain.model.box.BoxDesign
 import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.domain.model.createbox.Sticker
@@ -92,19 +93,18 @@ fun BoxGuideScreen(
         boxPartAnimation = true
     }
 
-    LaunchedEffect(null) {
-        viewModel.getLetterSenderReceiver()
-        viewModel.getBoxDesign()
+    LaunchedEffect(viewModel) {
+        viewModel.initUiState()
 
         viewModel.effect.collect { effect ->
             when (effect) {
                 is BoxGuideEffect.MoveToBack -> navController.popBackStack()
-                is BoxGuideEffect.OnChangedBox -> TODO()
-                is BoxGuideEffect.SaveBox -> TODO()
+                is BoxGuideEffect.SaveBox -> navController.navigate(CreateBoxRoute.BOX_ADD_TITLE)
                 is BoxGuideEffect.ShowBottomSheet -> {
                     bottomSheetRoute = effect.boxGuideBottomSheetRoute
                     showBottomSheet = true
                 }
+
                 is BoxGuideEffect.FailedSaveBox -> TODO()
             }
         }

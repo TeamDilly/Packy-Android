@@ -77,7 +77,6 @@ data class BoxGuideState(
 sealed interface BoxGuideEffect : SideEffect {
     data object MoveToBack : BoxGuideEffect
     data object SaveBox : BoxGuideEffect
-    data object OnChangedBox : BoxGuideEffect
     data class FailedSaveBox(val message: String) : BoxGuideEffect
     data class ShowBottomSheet(
         val boxGuideBottomSheetRoute: BoxGuideBottomSheetRoute

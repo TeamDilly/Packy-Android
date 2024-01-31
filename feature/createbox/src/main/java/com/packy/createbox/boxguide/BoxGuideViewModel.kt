@@ -91,24 +91,19 @@ class BoxGuideViewModel @Inject constructor(
             state
         }
 
-    fun getLetterSenderReceiver() {
+    fun initUiState(){
         viewModelScope.launch(Dispatchers.IO) {
             val receiver = createBoxUseCase.getCreatedBox().receiverName
-            setState(currentState.copy(title = "${Strings.BOX_ADD_INFO_RECEIVER} $receiver"))
-        }
-    }
-
-    fun getBoxDesign() {
-        viewModelScope.launch {
             getBoxDesignUseCase.getBoxDesignLocal()
                 .distinctUntilChanged()
                 .filterNotNull()
                 .collect { boxDesign ->
-                    setState {
+                    setState(
                         currentState.copy(
+                            title = "${Strings.BOX_ADD_INFO_RECEIVER} $receiver",
                             boxDesign = boxDesign
                         )
-                    }
+                    )
                 }
         }
     }

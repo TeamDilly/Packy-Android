@@ -40,7 +40,7 @@ fun BoxAddTitleScreen(
             when (effect) {
                 BoxAddTitleEffect.MoveToBack -> navController.popBackStack()
                 is BoxAddTitleEffect.SaveBoxTitle -> {
-
+                    viewModel.showCreateBox()
                 }
             }
         }

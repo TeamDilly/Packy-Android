@@ -3,6 +3,7 @@ package com.packy.createbox.boxtitle
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -62,6 +63,7 @@ fun BoxAddTitleScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
+                .imePadding()
                 .windowInsetsPadding(WindowInsets.statusBars)
                 .padding(innerPadding)
                 .padding(horizontal = 24.dp),
@@ -90,10 +92,12 @@ fun BoxAddTitleScreen(
             PackyButton(
                 style = buttonStyle.large.black,
                 text = Strings.NEXT,
+
                 onClick = {
                     viewModel.emitIntent(BoxAddTitleIntent.MoveToNext(uiState.boxTitle))
                 }
             )
+            Spacer(height = 16.dp)
         }
     }
 }

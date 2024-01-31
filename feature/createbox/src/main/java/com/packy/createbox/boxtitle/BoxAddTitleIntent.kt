@@ -12,10 +12,9 @@ sealed interface BoxAddTitleIntent : MviIntent {
 }
 
 data class BoxAddTitleState(
-    val boxTitle: String
-) : UiState {
-    val isSavable = boxTitle.isNotBlank()
-}
+    val boxTitle: String,
+    val boxAllReady: Boolean = false
+) : UiState
 
 sealed interface BoxAddTitleEffect : SideEffect {
     data object MoveToBack : BoxAddTitleEffect

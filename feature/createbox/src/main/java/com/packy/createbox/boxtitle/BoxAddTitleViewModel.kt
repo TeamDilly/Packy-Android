@@ -22,7 +22,12 @@ class BoxAddTitleViewModel @Inject constructor(
             sendEffect(BoxAddTitleEffect.MoveToBack)
         }
         subscribeStateIntent<BoxAddTitleIntent.OnTitleChange> { state, intent ->
-            state.copy(boxTitle = intent.text)
+            val boxAllReady =
+                currentState.boxTitle.isNotEmpty() && createBoxUseCase.getCreatedBox().boxAllReady()
+            state.copy(
+                boxTitle = intent.text,
+                boxAllReady = boxAllReady
+            )
         }
         subscribeIntent<BoxAddTitleIntent.MoveToNext> {
             createBoxUseCase.name(currentState.boxTitle)
@@ -33,7 +38,15 @@ class BoxAddTitleViewModel @Inject constructor(
     fun initBoxTitle() {
         viewModelScope.launch {
             val name = createBoxUseCase.getCreatedBox().name
-            setState(currentState.copy(boxTitle = name ?: ""))
+            val boxAllReady =
+                name?.isNotEmpty() == true && createBoxUseCase.getCreatedBox().boxAllReady()
+
+            setState(
+                currentState.copy(
+                    boxTitle = name ?: "",
+                    boxAllReady = boxAllReady
+                )
+            )
         }
     }
 

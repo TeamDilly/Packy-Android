@@ -89,4 +89,8 @@ object Strings {
     const val CREATE_BOX_ADD_TITLE_TITLE = "마지막으로 선물박스에\n이름을 붙여주세요"
     const val CREATE_BOX_ADD_TITLE_DESCRIPTION = "선물박스의 이름을 붙여 특별함을 더해요\n붙인 이름은 받는 분에게도 보여져요"
 
+    const val CREATE_BOX_ADD_SHARE_TITLE = "에게 선물박스를 보내보세요"
+    const val CREATE_BOX_ADD_SHARE_SEND_KAKAO = "카카오톡으로 보내기"
+    const val CREATE_BOX_ADD_SHARE_LAZY = "나중에 보낼래요"
+
 }

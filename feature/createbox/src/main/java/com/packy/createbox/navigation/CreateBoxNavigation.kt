@@ -11,6 +11,7 @@ import com.packy.createbox.boxaddinfo.BoxAddInfoScreen
 import com.packy.createbox.boxchoice.BoxChoiceScreen
 import com.packy.createbox.boxguide.BoxGuideScreen
 import com.packy.createbox.boxmotion.BoxMotionScreen
+import com.packy.createbox.boxshare.BoxShareScreen
 import com.packy.createbox.boxtitle.BoxAddTitleScreen
 
 fun NavGraphBuilder.createBoxNavGraph(
@@ -70,6 +71,14 @@ fun NavGraphBuilder.createBoxNavGraph(
             route = CreateBoxRoute.BOX_ADD_TITLE
         ) {
             BoxAddTitleScreen(
+                navController = navController,
+            )
+        }
+
+        asPagingComposable(
+            route = CreateBoxRoute.BOX_SHARE
+        ) {
+            BoxShareScreen(
                 navController = navController,
             )
         }

@@ -13,6 +13,7 @@ class CreateBoxAddGiftViewModel @Inject constructor() :
 
     override fun handleIntent() {
         subscribeIntent<CreateBoxAddGiftIntent.OnCloseClick> {
+            setState(currentState.copy(imageUri = null))
             sendEffect(CreateBoxAddGiftEffect.CloseBottomSheet)
         }
         subscribeIntent<CreateBoxAddGiftIntent.OnSaveClick> {

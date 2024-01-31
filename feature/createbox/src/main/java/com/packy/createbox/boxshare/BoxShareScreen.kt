@@ -35,6 +35,12 @@ fun BoxShareScreen(
 
     LaunchedEffect(viewModel) {
         viewModel.initState()
+        viewModel.effect.collect{ effect ->
+            when(effect){
+                BoxShareEffect.FailedShare -> TODO()
+                BoxShareEffect.SuccessShare -> TODO()
+            }
+        }
     }
 
     Scaffold { innerPadding ->

@@ -24,6 +24,6 @@ class BoxShareViewModel @Inject constructor(
 
     suspend fun initState(){
         val boxImageUrl = boxDesignUseCase.getBoxDesignLocal().firstOrNull()?.boxFull
-        setState(currentState.copy(boxImageUrl))
+        setState(currentState.copy(boxImageUrl = boxImageUrl))
     }
 }

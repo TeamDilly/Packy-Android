@@ -49,10 +49,4 @@ class BoxAddTitleViewModel @Inject constructor(
             )
         }
     }
-
-    fun showCreateBox() {
-        viewModelScope.launch {
-            println("LOGEE ${createBoxUseCase.getCreatedBox()}")
-        }
-    }
 }

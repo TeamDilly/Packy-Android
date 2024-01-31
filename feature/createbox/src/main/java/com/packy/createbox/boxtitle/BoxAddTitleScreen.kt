@@ -25,6 +25,7 @@ import com.packy.core.designsystem.textfield.PackyTextField
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
 
 @Composable
@@ -41,7 +42,7 @@ fun BoxAddTitleScreen(
             when (effect) {
                 BoxAddTitleEffect.MoveToBack -> navController.popBackStack()
                 is BoxAddTitleEffect.SaveBoxTitle -> {
-                    viewModel.showCreateBox()
+                    navController.navigate(CreateBoxRoute.BOX_SHARE)
                 }
             }
         }
@@ -90,9 +91,9 @@ fun BoxAddTitleScreen(
             )
             Spacer(1f)
             PackyButton(
+                modifier = Modifier.padding(horizontal = 24.dp),
                 style = buttonStyle.large.black,
                 text = Strings.NEXT,
-
                 onClick = {
                     viewModel.emitIntent(BoxAddTitleIntent.MoveToNext(uiState.boxTitle))
                 }

@@ -2,7 +2,10 @@ package com.packy.createbox.boxaddinfo
 
 import androidx.lifecycle.viewModelScope
 import com.packy.core.values.Constant.MAX_NICK_NAME_LENGTH
+import com.packy.createbox.common.receiverName
+import com.packy.createbox.common.senderName
 import com.packy.domain.model.createbox.LetterSenderReceiver
+import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoxAddInfoViewModel @Inject constructor(
-    private val useCase: GetLetterSenderReceiverUseCase
+    private val useCase: CreateBoxUseCase
 ) :
     MviViewModel<BoxAddInfoIntent, BoxAddInfoState, BoxAddInfoEffect>() {
     override fun createInitialState(): BoxAddInfoState = BoxAddInfoState(
@@ -55,19 +58,25 @@ class BoxAddInfoViewModel @Inject constructor(
 
     fun getLetterSenderReceiver() {
         viewModelScope.launch {
-            useCase.getLetterSenderReceiver()
-                .take(1)
-                .collect {
-                    setState(currentState)
-                }
+            val createBox = useCase.getCreatedBox()
+            val receiverName = createBox.receiverName
+            val senderName = createBox.senderName
+            val newLetterSenderReceiver = currentState.letterSenderReceiver.copy(
+                sender = senderName ?: "",
+                receiver = receiverName ?: ""
+            )
+            setState(
+                currentState.copy(
+                    letterSenderReceiver = newLetterSenderReceiver
+                )
+            )
         }
     }
 
     private fun setLetterSenderReceiver() {
         viewModelScope.launch {
-            useCase.setLetterSenderReceiver(
-                currentState.letterSenderReceiver
-            )
+            useCase.senderName(currentState.letterSenderReceiver.sender)
+            useCase.receiverName(currentState.letterSenderReceiver.receiver)
         }
     }
 

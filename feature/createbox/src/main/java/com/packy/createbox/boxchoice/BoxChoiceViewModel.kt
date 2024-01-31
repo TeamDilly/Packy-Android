@@ -1,22 +1,28 @@
 package com.packy.createbox.boxchoice
 
 import androidx.lifecycle.viewModelScope
+import com.packy.createbox.common.boxDesign
 import com.packy.domain.model.box.BoxDesign
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import com.packy.domain.usecase.createbox.CreateBoxFlagUseCase
+import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BoxChoiceViewModel @Inject constructor(
     private val getBoxDesignUseCase: GetBoxDesignUseCase,
-    private val createBoxFlagUseCase: CreateBoxFlagUseCase
+    private val createBoxFlagUseCase: CreateBoxFlagUseCase,
+    private val createBoxUseCase: CreateBoxUseCase
 ) :
     MviViewModel<BoxChoiceIntent, BoxChoiceState, BoxChoiceEffect>() {
     override fun createInitialState(): BoxChoiceState = BoxChoiceState(
@@ -55,10 +61,15 @@ class BoxChoiceViewModel @Inject constructor(
             getBoxDesignUseCase.getBoxDesign()
                 .filterSuccess()
                 .unwrapResource()
-                .collect { boxDesignList ->
+                .zip(flowOf(createBoxUseCase.getCreatedBox())) { boxDesignList, createdBox ->
+                    boxDesignList to createdBox
+                }
+                .collect { (boxDesignList, createdBox) ->
+                    val selectedBox = boxDesignList.firstOrNull { it.id == createdBox.boxId }
+                        ?: boxDesignList.firstOrNull()
                     setState {
                         BoxChoiceState(
-                            selectedBox = boxDesignList.firstOrNull(),
+                            selectedBox = selectedBox,
                             boxDesignList = boxDesignList
                         )
                     }
@@ -69,6 +80,7 @@ class BoxChoiceViewModel @Inject constructor(
     private fun setBoxDesign(boxDesign: BoxDesign) {
         viewModelScope.launch {
             getBoxDesignUseCase.setBoxDesignLocal(boxDesign)
+            createBoxUseCase.boxDesign(boxDesign.id)
         }
     }
 }

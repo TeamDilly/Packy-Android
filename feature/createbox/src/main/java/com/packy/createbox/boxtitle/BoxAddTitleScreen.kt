@@ -35,6 +35,7 @@ fun BoxAddTitleScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(viewModel) {
+        viewModel.initBoxTitle()
         viewModel.effect.collect { effect ->
             when (effect) {
                 BoxAddTitleEffect.MoveToBack -> navController.popBackStack()

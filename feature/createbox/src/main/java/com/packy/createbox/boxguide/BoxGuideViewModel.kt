@@ -58,8 +58,8 @@ class BoxGuideViewModel @Inject constructor(
         subscribeStateIntent<BoxGuideIntent.SaveBox>(saveBox())
     }
 
-    private suspend fun createBox(boxGuideIntent: BoxGuideIntent) {
-
+    private suspend fun createBox(boxGuideIntent: BoxGuideIntent.OnSaveClick) {
+        sendEffect(BoxGuideEffect.SaveBox)
     }
 
     private fun saveBox(): suspend (BoxGuideState, BoxGuideIntent.SaveBox) -> BoxGuideState =

@@ -71,7 +71,7 @@ data class BoxGuideState(
     val boxDesign: BoxDesign?
 ) : UiState {
     fun isBoxComplete() =
-        this.photo != null && this.letter != null && this.youtubeUrl != null && this.selectedSticker?.isStickerComplete() == true
+        this.photo != null && this.letter != null && this.youtubeUrl != null && this.selectedSticker.isStickerComplete()
 }
 
 sealed interface BoxGuideEffect : SideEffect {

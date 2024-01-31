@@ -158,6 +158,7 @@ private fun AddInfoForm(
             placeholder = Strings.BOX_ADD_INFO_PLACEHOLDER,
             textAlign = TextAlign.End,
             onValueChange = onChange,
+            singleLine = true,
         )
     }
 }

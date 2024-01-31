@@ -15,9 +15,9 @@ suspend fun CreateBoxUseCase.letterContent(letterContent: String?) {
     createBox(createBox.copy(letterContent = letterContent))
 }
 
-suspend fun CreateBoxUseCase.envelopId(id: Int?) {
+suspend fun CreateBoxUseCase.envelop(id: Int?, imageUri: String?) {
     val createBox = getCreatedBox()
-    createBox(createBox.copy(envelopeId = id))
+    createBox(createBox.copy(envelopeId = id, envelopeUrl = imageUri))
 }
 
 suspend fun CreateBoxUseCase.youtubeUrl(url: String?) {
@@ -27,7 +27,8 @@ suspend fun CreateBoxUseCase.youtubeUrl(url: String?) {
 
 suspend fun CreateBoxUseCase.sticker(
     id: Int?,
-    location: Int?
+    location: Int?,
+    imageUri: String?
 ) {
     val createBox = getCreatedBox()
     val clearSticker = createBox.stickers.toMutableList()
@@ -35,7 +36,8 @@ suspend fun CreateBoxUseCase.sticker(
     clearSticker.add(
         Stickers(
             id = id,
-            location = location
+            location = location,
+            imageUri = imageUri
         )
     )
     createBox(createBox.copy(stickers = clearSticker))
@@ -61,7 +63,7 @@ suspend fun CreateBoxUseCase.senderName(senderName: String?) {
     createBox(createBox.copy(senderName = senderName))
 }
 
-suspend fun CreateBoxUseCase.photo(photos: List<Photo>){
+suspend fun CreateBoxUseCase.photo(photo: Photo){
     val createBox = getCreatedBox()
-    createBox(createBox.copy(photos = photos))
+    createBox(createBox.copy(photo = photo))
 }

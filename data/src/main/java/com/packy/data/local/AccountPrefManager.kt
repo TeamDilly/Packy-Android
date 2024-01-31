@@ -49,10 +49,11 @@ class AccountPrefManager @Inject constructor(
         CreateBox(
             boxId = null,
             envelopeId = null,
+            envelopeUrl = null,
             gift = null,
             letterContent = null,
             name = null,
-            photos = emptyList(),
+            photo = null,
             receiverName = null,
             senderName = null,
             stickers = emptyList(),

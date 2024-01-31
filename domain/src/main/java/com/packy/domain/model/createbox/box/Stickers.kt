@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Stickers(
     @SerialName("id") val id: Int?,
-    @SerialName("location") val location: Int?
+    @SerialName("location") val location: Int?,
+    @SerialName("imageUri") val imageUri: String?
 )

@@ -1,19 +1,21 @@
 package com.packy.createbox.boxguide
 
-import androidx.lifecycle.viewModelScope
+import android.net.Uri
 import com.packy.core.values.Strings
 import com.packy.createbox.common.boxDesign
-import com.packy.createbox.common.envelopId
+import com.packy.createbox.common.envelop
 import com.packy.createbox.common.gift
 import com.packy.createbox.common.letterContent
 import com.packy.createbox.common.photo
 import com.packy.createbox.common.sticker
 import com.packy.createbox.common.youtubeUrl
 import com.packy.domain.model.createbox.SelectedSticker
+import com.packy.domain.model.createbox.Sticker
 import com.packy.domain.model.createbox.box.Gift
 import com.packy.domain.model.createbox.box.Stickers
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
+import com.packy.domain.usecase.createbox.GetStickerUseCase
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
 import com.packy.domain.usecase.photo.UploadImageUseCase
 import com.packy.mvi.base.MviViewModel
@@ -21,6 +23,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -79,8 +82,9 @@ class BoxGuideViewModel @Inject constructor(
     private fun saveSticker(): suspend (BoxGuideState, BoxGuideIntent.SaveSticker) -> BoxGuideState =
         { state, intent ->
             createBoxUseCase.sticker(
-                intent.sticker?.id,
-                intent.index
+                id = intent.sticker?.id,
+                location = intent.index,
+                imageUri = intent.sticker?.imgUrl
             )
 
             when (intent.index) {
@@ -91,21 +95,69 @@ class BoxGuideViewModel @Inject constructor(
             state
         }
 
-    fun initUiState(){
-        viewModelScope.launch(Dispatchers.IO) {
-            val receiver = createBoxUseCase.getCreatedBox().receiverName
-            getBoxDesignUseCase.getBoxDesignLocal()
-                .distinctUntilChanged()
-                .filterNotNull()
-                .collect { boxDesign ->
-                    setState(
-                        currentState.copy(
-                            title = "${Strings.BOX_ADD_INFO_RECEIVER} $receiver",
-                            boxDesign = boxDesign
-                        )
-                    )
-                }
+    suspend fun initUiState() {
+        val createBox = createBoxUseCase.getCreatedBox()
+        val receiver = createBox.receiverName
+        val photo = createBox.photo?.photoUrl?.let {
+            Photo(
+                photoUrl = Uri.parse(it),
+                contentDescription = createBox.photo?.description ?: ""
+            )
         }
+        val createBoxLetterContent = createBox.letterContent
+        val createBoxEnvelopeId = createBox.envelopeId
+        val createBoxEnvelopeUrl = createBox.envelopeUrl
+
+        val letter = if (createBoxLetterContent != null && createBoxEnvelopeId != null && createBoxEnvelopeUrl != null)
+            Letter(
+                letterContent = createBoxLetterContent,
+                envelope = Envelope(
+                    envelopeId = createBoxEnvelopeId,
+                    envelopeUrl = createBoxEnvelopeUrl
+                )
+            ) else null
+
+        val boxDesign = getBoxDesignUseCase.getBoxDesignLocal()
+            .distinctUntilChanged()
+            .filterNotNull()
+            .firstOrNull()
+
+        val sticker1 = createBox.stickers.firstOrNull { it.location == 1 }.let {
+            val id = it?.id
+            val imageUri = it?.imageUri
+            if (it == null) return@let null
+            if (id == null || imageUri == null) return@let null
+            Sticker(
+                id = id,
+                imgUrl = imageUri
+            )
+        }
+
+        val sticker2 = createBox.stickers.firstOrNull { it.location == 2 }.let {
+            val id = it?.id
+            val imageUri = it?.imageUri
+            if (it == null) return@let null
+            if (id == null || imageUri == null) return@let null
+            Sticker(
+                id = id,
+                imgUrl = imageUri
+            )
+        }
+
+        setState(
+            currentState.copy(
+                title = "${Strings.BOX_ADD_INFO_RECEIVER} $receiver",
+                photo = photo,
+                letter = letter,
+                youtubeUrl = createBox.youtubeUrl,
+                selectedSticker = SelectedSticker(
+                    sticker1 = sticker1,
+                    sticker2 = sticker2
+                ),
+                gift = createBox.gift?.url?.let { Uri.parse(it) },
+                boxDesign = boxDesign
+            )
+        )
     }
 
     private fun clearYoutubeMusic(): suspend (BoxGuideState, BoxGuideIntent.ClearMusic) -> BoxGuideState =
@@ -123,7 +175,7 @@ class BoxGuideViewModel @Inject constructor(
     private fun saveLetterBoxGuideState(): suspend (BoxGuideState, BoxGuideIntent.SaveLetter) -> BoxGuideState =
         { state, intent ->
             createBoxUseCase.letterContent(intent.letter.letterContent)
-            createBoxUseCase.envelopId(intent.letter.envelope.envelopeId)
+            createBoxUseCase.envelop(intent.letter.envelope.envelopeId, intent.letter.envelope.envelopeUrl)
             state.copy(letter = intent.letter)
         }
 
@@ -134,7 +186,7 @@ class BoxGuideViewModel @Inject constructor(
                 photoUrl = intent.imageUri.toString(),
                 sequence = 1
             )
-            createBoxUseCase.photo(listOf(savePhoto))
+            createBoxUseCase.photo(savePhoto)
 
             val photo = Photo(
                 photoUrl = intent.imageUri,

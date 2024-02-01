@@ -1,8 +1,11 @@
 package com.packy.createbox.boxshare
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
@@ -35,8 +38,8 @@ fun BoxShareScreen(
 
     LaunchedEffect(viewModel) {
         viewModel.initState()
-        viewModel.effect.collect{ effect ->
-            when(effect){
+        viewModel.effect.collect { effect ->
+            when (effect) {
                 BoxShareEffect.FailedShare -> TODO()
                 BoxShareEffect.SuccessShare -> TODO()
             }
@@ -57,7 +60,28 @@ fun BoxShareScreen(
                 ),
                 color = PackyTheme.color.gray900
             )
-            Spacer(height = 130.dp)
+            Spacer(height = 20.dp)
+            Text(
+                modifier = Modifier
+                    .border(
+                        1.dp,
+                        PackyTheme.color.gray300,
+                        RoundedCornerShape(1f)
+                    )
+                    .background(
+                        PackyTheme.color.gray100,
+                        RoundedCornerShape(1f)
+                    )
+                    .padding(
+                        horizontal = 24.dp,
+                        vertical = 12.dp
+                    ),
+                text = uiState.boxTitle ?: "",
+                style = PackyTheme.typography.body04.copy(
+                    textAlign = TextAlign.Center
+                ),
+                color = PackyTheme.color.gray900,
+            )
             GlideImage(
                 modifier = Modifier.size(240.dp),
                 model = uiState.boxImageUrl,
@@ -65,7 +89,7 @@ fun BoxShareScreen(
             )
             Spacer(1f)
             PackyButton(
-                modifier = Modifier.padding(top = 24.dp),
+                modifier = Modifier.padding(horizontal = 24.dp),
                 text = Strings.CREATE_BOX_ADD_SHARE_SEND_KAKAO,
                 style = buttonStyle.large.black,
                 onClick = {

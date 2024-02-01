@@ -1,5 +1,6 @@
 package com.packy.data.usecase.createbox
 
+import com.packy.domain.model.box.BoxId
 import com.packy.domain.model.createbox.box.CreateBox
 import com.packy.domain.repository.createbox.CreateBoxRepository
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
@@ -10,8 +11,12 @@ class CreateBoxUseCaseImp @Inject constructor(
 ) : CreateBoxUseCase {
     override suspend fun getCreatedBox(): CreateBox = repository.getCreatedBox()
 
-    override suspend fun createBox(createBox: CreateBox) {
-        repository.createBox(createBox)
+    override suspend fun setCreateBox(createBox: CreateBox) {
+        repository.setCreateBox(createBox)
+    }
+
+    override suspend fun createBox(createBox: CreateBox): BoxId {
+        TODO("Not yet implemented")
     }
 
 }

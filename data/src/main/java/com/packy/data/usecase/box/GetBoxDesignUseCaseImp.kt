@@ -18,6 +18,6 @@ class GetBoxDesignUseCaseImp @Inject constructor(
     override suspend fun setBoxDesignLocal(boxDesign: BoxDesign) {
         repository.setBoxDesignLocal(boxDesign)
         val createdBox = createBoxRepository.getCreatedBox()
-        createBoxRepository.createBox(createdBox.copy(boxId = boxDesign.id))
+        createBoxRepository.setCreateBox(createdBox.copy(boxId = boxDesign.id))
     }
 }

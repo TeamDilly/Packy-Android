@@ -17,7 +17,7 @@ class GetLetterSenderReceiverUseCaseImp @Inject constructor(
     override suspend fun setLetterSenderReceiver(letterSenderReceiver: LetterSenderReceiver) {
         repository.setLetterSenderReceiver(letterSenderReceiver)
         val createdBox = createBoxRepository.getCreatedBox()
-        createBoxRepository.createBox(
+        createBoxRepository.setCreateBox(
             createdBox.copy(
                 senderName = letterSenderReceiver.sender,
                 receiverName = letterSenderReceiver.receiver

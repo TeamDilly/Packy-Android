@@ -7,22 +7,22 @@ import com.packy.domain.usecase.createbox.CreateBoxUseCase
 
 suspend fun CreateBoxUseCase.boxDesign(id: Int?) {
     val createBox = getCreatedBox()
-    createBox(createBox.copy(boxId = id))
+    setCreateBox(createBox.copy(boxId = id))
 }
 
 suspend fun CreateBoxUseCase.letterContent(letterContent: String?) {
     val createBox = getCreatedBox()
-    createBox(createBox.copy(letterContent = letterContent))
+    setCreateBox(createBox.copy(letterContent = letterContent))
 }
 
 suspend fun CreateBoxUseCase.envelop(id: Int?, imageUri: String?) {
     val createBox = getCreatedBox()
-    createBox(createBox.copy(envelopeId = id, envelopeUrl = imageUri))
+    setCreateBox(createBox.copy(envelopeId = id, envelopeUrl = imageUri))
 }
 
 suspend fun CreateBoxUseCase.youtubeUrl(url: String?) {
     val createBox = getCreatedBox()
-    createBox(createBox.copy(youtubeUrl = url))
+    setCreateBox(createBox.copy(youtubeUrl = url))
 }
 
 suspend fun CreateBoxUseCase.sticker(
@@ -40,30 +40,30 @@ suspend fun CreateBoxUseCase.sticker(
             imageUri = imageUri
         )
     )
-    createBox(createBox.copy(stickers = clearSticker))
+    setCreateBox(createBox.copy(stickers = clearSticker))
 }
 
 suspend fun CreateBoxUseCase.gift(gift: Gift?) {
     val createBox = getCreatedBox()
-    createBox(createBox.copy(gift = gift))
+    setCreateBox(createBox.copy(gift = gift))
 }
 
 suspend fun CreateBoxUseCase.name(name: String?) {
     val createBox = getCreatedBox()
-    createBox(createBox.copy(name = name))
+    setCreateBox(createBox.copy(name = name))
 }
 
 suspend fun CreateBoxUseCase.receiverName(receiverName: String?) {
     val createBox = getCreatedBox()
-    createBox(createBox.copy(receiverName = receiverName))
+    setCreateBox(createBox.copy(receiverName = receiverName))
 }
 
 suspend fun CreateBoxUseCase.senderName(senderName: String?) {
     val createBox = getCreatedBox()
-    createBox(createBox.copy(senderName = senderName))
+    setCreateBox(createBox.copy(senderName = senderName))
 }
 
 suspend fun CreateBoxUseCase.photo(photo: Photo){
     val createBox = getCreatedBox()
-    createBox(createBox.copy(photo = photo))
+    setCreateBox(createBox.copy(photo = photo))
 }

@@ -15,15 +15,24 @@ class BoxShareViewModel @Inject constructor(
 ) :
     MviViewModel<BoxShareIntent, BoxShareState, BoxShareEffect>() {
     override fun createInitialState(): BoxShareState = BoxShareState(
-        boxImageUrl = null
+        boxImageUrl = null,
+        boxTitle = null
     )
 
     override fun handleIntent() {
+        subscribeIntent<BoxShareIntent.ShareKakao> {
 
+        }
     }
 
-    suspend fun initState(){
+    suspend fun initState() {
         val boxImageUrl = boxDesignUseCase.getBoxDesignLocal().firstOrNull()?.boxFull
-        setState(currentState.copy(boxImageUrl = boxImageUrl))
+        val boxTitle = createBoxUseCase.getCreatedBox().name
+        setState(
+            currentState.copy(
+                boxImageUrl = boxImageUrl,
+                boxTitle = boxTitle
+            )
+        )
     }
 }

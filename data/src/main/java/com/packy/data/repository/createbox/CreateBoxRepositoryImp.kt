@@ -1,6 +1,7 @@
 package com.packy.data.repository.createbox
 
 import com.packy.data.local.AccountPrefManager
+import com.packy.domain.model.box.BoxId
 import com.packy.domain.model.createbox.box.CreateBox
 import com.packy.domain.repository.createbox.CreateBoxRepository
 import kotlinx.coroutines.flow.Flow
@@ -24,10 +25,13 @@ class CreateBoxRepositoryImp @Inject constructor(
         prefManager.shouldShowBoxTutorial.putData(false)
     }
 
-    override suspend fun createBox(createBox: CreateBox) {
+    override suspend fun setCreateBox(createBox: CreateBox) {
         prefManager.createBox.putData(createBox)
     }
 
     override suspend fun getCreatedBox(): CreateBox = prefManager.createBox.getData().first()
+    override suspend fun createBox(createBox: CreateBox): BoxId {
+        TODO("Not yet implemented")
+    }
 
 }

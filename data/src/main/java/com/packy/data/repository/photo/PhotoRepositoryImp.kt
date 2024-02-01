@@ -7,7 +7,6 @@ import com.packy.lib.utils.map
 import java.io.File
 import javax.inject.Inject
 
-@Suppress("UNREACHABLE_CODE")
 class PhotoRepositoryImp @Inject constructor(
     private val photoService: PhotoService
 ) : PhotoRepository {

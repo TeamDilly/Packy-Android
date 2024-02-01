@@ -91,7 +91,6 @@ fun BoxAddTitleScreen(
             )
             Spacer(1f)
             PackyButton(
-                modifier = Modifier.padding(horizontal = 24.dp),
                 style = buttonStyle.large.black,
                 text = Strings.NEXT,
                 onClick = {

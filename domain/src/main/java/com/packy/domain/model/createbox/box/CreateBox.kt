@@ -20,7 +20,6 @@ data class CreateBox(
     fun boxAllReady(): Boolean = boxId != null &&
             envelopeId != null &&
             envelopeUrl != null &&
-            gift != null &&
             letterContent != null &&
             name != null &&
             photo != null &&

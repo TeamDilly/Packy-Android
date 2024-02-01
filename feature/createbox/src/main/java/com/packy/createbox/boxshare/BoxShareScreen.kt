@@ -66,11 +66,11 @@ fun BoxShareScreen(
                     .border(
                         1.dp,
                         PackyTheme.color.gray300,
-                        RoundedCornerShape(1f)
+                        RoundedCornerShape(40.dp)
                     )
                     .background(
                         PackyTheme.color.gray100,
-                        RoundedCornerShape(1f)
+                        RoundedCornerShape(40.dp)
                     )
                     .padding(
                         horizontal = 24.dp,
@@ -82,6 +82,7 @@ fun BoxShareScreen(
                 ),
                 color = PackyTheme.color.gray900,
             )
+            Spacer(height = 64.dp)
             GlideImage(
                 modifier = Modifier.size(240.dp),
                 model = uiState.boxImageUrl,

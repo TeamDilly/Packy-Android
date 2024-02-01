@@ -4,6 +4,7 @@ import com.packy.domain.model.box.BoxId
 import com.packy.domain.model.createbox.box.CreateBox
 import com.packy.domain.repository.createbox.CreateBoxRepository
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
+import com.packy.lib.utils.Resource
 import javax.inject.Inject
 
 class CreateBoxUseCaseImp @Inject constructor(
@@ -15,8 +16,6 @@ class CreateBoxUseCaseImp @Inject constructor(
         repository.setCreateBox(createBox)
     }
 
-    override suspend fun createBox(createBox: CreateBox): BoxId {
-        TODO("Not yet implemented")
-    }
+    override suspend fun createBox(createBox: CreateBox): Resource<BoxId> = repository.createBox(createBox)
 
 }

@@ -22,6 +22,10 @@ class BoxShareViewModel @Inject constructor(
     override fun handleIntent() {
         subscribeIntent<BoxShareIntent.ShareKakao> {
 
+            // FIXME : 카카오 전달하기 추각 필요.
+
+            val createBox = createBoxUseCase.getCreatedBox()
+            createBoxUseCase.createBox(createBox)
         }
     }
 

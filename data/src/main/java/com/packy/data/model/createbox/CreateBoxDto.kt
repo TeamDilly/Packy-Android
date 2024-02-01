@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateBoxDto(
-    @SerialName("id") val id: Int,
+    @SerialName("id") val id: Long,
     @SerialName("uuid") val uuid: String
 )

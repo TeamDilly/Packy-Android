@@ -65,7 +65,7 @@ class PhotoService @Inject constructor(
                 }
                 if (response.status.value == 200) {
                     val imageUrl = response.request.url.toString().removeQueryParameters()
-                    return@withContext Success("imageUrl", code = "200", message = "Success Image Upload")
+                    return@withContext Success(imageUrl, code = "200", message = "Success Image Upload")
                 }else{
                     return@withContext Resource.NetworkError(Exception("Image Upload Error"))
                 }

@@ -201,8 +201,20 @@ fun GiftBoxDetailOpenScreen(
                 }
 
                 ShowDetail.GIFT -> Dialog(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 55.dp,
+                            vertical = 140.dp
+                        ),
                     click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
-                ) {}
+                ) {
+                    GlideImage(
+                        modifier = Modifier,
+                        model = uiState.giftBox?.gift?.url,
+                        contentDescription = "gift",
+                        contentScale = ContentScale.Fit
+                    )
+                }
 
                 ShowDetail.NONE -> Unit
             }

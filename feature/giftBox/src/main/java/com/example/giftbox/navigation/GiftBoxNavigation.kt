@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.example.giftbox.boxdetailopen.GiftBoxDetailOpenScreen
 import com.example.giftbox.boxerror.GiftBoxErrorScreen
 import com.example.giftbox.boxmotion.GiftBoxMotionScreen
 import com.example.giftbox.boxroot.GiftBoxRootScreen
@@ -35,7 +36,7 @@ fun NavGraphBuilder.gitBoxNavGraph(
                 boxId = boxId
             )
         }
-        asRootComposable(
+        asPagingComposable(
             route = GiftBoxRoute.GIFT_BOX_MOTION + "/{$GIFT_BOX_ARG}",
         ) {
             val giftBoxJson = it.arguments?.getString(GIFT_BOX_ARG)
@@ -53,13 +54,15 @@ fun NavGraphBuilder.gitBoxNavGraph(
         }
         asPagingComposable(
             route = GiftBoxRoute.GIFT_BOX_ARR + "/{$GIFT_BOX_ARG}",
-            arguments = listOf(
-               navArgument(GIFT_BOX_ARG){
-                   type = NavType.StringType
-               }
-            )
         ) {
             GiftBoxArrScreen(
+                navController = navController,
+            )
+        }
+        asPagingComposable(
+            route = GiftBoxRoute.GIFT_BOX_DETAIL_OPEN + "/{$GIFT_BOX_ARG}",
+        ) {
+            GiftBoxDetailOpenScreen(
                 navController = navController,
             )
         }

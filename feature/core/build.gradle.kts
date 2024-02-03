@@ -10,4 +10,5 @@ dependencies{
     implementation(project(":domain"))
     implementation(libs.youtube.player)
     implementation(libs.permissions)
+    implementation(project(":lib"))
 }

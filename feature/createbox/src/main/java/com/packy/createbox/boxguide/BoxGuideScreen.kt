@@ -44,6 +44,7 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
 import com.packy.core.widget.giftbox.GiftBoxTopBar
+import com.packy.core.widget.giftbox.LetterForm
 import com.packy.core.widget.giftbox.PhotoForm
 import com.packy.core.widget.giftbox.TopBoxPartImage
 import com.packy.core.widget.youtube.YoutubePlayer
@@ -204,7 +205,10 @@ fun BoxGuideScreen(
                             },
                             content = uiState.letter?.let { letter ->
                                 {
-                                    LetterForm(letter)
+                                    LetterForm(
+                                        letterContent = letter.letterContent,
+                                        envelopeUrl = letter.envelope.envelopeUrl
+                                    )
                                 }
                             },
                             onClick = {
@@ -317,41 +321,6 @@ fun BoxGuideScreen(
         }
     }
 }
-
-@Composable
-@OptIn(ExperimentalGlideComposeApi::class)
-private fun LetterForm(letter: Letter) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-    ) {
-        Text(
-            modifier = Modifier
-                .fillMaxSize(0.85f)
-                .background(
-                    color = PackyTheme.color.white,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .align(Alignment.TopStart)
-                .padding(
-                    horizontal = 10.dp,
-                    vertical = 6.dp
-                ),
-            text = letter.letterContent.removeNewlines(),
-            style = PackyTheme.typography.body06,
-            color = PackyTheme.color.gray900
-        )
-        GlideImage(
-            modifier = Modifier
-                .fillMaxSize(0.85f)
-                .align(Alignment.BottomEnd),
-            model = letter.envelope.envelopeUrl,
-            contentDescription = "box guide Letter",
-            contentScale = ContentScale.Crop
-        )
-    }
-}
-
 
 @Composable
 private fun MusicForm(

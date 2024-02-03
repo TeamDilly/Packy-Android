@@ -30,6 +30,7 @@ import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.giftbox.GiftBoxTopBar
+import com.packy.core.widget.giftbox.LetterForm
 import com.packy.core.widget.giftbox.PhotoForm
 import com.packy.core.widget.giftbox.StickerForm
 import com.packy.core.widget.giftbox.TopBoxPartImage
@@ -130,6 +131,15 @@ fun GiftBoxDetailOpenScreen(
                         stickerUri = uiState.giftBox?.stickers?.getOrNull(1)?.imgUrl,
                     )
                     Spacer(22.dp)
+                    LetterForm(
+                        modifier = Modifier
+                            .aspectRatio(180f / 150f)
+                            .fillMaxWidth()
+                            .weight(42f),
+                        inclination = 3f,
+                        letterContent = uiState.giftBox?.letterContent ?: "",
+                        envelopeUrl = uiState.giftBox?.envelope?.imgUrl,
+                    )
                 }
             }
         }

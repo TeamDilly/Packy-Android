@@ -9,18 +9,11 @@ import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
 
 sealed interface GiftBoxDetailOpenIntent : MviIntent {
-    data class OnPhotoClick(
-        val photoUrl: String
-    ) : GiftBoxDetailOpenIntent
+    data object OnPhotoClick: GiftBoxDetailOpenIntent
 
-    data class OnLetterClick(
-        val envelope: Envelope,
-        val letterContent: String,
-    ) : GiftBoxDetailOpenIntent
+    data object OnLetterClick: GiftBoxDetailOpenIntent
 
-    data class OnGiftClick(
-        val gift: Gift
-    ) : GiftBoxDetailOpenIntent
+    data object OnGiftClick: GiftBoxDetailOpenIntent
 
     data object OnBackClick : GiftBoxDetailOpenIntent
     data object OnCloseClick : GiftBoxDetailOpenIntent
@@ -32,7 +25,7 @@ data class GiftBoxDetailOpenState(
 
 sealed interface GiftBoxDetailOpenEffect : SideEffect {
     data class ShowPhoto(
-        val photoUrl: String
+        val photoUrl: String?
     ) : GiftBoxDetailOpenEffect
 
     data class ShowLetter(

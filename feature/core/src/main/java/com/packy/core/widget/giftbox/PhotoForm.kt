@@ -1,4 +1,4 @@
-package com.packy.createbox.boxguide.widget
+package com.packy.core.widget.giftbox
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -6,19 +6,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.theme.PackyTheme
-import com.packy.createbox.boxguide.Photo
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-fun PhotoForm(photo: Photo) {
+fun PhotoForm(
+    modifier: Modifier = Modifier,
+    inclination: Float = 0f,
+    photo: String?
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
+            .rotate(inclination)
             .background(
                 color = PackyTheme.color.white
             )
@@ -31,7 +36,7 @@ fun PhotoForm(photo: Photo) {
             )
     ) {
         GlideImage(
-            model = photo.photoUrl,
+            model = photo,
             contentDescription = "box guide photo",
             contentScale = ContentScale.Crop
         )

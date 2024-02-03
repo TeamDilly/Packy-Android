@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -45,14 +44,14 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
 import com.packy.core.widget.giftbox.GiftBoxTopBar
+import com.packy.core.widget.giftbox.PhotoForm
 import com.packy.core.widget.giftbox.TopBoxPartImage
 import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.YoutubeState
 import com.packy.createbox.boxguide.widget.BoxGuideBottomSheet
 import com.packy.createbox.boxguide.widget.BoxGuideContent
 import com.packy.createbox.boxguide.widget.BoxPlaceholder
-import com.packy.createbox.boxguide.widget.PhotoForm
-import com.packy.createbox.boxguide.widget.StickerForm
+import com.packy.core.widget.giftbox.StickerForm
 import com.packy.createbox.createboax.addgift.CreateBoxAddGiftScreen
 import com.packy.feature.core.R
 import com.packy.createbox.createboax.addlatter.CreateBoxLetterScreen
@@ -123,7 +122,7 @@ fun BoxGuideScreen(
                     onBackClick = {
                         viewModel.emitIntentThrottle(BoxGuideIntent.OnBackClick)
                     },
-                   rightButton = {
+                    rightButton = {
                         RightMenuTopbar(
                             isBoxComplete = uiState.isBoxComplete(),
                             onClick = {
@@ -159,7 +158,7 @@ fun BoxGuideScreen(
                             },
                             content = uiState.photo?.let { photo ->
                                 {
-                                    PhotoForm(photo)
+                                    PhotoForm(photo = photo.photoUrl.toString())
                                 }
                             },
                             onClick = {
@@ -462,7 +461,7 @@ private fun BottomButton(
 private fun RightMenuTopbar(
     isBoxComplete: Boolean,
     onClick: () -> Unit
-){
+) {
     Box(modifier = Modifier
         .width(60.dp)
         .height(40.dp)

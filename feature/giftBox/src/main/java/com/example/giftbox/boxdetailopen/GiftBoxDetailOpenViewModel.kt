@@ -25,10 +25,34 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
     }
 
     override fun handleIntent() {
-        subscribeIntent<GiftBoxDetailOpenIntent.OnPhotoClick> {sendEffect(GiftBoxDetailOpenEffect.ShowPhoto(it.photoUrl))  }
-        subscribeIntent<GiftBoxDetailOpenIntent.OnLetterClick> {sendEffect(GiftBoxDetailOpenEffect.ShowLetter(it.envelope, it.letterContent))  }
-        subscribeIntent<GiftBoxDetailOpenIntent.OnGiftClick> {sendEffect(GiftBoxDetailOpenEffect.ShowGift(it.gift))  }
-        subscribeIntent<GiftBoxDetailOpenIntent.OnBackClick> {sendEffect(GiftBoxDetailOpenEffect.MoveToBack)  }
-        subscribeIntent<GiftBoxDetailOpenIntent.OnCloseClick> {sendEffect(GiftBoxDetailOpenEffect.GiftBoxClose)  }
+        subscribeIntent<GiftBoxDetailOpenIntent.OnPhotoClick>(showPhoto())
+        subscribeIntent<GiftBoxDetailOpenIntent.OnLetterClick>(showLetter())
+        subscribeIntent<GiftBoxDetailOpenIntent.OnGiftClick>(showGift())
+        subscribeIntent<GiftBoxDetailOpenIntent.OnBackClick> { sendEffect(GiftBoxDetailOpenEffect.MoveToBack) }
+        subscribeIntent<GiftBoxDetailOpenIntent.OnCloseClick> { sendEffect(GiftBoxDetailOpenEffect.GiftBoxClose) }
     }
+
+    private fun showGift(): suspend (GiftBoxDetailOpenIntent.OnGiftClick) -> Unit =
+        {
+            val gift = currentState.giftBox?.gift
+            if(gift != null){
+                sendEffect(GiftBoxDetailOpenEffect.ShowGift(gift))
+            }
+        }
+
+    private fun showLetter(): suspend (GiftBoxDetailOpenIntent.OnLetterClick) -> Unit =
+        {
+            val envelope = currentState.giftBox?.envelope
+            val letterContent = currentState.giftBox?.letterContent
+            if(envelope != null && letterContent != null)
+                sendEffect(
+                    GiftBoxDetailOpenEffect.ShowLetter(
+                        envelope,
+                        letterContent
+                    )
+                )
+        }
+
+    private fun showPhoto(): suspend (GiftBoxDetailOpenIntent.OnPhotoClick) -> Unit =
+        { sendEffect(GiftBoxDetailOpenEffect.ShowPhoto(currentState.giftBox?.photos?.firstOrNull()?.photoUrl)) }
 }

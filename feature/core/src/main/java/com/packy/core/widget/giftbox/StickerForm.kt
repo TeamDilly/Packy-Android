@@ -1,4 +1,4 @@
-package com.packy.createbox.boxguide.widget
+package com.packy.core.widget.giftbox
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,9 +23,9 @@ fun StickerForm(
     modifier: Modifier = Modifier,
     stickerUri: String? = null,
     inclination: Float = 0f,
-    onClick: () -> Unit
+    onClick: () -> Unit = {}
 ) {
-    Box(modifier = modifier.clickableWithoutRipple{
+    Box(modifier = modifier.clickableWithoutRipple {
         onClick()
     }) {
         if (stickerUri != null) {

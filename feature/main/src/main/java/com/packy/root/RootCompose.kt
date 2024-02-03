@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.giftbox.navigation.GiftBoxRoute
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.onboarding.navigation.OnboardingRoute
 import com.packy.root.navigation.PackyNavHost
@@ -16,7 +17,7 @@ fun RootCompose(
     viewModel: RootComposeViewModel = hiltViewModel()
 ) {
     val startDestination = if (viewModel.checkUserStatusOnAppEntry() == UserState.REGISTERED) {
-        CreateBoxRoute.CREATE_BOX_NAV_GRAPH
+        GiftBoxRoute.GIFT_BOX_NAV_GRAPH
     } else {
         OnboardingRoute.ONBOARDING_NAV_GRAPH
     }

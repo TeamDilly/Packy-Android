@@ -17,6 +17,7 @@ const val HTTP_SERVER_ERROR_RANGE_END = 509
 
 const val EMPTY_CODE = "EMPTY_CODE"
 const val EMPTY_MESSAGE = "EMPTY_MESSAGE"
+const val CLIENT_ERROR = "CLIENT_ERROR"
 
 fun HttpStatusCode.isSuccess(): Boolean =
     value in (HTTP_SUCCESS_RANGE_START until HTTP_SUCCESS_RANGE_END)
@@ -28,8 +29,7 @@ fun HttpStatusCode.isServerError(): Boolean =
     value in (HTTP_SERVER_ERROR_RANGE_START until HTTP_SERVER_ERROR_RANGE_END)
 
 
-
-suspend inline fun<reified T> HttpResponse.toResource(): Resource<T> {
+suspend inline fun <reified T> HttpResponse.toResource(): Resource<T> {
     try {
         if (status.isSuccess()) {
             val kJson = Json {
@@ -47,20 +47,35 @@ suspend inline fun<reified T> HttpResponse.toResource(): Resource<T> {
             }
 
             return if (data != null) {
-                Resource.Success(data = data, message = message, code = code)
+                Resource.Success(
+                    data = data,
+                    message = message,
+                    code = code
+                )
             } else {
-                Resource.NullResult<T>(message = message, code = code)
+                Resource.NullResult<T>(
+                    message = message,
+                    code = code
+                )
             }
         } else if (status.isClientError()) {
             val json = body<String>()
             val jsonElement = Json.parseToJsonElement(json)
             val message = jsonElement.jsonObject["message"]?.jsonPrimitive?.content
-                ?: EMPTY_MESSAGE
+                ?: CLIENT_ERROR
             val code =
                 jsonElement.jsonObject["code"]?.jsonPrimitive?.content ?: EMPTY_CODE
-            return Resource.ApiError(data = null, message = message, code = code)
+            return Resource.ApiError(
+                data = null,
+                message = message,
+                code = code
+            )
         } else {
-            return Resource.NetworkError(throwable = Throwable("Network Error"))
+            return Resource.ApiError(
+                data = null,
+                message = status.description,
+                code = status.value.toString()
+            )
         }
     } catch (e: Exception) {
         return Resource.NetworkError(throwable = e)

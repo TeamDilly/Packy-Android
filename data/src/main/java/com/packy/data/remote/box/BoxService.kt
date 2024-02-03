@@ -24,13 +24,14 @@ class BoxService @Inject constructor(
 
     suspend fun createBox(
         createBoxRequest: CreateBoxRequest
-    ): Resource<CreateBoxDto> = httpClient.post("/api/v1/giftbox"){
+    ): Resource<CreateBoxDto> = httpClient.post("/api/v1/giftbox") {
         contentType(ContentType.Application.Json)
-       setBody(createBoxRequest)
+        setBody(createBoxRequest)
     }.toResource()
 
     suspend fun getGifBox(
         giftBoxId: String
-    ): Resource<GiftBoxDto> = httpClient.get("/api/v1/giftbox/${giftBoxId}")
-        .toResource()
+    ): Resource<GiftBoxDto> =
+        httpClient.get("/api/v1/giftboxes/${giftBoxId}")
+            .toResource()
 }

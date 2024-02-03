@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class GiftBox(
     @SerialName("box") val box: Box,
     @SerialName("envelope") val envelope: Envelope,
-    @SerialName("gift") val gift: Gift,
+    @SerialName("gift") val gift: Gift?,
     @SerialName("letterContent") val letterContent: String,
     @SerialName("name") val name: String,
     @SerialName("photos") val photos: List<Photo>,

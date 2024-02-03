@@ -14,5 +14,6 @@ dependencies {
     implementation(project(":feature:core"))
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:createbox"))
+    implementation(project(":feature:giftBox"))
 }
 

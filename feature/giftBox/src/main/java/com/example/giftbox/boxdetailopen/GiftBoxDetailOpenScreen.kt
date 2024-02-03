@@ -3,6 +3,7 @@ package com.example.giftbox.boxdetailopen
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,14 +11,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -25,11 +25,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -52,15 +56,23 @@ import com.packy.core.widget.giftbox.PhotoForm
 import com.packy.core.widget.giftbox.StickerForm
 import com.packy.core.widget.giftbox.TopBoxPartImage
 import com.packy.feature.core.R
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalGlideComposeApi::class
+)
 @Composable
 fun GiftBoxDetailOpenScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: GiftBoxDetailOpenViewModel = hiltViewModel()
 ) {
+    val scope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsState()
+    val showDialog by remember {
+        derivedStateOf { uiState.showDetail }
+    }
     val pagerState = rememberPagerState(
         pageCount = {
             2
@@ -80,40 +92,144 @@ fun GiftBoxDetailOpenScreen(
                     route = GiftBoxRoute.GIFT_BOX_NAV_GRAPH,
                     inclusive = true
                 )
-
-                is GiftBoxDetailOpenEffect.ShowGift -> TODO()
-                is GiftBoxDetailOpenEffect.ShowLetter -> TODO()
-                is GiftBoxDetailOpenEffect.ShowPhoto -> TODO()
             }
         }
     }
 
     Scaffold { innerPadding ->
-        VerticalPager(
+        Box(
             modifier = modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .background(PackyTheme.color.gray900),
-            state = pagerState,
-            userScrollEnabled = uiState.hasGift
         ) {
-            when (it) {
-                0 -> GiftBoxColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    boxPartAnimation = boxPartAnimation,
-                    uiState = uiState,
-                    viewModel = viewModel
-                )
-
-                1 -> {
-                    GiftDetail(
-                        giftImageUrl = uiState.giftBox?.gift?.url,
+            VerticalPager(
+                modifier = Modifier
+                    .blur(if (showDialog != ShowDetail.NONE) 12.dp else 0.dp),
+                state = pagerState,
+                userScrollEnabled = uiState.hasGift
+            ) {
+                when (it) {
+                    0 -> GiftBoxColumn(
                         modifier = Modifier.fillMaxSize(),
+                        boxPartAnimation = boxPartAnimation,
+                        uiState = uiState,
+                        viewModel = viewModel
                     )
+
+                    1 -> {
+                        GiftDetail(
+                            giftImageUrl = uiState.giftBox?.gift?.url,
+                            modifier = Modifier.fillMaxSize(),
+                            onDownClick = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(0)
+                                }
+                            },
+                            onGiftClick = {
+                                viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnGiftClick)
+                            }
+                        )
+                    }
                 }
             }
+            when (showDialog) {
+                ShowDetail.PHOTO -> Dialog(
+                    modifier = Modifier.padding(horizontal = 38.dp),
+                    click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .background(PackyTheme.color.white)
+                            .padding(16.dp)
+                    ) {
+                        GlideImage(
+                            modifier = Modifier
+                                .aspectRatio(1f / 1f),
+                            model = uiState.giftBox?.photos?.firstOrNull()?.photoUrl,
+                            contentDescription = "photo",
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(height = 16.dp)
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    vertical = 12.dp,
+                                    horizontal = 40.dp
+                                ),
+                            text = uiState.giftBox?.photos?.firstOrNull()?.description ?: "",
+                            style = PackyTheme.typography.body04.copy(
+                                textAlign = TextAlign.Center
+                            ),
+                            color = PackyTheme.color.gray900
+                        )
+                    }
+                }
 
+                ShowDetail.LETTER -> Dialog(
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp),
+                    click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
+                ) {
+                    Box(modifier = Modifier
+                        .background(
+                            color = PackyTheme.color.white,
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .border(
+                            width = 6.dp,
+                            color = uiState.giftBox?.envelope?.borderColorCode
+                                ?.let { Color(android.graphics.Color.parseColor("#$it")) }
+                                ?: PackyTheme.color.gray200,
+                            shape = RoundedCornerShape(16.dp)
+
+                        )
+                        .aspectRatio(1f / 1f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(20.dp),
+                            text = uiState.giftBox?.letterContent ?: "",
+                            style = PackyTheme.typography.body04.copy(
+                                textAlign = TextAlign.Center
+                            ),
+                            color = PackyTheme.color.gray900
+                        )
+                    }
+                }
+
+                ShowDetail.GIFT -> Dialog(
+                    click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
+                ) {}
+
+                ShowDetail.NONE -> Unit
+            }
         }
+    }
+}
+
+@Composable
+private fun Dialog(
+    click: () -> Unit = {},
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .clickableWithoutRipple {
+                click()
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .blur(12.dp)
+        )
+        content()
     }
 }
 
@@ -122,7 +238,8 @@ fun GiftBoxDetailOpenScreen(
 private fun GiftDetail(
     giftImageUrl: String?,
     modifier: Modifier = Modifier,
-    onDownClick: () -> Unit = {}
+    onDownClick: () -> Unit = {},
+    onGiftClick: () -> Unit = {}
 ) {
     Box(
         modifier = modifier
@@ -156,6 +273,9 @@ private fun GiftDetail(
                 .aspectRatio(8f / 9f)
                 .align(Alignment.Center)
                 .padding(horizontal = 35.dp)
+                .clickableWithoutRipple {
+                    onGiftClick()
+                }
         ) {
             Image(
                 modifier = Modifier
@@ -262,7 +382,10 @@ private fun GiftBoxColumn(
                         modifier = Modifier
                             .aspectRatio(180f / 150f)
                             .fillMaxWidth()
-                            .weight(42f),
+                            .weight(42f)
+                            .clickableWithoutRipple {
+                                viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnLetterClick)
+                            },
                         inclination = 3f,
                         letterContent = uiState.giftBox?.letterContent ?: "",
                         envelopeUrl = uiState.giftBox?.envelope?.imgUrl,
@@ -282,7 +405,7 @@ private fun GiftBoxColumn(
                 )
             }
             Spacer(1f)
-            if(uiState.hasGift){
+            if (uiState.hasGift) {
                 Icon(
                     modifier = Modifier
                         .fillMaxWidth()

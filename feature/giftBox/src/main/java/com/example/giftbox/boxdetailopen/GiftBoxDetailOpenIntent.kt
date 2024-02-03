@@ -16,30 +16,28 @@ sealed interface GiftBoxDetailOpenIntent : MviIntent {
 
     data object OnGiftClick : GiftBoxDetailOpenIntent
 
+    data object CloseDialog : GiftBoxDetailOpenIntent
+
     data object OnBackClick : GiftBoxDetailOpenIntent
     data object OnCloseClick : GiftBoxDetailOpenIntent
+}
+
+enum class ShowDetail {
+    NONE,
+    PHOTO,
+    LETTER,
+    GIFT
 }
 
 data class GiftBoxDetailOpenState(
     val giftBox: GiftBox?,
     val youtubeState: YoutubeState = YoutubeState.INIT,
+    val showDetail: ShowDetail = ShowDetail.NONE
 ) : UiState {
     val hasGift get() = giftBox?.gift != null
 }
 
 sealed interface GiftBoxDetailOpenEffect : SideEffect {
-    data class ShowPhoto(
-        val photoUrl: String?
-    ) : GiftBoxDetailOpenEffect
-
-    data class ShowLetter(
-        val envelope: Envelope,
-        val letterContent: String,
-    ) : GiftBoxDetailOpenEffect
-
-    data class ShowGift(
-        val gift: Gift
-    ) : GiftBoxDetailOpenEffect
 
     data object MoveToBack : GiftBoxDetailOpenEffect
     data object GiftBoxClose : GiftBoxDetailOpenEffect

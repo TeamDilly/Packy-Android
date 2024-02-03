@@ -25,34 +25,43 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
     }
 
     override fun handleIntent() {
-        subscribeIntent<GiftBoxDetailOpenIntent.OnPhotoClick>(showPhoto())
-        subscribeIntent<GiftBoxDetailOpenIntent.OnLetterClick>(showLetter())
-        subscribeIntent<GiftBoxDetailOpenIntent.OnGiftClick>(showGift())
+        subscribeStateIntent<GiftBoxDetailOpenIntent.OnPhotoClick>(showPhoto())
+        subscribeStateIntent<GiftBoxDetailOpenIntent.OnLetterClick>(showLetter())
+        subscribeStateIntent<GiftBoxDetailOpenIntent.OnGiftClick>(showGift())
+        subscribeStateIntent<GiftBoxDetailOpenIntent.CloseDialog> { state, _ ->
+            state.copy(
+                showDetail = ShowDetail.NONE
+            )
+        }
         subscribeIntent<GiftBoxDetailOpenIntent.OnBackClick> { sendEffect(GiftBoxDetailOpenEffect.MoveToBack) }
         subscribeIntent<GiftBoxDetailOpenIntent.OnCloseClick> { sendEffect(GiftBoxDetailOpenEffect.GiftBoxClose) }
     }
 
-    private fun showGift(): suspend (GiftBoxDetailOpenIntent.OnGiftClick) -> Unit =
-        {
+    private fun showGift(): suspend (GiftBoxDetailOpenState, GiftBoxDetailOpenIntent.OnGiftClick) -> GiftBoxDetailOpenState =
+        { state, _ ->
             val gift = currentState.giftBox?.gift
-            if(gift != null){
-                sendEffect(GiftBoxDetailOpenEffect.ShowGift(gift))
-            }
+            state.copy(
+                showDetail = if (gift != null) ShowDetail.GIFT else ShowDetail.NONE
+            )
         }
 
-    private fun showLetter(): suspend (GiftBoxDetailOpenIntent.OnLetterClick) -> Unit =
-        {
+    private fun showLetter(): suspend (GiftBoxDetailOpenState, GiftBoxDetailOpenIntent.OnLetterClick) -> GiftBoxDetailOpenState =
+        { state, _ ->
             val envelope = currentState.giftBox?.envelope
             val letterContent = currentState.giftBox?.letterContent
-            if(envelope != null && letterContent != null)
-                sendEffect(
-                    GiftBoxDetailOpenEffect.ShowLetter(
-                        envelope,
-                        letterContent
-                    )
+            if (envelope != null && letterContent != null)
+                state.copy(
+                    showDetail = ShowDetail.LETTER
                 )
+            else state
         }
 
-    private fun showPhoto(): suspend (GiftBoxDetailOpenIntent.OnPhotoClick) -> Unit =
-        { sendEffect(GiftBoxDetailOpenEffect.ShowPhoto(currentState.giftBox?.photos?.firstOrNull()?.photoUrl)) }
+    private fun showPhoto(): suspend (GiftBoxDetailOpenState, GiftBoxDetailOpenIntent.OnPhotoClick) -> GiftBoxDetailOpenState =
+        { state, _ ->
+            val photo = currentState.giftBox?.photos?.firstOrNull()
+            if (photo != null) state.copy(
+                showDetail = ShowDetail.PHOTO
+            )
+            else state
+        }
 }

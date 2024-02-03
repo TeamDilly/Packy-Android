@@ -16,9 +16,9 @@ import com.packy.core.theme.PackyTheme
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 fun PhotoForm(
+    photo: String?,
     modifier: Modifier = Modifier,
     inclination: Float = 0f,
-    photo: String?
 ) {
     Box(
         modifier = modifier

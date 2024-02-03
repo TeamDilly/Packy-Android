@@ -18,9 +18,7 @@ class GiftBoxRootViewModel @Inject constructor(
     private val getBoxUseCase: GetBoxUseCase
 ) :
     MviViewModel<GiftBoxRootIntent, GiftBoxRootState, GiftBoxRootEffect>() {
-    override fun createInitialState(): GiftBoxRootState = GiftBoxRootState(
-        giftBox = null,
-    )
+    override fun createInitialState(): GiftBoxRootState = GiftBoxRootState
 
     override fun handleIntent() {}
 
@@ -37,10 +35,7 @@ class GiftBoxRootViewModel @Inject constructor(
                         is Resource.Loading -> Unit
                         is Resource.Success -> {
                             val giftBox = boxResource.data
-                            currentState.copy(
-                                giftBox = giftBox,
-                            )
-                            sendEffect(GiftBoxRootEffect.GetGiftBox)
+                            sendEffect(GiftBoxRootEffect.GetGiftBox(giftBox))
                         }
                     }
                 }

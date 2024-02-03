@@ -1,6 +1,6 @@
 package com.packy.domain.usecase.box
 
-import com.packy.data.model.getbox.GiftBox
+import com.packy.domain.model.getbox.GiftBox
 import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow
 

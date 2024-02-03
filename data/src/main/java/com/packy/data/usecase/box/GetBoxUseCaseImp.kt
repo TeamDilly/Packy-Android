@@ -1,6 +1,6 @@
 package com.packy.data.usecase.box
 
-import com.packy.data.model.getbox.GiftBox
+import com.packy.domain.model.getbox.GiftBox
 import com.packy.domain.repository.box.BoxRepository
 import com.packy.domain.usecase.box.GetBoxUseCase
 import com.packy.lib.utils.Resource

@@ -25,7 +25,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +44,7 @@ import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
+import com.packy.core.widget.giftbox.GiftBoxTopBar
 import com.packy.core.widget.giftbox.TopBoxPartImage
 import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.YoutubeState
@@ -118,11 +118,19 @@ fun BoxGuideScreen(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Spacer(height = 8.dp)
-                TopBar(
+                GiftBoxTopBar(
                     title = uiState.title,
-                    uiState = uiState,
-                    onBackClick = viewModel::emitIntentThrottle,
-                    onSaveClick = viewModel::emitIntentThrottle,
+                    onBackClick = {
+                        viewModel.emitIntentThrottle(BoxGuideIntent.OnBackClick)
+                    },
+                   rightButton = {
+                        RightMenuTopbar(
+                            isBoxComplete = uiState.isBoxComplete(),
+                            onClick = {
+                                viewModel.emitIntentThrottle(BoxGuideIntent.OnSaveClick)
+                            }
+                        )
+                    }
                 )
                 Spacer(height = 31.dp)
                 Column(
@@ -451,75 +459,34 @@ private fun BottomButton(
 }
 
 @Composable
-private fun TopBar(
-    title: String,
-    uiState: BoxGuideState,
-    onBackClick: emitMviIntent<BoxGuideIntent>,
-    onSaveClick: emitMviIntent<BoxGuideIntent>
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 4.dp
-            ),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .background(
-                    color = PackyTheme.color.white,
-                    shape = CircleShape
-                )
-                .clickableWithoutRipple {
-                    onBackClick(BoxGuideIntent.OnBackClick)
-                }
+private fun RightMenuTopbar(
+    isBoxComplete: Boolean,
+    onClick: () -> Unit
+){
+    Box(modifier = Modifier
+        .width(60.dp)
+        .height(40.dp)
+        .background(
+            color = PackyTheme.color.white,
+            shape = RoundedCornerShape(80.dp)
+        )
+        .clickableWithoutRipple(
+            enabled = isBoxComplete,
         ) {
-            Icon(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .size(24.dp),
-                painter = painterResource(id = R.drawable.arrow_left),
-                contentDescription = "back guide screen"
-            )
+            onClick()
         }
-        Spacer(width = 16.dp)
+    )
+    {
         Text(
-            modifier = Modifier.weight(1f),
-            text = title,
+            modifier = Modifier.align(Alignment.Center),
+            text = COMPLETE,
             style = PackyTheme.typography.body02.copy(
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Center
             ),
-            color = PackyTheme.color.white
+            color = if (isBoxComplete)
+                PackyTheme.color.gray900
+            else PackyTheme.color.gray600
         )
-        Spacer(width = 16.dp)
-        Box(modifier = Modifier
-            .width(60.dp)
-            .height(40.dp)
-            .background(
-                color = PackyTheme.color.white,
-                shape = RoundedCornerShape(80.dp)
-            )
-            .clickableWithoutRipple(
-                enabled = uiState.isBoxComplete(),
-            ) {
-                onSaveClick(BoxGuideIntent.OnSaveClick)
-            }
-        )
-        {
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = COMPLETE,
-                style = PackyTheme.typography.body02.copy(
-                    textAlign = TextAlign.Center
-                ),
-                color = if (uiState.isBoxComplete())
-                    PackyTheme.color.gray900
-                else PackyTheme.color.gray600
-            )
-        }
     }
 }
 

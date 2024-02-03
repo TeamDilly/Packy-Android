@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
@@ -31,6 +32,7 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.giftbox.GiftBoxTopBar
 import com.packy.core.widget.giftbox.LetterForm
+import com.packy.core.widget.giftbox.MusicForm
 import com.packy.core.widget.giftbox.PhotoForm
 import com.packy.core.widget.giftbox.StickerForm
 import com.packy.core.widget.giftbox.TopBoxPartImage
@@ -92,53 +94,73 @@ fun GiftBoxDetailOpenScreen(
                     }
                 )
                 Spacer(height = 32.dp)
-                Row(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
+                        .fillMaxWidth()
+                        .padding(horizontal = 32.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    PhotoForm(
+                    Row(
                         modifier = Modifier
-                            .aspectRatio(160f / 192f)
-                            .fillMaxWidth()
-                            .weight(38f)
-                            .clickableWithoutRipple {
-                                viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnPhotoClick)
-                            },
-                        inclination = -3f,
-                        photo = uiState.giftBox?.photos?.firstOrNull()?.photoUrl
-                    )
-                    Spacer(28.dp)
-                    StickerForm(
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        PhotoForm(
+                            modifier = Modifier
+                                .aspectRatio(160f / 192f)
+                                .fillMaxWidth()
+                                .weight(38f)
+                                .clickableWithoutRipple {
+                                    viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnPhotoClick)
+                                },
+                            inclination = -3f,
+                            photo = uiState.giftBox?.photos?.firstOrNull()?.photoUrl
+                        )
+                        Spacer(28.dp)
+                        StickerForm(
+                            modifier = Modifier
+                                .aspectRatio(1f / 1f)
+                                .weight(28f),
+                            inclination = 10f,
+                            stickerUri = uiState.giftBox?.stickers?.firstOrNull()?.imgUrl,
+                        )
+                    }
+                    Spacer(height = 20.dp)
+                    Row(
                         modifier = Modifier
-                            .aspectRatio(1f / 1f)
-                            .weight(28f),
-                        inclination = 10f,
-                        stickerUri = uiState.giftBox?.stickers?.firstOrNull()?.imgUrl,
-                    )
-                }
-                Spacer(height = 20.dp)
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    StickerForm(
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        StickerForm(
+                            modifier = Modifier
+                                .aspectRatio(1f / 1f)
+                                .weight(30f),
+                            inclination = -10f,
+                            stickerUri = uiState.giftBox?.stickers?.getOrNull(1)?.imgUrl,
+                        )
+                        Spacer(22.dp)
+                        LetterForm(
+                            modifier = Modifier
+                                .aspectRatio(180f / 150f)
+                                .fillMaxWidth()
+                                .weight(42f),
+                            inclination = 3f,
+                            letterContent = uiState.giftBox?.letterContent ?: "",
+                            envelopeUrl = uiState.giftBox?.envelope?.imgUrl,
+                        )
+                    }
+                    Spacer(height = 29.dp)
+                    MusicForm(
                         modifier = Modifier
-                            .aspectRatio(1f / 1f)
-                            .weight(30f),
-                        inclination = -10f,
-                        stickerUri = uiState.giftBox?.stickers?.getOrNull(1)?.imgUrl,
-                    )
-                    Spacer(22.dp)
-                    LetterForm(
-                        modifier = Modifier
-                            .aspectRatio(180f / 150f)
-                            .fillMaxWidth()
-                            .weight(42f),
-                        inclination = 3f,
-                        letterContent = uiState.giftBox?.letterContent ?: "",
-                        envelopeUrl = uiState.giftBox?.envelope?.imgUrl,
+                            .heightIn(
+                                min = 0.dp,
+                                max = 146.dp
+                            )
+                            .aspectRatio(16f / 9f)
+                            .fillMaxWidth(),
+                        youtubeUri = uiState.giftBox?.youtubeUrl ?: "",
+                        youtubeState = uiState.youtubeState,
                     )
                 }
             }

@@ -45,6 +45,7 @@ import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
 import com.packy.core.widget.giftbox.GiftBoxTopBar
 import com.packy.core.widget.giftbox.LetterForm
+import com.packy.core.widget.giftbox.MusicForm
 import com.packy.core.widget.giftbox.PhotoForm
 import com.packy.core.widget.giftbox.TopBoxPartImage
 import com.packy.core.widget.youtube.YoutubePlayer
@@ -237,7 +238,9 @@ fun BoxGuideScreen(
                                 MusicForm(
                                     youtubeUri = youtubeUri,
                                     youtubeState = uiState.youtubeState,
-                                    clearMusic = viewModel::emitIntentThrottle
+                                    clearMusic = {
+                                        viewModel.emitIntentThrottle(BoxGuideIntent.ClearMusic)
+                                    }
                                 )
                             }
                         },
@@ -317,36 +320,6 @@ fun BoxGuideScreen(
                         )
                     },
                 )
-            }
-        }
-    }
-}
-
-@Composable
-private fun MusicForm(
-    modifier: Modifier = Modifier,
-    youtubeUri: String,
-    youtubeState: YoutubeState,
-    clearMusic: emitMviIntent<BoxGuideIntent>,
-) {
-    val youtubeVideoId = extractYouTubeVideoId(youtubeUri)
-    if (youtubeVideoId != null) {
-        Box(modifier = modifier.fillMaxSize()) {
-            YoutubePlayer(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .aspectRatio(16f / 9f)
-                    .padding(4.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                videoId = youtubeVideoId,
-                youtubeState = youtubeState,
-            )
-            PackyCloseIconButton(
-                modifier = Modifier
-                    .align(Alignment.TopEnd),
-                style = closeIconButtonStyle.medium.white
-            ) {
-                clearMusic(BoxGuideIntent.ClearMusic)
             }
         }
     }

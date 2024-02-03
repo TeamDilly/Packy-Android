@@ -1,5 +1,6 @@
-package com.packy.data.model.getbox
+package com.packy.domain.model.getbox
 
+import com.packy.lib.ext.toEncoding
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -7,4 +8,9 @@ import kotlinx.serialization.Serializable
 data class Envelope(
    @SerialName("borderColorCode") val borderColorCode: String,
    @SerialName("imgUrl") val imgUrl: String
-)
+) {
+    fun toUrlEncoding(): Envelope = Envelope(
+        borderColorCode = borderColorCode,
+        imgUrl = imgUrl.toEncoding()
+    )
+}

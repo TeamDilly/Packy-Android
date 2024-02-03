@@ -3,7 +3,6 @@ package com.packy.data.remote.box
 import com.packy.data.model.createbox.BoxDesignDto
 import com.packy.data.model.createbox.CreateBoxDto
 import com.packy.data.model.createbox.box.CreateBoxRequest
-import com.packy.data.model.getbox.GiftBox
 import com.packy.data.model.getbox.GiftBoxDto
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.toResource

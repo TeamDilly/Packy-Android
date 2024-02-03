@@ -3,7 +3,7 @@ package com.packy.data.repository.box
 import com.packy.data.local.AccountPrefManager
 import com.packy.data.model.createbox.BoxDesignDto
 import com.packy.data.model.createbox.toEntity
-import com.packy.data.model.getbox.GiftBox
+import com.packy.domain.model.getbox.GiftBox
 import com.packy.data.model.getbox.toEntity
 import com.packy.data.remote.box.BoxService
 import com.packy.domain.model.box.BoxDesign
@@ -12,9 +12,7 @@ import com.packy.lib.utils.Resource
 import com.packy.lib.utils.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class BoxRepositoryImp @Inject constructor(

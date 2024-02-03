@@ -31,7 +31,7 @@ fun PackyNavHost(
         )
         gitBoxNavGraph(
             navController,
-            boxId = "5"
+            boxId = "6"
         )
     }
 }

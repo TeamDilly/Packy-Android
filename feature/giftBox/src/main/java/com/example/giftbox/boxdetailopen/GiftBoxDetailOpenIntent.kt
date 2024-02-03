@@ -10,11 +10,11 @@ import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
 
 sealed interface GiftBoxDetailOpenIntent : MviIntent {
-    data object OnPhotoClick: GiftBoxDetailOpenIntent
+    data object OnPhotoClick : GiftBoxDetailOpenIntent
 
-    data object OnLetterClick: GiftBoxDetailOpenIntent
+    data object OnLetterClick : GiftBoxDetailOpenIntent
 
-    data object OnGiftClick: GiftBoxDetailOpenIntent
+    data object OnGiftClick : GiftBoxDetailOpenIntent
 
     data object OnBackClick : GiftBoxDetailOpenIntent
     data object OnCloseClick : GiftBoxDetailOpenIntent
@@ -23,7 +23,9 @@ sealed interface GiftBoxDetailOpenIntent : MviIntent {
 data class GiftBoxDetailOpenState(
     val giftBox: GiftBox?,
     val youtubeState: YoutubeState = YoutubeState.INIT,
-) : UiState
+) : UiState {
+    val hasGift get() = giftBox?.gift != null
+}
 
 sealed interface GiftBoxDetailOpenEffect : SideEffect {
     data class ShowPhoto(

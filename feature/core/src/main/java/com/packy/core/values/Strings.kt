@@ -96,5 +96,6 @@ object Strings {
 
     // GiftBox
     fun GIFT_BOX_ARR_TITLE(name: String) = "${name}님이 보낸\n선물박스가 도착했어요!"
+    const val GIFT_BOX_OPEN_GIFT = "선물박스를 열어보세요"
 
 }

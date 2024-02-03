@@ -39,7 +39,6 @@ fun GiftBoxRootScreen(
 
                 is GiftBoxRootEffect.GetGiftBox -> {
                     val route = GiftBoxRoute.getGiftBoxMotionRoute(effect.giftBox)
-                    println("LOGEE ${route}")
                     navController.navigate(route) {
                         popUpTo(GiftBoxRoute.GIFT_BOX_ROOT) {
                             inclusive = true

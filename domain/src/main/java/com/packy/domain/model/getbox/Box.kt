@@ -1,5 +1,6 @@
 package com.packy.domain.model.getbox
 
+import com.packy.lib.ext.toDecoding
 import com.packy.lib.ext.toEncoding
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -16,4 +17,9 @@ data class Box(
         boxPart = boxPart.toEncoding()
     )
 
+    fun toUrlDecoding(): Box = Box(
+        boxBottom = boxBottom.toDecoding(),
+        boxFull = boxFull.toDecoding(),
+        boxPart = boxPart.toDecoding()
+    )
 }

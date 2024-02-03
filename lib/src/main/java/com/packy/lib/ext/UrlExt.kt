@@ -1,6 +1,7 @@
 package com.packy.lib.ext
 
 import java.net.URL
+import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -15,6 +16,17 @@ fun String.isURLValid(): Boolean {
 }
 
 fun String.toEncoding(): String {
-    return if(this.isURLValid()) URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
+    return if (this.isURLValid()) URLEncoder.encode(
+        this,
+        StandardCharsets.UTF_8.toString()
+    )
     else this
+}
+
+fun String.toDecoding(): String {
+    return if (this.isURLValid()) this
+    else URLDecoder.decode(
+        this,
+        StandardCharsets.UTF_8.toString()
+    )
 }

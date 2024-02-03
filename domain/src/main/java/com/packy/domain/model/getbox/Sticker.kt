@@ -1,5 +1,6 @@
 package com.packy.domain.model.getbox
 
+import com.packy.lib.ext.toDecoding
 import com.packy.lib.ext.toEncoding
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -11,6 +12,11 @@ data class Sticker(
 ) {
     fun toUrlEncoding(): Sticker = Sticker(
         imgUrl = imgUrl.toEncoding(),
+        location = location
+    )
+
+    fun toUrlDecoding():Sticker = Sticker(
+        imgUrl = imgUrl.toDecoding(),
         location = location
     )
 }

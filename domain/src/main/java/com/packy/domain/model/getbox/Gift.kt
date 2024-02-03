@@ -1,5 +1,6 @@
 package com.packy.domain.model.getbox
 
+import com.packy.lib.ext.toDecoding
 import com.packy.lib.ext.toEncoding
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -12,5 +13,10 @@ data class Gift(
     fun toUrlEncoding(): Gift = Gift(
         type = type,
         url = url.toEncoding()
+    )
+
+    fun toUrlDecoding(): Gift = Gift(
+        type = type,
+        url = url.toDecoding()
     )
 }

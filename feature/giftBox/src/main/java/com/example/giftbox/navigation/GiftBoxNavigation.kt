@@ -8,7 +8,6 @@ import com.example.giftbox.boxmotion.GiftBoxMotionScreen
 import com.example.giftbox.boxroot.GiftBoxRootScreen
 import com.packy.core.animations.asRootComposable
 import com.packy.domain.model.getbox.GiftBox
-import com.packy.domain.model.getbox.toUrlEncoding
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

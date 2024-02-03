@@ -1,5 +1,6 @@
 package com.packy.domain.model.getbox
 
+import com.packy.lib.ext.toDecoding
 import com.packy.lib.ext.toEncoding
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -12,5 +13,10 @@ data class Envelope(
     fun toUrlEncoding(): Envelope = Envelope(
         borderColorCode = borderColorCode,
         imgUrl = imgUrl.toEncoding()
+    )
+
+    fun toUrlDecoding(): Envelope = Envelope(
+        borderColorCode = borderColorCode,
+        imgUrl = imgUrl.toDecoding()
     )
 }

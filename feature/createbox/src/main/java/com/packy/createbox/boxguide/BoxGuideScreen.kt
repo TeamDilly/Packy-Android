@@ -1,9 +1,6 @@
 package com.packy.createbox.boxguide
 
 import android.net.Uri
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,7 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +45,7 @@ import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
+import com.packy.core.widget.giftbox.TopBoxPartImage
 import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.YoutubeState
 import com.packy.createbox.boxguide.widget.BoxGuideBottomSheet
@@ -66,13 +62,10 @@ import com.packy.createbox.createboax.boxchange.CreateBoxChangeScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.domain.model.box.BoxDesign
-import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.domain.model.createbox.Sticker
 import com.packy.lib.ext.extractYouTubeVideoId
 import com.packy.lib.ext.removeNewlines
 import com.packy.mvi.ext.emitMviIntent
-import com.packy.mvi.mvi.UiState
-import kotlinx.coroutines.launch
 
 @Composable
 fun BoxGuideScreen(
@@ -80,7 +73,6 @@ fun BoxGuideScreen(
     navController: NavController,
     viewModel: BoxGuideViewModel = hiltViewModel()
 ) {
-    val scope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsState()
 
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -117,7 +109,7 @@ fun BoxGuideScreen(
             TopBoxPartImage(
                 modifier = Modifier.align(Alignment.TopEnd),
                 boxPartAnimation = boxPartAnimation,
-                uiState = uiState,
+                boxPartImageUrl = uiState.boxDesign?.boxPart,
             )
 
             Column(
@@ -316,32 +308,6 @@ fun BoxGuideScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-@OptIn(ExperimentalGlideComposeApi::class)
-private fun TopBoxPartImage(
-    boxPartAnimation: Boolean,
-    uiState: BoxGuideState,
-    modifier: Modifier = Modifier,
-) {
-    AnimatedVisibility(
-        modifier = modifier,
-        visible = boxPartAnimation,
-        enter = slideInHorizontally(
-            initialOffsetX = { it },
-            animationSpec = tween(durationMillis = 800)
-        )
-    ) {
-        GlideImage(
-            modifier = Modifier
-                .width(280.dp)
-                .height(160.dp),
-            model = uiState.boxDesign?.boxPart,
-            contentDescription = "box guide screen",
-            contentScale = ContentScale.Crop
-        )
     }
 }
 

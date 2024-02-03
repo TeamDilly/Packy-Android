@@ -9,6 +9,7 @@ object Strings {
     const val CONFIRM = "확인"
     const val COMPLETE = "완성"
     const val INPUT_MAX_LENGTH_12 = "12자 이내로 입력해주세요"
+    const val OPEN = "열어보기"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
@@ -92,5 +93,8 @@ object Strings {
     const val CREATE_BOX_ADD_SHARE_TITLE = "에게 선물박스를 보내보세요"
     const val CREATE_BOX_ADD_SHARE_SEND_KAKAO = "카카오톡으로 보내기"
     const val CREATE_BOX_ADD_SHARE_LAZY = "나중에 보낼래요"
+
+    // GiftBox
+    fun GIFT_BOX_ARR_TITLE(name: String) = "${name}님이 보낸\n선물박스가 도착했어요!"
 
 }

@@ -1,11 +1,19 @@
 package com.example.giftbox.navigation
 
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.giftbox.boxerror.GiftBoxErrorScreen
 import com.example.giftbox.boxmotion.GiftBoxMotionScreen
 import com.example.giftbox.boxroot.GiftBoxRootScreen
+import com.example.giftbox.giftarr.GiftBoxArrScreen
+import com.example.giftbox.giftarr.GiftBoxArrViewModel
+import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ARG
+import com.packy.core.animations.asPagingComposable
 import com.packy.core.animations.asRootComposable
 import com.packy.domain.model.getbox.GiftBox
 import kotlinx.serialization.encodeToString
@@ -28,17 +36,32 @@ fun NavGraphBuilder.gitBoxNavGraph(
             )
         }
         asRootComposable(
-            route = GiftBoxRoute.GIFT_BOX_MOTION + "/{giftBox}",
+            route = GiftBoxRoute.GIFT_BOX_MOTION + "/{$GIFT_BOX_ARG}",
         ) {
-            val giftBoxJson = it.arguments?.getString("giftBox")
+            val giftBoxJson = it.arguments?.getString(GIFT_BOX_ARG)
             val giftBox = giftBoxJson?.let { json -> Json.decodeFromString<GiftBox>(json) }
             if (giftBox == null) {
                 GiftBoxErrorScreen(
                     message = "Message"
                 )
             } else {
-                GiftBoxMotionScreen(giftBox = giftBox)
+                GiftBoxMotionScreen(
+                    navController = navController,
+                    giftBox = giftBox
+                )
             }
+        }
+        asPagingComposable(
+            route = GiftBoxRoute.GIFT_BOX_ARR + "/{$GIFT_BOX_ARG}",
+            arguments = listOf(
+               navArgument(GIFT_BOX_ARG){
+                   type = NavType.StringType
+               }
+            )
+        ) {
+            GiftBoxArrScreen(
+                navController = navController,
+            )
         }
     }
 }
@@ -51,8 +74,25 @@ object GiftBoxRoute {
     const val GIFT_BOX_MOTION = "giftBoxMotion"
     const val GIFT_BOX_DETAIL_OPEN = "giftBoxDetailOpen"
 
+    const val GIFT_BOX_ARG = "giftBoxArg"
+
     fun getGiftBoxMotionRoute(giftBox: GiftBox): String {
         val giftBoxJson = Json.encodeToString(giftBox.toUrlEncoding())
         return "${GIFT_BOX_MOTION}/$giftBoxJson"
+    }
+
+    fun getGiftBoxArrRoute(giftBox: GiftBox): String {
+        val giftBoxJson = Json.encodeToString(giftBox.toUrlEncoding())
+        return "${GIFT_BOX_ARR}/$giftBoxJson"
+    }
+
+    fun getGiftBoxDetailOpenRoute(giftBox: GiftBox): String {
+        val giftBoxJson = Json.encodeToString(giftBox.toUrlEncoding())
+        return "${GIFT_BOX_DETAIL_OPEN}/$giftBoxJson"
+    }
+
+    fun getGiftBoxArg(savedStateHandle: SavedStateHandle): GiftBox? {
+        val giftBoxJson = savedStateHandle.get<String>(GIFT_BOX_ARG)
+        return giftBoxJson?.let { Json.decodeFromString<GiftBox>(it) }
     }
 }

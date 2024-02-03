@@ -3,6 +3,8 @@ package com.packy.data.remote.box
 import com.packy.data.model.createbox.BoxDesignDto
 import com.packy.data.model.createbox.CreateBoxDto
 import com.packy.data.model.createbox.box.CreateBoxRequest
+import com.packy.data.model.getbox.GiftBox
+import com.packy.data.model.getbox.GiftBoxDto
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.toResource
 import io.ktor.client.HttpClient
@@ -26,4 +28,9 @@ class BoxService @Inject constructor(
         contentType(ContentType.Application.Json)
        setBody(createBoxRequest)
     }.toResource()
+
+    suspend fun getGifBox(
+        giftBoxId: String
+    ): Resource<GiftBoxDto> = httpClient.get("/api/v1/giftbox/${giftBoxId}")
+        .toResource()
 }

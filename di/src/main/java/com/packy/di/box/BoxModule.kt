@@ -3,9 +3,11 @@ package com.packy.di.box
 import com.packy.data.remote.box.BoxService
 import com.packy.data.repository.box.BoxRepositoryImp
 import com.packy.data.usecase.box.GetBoxDesignUseCaseImp
+import com.packy.data.usecase.box.GetBoxUseCaseImp
 import com.packy.di.network.Packy
 import com.packy.domain.repository.box.BoxRepository
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
+import com.packy.domain.usecase.box.GetBoxUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -34,4 +36,7 @@ abstract class BoxRepositoryModule {
 
     @Binds
     abstract fun bindBoxUseCase(useCase: GetBoxDesignUseCaseImp): GetBoxDesignUseCase
+
+    @Binds
+    abstract fun bindGetBoxUseCase(ussCase: GetBoxUseCaseImp): GetBoxUseCase
 }

@@ -66,6 +66,13 @@ fun NavGraphBuilder.gitBoxNavGraph(
                 navController = navController,
             )
         }
+        asPagingComposable(
+            route = GiftBoxRoute.GIFT_BOX_ERROR
+        ) {
+            GiftBoxErrorScreen(
+                message = "Message"
+            )
+        }
     }
 }
 

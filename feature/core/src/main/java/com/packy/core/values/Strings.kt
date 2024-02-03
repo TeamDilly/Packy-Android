@@ -10,6 +10,7 @@ object Strings {
     const val COMPLETE = "완성"
     const val INPUT_MAX_LENGTH_12 = "12자 이내로 입력해주세요"
     const val OPEN = "열어보기"
+    const val CONTACT_US = "문의하기"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
@@ -97,5 +98,7 @@ object Strings {
     // GiftBox
     fun GIFT_BOX_ARR_TITLE(name: String) = "${name}님이 보낸\n선물박스가 도착했어요!"
     const val GIFT_BOX_OPEN_GIFT = "선물박스를 열어보세요"
+    const val GIFT_BOX_ERROR_MESSAGE = "이 선물박스는 열 수 없어요"
+    const val GIFT_BOX_ERROR_ALREADY_OPENED = "선물박스는 한 명만 열 수 있어요.\n선물박스의 주인이라면 패키에게 문의해주세요."
 
 }

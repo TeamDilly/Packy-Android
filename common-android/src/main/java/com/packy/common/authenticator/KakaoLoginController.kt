@@ -39,11 +39,6 @@ class KakaoLoginController @Inject constructor() {
         context: Context,
         callback: (KakaoAuth) -> Unit,
     ) {
-        UserApiClient.instance.loginWithKakaoTalk(context){ token, error ->
-            if (error != null) {
-               println("LOGEE err: $error")
-            }
-        }
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 if (error != null) {

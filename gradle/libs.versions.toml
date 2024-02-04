@@ -129,6 +129,7 @@ kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ve
 
 #kakao
 kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakaoSdk" }
+kakao-share = { group = "com.kakao.sdk", name = "v2-share", version.ref = "kakaoSdk" }
 
 #YoutubePlayer
 youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "youtube-player" }

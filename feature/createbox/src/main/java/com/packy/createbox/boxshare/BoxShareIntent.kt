@@ -1,5 +1,6 @@
 package com.packy.createbox.boxshare
 
+import com.packy.common.kakaoshare.KakaoCustomFeed
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
@@ -14,6 +15,10 @@ data class BoxShareState(
 ) : UiState
 
 sealed interface BoxShareEffect : SideEffect {
+
+    data class KakaoShare(
+        val kakaoCustomFeed: KakaoCustomFeed
+    ): BoxShareEffect
     data object SuccessShare : BoxShareEffect
     data object FailedShare : BoxShareEffect
 }

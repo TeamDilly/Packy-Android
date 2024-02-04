@@ -11,9 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class KakaoLoginController @Inject constructor(
-    @ApplicationContext private val context: Context
-) {
+class KakaoLoginController @Inject constructor() {
     private fun kakaoLoginCallback(
         token: OAuthToken?,
         throwable: Throwable?,
@@ -38,8 +36,14 @@ class KakaoLoginController @Inject constructor(
     }
 
     fun login(
-        callback: (KakaoAuth) -> Unit
+        context: Context,
+        callback: (KakaoAuth) -> Unit,
     ) {
+        UserApiClient.instance.loginWithKakaoTalk(context){ token, error ->
+            if (error != null) {
+               println("LOGEE err: $error")
+            }
+        }
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
                 if (error != null) {

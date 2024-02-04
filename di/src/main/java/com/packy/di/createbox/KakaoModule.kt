@@ -1,7 +1,7 @@
-package com.packy.di.authenticator
+package com.packy.di.createbox
 
 import android.content.Context
-import com.packy.common.authenticator.KakaoLoginController
+import com.packy.common.kakaoshare.KakaoShare
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,10 +11,9 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class KakaoLoginControllerModule {
-
+class KakaoModule {
     @Singleton
     @Provides
-    fun providerAccountManager(
-    ): KakaoLoginController = KakaoLoginController()
+    fun providerKakaoShear(
+    ): KakaoShare = KakaoShare()
 }

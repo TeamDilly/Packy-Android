@@ -13,6 +13,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
 
+    <queries>
+        <package android:name="com.kakao.talk" />
+    </queries>
+
     <application
         android:name=".PackyApplication"
         android:allowBackup="true"

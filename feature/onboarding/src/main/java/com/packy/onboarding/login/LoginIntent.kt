@@ -18,6 +18,7 @@ data class LoginState(
 ) : UiState
 
 sealed interface LoginEffect : SideEffect {
+    data object KakaoLogin : LoginEffect
     data object KakaoLoginSuccess : LoginEffect
     data object KakaoLoginSuccessNotUser : LoginEffect
     data object KakaoLoginFail : LoginEffect

@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.packy.common.kakaoshare.KakaoShare
 import com.packy.core.common.Spacer
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
@@ -35,13 +37,21 @@ fun BoxShareScreen(
     viewModel: BoxShareViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
+    val kakaoShare = KakaoShare()
+    val context = LocalContext.current
     LaunchedEffect(viewModel) {
         viewModel.initState()
         viewModel.effect.collect { effect ->
             when (effect) {
                 BoxShareEffect.FailedShare -> TODO()
                 BoxShareEffect.SuccessShare -> TODO()
+                is BoxShareEffect.KakaoShare -> {
+                    val sharedResource = kakaoShare.sendGiftBox(
+                        context = context,
+                        kakaoCustomFeed = effect.kakaoCustomFeed
+                    )
+                    viewModel.kakaoShare(sharedResource)
+                }
             }
         }
     }

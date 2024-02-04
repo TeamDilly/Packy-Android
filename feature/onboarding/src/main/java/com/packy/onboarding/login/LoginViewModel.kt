@@ -26,21 +26,19 @@ class LoginViewModel @Inject constructor(
 
     override fun handleIntent() {
         subscribeIntent<LoginIntent.OnKakaoLoginButtonClick> {
-            kakoLogin()
+            sendEffect(LoginEffect.KakaoLogin)
         }
     }
 
-    private fun kakoLogin() {
-        kakaoLoginController.login { kakaoAuth ->
-            when (kakaoAuth) {
-                is KakaoAuth.KakaoLoginFail -> sendEffect(LoginEffect.KakaoLoginFail)
-                is KakaoAuth.KakaoLoginSuccess -> {
-                    viewModelScope.launch {
-                        signInUseCase.signIn(kakaoAuth.token)
-                            .collect {
-                                signInController(it)
-                            }
-                    }
+    fun kakoLogin(kakaoAuth: KakaoAuth) {
+        when (kakaoAuth) {
+            is KakaoAuth.KakaoLoginFail -> sendEffect(LoginEffect.KakaoLoginFail)
+            is KakaoAuth.KakaoLoginSuccess -> {
+                viewModelScope.launch {
+                    signInUseCase.signIn(kakaoAuth.token)
+                        .collect {
+                            signInController(it)
+                        }
                 }
             }
         }
@@ -58,9 +56,9 @@ class LoginViewModel @Inject constructor(
                         sendEffect(LoginEffect.KakaoLoginSuccess)
                     }
 
-                    else -> sendEffect(LoginEffect.KakaoLoginSuccessNotUser)
+                        else -> sendEffect(LoginEffect.KakaoLoginSuccessNotUser)
+                    }
                 }
             }
         }
     }
-}

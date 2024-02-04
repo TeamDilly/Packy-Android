@@ -15,7 +15,7 @@ val deepLinkMap = buildList<NavDeepLink> {
 }
 
 object DeepLinkRoute {
-    const val URL = "https://packyforyou.shop"
+    const val URL = "packyforyou://"
     const val LAUNCH_ROUTE = "launchRoute"
 
     const val GIFT_BOX_OPEN_LINK = "$URL/boxopen/{id}"

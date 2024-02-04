@@ -14,14 +14,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.packy.common.authenticator.KakaoAuth
+import com.packy.common.authenticator.KakaoLoginController
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings.LOGIN_TITLE
 import com.packy.feature.core.R
 import com.packy.onboarding.navigation.OnboardingRoute
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -30,14 +35,18 @@ fun LoginScreen(
     loggedIn: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val kakaoLoginController = KakaoLoginController()
+    val context = LocalContext.current
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                LoginEffect.KakaoLoginFail ->{
-                  // FIXME : 로그인 실패 처리
+                LoginEffect.KakaoLogin -> {
+                    kakaoLoginController.login(context, viewModel::kakoLogin)
                 }
+
                 LoginEffect.KakaoLoginSuccess -> loggedIn()
                 LoginEffect.KakaoLoginSuccessNotUser -> navController.navigate(OnboardingRoute.SIGNUP_NICKNAME)
+                LoginEffect.KakaoLoginFail -> TODO()
             }
         }
     }

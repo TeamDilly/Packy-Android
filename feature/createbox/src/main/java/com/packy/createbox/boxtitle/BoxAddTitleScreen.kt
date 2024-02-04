@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -72,13 +73,17 @@ fun BoxAddTitleScreen(
         ) {
             Text(
                 text = Strings.CREATE_BOX_ADD_TITLE_TITLE,
-                style = PackyTheme.typography.heading01,
+                style = PackyTheme.typography.heading01.copy(
+                    textAlign = TextAlign.Center
+                ),
                 color = PackyTheme.color.gray900
             )
             Spacer(height = 8.dp)
             Text(
                 text = Strings.CREATE_BOX_ADD_TITLE_DESCRIPTION,
-                style = PackyTheme.typography.body01,
+                style = PackyTheme.typography.body01.copy(
+                    textAlign = TextAlign.Center
+                ),
                 color = PackyTheme.color.gray700
             )
             Spacer(height = 40.dp)

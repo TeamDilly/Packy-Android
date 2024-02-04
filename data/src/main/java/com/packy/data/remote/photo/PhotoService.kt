@@ -44,31 +44,44 @@ class PhotoService @Inject constructor(
         uploadPhotoUrl: String,
         uri: String
     ): Resource<String> = withContext(Dispatchers.IO) {
+
         contentResolver.openInputStream(Uri.parse(uri))?.use { inputStream ->
             val bitmap = BitmapFactory.decodeStream(inputStream)
             val tempFile = File(
                 context.cacheDir,
                 "${fileName}.jpg"
             )
-            FileOutputStream(tempFile).use { stream ->
-                bitmap.compress(
-                    Bitmap.CompressFormat.JPEG,
-                    100,
-                    stream
-                )
-                val response = awsHttpClient.put(uploadPhotoUrl) {
-                    body = tempFile.readBytes()
-                    headers.append(
-                        "Content-Type",
-                        "application/octet-stream"
+            try {
+                FileOutputStream(tempFile).use { stream ->
+                    bitmap.compress(
+                        Bitmap.CompressFormat.JPEG,
+                        100,
+                        stream
                     )
+                    val response = awsHttpClient.put(uploadPhotoUrl) {
+                        body = tempFile.readBytes()
+                        headers.append(
+                            "Content-Type",
+                            "application/octet-stream"
+                        )
+                    }
+                    tempFile.delete()
+                    bitmap.recycle()
+                    if (response.status.value == 200) {
+                        val imageUrl = response.request.url.toString().removeQueryParameters()
+                        return@withContext Success(
+                            imageUrl,
+                            code = "200",
+                            message = "Success Image Upload"
+                        )
+                    } else {
+                        return@withContext Resource.NetworkError(Exception("Image Upload Error"))
+                    }
                 }
-                if (response.status.value == 200) {
-                    val imageUrl = response.request.url.toString().removeQueryParameters()
-                    return@withContext Success(imageUrl, code = "200", message = "Success Image Upload")
-                }else{
-                    return@withContext Resource.NetworkError(Exception("Image Upload Error"))
-                }
+            } catch (e: Exception) {
+                tempFile.delete()
+                bitmap.recycle()
+                return@withContext Resource.NetworkError(e)
             }
         }
         return@withContext Resource.NetworkError(Exception("Network Error"))

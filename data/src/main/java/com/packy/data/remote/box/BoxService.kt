@@ -23,7 +23,7 @@ class BoxService @Inject constructor(
 
     suspend fun createBox(
         createBoxRequest: CreateBoxRequest
-    ): Resource<CreateBoxDto> = httpClient.post("/api/v1/giftbox") {
+    ): Resource<CreateBoxDto> = httpClient.post("/api/v1/giftboxes") {
         contentType(ContentType.Application.Json)
         setBody(createBoxRequest)
     }.toResource()

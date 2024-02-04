@@ -1,15 +1,18 @@
 package com.packy.root.deeplink
 
 import android.content.Intent
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
+import com.packy.feature.main.R
 import com.packy.root.LaunchScreen
 import com.packy.root.navigation.MainRoute
 
 fun NavGraphBuilder.deepLinkNavGraph(
     navController: NavHostController,
+    kakaoLinkScheme: String
 ) {
 
     composable(
@@ -27,10 +30,14 @@ fun NavGraphBuilder.deepLinkNavGraph(
             navDeepLink {
                 uriPattern = DeepLinkRoute.GIFT_BOX_OPEN_LINK
                 action = Intent.ACTION_VIEW
+            },
+            navDeepLink {
+                uriPattern = "kakao$kakaoLinkScheme://kakaolink?boxId={boxId}"
+                action = Intent.ACTION_VIEW
             }
         )
     ) { backStackEntry ->
-        val boxId = backStackEntry.arguments?.getString("id")
+        val boxId = backStackEntry.arguments?.getString("boxId")
         boxId?.let {
             val deepLinkController = DeepLinkController.OpenBox(it)
             LaunchScreen(

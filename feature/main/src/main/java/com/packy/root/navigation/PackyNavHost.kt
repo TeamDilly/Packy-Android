@@ -15,6 +15,7 @@ fun PackyNavHost(
     navController: NavHostController,
     closeCreateBox: () -> Unit,
     startDestination: String,
+    kakaoLinkScheme: String,
     loggedIn: () -> Unit
 ) {
     NavHost(
@@ -25,6 +26,7 @@ fun PackyNavHost(
 
         deepLinkNavGraph(
             navController,
+            kakaoLinkScheme
         )
         onboardingNavGraph(
             navController,

@@ -2,6 +2,7 @@ package com.packy.createbox.boxguide
 
 import android.net.Uri
 import com.packy.core.values.Strings
+import com.packy.core.widget.youtube.YoutubeState
 import com.packy.createbox.common.boxDesign
 import com.packy.createbox.common.envelop
 import com.packy.createbox.common.gift
@@ -108,14 +109,15 @@ class BoxGuideViewModel @Inject constructor(
         val createBoxEnvelopeId = createBox.envelopeId
         val createBoxEnvelopeUrl = createBox.envelopeUrl
 
-        val letter = if (createBoxLetterContent != null && createBoxEnvelopeId != null && createBoxEnvelopeUrl != null)
-            Letter(
-                letterContent = createBoxLetterContent,
-                envelope = Envelope(
-                    envelopeId = createBoxEnvelopeId,
-                    envelopeUrl = createBoxEnvelopeUrl
-                )
-            ) else null
+        val letter =
+            if (createBoxLetterContent != null && createBoxEnvelopeId != null && createBoxEnvelopeUrl != null)
+                Letter(
+                    letterContent = createBoxLetterContent,
+                    envelope = Envelope(
+                        envelopeId = createBoxEnvelopeId,
+                        envelopeUrl = createBoxEnvelopeUrl
+                    )
+                ) else null
 
         val boxDesign = getBoxDesignUseCase.getBoxDesignLocal()
             .distinctUntilChanged()
@@ -175,7 +177,10 @@ class BoxGuideViewModel @Inject constructor(
     private fun saveLetterBoxGuideState(): suspend (BoxGuideState, BoxGuideIntent.SaveLetter) -> BoxGuideState =
         { state, intent ->
             createBoxUseCase.letterContent(intent.letter.letterContent)
-            createBoxUseCase.envelop(intent.letter.envelope.envelopeId, intent.letter.envelope.envelopeUrl)
+            createBoxUseCase.envelop(
+                intent.letter.envelope.envelopeId,
+                intent.letter.envelope.envelopeUrl
+            )
             state.copy(letter = intent.letter)
         }
 
@@ -195,4 +200,9 @@ class BoxGuideViewModel @Inject constructor(
             state.copy(photo = photo)
         }
 
+    fun musicStop() {
+        setState(
+            currentState.copy(youtubeState = YoutubeState.PAUSED)
+        )
+    }
 }

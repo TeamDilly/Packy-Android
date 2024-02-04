@@ -1,7 +1,10 @@
 package com.packy.common.kakaoshare
 
 import android.content.ActivityNotFoundException
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
@@ -15,64 +18,32 @@ import javax.inject.Singleton
 @Singleton
 class KakaoShare @Inject constructor() {
 
-    @OptIn(InternalCoroutinesApi::class)
-    suspend fun sendGiftBox(
+    fun sendGiftBox(
         kakaoCustomFeed: KakaoCustomFeed,
-        context: Context
-    ): Resource<Unit> = suspendCancellableCoroutine { conrinuation ->
+        context: Context,
+        sharedCallBack: (Resource<String?>) -> Unit,
+    ){
         if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
-            // 카카오톡으로 카카오톡 공유 가능
             ShareClient.instance.shareCustom(
                 context = context,
                 templateId = CUSTOM_FEED_ID,
-                templateArgs = kakaoCustomFeed.toFeedArgs()
+                templateArgs = kakaoCustomFeed.toFeedArgs(),
             ) { sharingResult, error ->
                 if (error != null) {
-                    conrinuation.tryResume(Resource.NetworkError(error))
+                    sharedCallBack(Resource.NetworkError(error))
                 } else if (sharingResult != null) {
-                    conrinuation.tryResume(
+                    context.startActivity(sharingResult.intent)
+                    sharedCallBack(
                         Resource.Success(
-                            data = Unit,
+                            data = sharingResult.intent.action,
                             message = "카카오톡 공유 성공",
                             code = "200"
                         )
                     )
                 }
-                conrinuation.cancel()
             }
         } else {
-            val sharerUrl = WebSharerClient.instance.makeCustomUrl(
-                templateId = CUSTOM_FEED_ID,
-                templateArgs = kakaoCustomFeed.toFeedArgs()
-            )
-
-            try {
-                KakaoCustomTabsClient.openWithDefault(
-                    context,
-                    sharerUrl
-                )
-                conrinuation.tryResume(
-                    Resource.Success(
-                        data = Unit,
-                        message = "카카오톡 공유 성공",
-                        code = "200"
-                    )
-                )
-            } catch (e: UnsupportedOperationException) {
-                conrinuation.tryResume(Resource.NetworkError(e))
-                conrinuation.cancel()
-            }
-
-            try {
-                KakaoCustomTabsClient.open(
-                    context,
-                    sharerUrl
-                )
-            } catch (e: ActivityNotFoundException) {
-                conrinuation.tryResume(Resource.NetworkError(e))
-                conrinuation.cancel()
-            }
-            conrinuation.cancel()
+            sharedCallBack(Resource.NetworkError(Exception("카카오톡이 없음")))
         }
     }
 

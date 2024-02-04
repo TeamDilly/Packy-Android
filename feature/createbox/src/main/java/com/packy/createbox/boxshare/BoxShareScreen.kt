@@ -1,5 +1,9 @@
 package com.packy.createbox.boxshare
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -10,9 +14,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -28,6 +34,8 @@ import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.lib.utils.Resource
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -38,21 +46,51 @@ fun BoxShareScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val kakaoShare = KakaoShare()
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    LaunchedEffect(viewModel) {
-        viewModel.initState()
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                BoxShareEffect.FailedShare -> TODO()
-                BoxShareEffect.SuccessShare -> TODO()
-                is BoxShareEffect.KakaoShare -> {
-                    val sharedResource = kakaoShare.sendGiftBox(
-                        context = context,
-                        kakaoCustomFeed = effect.kakaoCustomFeed
-                    )
-                    viewModel.kakaoShare(sharedResource)
+    DisposableEffect(
+        context,
+        viewModel
+    ) {
+        val broadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(
+                context: Context?,
+                intent: Intent?
+            ) {
+                println("LOGEE onReceive")
+                println("LOGEE intent: $intent")
+                println("LOGEE context: $context")
+            }
+        }
+        scope.launch {
+            viewModel.initState()
+            viewModel.effect.collect { effect ->
+                when (effect) {
+                    BoxShareEffect.FailedShare -> println("LOGEE FailedShare")
+                    BoxShareEffect.SuccessShare -> println("LOGEE SuccessShare")
+                    is BoxShareEffect.KakaoShare -> {
+                        kakaoShare.sendGiftBox(
+                            context = context,
+                            kakaoCustomFeed = effect.kakaoCustomFeed,
+                            sharedCallBack = {
+                                if (it is Resource.Success) {
+                                    println("LOGEE SuccessShare ${it.data}")
+                                    val filter = IntentFilter(it.data)
+                                    context.registerReceiver(
+                                        broadcastReceiver,
+                                        filter
+                                    )
+                                } else {
+                                    viewModel.kakaoShare(it)
+                                }
+                            }
+                        )
+                    }
                 }
             }
+        }
+        onDispose {
+            context.unregisterReceiver(broadcastReceiver)
         }
     }
 

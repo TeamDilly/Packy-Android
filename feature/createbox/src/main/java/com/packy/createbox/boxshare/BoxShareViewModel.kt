@@ -54,7 +54,7 @@ class BoxShareViewModel @Inject constructor(
         )
     }
 
-    fun kakaoShare(shared: Resource<Unit>) {
+    fun kakaoShare(shared: Resource<String?>) {
         when (shared) {
             is Resource.Success -> sendEffect(BoxShareEffect.SuccessShare)
             is Resource.NetworkError,

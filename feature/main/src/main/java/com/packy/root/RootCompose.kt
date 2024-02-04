@@ -19,11 +19,11 @@ fun RootCompose(
     navController: NavHostController,
     viewModel: RootComposeViewModel = hiltViewModel()
 ) {
-    val kakaoLinkScheme = stringResource(id = com.packy.feature.main.R.string.kakao_link_scheme)
+    val kakaoLinkScheme = stringResource(id = R.string.kakao_link_scheme)
     PackyNavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = MainRoute.LAUNCH_ROUTE,
+        startDestination = MainRoute.LAUNCH_NAV_GRAPH,
         loggedIn = {
             navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH) {
                 popUpTo(OnboardingRoute.ONBOARDING_NAV_GRAPH) {

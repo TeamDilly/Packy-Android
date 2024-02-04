@@ -74,7 +74,6 @@ fun BoxShareScreen(
                             kakaoCustomFeed = effect.kakaoCustomFeed,
                             sharedCallBack = {
                                 if (it is Resource.Success) {
-                                    println("LOGEE SuccessShare ${it.data}")
                                     val filter = IntentFilter(it.data)
                                     context.registerReceiver(
                                         broadcastReceiver,

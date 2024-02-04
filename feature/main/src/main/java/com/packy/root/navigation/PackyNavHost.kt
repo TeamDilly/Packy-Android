@@ -43,6 +43,8 @@ fun PackyNavHost(
 }
 
 object MainRoute {
+    const val LAUNCH_NAV_GRAPH = "launchNavGraph"
     const val LAUNCH_ROUTE = "launchRoute"
     const val LAUNCH_ROUTE_OPEN_BOX = "launchRouteOpenBox"
+    fun getLaunchOpenBox(boxId: String) = "$LAUNCH_ROUTE_OPEN_BOX/{$boxId}"
 }

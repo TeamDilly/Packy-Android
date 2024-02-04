@@ -1,6 +1,8 @@
 package com.example.giftbox.boxroot
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ID_ARG
 import com.packy.domain.model.box.BoxId
 import com.packy.domain.usecase.box.GetBoxUseCase
 import com.packy.lib.utils.Resource
@@ -15,12 +17,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GiftBoxRootViewModel @Inject constructor(
-    private val getBoxUseCase: GetBoxUseCase
+    private val getBoxUseCase: GetBoxUseCase,
+    savedStateHandle: SavedStateHandle
 ) :
     MviViewModel<GiftBoxRootIntent, GiftBoxRootState, GiftBoxRootEffect>() {
     override fun createInitialState(): GiftBoxRootState = GiftBoxRootState
 
     override fun handleIntent() {}
+
+    init {
+        savedStateHandle.get<String>(GIFT_BOX_ID_ARG)?.let {
+            getGiftBox(it)
+        } ?: run{
+            sendEffect(GiftBoxRootEffect.FailToGetGIftBox)
+        }
+    }
 
     fun getGiftBox(boxId: String) {
         viewModelScope.launch(Dispatchers.IO) {

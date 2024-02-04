@@ -22,11 +22,9 @@ import kotlinx.serialization.json.Json
 fun GiftBoxRootScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    boxId: String,
     viewModel: GiftBoxRootViewModel = hiltViewModel()
 ) {
     LaunchedEffect(viewModel) {
-        viewModel.getGiftBox(boxId)
         viewModel.effect.collect { effect ->
             when (effect) {
                 GiftBoxRootEffect.FailToGetGIftBox -> navController.navigate(

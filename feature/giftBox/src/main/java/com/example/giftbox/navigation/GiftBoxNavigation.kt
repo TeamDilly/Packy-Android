@@ -1,39 +1,35 @@
 package com.example.giftbox.navigation
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.giftbox.boxdetailopen.GiftBoxDetailOpenScreen
 import com.example.giftbox.boxerror.GiftBoxErrorScreen
 import com.example.giftbox.boxmotion.GiftBoxMotionScreen
 import com.example.giftbox.boxroot.GiftBoxRootScreen
 import com.example.giftbox.giftarr.GiftBoxArrScreen
-import com.example.giftbox.giftarr.GiftBoxArrViewModel
 import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ARG
+import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ID_ARG
 import com.packy.core.animations.asPagingComposable
 import com.packy.core.animations.asRootComposable
 import com.packy.domain.model.getbox.GiftBox
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-fun NavGraphBuilder.gitBoxNavGraph(
+fun NavGraphBuilder.giftBoxNavGraph(
     navController: NavHostController,
-    boxId: String
 ) {
     navigation(
         startDestination = GiftBoxRoute.GIFT_BOX_ROOT,
         route = GiftBoxRoute.GIFT_BOX_NAV_GRAPH
     ) {
+
         asRootComposable(
-            route = GiftBoxRoute.GIFT_BOX_ROOT
+            route = GiftBoxRoute.GIFT_BOX_ROOT + "/{$GIFT_BOX_ID_ARG}"
         ) {
             GiftBoxRootScreen(
                 navController = navController,
-                boxId = boxId
             )
         }
         asPagingComposable(
@@ -84,6 +80,7 @@ object GiftBoxRoute {
     const val GIFT_BOX_MOTION = "giftBoxMotion"
     const val GIFT_BOX_DETAIL_OPEN = "giftBoxDetailOpen"
 
+    const val GIFT_BOX_ID_ARG = "giftBoxIdArg"
     const val GIFT_BOX_ARG = "giftBoxArg"
 
     fun getGiftBoxMotionRoute(giftBox: GiftBox): String {

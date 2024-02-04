@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import com.example.giftbox.navigation.GiftBoxRoute
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.onboarding.navigation.OnboardingRoute
+import com.packy.root.navigation.MainRoute
 import com.packy.root.navigation.PackyNavHost
 
 @Composable
@@ -16,15 +17,10 @@ fun RootCompose(
     navController: NavHostController,
     viewModel: RootComposeViewModel = hiltViewModel()
 ) {
-    val startDestination = if (viewModel.checkUserStatusOnAppEntry() == UserState.REGISTERED) {
-        GiftBoxRoute.GIFT_BOX_NAV_GRAPH
-    } else {
-        OnboardingRoute.ONBOARDING_NAV_GRAPH
-    }
     PackyNavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = startDestination,
+        startDestination = MainRoute.LAUNCH_ROUTE,
         loggedIn = {
             navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH) {
                 popUpTo(OnboardingRoute.ONBOARDING_NAV_GRAPH) {

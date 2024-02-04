@@ -4,9 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.example.giftbox.navigation.gitBoxNavGraph
+import com.example.giftbox.navigation.giftBoxNavGraph
 import com.packy.createbox.navigation.createBoxNavGraph
 import com.packy.onboarding.navigation.onboardingNavGraph
+import com.packy.root.deeplink.deepLinkNavGraph
 
 @Composable
 fun PackyNavHost(
@@ -21,6 +22,10 @@ fun PackyNavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
+
+        deepLinkNavGraph(
+            navController,
+        )
         onboardingNavGraph(
             navController,
             loggedIn
@@ -29,9 +34,13 @@ fun PackyNavHost(
             navController,
             closeCreateBox
         )
-        gitBoxNavGraph(
+        giftBoxNavGraph(
             navController,
-            boxId = "1"
         )
     }
+}
+
+object MainRoute {
+    const val LAUNCH_ROUTE = "launchRoute"
+    const val LAUNCH_ROUTE_OPEN_BOX = "launchRouteOpenBox"
 }

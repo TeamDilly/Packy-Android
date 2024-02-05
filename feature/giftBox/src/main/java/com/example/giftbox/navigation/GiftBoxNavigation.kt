@@ -83,6 +83,10 @@ object GiftBoxRoute {
     const val GIFT_BOX_ID_ARG = "giftBoxIdArg"
     const val GIFT_BOX_ARG = "giftBoxArg"
 
+    fun getGiftBoxRootRoute(giftBoxId: Long): String {
+        return "$GIFT_BOX_ROOT/$giftBoxId"
+    }
+
     fun getGiftBoxMotionRoute(giftBox: GiftBox): String {
         val giftBoxJson = Json.encodeToString(giftBox.toUrlEncoding())
         return "${GIFT_BOX_MOTION}/$giftBoxJson"

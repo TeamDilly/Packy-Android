@@ -36,12 +36,7 @@ fun NavGraphBuilder.asPagingComposable(
             animationSpec = tween(300)
         )
     },
-    exitTransition = {
-        slideOutOfContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Left,
-            animationSpec = tween(300)
-        )
-    },
+    exitTransition = null,
     popEnterTransition = null,
     popExitTransition = {
         slideOutOfContainer(
@@ -67,12 +62,7 @@ fun NavGraphBuilder.asRootComposable(
             animationSpec = tween(300)
         )
     },
-    exitTransition = {
-        slideOutOfContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Up,
-            animationSpec = tween(300)
-        )
-    },
+    exitTransition = null,
     popEnterTransition = null,
     popExitTransition = {
         slideOutOfContainer(
@@ -97,11 +87,7 @@ fun NavGraphBuilder.asFadeInComposable(
             animationSpec = tween(300)
         )
     },
-    exitTransition = {
-        fadeOut(
-            animationSpec = tween(300)
-        )
-    },
+    exitTransition = null,
     popEnterTransition = null,
     popExitTransition = {
         fadeOut(

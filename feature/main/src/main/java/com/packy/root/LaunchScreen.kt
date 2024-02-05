@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.home.navigation.HomeRoute
 import com.packy.core.theme.PackyTheme
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
@@ -31,7 +32,7 @@ fun LaunchScreen(
 
     LaunchedEffect(null) {
         val startDestination = if (viewModel.checkUserStatusOnAppEntry() == UserState.REGISTERED) {
-            CreateBoxRoute.CREATE_BOX_NAV_GRAPH
+            HomeRoute.HOME_NAV_GRAPH
         } else {
             OnboardingRoute.ONBOARDING_NAV_GRAPH
         }
@@ -46,7 +47,7 @@ fun LaunchScreen(
             }
 
             is DeepLinkController.OpenBox -> {
-                navController.navigate(GiftBoxRoute.GIFT_BOX_ROOT + "/${deepLinkController.boxId}"){
+                navController.navigate(GiftBoxRoute.GIFT_BOX_ROOT + "/${deepLinkController.boxId}") {
                 }
             }
         }

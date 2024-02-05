@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.home.navigation.HomeRoute
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.main.R
 import com.packy.onboarding.navigation.OnboardingRoute
@@ -32,8 +33,17 @@ fun RootCompose(
             }
         },
         closeCreateBox = {
-            // FIXME : 박스만들기 이탈화면 구현 필요
+            navController.navigate(HomeRoute.HOME_NAV_GRAPH) {
+                popUpTo(HomeRoute.HOME_NAV_GRAPH) { inclusive = true }
+                launchSingleTop = true
+            }
         },
-        kakaoLinkScheme = kakaoLinkScheme
+        moveToBoxDetail = {
+            navController.navigate(GiftBoxRoute.getGiftBoxRootRoute(it))
+        },
+        moveToCreateBox = {
+            navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH)
+        },
+        kakaoLinkScheme = kakaoLinkScheme,
     )
 }

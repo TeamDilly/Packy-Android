@@ -11,6 +11,7 @@ object Strings {
     const val INPUT_MAX_LENGTH_12 = "12자 이내로 입력해주세요"
     const val OPEN = "열어보기"
     const val CONTACT_US = "문의하기"
+    const val MORE = "더보기"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
@@ -33,6 +34,9 @@ object Strings {
     const val TERMS_AGREEMENT_SERVICE_ALLOW = "(필수) 서비스 이용약관"
     const val TERMS_AGREEMENT_PERSONAL_ALLOW = "(필수) 개인정보 수집 및 이용안내"
     const val TERMS_AGREEMENT_NOTIFICATION_ALLOW = "(선택) 이벤트 및 마케팅 수신 동의"
+
+    // home
+    const val HOME_GIFT_BOXES = "주고받은 선물박스"
 
     // box add info
     const val BOX_ADD_INFO_TITLE = "패키와 함께 마음을 담은\n선물박스를 만들어볼까요?"

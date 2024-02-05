@@ -8,5 +8,6 @@ data class HomeBox(
     @SerialName("boxId") val boxId: Long,
     @SerialName("boxImageUrl") val boxImageUrl: String,
     @SerialName("sender") val sender: String,
-    @SerialName("title") val title: String
+    @SerialName("title") val title: String,
+    @SerialName("giftBoxDate") val giftBoxDate: String
 )

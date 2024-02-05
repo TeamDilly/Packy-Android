@@ -53,6 +53,7 @@ fun HomeScreen(
     val giftBoxes = uiState.giftBoxes
 
     LaunchedEffect(viewModel) {
+        viewModel.getGiftBoxse()
         viewModel.effect.collect { effect ->
             when (effect) {
                 is HomeEffect.MoveToSetting -> {
@@ -111,7 +112,8 @@ fun HomeScreen(
             ) {
                 Spacer(height = 24.dp)
                 HomeGiftBoxes(
-                    giftBoxes = giftBoxes
+                    giftBoxes = giftBoxes,
+                    onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnMoreBoxClick) }
                 )
                 Spacer(height = 24.dp)
             }
@@ -120,10 +122,14 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeGiftBoxes(giftBoxes: List<HomeBox>) {
+private fun HomeGiftBoxes(
+    giftBoxes: List<HomeBox>,
+    onMoreClick: () -> Unit = {}
+) {
     GiftBoxesTitle(
         modifier = Modifier
-            .padding(24.dp)
+            .padding(24.dp),
+        onMoreClick = onMoreClick
     )
     LazyRow(
         verticalAlignment = Alignment.Top,
@@ -179,7 +185,8 @@ private fun GiftBoxItem(
 
 @Composable
 private fun GiftBoxesTitle(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onMoreClick: () -> Unit = {}
 ) {
     Row(
         modifier
@@ -191,6 +198,7 @@ private fun GiftBoxesTitle(
         )
         Spacer(1f)
         Text(
+            modifier = Modifier.clickableWithoutRipple { onMoreClick() },
             text = Strings.MORE,
             style = PackyTheme.typography.body03,
             color = PackyTheme.color.gray900,

@@ -94,7 +94,7 @@ fun SettingsScreen(
                 onClick = viewModel::emitIntentThrottle
             )
             Row(
-                modifier = Modifier.padding(horizontal = 24.dp),
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
             ) {
                 Text(
                     text = Strings.VERSION,
@@ -104,7 +104,7 @@ fun SettingsScreen(
                 Spacer(2.dp)
                 Text(
                     text = BuildConfig.VERSION_NAME,
-                    style = PackyTheme.typography.body02,
+                    style = PackyTheme.typography.body04,
                     color = PackyTheme.color.gray600
                 )
             }

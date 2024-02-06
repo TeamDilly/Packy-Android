@@ -38,6 +38,10 @@ object Strings {
     // home
     const val HOME_GIFT_BOXES = "주고받은 선물박스"
 
+    // settings
+    const val ACCOUNT_MANAGE = "계정 관리"
+    const val LOGOUT = "로그아웃"
+
     // box add info
     const val BOX_ADD_INFO_TITLE = "패키와 함께 마음을 담은\n선물박스를 만들어볼까요?"
     const val BOX_ADD_INFO_DESCRIPTION = "보내는 사람과 받는 사람의 이름을 적어주세요"

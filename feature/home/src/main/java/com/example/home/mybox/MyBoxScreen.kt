@@ -4,10 +4,14 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -29,24 +33,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.packy.common.authenticator.ext.toFormatString
 import com.packy.core.common.NoRippleTheme
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
-import com.packy.domain.model.getbox.GiftBox
 import com.packy.domain.model.home.HomeBox
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
@@ -64,13 +71,15 @@ fun MyBoxScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val sendBox: LazyPagingItems<HomeBox> =
-        viewModel.uiState.map { it.receiveBox }.collectAsLazyPagingItems()
-    val receiveBox: LazyPagingItems<HomeBox> =
         viewModel.uiState.map { it.sendBox }.collectAsLazyPagingItems()
+    val receiveBox: LazyPagingItems<HomeBox> =
+        viewModel.uiState.map { it.receiveBox }.collectAsLazyPagingItems()
 
     val pagerState = rememberPagerState(pageCount = { 2 })
 
     LaunchedEffect(viewModel) {
+        viewModel.getReceiveBoxes()
+        viewModel.getSendBoxes()
         viewModel.effect.collect { effect ->
             when (effect) {
                 is MyBoxEffect.MoveToBack -> navController.popBackStack()
@@ -120,7 +129,8 @@ fun MyBoxScreen(
                         boxes = sendBox,
                         moveToCreateBox = moveToCreateBox,
                         moveToBoxDetail = moveToBoxDetail,
-                        emptyText = Strings.HOME_MY_BOX_EMPTY_SEND_BOX
+                        emptyText = Strings.HOME_MY_BOX_EMPTY_SEND_BOX,
+                        nameTag = Strings.BOX_ADD_INFO_SENDER
                     )
 
                     MyBoxType.RECEIVE.ordinal -> MyBoxList(
@@ -128,7 +138,8 @@ fun MyBoxScreen(
                         boxes = receiveBox,
                         moveToCreateBox = moveToCreateBox,
                         moveToBoxDetail = moveToBoxDetail,
-                        emptyText = Strings.HOME_MY_BOX_EMPTY_RECEIVE_BOX
+                        emptyText = Strings.HOME_MY_BOX_EMPTY_RECEIVE_BOX,
+                        nameTag = Strings.BOX_ADD_INFO_RECEIVER
                     )
                 }
             }
@@ -143,6 +154,7 @@ private fun MyBoxList(
     moveToCreateBox: () -> Unit,
     moveToBoxDetail: (Long) -> Unit,
     emptyText: String,
+    nameTag: String
 ) {
     val state: LazyGridState = rememberLazyGridState()
 
@@ -154,14 +166,92 @@ private fun MyBoxList(
         )
     } else {
         LazyVerticalGrid(
-            modifier = modifier,
+            modifier = modifier
+                .background(color = PackyTheme.color.gray100),
+            contentPadding = PaddingValues(24.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             state = state,
-            columns = GridCells.Fixed(3),
+            columns = GridCells.Fixed(2),
         ) {
             items(boxes.itemCount) { index ->
-
+                val box = boxes[index] ?: return@items
+                MyBoxItem(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    moveToBoxDetail = moveToBoxDetail,
+                    box = box,
+                    nameTag = nameTag
+                )
             }
         }
+    }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+private fun MyBoxItem(
+    modifier: Modifier = Modifier,
+    moveToBoxDetail: (Long) -> Unit,
+    box: HomeBox,
+    nameTag: String
+) {
+    Column(
+        modifier = modifier
+            .background(
+                color = PackyTheme.color.white,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .clickableWithoutRipple {
+                moveToBoxDetail(box.boxId)
+            },
+    ) {
+        Spacer(height = 16.dp)
+        GlideImage(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .align(Alignment.CenterHorizontally),
+            model = box.boxImageUrl,
+            contentDescription = "Box Image",
+            contentScale = ContentScale.Crop,
+            alignment = Alignment.Center
+        )
+        Spacer(height = 12.dp)
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            text = nameTag + box.sender,
+            style = PackyTheme.typography.body06,
+            color = PackyTheme.color.purple500,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Spacer(height = 4.dp)
+        Text(
+            modifier = Modifier
+                .height(44.dp)
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            text = box.title,
+            style = PackyTheme.typography.body03,
+            color = PackyTheme.color.gray900,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            text = box.giftBoxDate.toFormatString(),
+            style = PackyTheme.typography.body06,
+            color = PackyTheme.color.gray600,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Spacer(height = 16.dp)
     }
 }
 

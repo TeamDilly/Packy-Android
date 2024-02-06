@@ -4,7 +4,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navigation
 import com.example.home.home.HomeScreen
+import com.example.home.mybox.MyBoxScreen
 import com.example.home.navigation.HomeRoute.HOME
+import com.example.home.navigation.HomeRoute.MY_BOX
 import com.example.home.settings.SettingsScreen
 import com.packy.core.animations.asPagingComposable
 import com.packy.core.animations.asRootComposable
@@ -24,6 +26,15 @@ fun NavGraphBuilder.homeNavGraph(
             HomeScreen(
                 navController = navController,
                 moveToCreateBox = moveToCreateBox,
+                moveToBoxDetail = moveToBoxDetail
+            )
+        }
+
+        asRootComposable(
+            route = MY_BOX
+        ){
+            MyBoxScreen(
+                navController = navController,
                 moveToBoxDetail = moveToBoxDetail
             )
         }

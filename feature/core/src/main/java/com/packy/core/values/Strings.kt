@@ -40,6 +40,8 @@ object Strings {
     const val HOME_GIFT_BOXES = "주고받은 선물박스"
     const val HOME_CREATE_BOX_TITLE = "패키의 특별한 선물박스로\n더 특별하게 마음을 나눠보아요"
     const val HOME_CREATE_BUTTON = "선물박스 만들기"
+    const val HOME_MY_BOX_SEND = "보낸 선물박스"
+    const val HOME_MY_BOX_RECEIVE = "받은 선물박스"
 
     // settings
     const val ACCOUNT_MANAGE = "계정 관리"

@@ -6,9 +6,11 @@ import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
 
 sealed interface SettingsIntent : MviIntent {
-    data class OnWebSettingClick(val url: String): SettingsIntent
-    data object OnAccountManageClick: SettingsIntent
-    data object OnLogoutClick: SettingsIntent
+
+    data object OnBackClick : SettingsIntent
+    data class OnWebSettingClick(val url: String) : SettingsIntent
+    data object OnAccountManageClick : SettingsIntent
+    data object OnLogoutClick : SettingsIntent
 }
 
 data class SettingsState(
@@ -18,8 +20,9 @@ data class SettingsState(
 ) : UiState
 
 sealed interface SettingsEffect : SideEffect {
-    data object Logout: SettingsEffect
-    data class MoveToWeb(val url: String): SettingsEffect
+    data object Logout : SettingsEffect
+    data class MoveToWeb(val url: String) : SettingsEffect
 
-    data object MoveToAccountManage: SettingsEffect
+    data object MoveToAccountManage : SettingsEffect
+    data object MoveToBack : SettingsEffect
 }

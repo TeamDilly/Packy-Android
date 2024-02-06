@@ -36,7 +36,12 @@ fun NavGraphBuilder.asPagingComposable(
             animationSpec = tween(300)
         )
     },
-    exitTransition = null,
+    exitTransition = {
+        slideOutOfContainer(
+            towards = AnimatedContentTransitionScope.SlideDirection.Right,
+            animationSpec = tween(300)
+        )
+    },
     popEnterTransition = null,
     popExitTransition = {
         slideOutOfContainer(

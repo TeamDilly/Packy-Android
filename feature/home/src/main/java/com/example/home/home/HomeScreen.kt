@@ -1,5 +1,6 @@
 package com.example.home.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
@@ -26,6 +28,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,6 +40,8 @@ import com.packy.feature.core.R
 import com.example.home.navigation.HomeRoute
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.designsystem.button.PackyButton
+import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
@@ -87,19 +93,52 @@ fun HomeScreen(
                 .windowInsetsPadding(WindowInsets.statusBars)
         ) {
             Spacer(height = 16.dp)
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(358.dp)
                     .padding(horizontal = 16.dp)
                     .background(
                         color = PackyTheme.color.gray900,
                         shape = RoundedCornerShape(16.dp)
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(top = 36.dp),
+                    text = Strings.HOME_CREATE_BOX_TITLE,
+                    style = PackyTheme.typography.body01,
+                    color = PackyTheme.color.white,
+                    textAlign = TextAlign.Center,
+                )
+                Image(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .height(154.dp),
+                    painter = painterResource(id = com.example.home.R.drawable.home_create_box),
+                    contentDescription = "create box",
+                )
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 24.dp)
+                        .padding(horizontal = 24.dp)
+                        .fillMaxWidth()
+                        .background(
+                            color = PackyTheme.color.white,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .clickableWithoutRipple { viewModel.emitIntentThrottle(HomeIntent.OnCrateBoxClick) },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = 14.dp),
+                        text = Strings.HOME_CREATE_BUTTON,
+                        style = PackyTheme.typography.body04,
+                        color = PackyTheme.color.gray900
                     )
-                    .clickableWithoutRipple {
-                        viewModel.emitIntentThrottle(HomeIntent.OnCrateBoxClick)
-                    }
-            )
+                }
+            }
             Spacer(height = 16.dp)
             Column(
                 modifier = Modifier

@@ -43,7 +43,6 @@ import com.packy.domain.model.createbox.Sticker
 import com.packy.mvi.ext.emitMviIntent
 import kotlinx.coroutines.flow.map
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CreateBoxStickerScreen(
     stickerIndex: Int,

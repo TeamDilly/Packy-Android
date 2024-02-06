@@ -30,11 +30,12 @@ fun NavGraphBuilder.homeNavGraph(
             )
         }
 
-        asRootComposable(
+        asPagingComposable(
             route = MY_BOX
         ){
             MyBoxScreen(
                 navController = navController,
+                moveToCreateBox = moveToCreateBox,
                 moveToBoxDetail = moveToBoxDetail
             )
         }

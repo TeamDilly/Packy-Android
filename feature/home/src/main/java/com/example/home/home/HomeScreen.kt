@@ -90,7 +90,6 @@ fun HomeScreen(
             modifier = modifier
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
-                .windowInsetsPadding(WindowInsets.statusBars)
         ) {
             Spacer(height = 16.dp)
             Column(

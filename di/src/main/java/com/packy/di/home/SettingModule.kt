@@ -2,9 +2,11 @@ package com.packy.di.home
 
 import com.packy.data.remote.home.SettingService
 import com.packy.data.repository.home.SettingRepositoryImp
+import com.packy.data.usecase.home.GetMyProfileUseCaseImp
 import com.packy.data.usecase.home.GetSettingUseCaseImp
 import com.packy.di.network.Packy
 import com.packy.domain.repository.home.SettingRepository
+import com.packy.domain.usecase.home.GetMyProfileUseCase
 import com.packy.domain.usecase.home.GetSettingUseCase
 import dagger.Binds
 import dagger.Module
@@ -34,4 +36,8 @@ abstract class SettingRepositoryModule {
 
     @Binds
     abstract fun bindSettingUseCase(useCase: GetSettingUseCaseImp): GetSettingUseCase
+
+    @Binds
+    abstract fun bindMyProfileUseCase(useCase: GetMyProfileUseCaseImp): GetMyProfileUseCase
+
 }

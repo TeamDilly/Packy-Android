@@ -13,5 +13,4 @@ class SettingService @Inject constructor(
     suspend fun getSettings(): Resource<List<SettingDto>> =
         httpClient.get(urlString = "/api/v1/admin/settings")
             .toResource()
-
 }

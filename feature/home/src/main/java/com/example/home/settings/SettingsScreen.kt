@@ -1,16 +1,12 @@
 package com.example.home.settings
 
-import android.widget.ImageView
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -32,13 +28,16 @@ import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
+import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.topbar.PackyTopBar
+import com.packy.core.page.navigation.CommonRoute
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.di.BuildConfig
 import com.packy.domain.model.settings.SettingItem
 import com.packy.feature.core.R
+import com.packy.lib.ext.toEncoding
 import com.packy.mvi.ext.emitMviIntent
-import kotlinx.coroutines.flow.callbackFlow
 
 @Composable
 fun SettingsScreen(
@@ -49,8 +48,19 @@ fun SettingsScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(viewModel) {
-        viewModel.getSetting(
-        )
+        viewModel.getSetting()
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                SettingsEffect.Logout -> TODO()
+                SettingsEffect.MoveToAccountManage -> TODO()
+                SettingsEffect.MoveToBack -> navController.popBackStack()
+                is SettingsEffect.MoveToWeb -> {
+                    navController.navigate(
+                        route = CommonRoute.getWebScreenRoute(effect.url.toEncoding())
+                    )
+                }
+            }
+        }
     }
 
     Scaffold(
@@ -81,8 +91,23 @@ fun SettingsScreen(
             SettingsDivier()
             ServerSettingItem(
                 settings = { uiState.settings },
-                onClick = { viewModel.emitIntentThrottle(it) }
+                onClick = viewModel::emitIntentThrottle
             )
+            Row(
+                modifier = Modifier.padding(horizontal = 24.dp),
+            ) {
+                Text(
+                    text = Strings.VERSION,
+                    style = PackyTheme.typography.body02,
+                    color = PackyTheme.color.gray900
+                )
+                Spacer(2.dp)
+                Text(
+                    text = BuildConfig.VERSION_NAME,
+                    style = PackyTheme.typography.body02,
+                    color = PackyTheme.color.gray600
+                )
+            }
             SettingsDivier()
             SettingItem(
                 title = Strings.LOGOUT,
@@ -136,7 +161,7 @@ private fun Profile(
 private fun SettingItem(
     modifier: Modifier = Modifier,
     title: String,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?,
 ) {
     Row(
         modifier = modifier
@@ -144,7 +169,10 @@ private fun SettingItem(
             .padding(
                 horizontal = 24.dp,
                 vertical = 12.dp
-            ),
+            )
+            .clickableWithoutRipple {
+                onClick?.invoke()
+            },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -155,11 +183,13 @@ private fun SettingItem(
             overflow = TextOverflow.Ellipsis
         )
         Spacer(1f)
-        Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.arrow_right),
-            contentDescription = null,
-            tint = PackyTheme.color.gray600
-        )
+        if(onClick != null) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.arrow_right),
+                contentDescription = null,
+                tint = PackyTheme.color.gray600
+            )
+        }
     }
 }
 

@@ -14,6 +14,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            defaultConfig {
+                buildConfigField(
+                    "String",
+                    "VERSION_NAME",
+                    "\"1.0.0\""
+                )
+            }
             buildConfigField(
                 "String",
                 "BASE_URL",
@@ -21,7 +28,7 @@ android {
             )
         }
     }
-    packaging{
+    packaging {
         resources {
             excludes.add("META-INF/INDEX.LIST")
         }

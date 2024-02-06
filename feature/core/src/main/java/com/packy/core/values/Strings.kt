@@ -12,6 +12,7 @@ object Strings {
     const val OPEN = "열어보기"
     const val CONTACT_US = "문의하기"
     const val MORE = "더보기"
+    const val VERSION = "버전"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"

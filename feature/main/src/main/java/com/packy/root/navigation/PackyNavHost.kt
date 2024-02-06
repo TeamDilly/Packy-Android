@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.giftbox.navigation.giftBoxNavGraph
 import com.example.home.navigation.homeNavGraph
+import com.packy.core.page.navigation.commonNavGraph
 import com.packy.createbox.navigation.createBoxNavGraph
 import com.packy.onboarding.navigation.onboardingNavGraph
 import com.packy.root.deeplink.deepLinkNavGraph
@@ -46,6 +47,9 @@ fun PackyNavHost(
             navController = navController,
             moveToCreateBox = moveToCreateBox,
             moveToBoxDetail = moveToBoxDetail
+        )
+        commonNavGraph(
+            navController = navController
         )
     }
 }

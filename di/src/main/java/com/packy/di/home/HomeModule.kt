@@ -2,9 +2,11 @@ package com.packy.di.home
 
 import com.packy.data.remote.home.HomeService
 import com.packy.data.repository.home.HomeRepositoryImp
+import com.packy.data.usecase.home.GetHomeBoxPaginationUseCaseImp
 import com.packy.data.usecase.home.GetHomeBoxUseCaseImp
 import com.packy.di.network.Packy
 import com.packy.domain.repository.home.HomeRepository
+import com.packy.domain.usecase.home.GetHomeBoxPaginationUseCase
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
 import dagger.Binds
 import dagger.Module
@@ -33,4 +35,7 @@ abstract class HomeRepositoryModule {
 
     @Binds
     abstract fun bindHomeUseCase(useCase: GetHomeBoxUseCaseImp): GetHomeBoxUseCase
+
+    @Binds
+    abstract fun bindGetHomeBoxPaginationUseCase(useCase: GetHomeBoxPaginationUseCaseImp): GetHomeBoxPaginationUseCase
 }

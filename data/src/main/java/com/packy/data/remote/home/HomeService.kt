@@ -13,7 +13,7 @@ class HomeService @Inject constructor(
     private val httpClient: HttpClient
 ) {
     suspend fun getHomoBoxes(
-        timestamp: String?,
+        timestamp: String? = null,
         type: String,
         size: Int = 6
     ): Resource<HomeBoxContentDto> =

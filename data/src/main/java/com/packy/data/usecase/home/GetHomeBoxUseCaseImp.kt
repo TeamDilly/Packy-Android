@@ -11,7 +11,6 @@ class GetHomeBoxUseCaseImp @Inject constructor(
     private val repository: HomeRepository
 ): GetHomeBoxUseCase {
     override suspend fun getHomeBox(): Flow<Resource<List<HomeBox>>> = repository.getHomeBox(
-        timestamp = null,
         type = "all",
         size = 6
     )

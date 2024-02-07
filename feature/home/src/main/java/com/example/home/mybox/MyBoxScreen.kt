@@ -159,7 +159,7 @@ private fun MyBoxList(
 ) {
     val state: LazyGridState = rememberLazyGridState()
 
-    if (boxes.itemCount == 0) {
+    if (boxes.itemCount == 0 && boxes.loadState.refresh.endOfPaginationReached) {
         EmptyMyBoxes(
             modifier = modifier,
             emptyText = emptyText,

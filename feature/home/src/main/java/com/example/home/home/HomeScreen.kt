@@ -157,7 +157,8 @@ fun HomeScreen(
                 Spacer(height = 24.dp)
                 HomeGiftBoxes(
                     giftBoxes = giftBoxes,
-                    onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnMoreBoxClick) }
+                    onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnMoreBoxClick) },
+                    moveToBoxDetail = { viewModel.emitIntentThrottle(HomeIntent.OnBoxDetailClick(it)) }
                 )
                 Spacer(height = 24.dp)
             }
@@ -167,11 +168,13 @@ fun HomeScreen(
 
 @Composable
 private fun HomeGiftBoxes(
+    modifier: Modifier = Modifier,
     giftBoxes: List<HomeBox>,
-    onMoreClick: () -> Unit = {}
+    onMoreClick: () -> Unit = {},
+    moveToBoxDetail: (Long) -> Unit,
 ) {
     GiftBoxesTitle(
-        modifier = Modifier
+        modifier = modifier
             .padding(24.dp),
         onMoreClick = onMoreClick
     )
@@ -184,7 +187,8 @@ private fun HomeGiftBoxes(
             GiftBoxItem(
                 modifier = Modifier
                     .width(120.dp),
-                homeBox = homeBox
+                homeBox = homeBox,
+                moveToBoxDetail = moveToBoxDetail
             )
         }
     }
@@ -194,10 +198,12 @@ private fun HomeGiftBoxes(
 @Composable
 private fun GiftBoxItem(
     modifier: Modifier = Modifier,
-    homeBox: HomeBox
+    homeBox: HomeBox,
+    moveToBoxDetail: (Long) -> Unit,
 ) {
     Column(
         modifier = modifier
+            .clickableWithoutRipple { moveToBoxDetail(homeBox.boxId) }
     ) {
         GlideImage(
             modifier = Modifier

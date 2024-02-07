@@ -30,17 +30,15 @@ fun GiftBoxRootScreen(
                 GiftBoxRootEffect.FailToGetGIftBox -> navController.navigate(
                     route = GiftBoxRoute.GIFT_BOX_ERROR,
                 ) {
-                    popUpTo(GiftBoxRoute.GIFT_BOX_ROOT) {
-                        inclusive = true
-                    }
+                    val currentRoute = navController.currentBackStackEntry?.destination?.route
+                    currentRoute?.let { popUpTo(it) { inclusive = true } }
                 }
 
                 is GiftBoxRootEffect.GetGiftBox -> {
                     val route = GiftBoxRoute.getGiftBoxArrRoute(effect.giftBox)
                     navController.navigate(route) {
-                        popUpTo(GiftBoxRoute.GIFT_BOX_ROOT) {
-                            inclusive = true
-                        }
+                        val currentRoute = navController.currentBackStackEntry?.destination?.route
+                        currentRoute?.let { popUpTo(it) { inclusive = true } }
                     }
                 }
             }

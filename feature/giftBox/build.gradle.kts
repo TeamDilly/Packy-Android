@@ -13,5 +13,6 @@ dependencies {
     implementation(project(":feature:core"))
     implementation(project(":common-android"))
     implementation(project(":lib"))
+    implementation(libs.lottie)
 }
 

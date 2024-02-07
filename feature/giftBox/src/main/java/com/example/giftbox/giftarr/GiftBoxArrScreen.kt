@@ -13,14 +13,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.giftbox.navigation.GiftBoxRoute
+import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
@@ -29,6 +38,8 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.GIFT_BOX_ARR_TITLE
 import com.packy.feature.core.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -37,7 +48,14 @@ fun GiftBoxArrScreen(
     navController: NavController,
     viewModel: GiftBoxArrViewModel = hiltViewModel()
 ) {
+    val scope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsState()
+    var lottiePlaying by remember { mutableStateOf(false) }
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(BoxOpenLottie.BOX_OPEN_1.lottie))
+    val progress by animateLottieCompositionAsState(
+        composition,
+        isPlaying = lottiePlaying
+    )
 
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
@@ -48,11 +66,16 @@ fun GiftBoxArrScreen(
                 )
 
                 GiftBoxArrEffect.MoveToOpenBox -> {
-                    val giftBox = uiState.giftBox
-                    if (giftBox != null) {
-                        navController.navigate(GiftBoxRoute.getGiftBoxMotionRoute(giftBox))
-                    } else {
-                        // TODO
+                    lottiePlaying = true
+                    scope.launch(Dispatchers.IO) {
+                        if (progress == 1f) {
+                            val giftBox = uiState.giftBox
+                            if (giftBox != null) {
+                                navController.navigate(GiftBoxRoute.getGiftBoxMotionRoute(giftBox))
+                            } else {
+                                // TODO
+                            }
+                        }
                     }
                 }
             }
@@ -104,10 +127,10 @@ fun GiftBoxArrScreen(
                 color = PackyTheme.color.gray900,
             )
             Spacer(height = 64.dp)
-            GlideImage(
+            LottieAnimation(
                 modifier = Modifier.size(240.dp),
-                model = uiState.giftBox?.box?.boxFull,
-                contentDescription = "BoxImage"
+                composition = composition,
+                progress = { progress },
             )
             Spacer(1f)
             PackyButton(

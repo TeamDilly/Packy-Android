@@ -57,19 +57,28 @@ fun BoxMotionScreen(
     boxId: Long?,
 ) {
 
-    Column(
+    Box(
         modifier = modifier
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(BoxOpenLottie.BOX_OPEN_1.lottie))
         val progress by animateLottieCompositionAsState(
             composition,
             isPlaying = true
         )
+
+        LottieAnimation(
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center),
+            composition = composition,
+            progress = { progress },
+        )
+
         Text(
-            modifier = Modifier.padding(bottom = 96.dp),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 104.dp),
             text = Strings.CREATE_BOX_MOTION_TITLE,
             style = PackyTheme.typography.heading01.copy(
                 textAlign = TextAlign.Center
@@ -77,15 +86,7 @@ fun BoxMotionScreen(
             color = PackyTheme.color.gray900,
         )
 
-        LottieAnimation(
-            modifier = Modifier
-                .width(232.dp)
-                .height(360.dp),
-            composition = composition,
-            progress = { progress },
-        )
-
-        if(progress == 1f) {
+        if (progress == 1f) {
             navController.navigate(CreateBoxRoute.BOX_GUIDE_FADE_IN) {
                 val currentRoute = navController.currentBackStackEntry?.destination?.route
                 currentRoute?.let { popUpTo(it) { inclusive = true } }

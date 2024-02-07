@@ -29,21 +29,15 @@ data class NonNullPrefItem<T>(
         )
     }
 
-    suspend fun clear(
-        key: String,
-        strategy: PrefStrategy
-    ) {
-        getPrefItem(strategy).clear(
+    suspend fun clear() {
+        getPrefItem(prefStrategy).clear(
             key,
             type
         )
     }
 
-    suspend fun clearAll(
-        key: String,
-        strategy: PrefStrategy
-    ) {
-        getPrefItem(strategy).clearAll()
+    suspend fun reset(){
+        getPrefItem(prefStrategy).reset(key, defaultValue)
     }
 
     private fun getPrefItem(strategy: PrefStrategy) = when (strategy) {

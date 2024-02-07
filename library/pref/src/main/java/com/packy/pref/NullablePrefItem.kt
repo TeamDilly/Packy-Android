@@ -15,36 +15,52 @@ data class NullablePrefItem<T>(
 ) {
 
     suspend fun putData(data: T) {
-        getPrefItem(prefStrategy).forEach {
-            it.put(key, data)
-        }
+        getPrefItem(prefStrategy).put(
+            key,
+            data
+        )
     }
 
     suspend fun getData(): Flow<T?> {
         getPrefItem(prefStrategy)
-        val memoryResult = memoryNullablePref.get(key, defaultValue, type).first()
+        val memoryResult = memoryNullablePref.get(
+            key,
+            defaultValue,
+            type
+        ).first()
 
         return if (memoryResult == defaultValue) {
-            dataStoreNullablePref.get(key, defaultValue, type)
+            dataStoreNullablePref.get(
+                key,
+                defaultValue,
+                type
+            )
         } else {
-            memoryNullablePref.get(key, defaultValue, type)
+            memoryNullablePref.get(
+                key,
+                defaultValue,
+                type
+            )
         }
     }
 
-    suspend fun clear(key: String, strategy: PrefStrategy) {
-        getPrefItem(strategy).forEach {
-            it.clear(key, type)
-        }
+    suspend fun clear() {
+        getPrefItem(prefStrategy).clear(
+            key,
+            type
+        )
     }
 
-    suspend fun clearAll(key: String, strategy: PrefStrategy) {
-        getPrefItem(strategy).forEach {
-            it.clearAll()
-        }
+    suspend fun reset() {
+        getPrefItem(prefStrategy).reset(
+            key,
+            defaultValue
+        )
     }
+
 
     private fun getPrefItem(strategy: PrefStrategy) = when (strategy) {
-        PrefStrategy.MEMORY_ONLY -> listOf(memoryNullablePref)
-        PrefStrategy.FILE_ONLY -> listOf(dataStoreNullablePref)
+        PrefStrategy.MEMORY_ONLY -> memoryNullablePref
+        PrefStrategy.FILE_ONLY -> dataStoreNullablePref
     }
 }

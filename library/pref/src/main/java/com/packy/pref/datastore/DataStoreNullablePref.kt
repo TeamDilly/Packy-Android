@@ -126,6 +126,13 @@ class DataStoreNullablePref(
         }
     }
 
+    override suspend fun <T> reset(
+        key: String,
+        defaultValue: T?
+    ) {
+        putToDataStore(key, defaultValue)
+    }
+
     override suspend fun clearAll() {
         dataStore.edit{ preferences ->
             preferences.clear()

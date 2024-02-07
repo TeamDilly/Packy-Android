@@ -30,6 +30,13 @@ class MemoryNonNullPref : NonNullPref {
         _memoryPref.update { map }
     }
 
+    override suspend fun <T> reset(
+        key: String,
+        defaultValue: T
+    ) {
+        put(key, defaultValue)
+    }
+
     override suspend fun clearAll() {
         val map = _memoryPref.value
         map.clear()

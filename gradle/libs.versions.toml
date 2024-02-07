@@ -46,6 +46,7 @@ ktor = "2.3.7"
 paging = "3.2.1"
 #https://mvnrepository.com/artifact/com.google.accompanist/accompanist-permissions
 permissions = "0.34.0"
+lottieVersion = "6.3.0"
 
 #test
 #https://mvnrepository.com/artifact/junit/junit
@@ -144,6 +145,9 @@ paging-common = { group = "androidx.paging", name = "paging-common", version.ref
 
 #permissions
 permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permissions" }
+
+#lottie
+lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieVersion" }
 
 [bundles]
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide", "compose-ui-util", "compose-lifeCycle"]

@@ -18,4 +18,5 @@ dependencies {
     implementation(libs.accompanist)
     implementation(libs.bundles.paging)
     implementation(libs.permissions)
+    implementation(libs.lottie)
 }

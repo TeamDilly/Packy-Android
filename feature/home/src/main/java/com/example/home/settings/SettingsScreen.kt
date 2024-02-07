@@ -17,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,6 +32,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.page.navigation.CommonRoute
 import com.packy.core.theme.PackyTheme
@@ -45,13 +49,17 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
+    var logOutDialog by remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(viewModel) {
         viewModel.getSetting()
         viewModel.effect.collect { effect ->
             when (effect) {
-                SettingsEffect.Logout -> TODO()
+                SettingsEffect.Logout -> {
+                    logOutDialog = true
+                }
+
                 SettingsEffect.MoveToAccountManage -> TODO()
                 SettingsEffect.MoveToBack -> navController.popBackStack()
                 is SettingsEffect.MoveToWeb -> {
@@ -61,6 +69,19 @@ fun SettingsScreen(
                 }
             }
         }
+    }
+
+    if (logOutDialog) {
+        PackyDialog(
+            title = Strings.LOGOUT_DIALOG_TITLE,
+            dismiss = Strings.CANCEL,
+            confirm = Strings.LOGOUT,
+            onConfirm = {
+                logOutDialog = false
+                viewModel.logout()
+            },
+            onDismiss = { logOutDialog = false }
+        )
     }
 
     Scaffold(
@@ -94,7 +115,11 @@ fun SettingsScreen(
                 onClick = viewModel::emitIntentThrottle
             )
             Row(
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+                modifier = Modifier.padding(
+                    horizontal = 24.dp,
+                    vertical = 12.dp
+                ),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = Strings.VERSION,
@@ -183,7 +208,7 @@ private fun SettingItem(
             overflow = TextOverflow.Ellipsis
         )
         Spacer(1f)
-        if(onClick != null) {
+        if (onClick != null) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.arrow_right),
                 contentDescription = null,

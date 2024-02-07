@@ -44,4 +44,8 @@ class SettingsViewModel @Inject constructor(
                 }
         }
     }
+
+    fun logout(){
+        //TODO
+    }
 }

@@ -39,7 +39,6 @@ fun PackyDialog(
         Column(
             modifier = Modifier
                 .width(294.dp)
-                .height(168.dp)
                 .background(
                     color = PackyTheme.color.white,
                     shape = RoundedCornerShape(16.dp)
@@ -70,7 +69,7 @@ fun PackyDialog(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .height(56.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -124,6 +123,21 @@ fun PackyDialogPreview() {
     PackyDialog(
         title = "Title",
         subTitle = "SubTitle",
+        dismiss = "Dismiss",
+        confirm = "Confirm",
+        onConfirm = {
+
+        },
+    ) {
+
+    }
+}
+
+@Composable
+@Preview
+fun PackyDialogNoSubTitlePreview() {
+    PackyDialog(
+        title = "Title",
         dismiss = "Dismiss",
         confirm = "Confirm",
         onConfirm = {

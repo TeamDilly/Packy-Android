@@ -13,6 +13,7 @@ object Strings {
     const val CONTACT_US = "문의하기"
     const val MORE = "더보기"
     const val VERSION = "버전"
+    const val CANCEL = "취소"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
@@ -20,6 +21,9 @@ object Strings {
 
     // login
     const val LOGIN_TITLE = "마음으로 채우는 특별한 선물박스"
+
+    // logout
+    const val LOGOUT_DIALOG_TITLE = "로그아웃 하시겠어요?"
 
     // signupNickName
     const val SIGNUP_NICK_NAME_TITLE = "패키에서 사용할\n닉네임을 입력해주세요"

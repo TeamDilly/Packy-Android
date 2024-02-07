@@ -21,8 +21,6 @@ class MyBoxViewModel @Inject constructor(
 ) :
     MviViewModel<MyBoxIntent, MyBoxState, MyBoxEffect>() {
 
-    private val updateStateMutex = Mutex()
-
     override fun createInitialState(): MyBoxState = MyBoxState(
         showTab = MyBoxType.SEND,
         sendBox = PagingData.empty(),

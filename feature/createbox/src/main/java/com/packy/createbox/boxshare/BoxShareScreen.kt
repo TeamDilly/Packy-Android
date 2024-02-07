@@ -57,9 +57,6 @@ fun BoxShareScreen(
                 context: Context?,
                 intent: Intent?
             ) {
-                println("LOGEE onReceive")
-                println("LOGEE intent: $intent")
-                println("LOGEE context: $context")
             }
         }
         scope.launch {

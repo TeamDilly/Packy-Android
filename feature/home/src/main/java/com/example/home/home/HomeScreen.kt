@@ -2,6 +2,7 @@ package com.example.home.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,7 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -56,10 +59,12 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val giftBoxes = uiState.giftBoxes
+    val giftBoxes by remember {
+        derivedStateOf { uiState.giftBoxes }
+    }
 
     LaunchedEffect(viewModel) {
-        viewModel.getGiftBoxse()
+        viewModel.getGiftBoxes()
         viewModel.effect.collect { effect ->
             when (effect) {
                 is HomeEffect.MoveToSetting -> {
@@ -172,16 +177,15 @@ private fun HomeGiftBoxes(
     LazyRow(
         verticalAlignment = Alignment.Top,
         contentPadding = PaddingValues(horizontal = 16.dp),
-
-        ) {
-        item { Spacer(width = 8.dp) }
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         items(giftBoxes) { homeBox ->
             GiftBoxItem(
-                modifier = Modifier,
+                modifier = Modifier
+                    .width(120.dp),
                 homeBox = homeBox
             )
         }
-        item { Spacer(width = 8.dp) }
     }
 }
 
@@ -213,7 +217,7 @@ private fun GiftBoxItem(
         Spacer(height = 4.dp)
         Text(
             text = homeBox.title,
-            style = PackyTheme.typography.body05,
+            style = PackyTheme.typography.body03,
             color = PackyTheme.color.gray900,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis

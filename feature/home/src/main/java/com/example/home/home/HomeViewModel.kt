@@ -2,10 +2,13 @@ package com.example.home.home
 
 import androidx.lifecycle.viewModelScope
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
+import com.packy.lib.utils.Resource
 import com.packy.lib.utils.filterSuccess
+import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,12 +28,13 @@ class HomeViewModel @Inject constructor(
         subscribeIntent<HomeIntent.OnMoreBoxClick> { sendEffect(HomeEffect.MoveToMoreBox) }
     }
 
-    fun getGiftBoxse() {
+    fun getGiftBoxes() {
         viewModelScope.launch(Dispatchers.IO) {
             getHomeBoxUseCase.getHomeBox()
                 .filterSuccess()
-                .collect {
-                    setState { HomeState(it.giftBoxes) }
+                .unwrapResource()
+                .collect { homeBox ->
+                    setState { state -> state.copy(giftBoxes = homeBox) }
                 }
         }
     }

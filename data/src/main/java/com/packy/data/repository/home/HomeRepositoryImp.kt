@@ -26,7 +26,7 @@ class HomeRepositoryImp @Inject constructor(
             type = type,
             size = size
         )
-        emit(homeBoxContentDto.map { it.content.map { it.toEntity() } })
+        emit(homeBoxContentDto.map { data -> data.content.map { it.toEntity() } })
     }
 
     override suspend fun getHomeBoxes(
@@ -34,7 +34,10 @@ class HomeRepositoryImp @Inject constructor(
     ): Flow<PagingData<HomeBox>> = Pager(
         config = PagingConfig(pageSize = 8),
         pagingSourceFactory = {
-            MyBoxPagingSource(homeService, type)
+            MyBoxPagingSource(
+                homeService,
+                type
+            )
         }
     ).flow
 }

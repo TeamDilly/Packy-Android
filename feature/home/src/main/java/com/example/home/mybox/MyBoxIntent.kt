@@ -21,7 +21,7 @@ enum class MyBoxType(val title: String) {
 data class MyBoxState(
     val showTab: MyBoxType,
     val sendBox: PagingData<HomeBox>,
-    val receiveBox: PagingData<HomeBox>
+    val receiveBox: PagingData<HomeBox>,
 ) : UiState
 
 sealed interface MyBoxEffect : SideEffect {

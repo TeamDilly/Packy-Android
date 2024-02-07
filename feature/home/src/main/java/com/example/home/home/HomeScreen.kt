@@ -65,6 +65,7 @@ fun HomeScreen(
 
     LaunchedEffect(viewModel) {
         viewModel.getGiftBoxes()
+        viewModel.resetPoint()
         viewModel.effect.collect { effect ->
             when (effect) {
                 is HomeEffect.MoveToSetting -> {

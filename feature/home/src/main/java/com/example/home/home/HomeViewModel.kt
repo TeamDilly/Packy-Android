@@ -2,6 +2,7 @@ package com.example.home.home
 
 import androidx.lifecycle.viewModelScope
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
+import com.packy.domain.usecase.reset.ResetCreateBoxUseCase
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.unwrapResource
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getHomeBoxUseCase: GetHomeBoxUseCase
+    private val getHomeBoxUseCase: GetHomeBoxUseCase,
+    private val resetCreateBoxUseCase: ResetCreateBoxUseCase
 ) :
     MviViewModel<HomeIntent, HomeState, HomeEffect>() {
     override fun createInitialState(): HomeState = HomeState(
@@ -36,6 +38,12 @@ class HomeViewModel @Inject constructor(
                 .collect { homeBox ->
                     setState { state -> state.copy(giftBoxes = homeBox) }
                 }
+        }
+    }
+
+    fun resetPoint(){
+        viewModelScope.launch(Dispatchers.IO) {
+            resetCreateBoxUseCase.resetCreateBox()
         }
     }
 }

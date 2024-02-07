@@ -25,16 +25,18 @@ fun RootCompose(
         modifier = modifier,
         navController = navController,
         startDestination = MainRoute.LAUNCH_NAV_GRAPH,
-        loggedIn = {
-            navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH) {
-                popUpTo(OnboardingRoute.ONBOARDING_NAV_GRAPH) {
+        logout = {
+            viewModel.logout()
+            navController.navigate(MainRoute.LAUNCH_NAV_GRAPH){
+                popUpTo(navController.graph.id) {
                     inclusive = true
                 }
+                launchSingleTop = true
             }
         },
         moveToHomeClear = {
             navController.navigate(HomeRoute.HOME_NAV_GRAPH) {
-                popUpTo(HomeRoute.HOME_NAV_GRAPH) { inclusive = true }
+                popUpTo(navController.graph.id) { inclusive = true }
                 launchSingleTop = true
             }
         },

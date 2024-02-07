@@ -20,7 +20,7 @@ fun PackyNavHost(
     kakaoLinkScheme: String,
     moveToCreateBox: () -> Unit,
     moveToBoxDetail: (Long) -> Unit,
-    loggedIn: () -> Unit
+    logout: () -> Unit
 ) {
     NavHost(
         modifier = modifier,
@@ -34,7 +34,7 @@ fun PackyNavHost(
         )
         onboardingNavGraph(
             navController = navController,
-            loggedIn
+            loggedIn = moveToHomeClear
         )
         createBoxNavGraph(
             navController = navController,
@@ -47,7 +47,8 @@ fun PackyNavHost(
         homeNavGraph(
             navController = navController,
             moveToCreateBox = moveToCreateBox,
-            moveToBoxDetail = moveToBoxDetail
+            moveToBoxDetail = moveToBoxDetail,
+            logout = logout
         )
         commonNavGraph(
             navController = navController

@@ -11,7 +11,9 @@ class GlobalPrefManager @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : PrefManager(context, DEVICE_PREF) {
 
-    val globalSample = createNonNullPreferencePrefItem("globalSample", "String2", String::class)
+    fun clearAll(){
+
+    }
 
     companion object {
         const val DEVICE_PREF = "globalPref"

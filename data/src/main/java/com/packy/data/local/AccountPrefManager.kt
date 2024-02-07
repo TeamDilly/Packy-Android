@@ -7,6 +7,9 @@ import com.packy.domain.model.auth.SignUp
 import com.packy.domain.model.createbox.box.CreateBox
 import com.packy.pref.manager.PrefManager
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,6 +20,18 @@ class AccountPrefManager @Inject constructor(
     context,
     ACCOUNT_PREF
 ) {
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun clearAll(){
+        GlobalScope.launch {
+            signUp.clear()
+            letterSenderReceiver.clear()
+            boxDesign.clear()
+            createBox.clear()
+            shouldShowBoxMotion.clear()
+            shouldShowBoxTutorial.clear()
+        }
+    }
 
     val signUp = createNonNullMemoryPrefItem<SignUp>(
         "signUp",

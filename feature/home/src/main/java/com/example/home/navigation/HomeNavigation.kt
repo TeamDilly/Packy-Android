@@ -14,7 +14,8 @@ import com.packy.core.animations.asRootComposable
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
     moveToCreateBox: () -> Unit,
-    moveToBoxDetail: (Long) -> Unit
+    moveToBoxDetail: (Long) -> Unit,
+    logout: () -> Unit
 ) {
     navigation(
         startDestination = HomeRoute.HOME,
@@ -45,6 +46,7 @@ fun NavGraphBuilder.homeNavGraph(
         ){
             SettingsScreen(
                 navController = navController,
+                logout = logout
             )
         }
     }

@@ -47,6 +47,7 @@ import com.packy.mvi.ext.emitMviIntent
 fun SettingsScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
+    logout: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     var logOutDialog by remember { mutableStateOf(false) }
@@ -78,7 +79,7 @@ fun SettingsScreen(
             confirm = Strings.LOGOUT,
             onConfirm = {
                 logOutDialog = false
-                viewModel.logout()
+                logout()
             },
             onDismiss = { logOutDialog = false }
         )

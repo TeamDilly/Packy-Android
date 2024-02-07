@@ -104,7 +104,7 @@ fun CreateBoxChangeScreen(
                                 )
                             )
                         },
-                    model = boxDesign.boxFull,
+                    model = boxDesign.boxSmall,
                     contentDescription = "Box",
                 )
             }

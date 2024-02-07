@@ -36,7 +36,7 @@ class BoxShareViewModel @Inject constructor(
                 val kakaoCustomFeed = KakaoCustomFeed(
                     sender = createBox.senderName ?: "",
                     receiver = createBox.receiverName ?: "",
-                    imageUrl = boxDesign?.boxFull ?: "",
+                    imageUrl = boxDesign?.boxNormal ?: "",
                     boxId = box.data.id
                 )
                 sendEffect(BoxShareEffect.KakaoShare(kakaoCustomFeed))
@@ -44,7 +44,7 @@ class BoxShareViewModel @Inject constructor(
         }
 
     suspend fun initState() {
-        val boxImageUrl = boxDesignUseCase.getBoxDesignLocal().firstOrNull()?.boxFull
+        val boxImageUrl = boxDesignUseCase.getBoxDesignLocal().firstOrNull()?.boxNormal
         val boxTitle = createBoxUseCase.getCreatedBox().name
         setState(
             currentState.copy(

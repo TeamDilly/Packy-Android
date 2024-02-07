@@ -55,15 +55,13 @@ fun NavGraphBuilder.createBoxNavGraph(
         }
         asPagingComposable(
 
-            route = CreateBoxRoute.BOX_MOTION + "/{boxFull}/{boxBottom}",
+            route = CreateBoxRoute.BOX_MOTION + "/{boxId}",
         ) {
-            val boxPart = it.arguments?.getString("boxFull")
-            val boxBottom = it.arguments?.getString("boxBottom")
+            val boxId = it.arguments?.getLong("boxFull")
 
             BoxMotionScreen(
                 navController = navController,
-                boxFull = boxPart,
-                boxBottom = boxBottom
+                boxId = boxId,
             )
         }
 
@@ -96,7 +94,6 @@ object CreateBoxRoute {
     const val BOX_ADD_TITLE = "boxAddTitle"
     const val BOX_SHARE = "boxShare"
     fun getBoxMotionRoute(
-        boxFull: String,
-        boxBottom: String
-    ) = "$BOX_MOTION/$boxFull/$boxBottom"
+        boxId: Long
+    ) = "$BOX_MOTION/$boxId"
 }

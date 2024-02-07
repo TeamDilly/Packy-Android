@@ -54,8 +54,7 @@ import kotlin.math.roundToInt
 fun BoxMotionScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    boxFull: String?,
-    boxBottom: String?
+    boxId: Long?,
 ) {
 
     Column(

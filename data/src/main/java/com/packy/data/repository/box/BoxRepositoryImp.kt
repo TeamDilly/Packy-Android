@@ -33,9 +33,10 @@ class BoxRepositoryImp @Inject constructor(
             BoxDesignDto(
                 id = boxDesign.id,
                 sequence = boxDesign.sequence,
-                boxFull = boxDesign.boxFull,
-                boxPart = boxDesign.boxPart,
-                boxBottom = boxDesign.boxBottom
+                boxNormal = boxDesign.boxNormal,
+                boxSet = boxDesign.boxSet,
+                boxSmall = boxDesign.boxSmall,
+                boxTop = boxDesign.boxTop
             )
         )
     }

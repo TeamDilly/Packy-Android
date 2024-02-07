@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class HomeBoxDto(
-    @SerialName("boxFull") val boxFull: String,
+    @SerialName("boxNormal") val boxNormal: String,
     @SerialName("giftBoxDate") val giftBoxDate: String,
     @SerialName("id") val id: Long,
     @SerialName("name") val name: String,
@@ -15,7 +15,7 @@ data class HomeBoxDto(
 
 fun HomeBoxDto.toEntity(): HomeBox = HomeBox(
     boxId = id,
-    boxImageUrl = boxFull,
+    boxImageUrl = boxNormal,
     sender = sender,
     title = name,
     giftBoxDate = giftBoxDate

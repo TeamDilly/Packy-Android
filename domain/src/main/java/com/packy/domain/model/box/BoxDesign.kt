@@ -7,7 +7,8 @@ import kotlinx.serialization.Serializable
 data class BoxDesign(
     @SerialName("id") val id: Int,
     @SerialName("sequence") val sequence: Int,
-    @SerialName("boxFull") val boxFull: String,
-    @SerialName("boxPart") val boxPart: String,
-    @SerialName("boxBottom") val boxBottom: String
+    @SerialName("boxNormal") val boxNormal: String,
+    @SerialName("boxSet") val boxSet: String,
+    @SerialName("boxSmall") val boxSmall: String,
+    @SerialName("boxTop") val boxTop: String
 )

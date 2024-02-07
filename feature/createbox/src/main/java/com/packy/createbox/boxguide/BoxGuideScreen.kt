@@ -120,7 +120,7 @@ fun BoxGuideScreen(
             TopBoxPartImage(
                 modifier = Modifier.align(Alignment.TopEnd),
                 boxPartAnimation = boxPartAnimation,
-                boxPartImageUrl = uiState.boxDesign?.boxPart,
+                boxPartImageUrl = uiState.boxDesign?.boxTop,
             )
 
             Column(

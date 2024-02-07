@@ -73,15 +73,9 @@ fun BoxChoiceScreen(
                     val boxDesign = effect.boxDesign
                     if (effect.shouldShowBoxMotion && boxDesign != null) {
                         navController.navigate(
+                            // FIXME: id 수정
                             CreateBoxRoute.getBoxMotionRoute(
-                                boxFull = URLEncoder.encode(
-                                    boxDesign.boxFull,
-                                    StandardCharsets.UTF_8.toString()
-                                ),
-                                boxBottom = URLEncoder.encode(
-                                    boxDesign.boxBottom,
-                                    StandardCharsets.UTF_8.toString()
-                                ),
+                                1L
                             )
                         )
                     } else {
@@ -132,7 +126,7 @@ fun BoxChoiceScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 75.dp)
                     .aspectRatio(1f),
-                model = uiState.selectedBox?.boxFull,
+                model = uiState.selectedBox?.boxSet,
                 contentScale = ContentScale.Crop,
                 contentDescription = "Selected Box"
             )
@@ -151,7 +145,7 @@ fun BoxChoiceScreen(
                             .clickableWithoutRipple {
                                 viewModel.emitIntent(BoxChoiceIntent.ChangeSelectBox(boxDesign))
                             },
-                        model = boxDesign.boxFull,
+                        model = boxDesign.boxSmall,
                         contentScale = ContentScale.Crop,
                         contentDescription = "Box Design"
                     )

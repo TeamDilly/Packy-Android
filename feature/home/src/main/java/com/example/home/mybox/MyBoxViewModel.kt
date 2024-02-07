@@ -7,8 +7,12 @@ import com.packy.domain.usecase.home.GetHomeBoxPaginationUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,6 +20,9 @@ class MyBoxViewModel @Inject constructor(
     private val getHomeBoxPaginationUseCase: GetHomeBoxPaginationUseCase
 ) :
     MviViewModel<MyBoxIntent, MyBoxState, MyBoxEffect>() {
+
+    private val updateStateMutex = Mutex()
+
     override fun createInitialState(): MyBoxState = MyBoxState(
         showTab = MyBoxType.SEND,
         sendBox = PagingData.empty(),
@@ -30,34 +37,32 @@ class MyBoxViewModel @Inject constructor(
         }
     }
 
-    fun getSendBoxes(){
+    fun getSendBoxes() {
         viewModelScope.launch(Dispatchers.IO) {
-            //FIXME: Change the type to "send"
-            getHomeBoxPaginationUseCase.getHomeBoxes("all")
+            getHomeBoxPaginationUseCase.getHomeBoxes("sent")
                 .distinctUntilChanged()
                 .cachedIn(viewModelScope)
-                .collect {
-                    setState(
-                        currentState.copy(
-                            sendBox = it
+                .collect { sendBox ->
+                    setState {
+                        it.copy(
+                            sendBox = sendBox
                         )
-                    )
+                    }
                 }
         }
     }
 
     fun getReceiveBoxes() {
         viewModelScope.launch(Dispatchers.IO) {
-            // FIXME: Change the type to "receive"
-            getHomeBoxPaginationUseCase.getHomeBoxes("all")
+            getHomeBoxPaginationUseCase.getHomeBoxes("received")
                 .distinctUntilChanged()
                 .cachedIn(viewModelScope)
-                .collect {
-                    setState(
-                        currentState.copy(
-                            receiveBox = it
+                .collect { receiveBox ->
+                    setState {
+                        it.copy(
+                            receiveBox = receiveBox
                         )
-                    )
+                    }
                 }
         }
     }

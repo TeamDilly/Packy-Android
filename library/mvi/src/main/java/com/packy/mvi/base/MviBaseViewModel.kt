@@ -23,6 +23,8 @@ import kotlinx.coroutines.sync.withLock
 abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEffect> :
     ViewModel() {
 
+    private val stateMutex = Mutex()
+
     private val initialState: State by lazy { createInitialState() }
     abstract fun createInitialState(): State
 
@@ -60,8 +62,11 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
         }
     }
 
-    protected fun setState(builder: (State) -> State) {
-        setState(builder(currentState))
+    protected suspend fun setState(builder: (State) -> State) {
+        stateMutex.withLock(_uiState) {
+            val newState = builder(uiState.value)
+            _uiState.emit(newState)
+        }
     }
 
     fun emitIntent(intent: Intent) {

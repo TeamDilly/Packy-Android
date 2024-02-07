@@ -19,6 +19,7 @@ import kotlinx.serialization.json.Json
 
 fun NavGraphBuilder.giftBoxNavGraph(
     navController: NavHostController,
+    closeGiftBox: () -> Unit
 ) {
     navigation(
         startDestination = GiftBoxRoute.GIFT_BOX_ROOT,
@@ -39,7 +40,8 @@ fun NavGraphBuilder.giftBoxNavGraph(
             val giftBox = giftBoxJson?.let { json -> Json.decodeFromString<GiftBox>(json) }
             if (giftBox == null) {
                 GiftBoxErrorScreen(
-                    message = "Message"
+                    message = "Message",
+                    closeGiftBox = closeGiftBox
                 )
             } else {
                 GiftBoxMotionScreen(
@@ -63,10 +65,11 @@ fun NavGraphBuilder.giftBoxNavGraph(
             )
         }
         asPagingComposable(
-            route = GiftBoxRoute.GIFT_BOX_ERROR
+            route = GiftBoxRoute.GIFT_BOX_ERROR,
         ) {
             GiftBoxErrorScreen(
-                message = "Message"
+                message = "Message",
+                closeGiftBox = closeGiftBox
             )
         }
     }

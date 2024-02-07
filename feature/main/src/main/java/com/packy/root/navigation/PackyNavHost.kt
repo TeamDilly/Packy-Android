@@ -15,7 +15,7 @@ import com.packy.root.deeplink.deepLinkNavGraph
 fun PackyNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    closeCreateBox: () -> Unit,
+    moveToHomeClear: () -> Unit,
     startDestination: String,
     kakaoLinkScheme: String,
     moveToCreateBox: () -> Unit,
@@ -38,10 +38,11 @@ fun PackyNavHost(
         )
         createBoxNavGraph(
             navController = navController,
-            closeCreateBox
+            moveToHomeClear
         )
         giftBoxNavGraph(
             navController = navController,
+            closeGiftBox = moveToHomeClear
         )
         homeNavGraph(
             navController = navController,

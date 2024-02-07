@@ -21,6 +21,7 @@ import com.packy.core.values.Strings
 @Composable
 fun GiftBoxErrorScreen(
     modifier: Modifier = Modifier,
+    closeGiftBox: () -> Unit,
     message: String,
     viewModel: GiftBoxErrorViewModel = hiltViewModel()
 ) {
@@ -54,7 +55,7 @@ fun GiftBoxErrorScreen(
                 style = buttonStyle.large.black,
                 text = Strings.CONFIRM
             ) {
-                // TODO
+                closeGiftBox()
             }
             Spacer(8.dp)
             Text(

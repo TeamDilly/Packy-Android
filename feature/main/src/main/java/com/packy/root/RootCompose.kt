@@ -32,7 +32,7 @@ fun RootCompose(
                 }
             }
         },
-        closeCreateBox = {
+        moveToHomeClear = {
             navController.navigate(HomeRoute.HOME_NAV_GRAPH) {
                 popUpTo(HomeRoute.HOME_NAV_GRAPH) { inclusive = true }
                 launchSingleTop = true

@@ -51,6 +51,7 @@ class LoginViewModel @Inject constructor(
             is Resource.NetworkError -> Unit
             is Resource.NullResult -> Unit
             is Resource.Success -> {
+                println("LOGEE ${it.data}")
                 when (it.data.status) {
                     SignIn.AuthStatus.REGISTERED.name -> {
                         sendEffect(LoginEffect.KakaoLoginSuccess)

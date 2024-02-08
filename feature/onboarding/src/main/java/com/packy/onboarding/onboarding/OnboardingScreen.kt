@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -85,7 +87,10 @@ fun OnboardingScreen(
                 .fillMaxSize()
                 .padding(innerPadding),
         ) {
-            OnboardingPager(pagerState, uiState)
+            OnboardingPager(
+                modifier = modifier.align(Alignment.Center),
+                pagerState = pagerState,
+            )
             Column(
                 modifier = Modifier.align(Alignment.BottomCenter)
             ) {
@@ -119,11 +124,11 @@ fun OnboardingScreen(
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 private fun OnboardingPager(
+    modifier: Modifier = Modifier,
     pagerState: PagerState,
-    uiState: OnboardingState
 ) {
     HorizontalPager(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
         state = pagerState,
     ) {
         val title: String = when (it) {
@@ -131,29 +136,27 @@ private fun OnboardingPager(
             1 -> Strings.ONBOARDING_TITLE_2
             else -> Strings.ONBOARDING_TITLE_1
         }
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+        val image: Int = when (it) {
+            0 -> R.drawable.onboarding_img_1
+            1 -> R.drawable.onboarding_img_2
+            else -> R.drawable.onboarding_img_1
+        }
+        Box(
+            modifier = Modifier
         ) {
-            Spacer(66.dp)
             Text(
                 text = title,
-                modifier = Modifier.padding(horizontal = 24.dp),
+                modifier = Modifier.align(Alignment.TopCenter),
                 style = PackyTheme.typography.heading01,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(54.dp))
             Image(
                 modifier = Modifier
-                    .weight(1f)
-                    .requiredSize(300.dp)
-                    .border(2.dp, PackyTheme.color.gray100)
-                    .padding(horizontal = 24.dp),
-                painter = painterResource(R.drawable.packy_logo),
+                    .fillMaxWidth()
+                    .height(460.dp),
+                painter = painterResource(image),
                 contentDescription = "dummyLogo"
             )
-            Spacer(225.dp)
         }
     }
 }

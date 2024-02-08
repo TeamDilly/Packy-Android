@@ -64,7 +64,6 @@ fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        println("LOGEE $viewModel")
         viewModel.getGiftBoxes()
         viewModel.resetPoint()
         viewModel.effect.collect { effect ->

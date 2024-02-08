@@ -1,7 +1,10 @@
 package com.packy.di.network
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.packy.account.AccountManagerHelper
+import com.packy.data.local.AccountPrefManager
 import com.packy.di.BuildConfig
 import com.packy.di.authenticator.model.RefreshTokenRequest
 import com.packy.di.authenticator.model.TokenInfo
@@ -10,10 +13,14 @@ import com.packy.lib.utils.toResource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
@@ -40,8 +47,10 @@ object NetworkModule {
     @Default
     fun provideHttpClient(
         accountManagerHelper: AccountManagerHelper,
+        accountPrefManager: AccountPrefManager,
     ): HttpClient {
         return HttpClient(Android) {
+            expectSuccess = true
             install(ContentNegotiation) {
                 json(Json {
                     prettyPrint = true
@@ -59,6 +68,16 @@ object NetworkModule {
                     }
                 }
                 level = LogLevel.ALL
+            }
+            HttpResponseValidator {
+                handleResponseExceptionWithRequest { exception, request ->
+                    val clientException = exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
+                    val exceptionResponse = clientException.response
+                    if(exceptionResponse.status.value == 404) {
+                        accountManagerHelper.removeAuthToken()
+                        accountPrefManager.clearAll()
+                    }
+                }
             }
             install(Auth) {
                 bearer {

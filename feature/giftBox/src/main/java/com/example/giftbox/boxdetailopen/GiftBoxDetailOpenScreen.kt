@@ -80,11 +80,11 @@ fun GiftBoxDetailOpenScreen(
     )
 
     var boxPartAnimation by remember { mutableStateOf(false) }
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         boxPartAnimation = true
     }
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 GiftBoxDetailOpenEffect.MoveToBack -> navController.popBackStack()

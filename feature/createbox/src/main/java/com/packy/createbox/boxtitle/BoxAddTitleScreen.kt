@@ -37,7 +37,7 @@ fun BoxAddTitleScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.initBoxTitle()
         viewModel.effect.collect { effect ->
             when (effect) {

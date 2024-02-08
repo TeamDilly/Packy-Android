@@ -63,7 +63,8 @@ fun HomeScreen(
         derivedStateOf { uiState.giftBoxes }
     }
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
+        println("LOGEE $viewModel")
         viewModel.getGiftBoxes()
         viewModel.resetPoint()
         viewModel.effect.collect { effect ->

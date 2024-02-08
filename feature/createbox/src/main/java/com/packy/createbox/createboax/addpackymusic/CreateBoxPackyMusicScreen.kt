@@ -56,7 +56,7 @@ fun CreateBoxPackyMusicScreen(
         uiState.music.size
     })
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.getSuggestionMusic()
     }
 

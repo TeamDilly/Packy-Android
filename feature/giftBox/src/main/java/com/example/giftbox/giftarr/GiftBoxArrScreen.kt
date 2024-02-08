@@ -57,7 +57,7 @@ fun GiftBoxArrScreen(
         isPlaying = lottiePlaying
     )
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 GiftBoxArrEffect.MoveToBack -> navController.popBackStack(

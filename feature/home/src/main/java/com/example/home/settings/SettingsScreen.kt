@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.home.navigation.HomeRoute
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.dialog.PackyDialog
@@ -53,7 +54,7 @@ fun SettingsScreen(
     var logOutDialog by remember { mutableStateOf(false) }
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.getSetting()
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -61,7 +62,7 @@ fun SettingsScreen(
                     logOutDialog = true
                 }
 
-                SettingsEffect.MoveToAccountManage -> TODO()
+                SettingsEffect.MoveToAccountManage -> navController.navigate(HomeRoute.SETTING_ACCOUNT)
                 SettingsEffect.MoveToBack -> navController.popBackStack()
                 is SettingsEffect.MoveToWeb -> {
                     navController.navigate(

@@ -66,7 +66,7 @@ fun CreateBoxStickerScreen(
         viewModel.getSticker(selectedSticker)
     }
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 is CreateBoxStickerEffect.OnSaveSticker -> {

@@ -83,7 +83,7 @@ fun BoxGuideScreen(
 
     var boxPartAnimation by remember { mutableStateOf(false) }
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.initUiState()
         boxPartAnimation = true
 

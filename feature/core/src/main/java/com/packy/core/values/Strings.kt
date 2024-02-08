@@ -14,6 +14,7 @@ object Strings {
     const val MORE = "더보기"
     const val VERSION = "버전"
     const val CANCEL = "취소"
+    const val KAKAO = "카카오"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
@@ -55,6 +56,13 @@ object Strings {
     // settings
     const val ACCOUNT_MANAGE = "계정 관리"
     const val LOGOUT = "로그아웃"
+    const val CONNECTED_ACCOUT = "연결된 계정"
+    const val WITHDRAWAL = "회원탈퇴"
+    const val WITHDRAWAL_BUTTON = "탈퇴하기"
+    const val WITHDRAWAL_TITLE = "탈퇴하기 전에\n꼭 확인해주세요"
+    const val WITHDRAWAL_DESCRIPTION_1 = "패키에서 주고 받은 선물박스, 친구와의 추억이 모두 사라져요."
+    const val WITHDRAWAL_DESCRIPTION_2 = "회원 탈퇴 시, 즉시 탈퇴 처리가 되며 더이상 패키 서비스를 이용할 수 없어요."
+    const val WITHDRAWAL_DESCRIPTION_3 = "탈퇴 이후 계정을 복구할 수 없어요."
 
     // box add info
     const val BOX_ADD_INFO_TITLE = "패키와 함께 마음을 담은\n선물박스를 만들어볼까요?"

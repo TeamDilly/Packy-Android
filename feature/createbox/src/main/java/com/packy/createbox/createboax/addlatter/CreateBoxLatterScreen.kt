@@ -65,7 +65,7 @@ fun CreateBoxLetterScreen(
     val scope = rememberCoroutineScope()
     var snackBarVisible: Boolean = false
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.getLetterEnvelope()
     }
 

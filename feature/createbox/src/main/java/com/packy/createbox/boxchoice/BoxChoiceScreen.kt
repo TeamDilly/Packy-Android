@@ -57,7 +57,7 @@ fun BoxChoiceScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.getBoxDesign()
     }
 

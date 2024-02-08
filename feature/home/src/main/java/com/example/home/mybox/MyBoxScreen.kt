@@ -78,7 +78,7 @@ fun MyBoxScreen(
 
     val pagerState = rememberPagerState(pageCount = { 2 })
 
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.getReceiveBoxes()
         viewModel.getSendBoxes()
         viewModel.effect.collect { effect ->

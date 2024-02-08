@@ -24,7 +24,7 @@ fun GiftBoxRootScreen(
     navController: NavController,
     viewModel: GiftBoxRootViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(viewModel) {
+    LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 GiftBoxRootEffect.FailToGetGIftBox -> navController.navigate(

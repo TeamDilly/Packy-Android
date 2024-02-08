@@ -63,7 +63,10 @@ fun NavGraphBuilder.homeNavGraph(
         asPagingComposable(
             route = HomeRoute.WITHDRAWAL
         ) {
-            WithdrawalScreen(navController = navController)
+            WithdrawalScreen(
+                navController = navController,
+                logout = logout
+            )
         }
     }
 }

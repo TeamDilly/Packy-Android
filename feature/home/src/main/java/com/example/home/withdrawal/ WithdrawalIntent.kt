@@ -20,4 +20,5 @@ data class WithdrawalState(
 
 sealed interface WithdrawalEffect : SideEffect {
     data object MoveToBack: WithdrawalEffect
+    data object Logout: WithdrawalEffect
 }

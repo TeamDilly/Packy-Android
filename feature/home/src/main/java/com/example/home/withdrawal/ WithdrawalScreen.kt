@@ -32,6 +32,7 @@ import com.packy.feature.core.R
 @Composable
 fun WithdrawalScreen(
     modifier: Modifier = Modifier,
+    logout: () -> Unit,
     navController: NavController,
     viewModel: WithdrawalViewModel = hiltViewModel()
 ) {
@@ -41,6 +42,7 @@ fun WithdrawalScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 WithdrawalEffect.MoveToBack -> navController.popBackStack()
+                WithdrawalEffect.Logout -> logout()
             }
         }
     }

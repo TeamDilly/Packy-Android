@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.packy.common.authenticator.ext.colorCodeToColor
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
@@ -186,9 +187,7 @@ private fun LetterForm(
                 .height(300.dp)
                 .border(
                     width = 4.dp,
-                    color = envelope?.borderColorCode
-                        ?.let { Color(parseColor("#${envelope.borderColorCode}")) }
-                        ?: PackyTheme.color.gray200,
+                    color = envelope?.letter?.borderColorCode.colorCodeToColor(PackyTheme.color.gray200),
                     shape = RoundedCornerShape(16.dp)
                 ),
             textFieldColor = PackyTheme.color.gray100,
@@ -223,6 +222,8 @@ private fun Envelope(
     } else {
         0.dp
     }
+    val borderColor = envelope.envelope.borderColorCode.colorCodeToColor(PackyTheme.color.gray900)
+
 
     Surface(
         modifier = modifier
@@ -234,13 +235,12 @@ private fun Envelope(
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(
             border,
-            PackyTheme.color.gray900
+            borderColor
         ),
     ) {
         GlideImage(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp),
+                .fillMaxSize(),
             model = envelope.imgUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop

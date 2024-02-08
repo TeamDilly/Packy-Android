@@ -10,6 +10,8 @@ import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,11 +27,13 @@ class CreateBoxLetterViewModel @Inject constructor(
             val envelopeList = letterUseCase.getLetterEnvelope()
                 .filterSuccess()
                 .unwrapResource()
-                .single()
-                .sortedBy { it.sequence }
-            emitIntent(
-                CreateBoxLetterIntent.GetEnvelope(envelopeList)
-            )
+                .firstOrNull()
+                ?.sortedBy { it.sequence }
+            envelopeList?.let {
+                emitIntent(
+                    CreateBoxLetterIntent.GetEnvelope(it)
+                )
+            }
         }
     }
 

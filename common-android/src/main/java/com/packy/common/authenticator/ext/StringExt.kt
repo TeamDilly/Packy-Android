@@ -1,6 +1,8 @@
 package com.packy.common.authenticator.ext
 
+import android.graphics.Color.parseColor
 import android.net.Uri
+import androidx.compose.ui.graphics.Color
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -13,4 +15,16 @@ fun String.toFormatTimeStampString(): String {
     val formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일")
     val dateTime = LocalDateTime.parse(this)
     return dateTime.format(formatter)
+}
+
+fun String?.colorCodeToColor(
+    fallbackColor: Color
+): Color {
+    val color = try {
+        Color(parseColor("#$this"))
+    } catch(e: Exception) {
+        e.stackTrace
+        fallbackColor
+    }
+    return color
 }

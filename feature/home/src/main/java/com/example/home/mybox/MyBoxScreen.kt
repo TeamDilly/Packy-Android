@@ -43,6 +43,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -158,7 +160,7 @@ private fun MyBoxList(
 ) {
     val state: LazyGridState = rememberLazyGridState()
 
-    if (boxes.itemCount == 0 && boxes.loadState.refresh.endOfPaginationReached) {
+    if (boxes.itemCount == 0 && boxes.loadState.refresh !is LoadState.Loading){
         EmptyMyBoxes(
             modifier = modifier,
             emptyText = emptyText,

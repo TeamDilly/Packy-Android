@@ -27,7 +27,7 @@ class MyBoxPagingSource(
             LoadResult.Page(
                 data = homeBoxes,
                 prevKey = lastTimestamp,
-                nextKey = if (homeBoxResource.data.content.size > 1) null else homeBoxResource.data.content.last().giftBoxDate
+                nextKey = if (homeBoxResource.data.content.isEmpty()) null else homeBoxResource.data.content.last().giftBoxDate
             )
         } else {
             LoadResult.Error(Exception(homeBoxResource.message))

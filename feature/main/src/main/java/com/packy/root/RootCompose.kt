@@ -1,6 +1,7 @@
 package com.packy.root
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,6 +14,7 @@ import com.packy.feature.main.R
 import com.packy.onboarding.navigation.OnboardingRoute
 import com.packy.root.navigation.MainRoute
 import com.packy.root.navigation.PackyNavHost
+import kotlinx.coroutines.launch
 
 @Composable
 fun RootCompose(
@@ -20,18 +22,21 @@ fun RootCompose(
     navController: NavHostController,
     viewModel: RootComposeViewModel = hiltViewModel()
 ) {
+    val scope = rememberCoroutineScope()
     val kakaoLinkScheme = stringResource(id = R.string.kakao_link_scheme)
     PackyNavHost(
         modifier = modifier,
         navController = navController,
         startDestination = MainRoute.LAUNCH_NAV_GRAPH,
         logout = {
-            viewModel.logout()
-            navController.navigate(MainRoute.LAUNCH_NAV_GRAPH){
-                popUpTo(navController.graph.id) {
-                    inclusive = true
+            scope.launch {
+                viewModel.logout()
+                navController.navigate(MainRoute.LAUNCH_NAV_GRAPH){
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
                 }
-                launchSingleTop = true
             }
         },
         moveToHomeClear = {

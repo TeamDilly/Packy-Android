@@ -14,21 +14,19 @@ import javax.inject.Inject
 class RootComposeViewModel @Inject constructor(
     private val accountHelper: AccountManagerHelper,
     private val logoutUseCase: LogoutUseCase
-): ViewModel(){
+) : ViewModel() {
 
-    fun checkUserStatusOnAppEntry(): UserState{
+    fun checkUserStatusOnAppEntry(): UserState {
         val account = accountHelper.getAccount()
-        return if(account != null){
+        return if (account != null) {
             UserState.REGISTERED
-        }else{
+        } else {
             UserState.NOT_REGISTERED
         }
     }
 
-    fun logout(){
-        viewModelScope.launch {
-            accountHelper.removeAuthToken()
-            logoutUseCase.logout()
-        }
+    suspend fun logout() {
+        accountHelper.removeAuthToken()
+        logoutUseCase.logout()
     }
 }

@@ -1,6 +1,7 @@
 package com.packy.onboarding.signupprofile
 
 import com.packy.domain.usecase.auth.SignUpUseCase
+import com.packy.domain.usecase.profile.GetProfilesUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
@@ -8,7 +9,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupProfileViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase
+    private val signUpUseCase: SignUpUseCase,
+    private val getProfilesUseCase: GetProfilesUseCase
 ) :
     MviViewModel<SignupProfileIntent, SignupProfileState, SignupProfileEffect>() {
     override fun createInitialState() = SignupProfileState(

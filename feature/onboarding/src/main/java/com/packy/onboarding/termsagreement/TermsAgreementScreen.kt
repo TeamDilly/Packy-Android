@@ -33,6 +33,7 @@ import com.packy.feature.core.R
 fun TermsAgreementScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
+    signUp: () -> Unit,
     viewModel: TermsAgreementViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -41,7 +42,7 @@ fun TermsAgreementScreen(
         viewModel.effect.collect{ effect ->
             when(effect){
                 TermsAgreementEffect.MoveToBack -> navController.popBackStack()
-                TermsAgreementEffect.OnSuccessSignUp -> TODO()
+                TermsAgreementEffect.OnSuccessSignUp -> signUp()
             }
         }
     }

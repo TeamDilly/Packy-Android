@@ -13,7 +13,7 @@ import com.packy.onboarding.termsagreement.TermsAgreementScreen
 
 fun NavGraphBuilder.onboardingNavGraph(
     navController: NavHostController,
-    loggedIn: () -> Unit
+    moveToHomeClear: () -> Unit
 ) {
     navigation(
         startDestination = OnboardingRoute.ONBOARDING,
@@ -27,7 +27,10 @@ fun NavGraphBuilder.onboardingNavGraph(
         asPagingComposable(
             route = OnboardingRoute.LOGIN,
         ) {
-            LoginScreen(navController = navController, loggedIn = loggedIn)
+            LoginScreen(
+                navController = navController,
+                loggedIn = moveToHomeClear
+            )
         }
         asPagingComposable(
             route = OnboardingRoute.SIGNUP_NICKNAME,
@@ -42,7 +45,10 @@ fun NavGraphBuilder.onboardingNavGraph(
         asPagingComposable(
             route = OnboardingRoute.TERMS_AGREEMENT,
         ) {
-            TermsAgreementScreen(navController = navController)
+            TermsAgreementScreen(
+                navController = navController,
+                signUp = moveToHomeClear
+            )
         }
     }
 }

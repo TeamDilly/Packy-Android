@@ -34,7 +34,7 @@ fun PackyNavHost(
         )
         onboardingNavGraph(
             navController = navController,
-            loggedIn = moveToHomeClear
+            moveToHomeClear = moveToHomeClear
         )
         createBoxNavGraph(
             navController = navController,

@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val kakaoLoginController: KakaoLoginController,
-    private val signInUseCase: SignInUseCase
+    private val signInUseCase: SignInUseCase,
+    private val signUpUseCase: SignUpUseCase
 ) : MviViewModel<LoginIntent, LoginState, LoginEffect>() {
 
     override fun createInitialState(): LoginState = LoginState(
@@ -37,29 +37,46 @@ class LoginViewModel @Inject constructor(
                 viewModelScope.launch {
                     signInUseCase.signIn(kakaoAuth.token)
                         .collect {
-                            signInController(it)
+                            signInController(
+                                kakaoAuth.token,
+                                it
+                            )
                         }
                 }
             }
         }
     }
 
-    private fun signInController(it: Resource<SignIn>) {
+    private fun signInController(
+        token: String,
+        it: Resource<SignIn>
+    ) {
         when (it) {
             is Resource.Loading -> Unit
             is Resource.ApiError -> Unit
             is Resource.NetworkError -> Unit
             is Resource.NullResult -> Unit
             is Resource.Success -> {
-                println("LOGEE ${it.data}")
                 when (it.data.status) {
                     SignIn.AuthStatus.REGISTERED.name -> {
-                        sendEffect(LoginEffect.KakaoLoginSuccess)
+                        viewModelScope.launch {
+                            sendEffect(LoginEffect.KakaoLoginSuccess)
+                        }
                     }
 
-                        else -> sendEffect(LoginEffect.KakaoLoginSuccessNotUser)
+                    else -> {
+                        viewModelScope.launch {
+                            val signUp = signUpUseCase.getUserSignUpInfo().first().copy(
+                                token = token
+                            )
+                            signUpUseCase.setUserSignUpInfo(
+                                signUp
+                            )
+                            sendEffect(LoginEffect.KakaoLoginSuccessNotUser)
+                        }
                     }
                 }
             }
         }
     }
+}

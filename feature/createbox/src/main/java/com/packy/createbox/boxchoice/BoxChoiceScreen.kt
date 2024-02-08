@@ -73,9 +73,8 @@ fun BoxChoiceScreen(
                     val boxDesign = effect.boxDesign
                     if (effect.shouldShowBoxMotion && boxDesign != null) {
                         navController.navigate(
-                            // FIXME: id 수정
                             CreateBoxRoute.getBoxMotionRoute(
-                                1L
+                                boxDesign.id
                             )
                         )
                     } else {

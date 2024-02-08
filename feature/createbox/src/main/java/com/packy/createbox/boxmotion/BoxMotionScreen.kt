@@ -54,14 +54,15 @@ import kotlin.math.roundToInt
 fun BoxMotionScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    boxId: Long?,
+    boxId: Int,
 ) {
 
     Box(
         modifier = modifier
             .fillMaxSize(),
     ) {
-        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(BoxOpenLottie.BOX_OPEN_1.lottie))
+        val lottieAnimation = BoxOpenLottie.entries.getOrNull(boxId - 1) ?: BoxOpenLottie.BOX_OPEN_1
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(lottieAnimation.lottie))
         val progress by animateLottieCompositionAsState(
             composition,
             isPlaying = true

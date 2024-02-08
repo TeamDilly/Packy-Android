@@ -131,7 +131,6 @@ object NetworkModule {
                     HttpHeaders.ContentType,
                     ContentType.Application.Json
                 )
-                println("LOGEE account token: ${accountManagerHelper.getAutToken()}")
                 accountManagerHelper.getAutToken()?.let {
                     header(
                         "Authorization",

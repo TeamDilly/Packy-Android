@@ -2,6 +2,7 @@ package com.packy.createbox.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.packy.core.animations.asFadeInComposable
 import com.packy.core.animations.asFadeInSlidOutComposable
@@ -54,14 +55,17 @@ fun NavGraphBuilder.createBoxNavGraph(
             )
         }
         asPagingComposable(
-
             route = CreateBoxRoute.BOX_MOTION + "/{boxId}",
+            arguments = listOf(
+               navArgument("boxId") {
+                   type = androidx.navigation.NavType.IntType
+               }
+            )
         ) {
-            val boxId = it.arguments?.getLong("boxFull")
-
+            val boxId = it.arguments?.getInt("boxId")
             BoxMotionScreen(
                 navController = navController,
-                boxId = boxId,
+                boxId = boxId ?: 0,
             )
         }
 
@@ -94,6 +98,6 @@ object CreateBoxRoute {
     const val BOX_ADD_TITLE = "boxAddTitle"
     const val BOX_SHARE = "boxShare"
     fun getBoxMotionRoute(
-        boxId: Long
+        boxId: Int
     ) = "$BOX_MOTION/$boxId"
 }

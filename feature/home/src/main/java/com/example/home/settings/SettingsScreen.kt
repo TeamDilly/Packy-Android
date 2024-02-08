@@ -1,5 +1,6 @@
 package com.example.home.settings
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -82,7 +83,8 @@ fun SettingsScreen(
                 logOutDialog = false
                 logout()
             },
-            onDismiss = { logOutDialog = false }
+            onDismiss = { logOutDialog = false },
+            backHandler = { logOutDialog = false}
         )
     }
 

@@ -9,8 +9,8 @@ fun String.removeQueryParameters(): String {
     return uri.buildUpon().clearQuery().toString()
 }
 
-fun String.toFormatString(): String {
-    val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+fun String.toFormatTimeStampString(): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일")
     val dateTime = LocalDateTime.parse(this)
     return dateTime.format(formatter)
 }

@@ -43,12 +43,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.packy.common.authenticator.ext.toFormatString
+import com.packy.common.authenticator.ext.toFormatTimeStampString
 import com.packy.core.common.NoRippleTheme
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
@@ -246,7 +245,7 @@ private fun MyBoxItem(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            text = box.giftBoxDate.toFormatString(),
+            text = box.giftBoxDate.toFormatTimeStampString(),
             style = PackyTheme.typography.body06,
             color = PackyTheme.color.gray600,
             maxLines = 1,

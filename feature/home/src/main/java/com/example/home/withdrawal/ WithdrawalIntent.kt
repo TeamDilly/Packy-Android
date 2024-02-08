@@ -7,11 +7,15 @@ import com.packy.mvi.mvi.UiState
 sealed interface WithdrawalIntent : MviIntent {
     data object OnBackClick: WithdrawalIntent
     data object OnWithdrawalClick:  WithdrawalIntent
+    data object OnShowWithdrawalDialogClick: WithdrawalIntent
+
+    data object OnCloseWithdrawalDialogClick: WithdrawalIntent
 }
 
 data class WithdrawalState(
     val isLoading: Boolean,
-    val withdrawn: Boolean
+    val withdrawn: Boolean,
+    val showWithdrawalDialog: Boolean
 ) : UiState
 
 sealed interface WithdrawalEffect : SideEffect {

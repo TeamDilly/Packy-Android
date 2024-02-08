@@ -1,5 +1,6 @@
 package com.packy.core.designsystem.dialog
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,9 +33,10 @@ fun PackyDialog(
     confirm: String,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
+    backHandler: (() -> Unit)? = null
 ) {
     Dialog(
-        onDismissRequest = { /*TODO*/ }
+        onDismissRequest = { backHandler?.invoke() }
     ) {
         Column(
             modifier = Modifier
@@ -125,9 +127,8 @@ fun PackyDialogPreview() {
         subTitle = "SubTitle",
         dismiss = "Dismiss",
         confirm = "Confirm",
-        onConfirm = {
-
-        },
+        onConfirm = {},
+        {}
     ) {
 
     }
@@ -140,10 +141,7 @@ fun PackyDialogNoSubTitlePreview() {
         title = "Title",
         dismiss = "Dismiss",
         confirm = "Confirm",
-        onConfirm = {
-
-        },
-    ) {
-
-    }
+        onConfirm = {},
+        onDismiss = {}
+    )
 }

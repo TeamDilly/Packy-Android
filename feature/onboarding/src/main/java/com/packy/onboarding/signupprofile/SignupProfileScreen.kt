@@ -27,6 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
@@ -49,6 +51,7 @@ fun SignupProfileScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(null) {
+        viewModel.initProfile()
         viewModel.effect.collect { effect ->
             when (effect) {
                 SignupProfileEffect.NavTermsAgreementEffect -> navController.navigate(
@@ -111,18 +114,19 @@ fun SignupProfileScreen(
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 private fun ColumnScope.ProfileImages(
     modifier: Modifier = Modifier,
     onProfileImageClick: emitMviIntent<SignupProfileIntent>,
     uiState: SignupProfileState,
 ) {
-    Image(
+    GlideImage(
         modifier = modifier
             .background(PackyTheme.color.gray100, shape = CircleShape)
             .size(160.dp)
             .clip(CircleShape),
-        painter = painterResource(id = uiState.selectedProfile.url),
+        model = uiState.selectedProfile?.imageUrl,
         contentDescription = "Selected Profile Image"
     )
     Spacer(40.dp)
@@ -130,7 +134,7 @@ private fun ColumnScope.ProfileImages(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(uiState.profiles) { profile ->
-            Image(
+            GlideImage(
                 modifier = Modifier
                     .background(PackyTheme.color.gray100, shape = CircleShape)
                     .size(60.dp)
@@ -142,7 +146,7 @@ private fun ColumnScope.ProfileImages(
                             )
                         )
                     },
-                painter = painterResource(id = profile.url),
+                model = profile.imageUrl,
                 contentDescription = "Profile Image"
             )
         }

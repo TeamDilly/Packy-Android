@@ -30,6 +30,7 @@ out/
 *.swp
 /app/src/main/res/values/private_strings.xml
 /feature/main/src/main/res/values/private_strings.xml
+private_strings.xml
 /upload-keystore.jks
 /app/debug
 /app/release

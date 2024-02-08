@@ -1,10 +1,16 @@
 package com.packy.onboarding.signupprofile
 
+import android.view.View
+import androidx.lifecycle.viewModelScope
 import com.packy.domain.usecase.auth.SignUpUseCase
 import com.packy.domain.usecase.profile.GetProfilesUseCase
+import com.packy.lib.utils.filterSuccess
+import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,13 +20,8 @@ class SignupProfileViewModel @Inject constructor(
 ) :
     MviViewModel<SignupProfileIntent, SignupProfileState, SignupProfileEffect>() {
     override fun createInitialState() = SignupProfileState(
-        Profile.PROFILE1,
-        listOf(
-            Profile.PROFILE2,
-            Profile.PROFILE3,
-            Profile.PROFILE4,
-            Profile.PROFILE5,
-        )
+        selectedProfile = null,
+        profiles = emptyList()
     )
 
     override fun handleIntent() {
@@ -45,6 +46,23 @@ class SignupProfileViewModel @Inject constructor(
             } else {
                 state
             }
+        }
+    }
+
+    fun initProfile() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getProfilesUseCase.getProfile()
+                .filterSuccess()
+                .unwrapResource()
+                .collect { prfiles ->
+                    setState { state ->
+                        state.copy(
+                            selectedProfile = prfiles.firstOrNull(),
+                            profiles = prfiles
+                        )
+                    }
+                }
+
         }
     }
 }

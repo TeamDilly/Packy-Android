@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.ExifInterface
 import android.net.Uri
 import android.util.Log
 import com.packy.common.authenticator.ext.removeQueryParameters
@@ -27,6 +28,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 class PhotoService @Inject constructor(
@@ -45,8 +47,12 @@ class PhotoService @Inject constructor(
         uri: String
     ): Resource<String> = withContext(Dispatchers.IO) {
 
-        contentResolver.openInputStream(Uri.parse(uri))?.use { inputStream ->
-            val bitmap = BitmapFactory.decodeStream(inputStream)
+        val uri = Uri.parse(uri)
+        contentResolver.openInputStream(uri)?.use { inputStream ->
+            val bitmap = rotateBitmapIfRequired(
+                BitmapFactory.decodeStream(inputStream),
+                uri
+            )
             val tempFile = File(
                 context.cacheDir,
                 "${fileName}.jpg"
@@ -55,7 +61,7 @@ class PhotoService @Inject constructor(
                 FileOutputStream(tempFile).use { stream ->
                     bitmap.compress(
                         Bitmap.CompressFormat.JPEG,
-                        100,
+                        50,
                         stream
                     )
                     val response = awsHttpClient.put(uploadPhotoUrl) {
@@ -106,6 +112,54 @@ class PhotoService @Inject constructor(
                 }
             }
             level = LogLevel.ALL
+        }
+    }
+
+    suspend fun rotateBitmapIfRequired(
+        bitmap: Bitmap,
+        uri: Uri
+    ): Bitmap {
+        return withContext(Dispatchers.Default) {
+            val exif = try {
+                if (uri.scheme == "content") {
+                    context.contentResolver.openInputStream(uri)?.use { input ->
+                        ExifInterface(input)
+                    }
+                } else {
+                    ExifInterface(uri.path!!)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                null
+            }
+
+            exif?.let {
+
+                val rotation = when (it.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL
+                )) {
+                    ExifInterface.ORIENTATION_ROTATE_90 -> 90
+                    ExifInterface.ORIENTATION_ROTATE_180 -> 180
+                    ExifInterface.ORIENTATION_ROTATE_270 -> 270
+                    else -> 0
+                }
+                if (rotation != 0) {
+                    val matrix = android.graphics.Matrix()
+                    matrix.postRotate(rotation.toFloat())
+                    Bitmap.createBitmap(
+                        bitmap,
+                        0,
+                        0,
+                        bitmap.width,
+                        bitmap.height,
+                        matrix,
+                        true
+                    )
+                } else {
+                    bitmap
+                }
+            } ?: bitmap
         }
     }
 }

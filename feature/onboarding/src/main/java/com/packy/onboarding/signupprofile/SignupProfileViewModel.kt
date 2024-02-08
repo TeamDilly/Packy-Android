@@ -30,14 +30,15 @@ class SignupProfileViewModel @Inject constructor(
         }
         subscribeIntent<SignupProfileIntent.OnSaveButtonClick> {
             val signUp = signUpUseCase.getUserSignUpInfo().first()
-            signUpUseCase.setUserSignUpInfo(
-                signUp.copy(
-                    profileImg = currentState.profiles.indexOf(
-                        currentState.selectedProfile
+            val selectedId = currentState.selectedProfile?.id
+            if(selectedId != null){
+                signUpUseCase.setUserSignUpInfo(
+                    signUp.copy(
+                        profileImg = selectedId
                     )
                 )
-            )
-            sendEffect(SignupProfileEffect.NavTermsAgreementEffect)
+                sendEffect(SignupProfileEffect.NavTermsAgreementEffect)
+            }
         }
         subscribeStateIntent<SignupProfileIntent.OnChangeProfile> { state, intent ->
             if (state.selectedProfile != intent.newProfile) {

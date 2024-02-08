@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class SignUpRequest(
     @SerialName("marketingAgreement") val marketingAgreement: Boolean,
     @SerialName("nickname") val nickname: String,
-    @SerialName("profileImg") val profileImg: Int,
+    @SerialName("profileImg") val profileImg: Long,
     @SerialName("provider") val provider: String,
     @SerialName("pushNotification") val pushNotification: Boolean
 )

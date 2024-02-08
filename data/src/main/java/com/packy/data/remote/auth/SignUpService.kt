@@ -8,6 +8,8 @@ import com.packy.lib.utils.toResource
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import javax.inject.Inject
 
 class SignUpService @Inject constructor(
@@ -18,11 +20,12 @@ class SignUpService @Inject constructor(
         signUpRequest: SignUpRequest,
         token: String
     ): Resource<SignUpDto> {
-        val response = httpClient.get(urlString = "api/v1/auth/sign-up") {
+        val response = httpClient.post(urlString = "api/v1/auth/sign-up") {
             header(
                 "Authorization",
                 token
             )
+            setBody(signUpRequest)
         }.toResource<SignUpDto>()
         return response
     }

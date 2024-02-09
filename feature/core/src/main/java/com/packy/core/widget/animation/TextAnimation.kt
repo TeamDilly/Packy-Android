@@ -29,7 +29,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun TextAnimation(
     animationDelay: Long = 200L,
-): Pair<Float, Dp>{
+): Pair<Float, Dp> {
 
     var animation by remember { mutableStateOf(false) }
 
@@ -46,11 +46,11 @@ fun TextAnimation(
     val opacity by transition.animateFloat(
         transitionSpec = {
             keyframes {
-                durationMillis = 1200
+                durationMillis = 2400
                 0.3f at 0 with FastOutSlowInEasing
-                1f at 400 with FastOutSlowInEasing
-                1f at 750 with LinearOutSlowInEasing
-                0f at 1200 with FastOutSlowInEasing
+                1f at 800 with FastOutSlowInEasing
+                1f at 1800 with LinearOutSlowInEasing
+                0f at 2400 with FastOutSlowInEasing
             }
         },
         label = "TextAnimation"
@@ -61,17 +61,21 @@ fun TextAnimation(
     val offsetY by transition.animateDp(
         transitionSpec = {
             keyframes {
-                durationMillis = 1200
+                durationMillis = 2400
                 20.dp at 0 with FastOutSlowInEasing
-                0.dp at 400 with FastOutSlowInEasing
-                0.dp at 1200
+                0.dp at 800 with FastOutSlowInEasing
+                0.dp at 1800 with LinearOutSlowInEasing
+                (-20).dp at 2400 with FastOutSlowInEasing
             }
         },
         label = "TextAnimation"
     )
     { offsetY ->
-        if (offsetY) 0.dp else 0.dp
+        if (offsetY) (-20).dp else 20.dp
     }
 
-    return Pair(opacity, offsetY)
+    return Pair(
+        opacity,
+        offsetY
+    )
 }

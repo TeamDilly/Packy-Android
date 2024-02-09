@@ -54,13 +54,14 @@ fun NavGraphBuilder.createBoxNavGraph(
                 navController = navController,
             )
         }
-        asPagingComposable(
+        asFadeInComposable(
             route = CreateBoxRoute.BOX_MOTION + "/{boxId}",
             arguments = listOf(
                navArgument("boxId") {
                    type = androidx.navigation.NavType.IntType
                }
-            )
+            ),
+            enterDuration = 700
         ) {
             val boxId = it.arguments?.getInt("boxId")
             BoxMotionScreen(

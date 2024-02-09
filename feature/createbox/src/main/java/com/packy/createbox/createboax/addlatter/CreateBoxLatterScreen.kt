@@ -229,16 +229,14 @@ private fun Envelope(
         0.dp
     }
     val borderColor = envelope.envelope.borderColorCode.colorCodeToColor(PackyTheme.color.gray900)
-
-
     Surface(
         modifier = modifier
-            .height(78.dp)
-            .width(78.dp)
+            .height(96.dp)
+            .width(118.dp)
             .clickableWithoutRipple {
                 onClick(CreateBoxLetterIntent.ChangeEnvelope(envelope.id))
             },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(8.dp),
         border = BorderStroke(
             border,
             borderColor

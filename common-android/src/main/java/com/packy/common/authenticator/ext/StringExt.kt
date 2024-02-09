@@ -20,8 +20,14 @@ fun String.toFormatTimeStampString(): String {
 fun String?.colorCodeToColor(
     fallbackColor: Color
 ): Color {
+    val colorString = if (this?.startsWith("#") == true) {
+        // Remove "#" if present
+        this.substring(1)
+    } else {
+        this
+    }
     val color = try {
-        Color(parseColor("#$this"))
+        Color(parseColor("#${colorString?.trim()}"))
     } catch(e: Exception) {
         e.stackTrace
         fallbackColor

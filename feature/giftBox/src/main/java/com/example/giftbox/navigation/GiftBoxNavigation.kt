@@ -14,6 +14,7 @@ import com.example.giftbox.giftarr.GiftBoxArrScreen
 import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ARG
 import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ID_ARG
 import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_SKIP_ARR_ARG
+import com.packy.core.animations.asFadeInSlidOutComposable
 import com.packy.core.animations.asPagingComposable
 import com.packy.core.animations.asRootComposable
 import com.packy.domain.model.getbox.GiftBox
@@ -75,6 +76,14 @@ fun NavGraphBuilder.giftBoxNavGraph(
                 navController = navController,
             )
         }
+        asFadeInSlidOutComposable(
+            route = GiftBoxRoute.GIFT_BOX_DETAIL_OPEN_FADE + "/{$GIFT_BOX_ARG}",
+            enterDuration = 1000
+        ) {
+            GiftBoxDetailOpenScreen(
+                navController = navController,
+            )
+        }
         asPagingComposable(
             route = GiftBoxRoute.GIFT_BOX_ERROR,
         ) {
@@ -93,6 +102,7 @@ object GiftBoxRoute {
     const val GIFT_BOX_ARR = "giftBoxArr"
     const val GIFT_BOX_MOTION = "giftBoxMotion"
     const val GIFT_BOX_DETAIL_OPEN = "giftBoxDetailOpen"
+    const val GIFT_BOX_DETAIL_OPEN_FADE = "giftBoxDetailOpenFade"
 
     const val GIFT_BOX_ID_ARG = "giftBoxIdArg"
     const val GIFT_BOX_SKIP_ARR_ARG = "skipArr"
@@ -115,6 +125,11 @@ object GiftBoxRoute {
     fun getGiftBoxDetailOpenRoute(giftBox: GiftBox): String {
         val giftBoxJson = Json.encodeToString(giftBox.toUrlEncoding())
         return "${GIFT_BOX_DETAIL_OPEN}/$giftBoxJson"
+    }
+
+    fun getGiftBoxDetailOpenFadeRoute(giftBox: GiftBox): String {
+        val giftBoxJson = Json.encodeToString(giftBox.toUrlEncoding())
+        return "${GIFT_BOX_DETAIL_OPEN_FADE}/$giftBoxJson"
     }
 
     fun getGiftBoxArg(savedStateHandle: SavedStateHandle): GiftBox? {

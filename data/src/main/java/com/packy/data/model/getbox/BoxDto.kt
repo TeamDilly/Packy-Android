@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class BoxDto(
+    @SerialName("id") val id: Long,
     @SerialName("boxNormal") val boxNormal: String,
     @SerialName("boxTop") val boxTop: String,
 )
@@ -13,5 +14,6 @@ data class BoxDto(
 fun BoxDto.toEntity(): Box =
     Box(
         boxNormal = boxNormal,
-        boxTop = boxTop
+        boxTop = boxTop,
+        id = id
     )

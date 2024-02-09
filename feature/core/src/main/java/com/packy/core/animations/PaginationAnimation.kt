@@ -103,20 +103,22 @@ fun NavGraphBuilder.asFadeInSlidOutComposable(
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
-    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit
+    enterDuration: Int = 300,
+    exitDuration: Int = 300,
+    content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) = this.composable(
     route = route,
     arguments = arguments,
     deepLinks = deepLinks,
     enterTransition = {
         fadeIn(
-            animationSpec = tween(300)
+            animationSpec = tween(enterDuration)
         )
     },
     exitTransition = {
         slideOutOfContainer(
             towards = AnimatedContentTransitionScope.SlideDirection.Left,
-            animationSpec = tween(300)
+            animationSpec = tween(exitDuration)
         )
     },
     popEnterTransition = null,

@@ -1,9 +1,11 @@
 package com.example.giftbox.giftarr
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.example.giftbox.navigation.GiftBoxRoute
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,11 +19,13 @@ class GiftBoxArrViewModel @Inject constructor(
     )
 
     init {
-        setState(
-            GiftBoxArrState(
-                GiftBoxRoute.getGiftBoxArg(savedStateHandle)
-            )
-        )
+        viewModelScope.launch {
+            setState {
+                GiftBoxArrState(
+                    GiftBoxRoute.getGiftBoxArg(savedStateHandle)
+                )
+            }
+        }
     }
 
     override fun handleIntent() {

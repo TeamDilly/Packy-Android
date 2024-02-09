@@ -36,7 +36,7 @@ fun GiftBoxMotionScreen(
             .fillMaxSize()){
             GlideImage(
                 modifier = Modifier.align(Alignment.Center),
-                model = giftBox.box.boxFull,
+                model = giftBox.box.boxNormal,
                 contentDescription = "boxFull image"
             )
         }

@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
@@ -15,8 +17,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,6 +43,7 @@ import com.packy.core.widget.dotted.DottedDivider
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BoxAddInfoScreen(
     modifier: Modifier = Modifier,
@@ -44,13 +53,23 @@ fun BoxAddInfoScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val isKeyboardOpen by keyboardAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val senderFocus = remember {
+        FocusRequester()
+    }
+    val receiverFocus = remember {
+        FocusRequester()
+    }
 
     LaunchedEffect(null) {
         viewModel.getLetterSenderReceiver()
         viewModel.effect.collect { effect ->
             when (effect) {
                 BoxAddInfoEffect.MoveToBack -> closeCreateBox()
-                BoxAddInfoEffect.SaveBoxInfo -> navController.navigate(CreateBoxRoute.BOX_CHOICE)
+                BoxAddInfoEffect.SaveBoxInfo -> {
+                    keyboardController?.hide()
+                    navController.navigate(CreateBoxRoute.BOX_CHOICE)
+                }
             }
         }
     }
@@ -88,14 +107,24 @@ fun BoxAddInfoScreen(
             ) {
                 AddInfoForm(
                     text = uiState.letterSenderReceiver.receiver,
-                    title = Strings.BOX_ADD_INFO_RECEIVER
+                    title = Strings.BOX_ADD_INFO_RECEIVER,
+                    textFieldFocus = receiverFocus,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                    keyboardActions = KeyboardActions(
+                        onNext = { senderFocus.requestFocus() },
+                    )
                 ) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeReceiver(it))
                 }
                 DottedDivider(modifier = Modifier.padding(vertical = 16.dp))
                 AddInfoForm(
                     text = uiState.letterSenderReceiver.sender,
-                    title = Strings.BOX_ADD_INFO_SENDER
+                    title = Strings.BOX_ADD_INFO_SENDER,
+                    textFieldFocus = senderFocus,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = { keyboardController?.hide() }
+                    )
                 ) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeSender(it))
                 }
@@ -143,6 +172,9 @@ private fun BoxAddInfoTitle() {
 private fun AddInfoForm(
     text: String,
     title: String,
+    textFieldFocus: FocusRequester,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     onChange: (String) -> Unit
 ) {
     Row(
@@ -156,7 +188,11 @@ private fun AddInfoForm(
         )
         Spacer(1f)
         PackyTextField(
+            modifier = Modifier
+                .focusRequester(textFieldFocus),
             value = text,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
             placeholder = Strings.BOX_ADD_INFO_PLACEHOLDER,
             textAlign = TextAlign.End,
             onValueChange = onChange,
@@ -179,7 +215,8 @@ private fun AddInfoFormPreview() {
     PackyTheme {
         AddInfoForm(
             text = "홍길동",
-            title = "받는 사람"
+            title = "받는 사람",
+            textFieldFocus = FocusRequester(),
         ) { }
     }
 }

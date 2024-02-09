@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Icon
@@ -45,6 +47,8 @@ fun PackyTextField(
     minLines: Int = 1,
     maxValues: Int = Int.MAX_VALUE,
     label: String? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     showTrailingIcon: Boolean = false,
     trailingIconOnClick: (() -> Unit) = {
         onValueChange("")
@@ -65,7 +69,10 @@ fun PackyTextField(
                     shape = RoundedCornerShape(8.dp)
                 )
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp),
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 14.dp
+                ),
             value = value,
             onValueChange = {
                 onValueChange(it.take(maxValues))
@@ -77,6 +84,8 @@ fun PackyTextField(
             maxLines = maxLines,
             minLines = minLines,
             singleLine = singleLine,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions,
             decorationBox = { innerTextField ->
                 Column(
                     modifier = Modifier
@@ -101,7 +110,11 @@ fun PackyTextField(
                                 else -> Alignment.CenterStart
                             }
                         ) {
-                            Placeholder(placeholder, value, textAlign)
+                            Placeholder(
+                                placeholder,
+                                value,
+                                textAlign
+                            )
                             innerTextField()
                         }
                         if (showTrailingIcon && value.isNotEmpty()) {

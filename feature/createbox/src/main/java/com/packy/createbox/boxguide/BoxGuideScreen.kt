@@ -96,7 +96,10 @@ fun BoxGuideScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is BoxGuideEffect.MoveToBack -> navController.popBackStack()
-                is BoxGuideEffect.SaveBox -> navController.navigate(CreateBoxRoute.BOX_ADD_TITLE)
+                is BoxGuideEffect.SaveBox -> {
+                    viewModel.musicStop()
+                    navController.navigate(CreateBoxRoute.BOX_ADD_TITLE)
+                }
                 is BoxGuideEffect.ShowBottomSheet -> {
                     bottomSheetRoute = effect.boxGuideBottomSheetRoute
                     showBottomSheet = true

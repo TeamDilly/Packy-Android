@@ -15,7 +15,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.theme.PackyTheme
@@ -32,12 +36,22 @@ fun YoutubePlayer(
     stateListener: (YoutubeState) -> Unit = {},
     youtubeState: YoutubeState,
     autoPlay: Boolean = true,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 ) {
     var player by remember {
         mutableStateOf<YouTubePlayer?>(null)
     }
-    DisposableEffect(null) {
-        this.onDispose {
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+           if (event == Lifecycle.Event.ON_STOP) {
+                player?.pause()
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
             player?.pause()
         }
     }
@@ -57,7 +71,10 @@ fun YoutubePlayer(
                 youTubePlayerListener = object : AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         super.onReady(youTubePlayer)
-                        youTubePlayer.loadVideo(videoId, 0f)
+                        youTubePlayer.loadVideo(
+                            videoId,
+                            0f
+                        )
                         stateListener(if (autoPlay) YoutubeState.PLAYING else YoutubeState.PAUSED)
                         player = youTubePlayer
                     }

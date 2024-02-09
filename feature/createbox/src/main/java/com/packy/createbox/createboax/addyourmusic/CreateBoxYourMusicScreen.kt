@@ -67,7 +67,7 @@ fun CreateBoxYourMusicScreen(
         }
     }
     BackHandler(true) {
-        viewModel.emitIntent(CreateBoxYourMusicIntent.OnCloseClick)
+        viewModel.emitIntent(CreateBoxYourMusicIntent.OnBackClick)
     }
 
     Column(

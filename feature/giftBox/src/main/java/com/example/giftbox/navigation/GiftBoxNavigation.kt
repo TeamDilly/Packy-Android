@@ -3,6 +3,8 @@ package com.example.giftbox.navigation
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.giftbox.boxdetailopen.GiftBoxDetailOpenScreen
 import com.example.giftbox.boxerror.GiftBoxErrorScreen
@@ -11,6 +13,7 @@ import com.example.giftbox.boxroot.GiftBoxRootScreen
 import com.example.giftbox.giftarr.GiftBoxArrScreen
 import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ARG
 import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ID_ARG
+import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_SKIP_ARR_ARG
 import com.packy.core.animations.asPagingComposable
 import com.packy.core.animations.asRootComposable
 import com.packy.domain.model.getbox.GiftBox
@@ -27,10 +30,18 @@ fun NavGraphBuilder.giftBoxNavGraph(
     ) {
 
         asRootComposable(
-            route = GiftBoxRoute.GIFT_BOX_ROOT + "/{$GIFT_BOX_ID_ARG}"
+            route = GiftBoxRoute.GIFT_BOX_ROOT + "/{$GIFT_BOX_ID_ARG}" + "?" + "skipArr={$GIFT_BOX_SKIP_ARR_ARG}",
+            arguments = listOf(
+                navArgument(GIFT_BOX_SKIP_ARR_ARG) {
+                    type = NavType.BoolType
+                    defaultValue = true
+                }
+            )
         ) {
+            val skipArr = it.arguments?.getBoolean(GIFT_BOX_SKIP_ARR_ARG) ?: true
             GiftBoxRootScreen(
                 navController = navController,
+                skipArr = skipArr
             )
         }
         asPagingComposable(
@@ -84,6 +95,7 @@ object GiftBoxRoute {
     const val GIFT_BOX_DETAIL_OPEN = "giftBoxDetailOpen"
 
     const val GIFT_BOX_ID_ARG = "giftBoxIdArg"
+    const val GIFT_BOX_SKIP_ARR_ARG = "skipArr"
     const val GIFT_BOX_ARG = "giftBoxArg"
 
     fun getGiftBoxRootRoute(giftBoxId: Long): String {

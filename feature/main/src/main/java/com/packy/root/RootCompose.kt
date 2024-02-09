@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.giftbox.navigation.GiftBoxRoute
 import com.example.home.navigation.HomeRoute
@@ -19,7 +18,6 @@ import com.packy.core.values.Strings
 import com.packy.core.values.Strings.CREATE_BOX_CANCEL_BOX
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.main.R
-import com.packy.onboarding.navigation.OnboardingRoute
 import com.packy.root.navigation.MainRoute
 import com.packy.root.navigation.PackyNavHost
 import kotlinx.coroutines.launch

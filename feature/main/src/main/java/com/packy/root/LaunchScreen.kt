@@ -47,7 +47,7 @@ fun LaunchScreen(
             }
 
             is DeepLinkController.OpenBox -> {
-                navController.navigate(GiftBoxRoute.GIFT_BOX_ROOT + "/${deepLinkController.boxId}") {
+                navController.navigate(GiftBoxRoute.GIFT_BOX_ROOT + "/${deepLinkController.boxId}" + "?" + "skipArr=false") {
                 }
             }
         }

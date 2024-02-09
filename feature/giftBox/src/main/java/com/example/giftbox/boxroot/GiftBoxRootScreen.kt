@@ -22,6 +22,7 @@ import kotlinx.serialization.json.Json
 fun GiftBoxRootScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
+    skipArr: Boolean,
     viewModel: GiftBoxRootViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -35,7 +36,9 @@ fun GiftBoxRootScreen(
                 }
 
                 is GiftBoxRootEffect.GetGiftBox -> {
-                    val route = GiftBoxRoute.getGiftBoxArrRoute(effect.giftBox)
+                    val route =
+                        if (skipArr) GiftBoxRoute.getGiftBoxDetailOpenRoute(effect.giftBox)
+                        else GiftBoxRoute.getGiftBoxArrRoute(effect.giftBox)
                     navController.navigate(route) {
                         val currentRoute = navController.currentBackStackEntry?.destination?.route
                         currentRoute?.let { popUpTo(it) { inclusive = true } }

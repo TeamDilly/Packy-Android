@@ -5,14 +5,23 @@ import java.net.URI
 
 fun extractYouTubeVideoId(url: String): String? {
     val videoIdKey = "v="
-    val index = url.indexOf(videoIdKey)
+    val shortUrlKey = "youtu.be/"
 
-    return if (index != -1) {
-        val startIndex = index + videoIdKey.length
-        val endIndex = url.indexOf("&", startIndex).takeIf { it != -1 } ?: url.length
-        url.substring(startIndex, endIndex)
-    } else {
-        null
+    val index = url.indexOf(videoIdKey)
+    val shortIndex = url.indexOf(shortUrlKey)
+
+    return when {
+        index != -1 -> {
+            val startIndex = index + videoIdKey.length
+            val endIndex = url.indexOf("&", startIndex).takeIf { it != -1 } ?: url.length
+            url.substring(startIndex, endIndex)
+        }
+        shortIndex != -1 -> {
+            val startIndex = shortIndex + shortUrlKey.length
+            val endIndex = url.indexOf("&", startIndex).takeIf { it != -1 } ?: url.length
+            url.substring(startIndex, endIndex)
+        }
+        else -> null
     }
 }
 

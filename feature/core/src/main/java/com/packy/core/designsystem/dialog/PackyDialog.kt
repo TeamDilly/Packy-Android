@@ -27,6 +27,21 @@ import com.packy.core.theme.PackyTheme
 
 @Composable
 fun PackyDialog(
+    packyDialogInfo: PackyDialogInfo
+){
+    PackyDialog(
+        title = packyDialogInfo.title,
+        subTitle = packyDialogInfo.subTitle,
+        dismiss = packyDialogInfo.dismiss,
+        confirm = packyDialogInfo.confirm,
+        onConfirm = packyDialogInfo.onConfirm,
+        onDismiss = packyDialogInfo.onDismiss,
+        backHandler = packyDialogInfo.backHandler
+    )
+}
+
+@Composable
+fun PackyDialog(
     title: String,
     subTitle: String? = null,
     dismiss: String,

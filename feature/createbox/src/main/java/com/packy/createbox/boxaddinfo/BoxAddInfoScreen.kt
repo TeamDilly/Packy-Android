@@ -1,5 +1,6 @@
 package com.packy.createbox.boxaddinfo
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -59,6 +60,10 @@ fun BoxAddInfoScreen(
     }
     val receiverFocus = remember {
         FocusRequester()
+    }
+
+    BackHandler(true) {
+        closeCreateBox()
     }
 
     LaunchedEffect(null) {

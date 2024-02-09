@@ -126,6 +126,8 @@ object Strings {
     const val CREATE_BOX_ADD_SHARE_SEND_KAKAO = "카카오톡으로 보내기"
     const val CREATE_BOX_ADD_SHARE_LAZY = "나중에 보낼래요"
 
+    const val CREATE_BOX_CANCEL_BOX = "선물박스 만들기를 종료할까요?"
+
     // GiftBox
     fun GIFT_BOX_ARR_TITLE(name: String) = "${name}님이 보낸\n선물박스가 도착했어요!"
     const val GIFT_BOX_OPEN_GIFT = "선물박스를 열어보세요"

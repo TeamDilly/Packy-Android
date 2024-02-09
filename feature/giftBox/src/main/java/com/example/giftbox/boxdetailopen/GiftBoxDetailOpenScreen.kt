@@ -79,11 +79,6 @@ fun GiftBoxDetailOpenScreen(
         },
     )
 
-    var boxPartAnimation by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        boxPartAnimation = true
-    }
-
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -112,7 +107,6 @@ fun GiftBoxDetailOpenScreen(
                 when (it) {
                     0 -> GiftBoxColumn(
                         modifier = Modifier.fillMaxSize(),
-                        boxPartAnimation = boxPartAnimation,
                         uiState = uiState,
                         viewModel = viewModel
                     )
@@ -315,7 +309,6 @@ private fun GiftDetail(
 @Composable
 private fun GiftBoxColumn(
     modifier: Modifier,
-    boxPartAnimation: Boolean,
     uiState: GiftBoxDetailOpenState,
     viewModel: GiftBoxDetailOpenViewModel
 ) {
@@ -325,7 +318,6 @@ private fun GiftBoxColumn(
     ) {
         TopBoxPartImage(
             modifier = Modifier.align(Alignment.TopEnd),
-            boxPartAnimation = boxPartAnimation,
             boxPartImageUrl = uiState.giftBox?.box?.boxPart
         )
         Column(

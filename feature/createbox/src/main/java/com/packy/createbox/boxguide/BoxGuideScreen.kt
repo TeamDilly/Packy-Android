@@ -82,8 +82,6 @@ fun BoxGuideScreen(
 
     var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.EMPTY) }
 
-    var boxPartAnimation by remember { mutableStateOf(false) }
-
     var bottomSheetCloseDialog by rememberSaveable {
         mutableStateOf<PackyDialogInfo?>(null)
     }
@@ -94,7 +92,6 @@ fun BoxGuideScreen(
 
     LaunchedEffect(Unit) {
         viewModel.initUiState()
-        boxPartAnimation = true
 
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -128,7 +125,6 @@ fun BoxGuideScreen(
         ) {
             TopBoxPartImage(
                 modifier = Modifier.align(Alignment.TopEnd),
-                boxPartAnimation = boxPartAnimation,
                 boxPartImageUrl = uiState.boxDesign?.boxTop,
             )
 

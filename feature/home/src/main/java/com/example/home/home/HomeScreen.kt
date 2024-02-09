@@ -48,6 +48,7 @@ import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.domain.model.home.BoxType
 import com.packy.domain.model.home.HomeBox
 
 @Composable
@@ -215,7 +216,7 @@ private fun GiftBoxItem(
         )
         Spacer(height = 12.dp)
         Text(
-            text = Strings.BOX_ADD_INFO_SENDER + homeBox.sender,
+            text = if (homeBox.type == BoxType.SENT) Strings.TO else Strings.FROM + homeBox.displayName,
             style = PackyTheme.typography.body06,
             color = PackyTheme.color.purple500,
             maxLines = 1,

@@ -15,6 +15,8 @@ object Strings {
     const val VERSION = "버전"
     const val CANCEL = "취소"
     const val KAKAO = "카카오"
+    const val TO = "To."
+    const val FROM = "From."
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"

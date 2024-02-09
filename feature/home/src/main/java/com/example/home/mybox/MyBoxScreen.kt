@@ -132,7 +132,7 @@ fun MyBoxScreen(
                         moveToCreateBox = moveToCreateBox,
                         moveToBoxDetail = moveToBoxDetail,
                         emptyText = Strings.HOME_MY_BOX_EMPTY_SEND_BOX,
-                        nameTag = Strings.BOX_ADD_INFO_SENDER
+                        nameTag = Strings.TO
                     )
 
                     MyBoxType.RECEIVE.ordinal -> MyBoxList(
@@ -141,7 +141,7 @@ fun MyBoxScreen(
                         moveToCreateBox = moveToCreateBox,
                         moveToBoxDetail = moveToBoxDetail,
                         emptyText = Strings.HOME_MY_BOX_EMPTY_RECEIVE_BOX,
-                        nameTag = Strings.BOX_ADD_INFO_RECEIVER
+                        nameTag = Strings.FROM
                     )
                 }
             }
@@ -160,7 +160,7 @@ private fun MyBoxList(
 ) {
     val state: LazyGridState = rememberLazyGridState()
 
-    if (boxes.itemCount == 0 && boxes.loadState.refresh !is LoadState.Loading){
+    if (boxes.itemCount == 0 && boxes.loadState.refresh !is LoadState.Loading) {
         EmptyMyBoxes(
             modifier = modifier,
             emptyText = emptyText,
@@ -225,7 +225,7 @@ private fun MyBoxItem(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            text = nameTag + box.sender,
+            text = nameTag + box.displayName,
             style = PackyTheme.typography.body06,
             color = PackyTheme.color.purple500,
             maxLines = 1,
@@ -264,7 +264,8 @@ private fun EmptyMyBoxes(
     moveToCreateBox: () -> Unit
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .background(color = PackyTheme.color.gray100),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

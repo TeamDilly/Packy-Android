@@ -1,6 +1,10 @@
 package com.packy.createbox.boxguide
 
 import android.net.Uri
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -76,6 +81,9 @@ fun BoxGuideScreen(
     viewModel: BoxGuideViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val showBoxTutorial by remember {
+        derivedStateOf { uiState.showTutorial }
+    }
 
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -106,7 +114,7 @@ fun BoxGuideScreen(
         uiState
     ) {
         onDispose {
-           viewModel.musicStop()
+            viewModel.musicStop()
         }
     }
 
@@ -330,6 +338,30 @@ fun BoxGuideScreen(
                         )
                     },
                 )
+            }
+            AnimatedVisibility(
+                visible = showBoxTutorial,
+                enter = fadeIn(animationSpec = tween(800)),
+                exit = fadeOut(animationSpec = tween(800))
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            color = PackyTheme.color.black.copy(alpha = 0.6f)
+                        )
+                        .clickableWithoutRipple {
+                            viewModel.emitIntentThrottle(BoxGuideIntent.OnTutorialClick)
+                        },
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = Strings.CREATE_BOX_TUTORIAL,
+                        style = PackyTheme.typography.body02,
+                        color = PackyTheme.color.white,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }

@@ -43,6 +43,8 @@ sealed interface BoxGuideIntent : MviIntent {
     ) : BoxGuideIntent
 
     data object ClearMusic : BoxGuideIntent
+
+    data object OnTutorialClick: BoxGuideIntent
 }
 
 data class Photo(
@@ -68,7 +70,8 @@ data class BoxGuideState(
     val youtubeState: YoutubeState = YoutubeState.INIT,
     val selectedSticker: SelectedSticker,
     val gift: Uri?,
-    val boxDesign: BoxDesign?
+    val boxDesign: BoxDesign?,
+    val showTutorial: Boolean = false
 ) : UiState {
     fun isBoxComplete() =
         this.photo != null && this.letter != null && this.youtubeUrl != null && this.selectedSticker.isStickerComplete()

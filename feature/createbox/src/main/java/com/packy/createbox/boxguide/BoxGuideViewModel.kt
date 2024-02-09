@@ -15,6 +15,7 @@ import com.packy.domain.model.createbox.Sticker
 import com.packy.domain.model.createbox.box.Gift
 import com.packy.domain.model.createbox.box.Stickers
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
+import com.packy.domain.usecase.createbox.CreateBoxFlagUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.domain.usecase.createbox.GetStickerUseCase
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
@@ -32,6 +33,7 @@ import javax.inject.Inject
 class BoxGuideViewModel @Inject constructor(
     private val getBoxDesignUseCase: GetBoxDesignUseCase,
     private val createBoxUseCase: CreateBoxUseCase,
+    private val createBoxFlagUseCase: CreateBoxFlagUseCase,
 ) : MviViewModel<BoxGuideIntent, BoxGuideState, BoxGuideEffect>() {
     override fun createInitialState(): BoxGuideState = BoxGuideState(
         title = "",
@@ -57,6 +59,10 @@ class BoxGuideViewModel @Inject constructor(
         subscribeStateIntent<BoxGuideIntent.SaveSticker>(saveSticker())
         subscribeStateIntent<BoxGuideIntent.SaveGift>(saveGift())
         subscribeStateIntent<BoxGuideIntent.SaveBox>(saveBox())
+        subscribeIntent<BoxGuideIntent.OnTutorialClick> {
+            createBoxFlagUseCase.shownShowBoxTutorial()
+            setState(currentState.copy(showTutorial = false))
+        }
     }
 
     private suspend fun createBox(boxGuideIntent: BoxGuideIntent.OnSaveClick) {
@@ -146,6 +152,8 @@ class BoxGuideViewModel @Inject constructor(
             )
         }
 
+        val showTutorial = createBoxFlagUseCase.shouldShowBoxTutorial().firstOrNull() ?: false
+
         setState(
             currentState.copy(
                 title = "${Strings.BOX_ADD_INFO_RECEIVER} $receiver",
@@ -157,7 +165,8 @@ class BoxGuideViewModel @Inject constructor(
                     sticker2 = sticker2
                 ),
                 gift = createBox.gift?.url?.let { Uri.parse(it) },
-                boxDesign = boxDesign
+                boxDesign = boxDesign,
+                showTutorial = showTutorial
             )
         )
     }

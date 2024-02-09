@@ -26,6 +26,7 @@ class CreateBoxChangeViewModel @Inject constructor(
             sendEffect(CreateBoxChangeEffect.OnConfirmClick)
         }
         subscribeStateIntent<CreateBoxChangeIntent.ChangeBox> { state, intent ->
+            sendEffect(CreateBoxChangeEffect.ChangeBox(intent.box))
             state.copy(currentBox = intent.box)
         }
     }

@@ -17,4 +17,5 @@ data class CreateBoxChangeState(
 
 sealed interface CreateBoxChangeEffect : SideEffect {
     data object OnConfirmClick: CreateBoxChangeEffect
+    data class ChangeBox(val box: BoxDesign): CreateBoxChangeEffect
 }

@@ -34,21 +34,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo
-import com.packy.core.designsystem.iconbutton.PackyCloseIconButton
-import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.COMPLETE
@@ -57,8 +51,6 @@ import com.packy.core.widget.giftbox.LetterForm
 import com.packy.core.widget.giftbox.MusicForm
 import com.packy.core.widget.giftbox.PhotoForm
 import com.packy.core.widget.giftbox.TopBoxPartImage
-import com.packy.core.widget.youtube.YoutubePlayer
-import com.packy.core.widget.youtube.YoutubeState
 import com.packy.createbox.boxguide.widget.BoxGuideBottomSheet
 import com.packy.createbox.boxguide.widget.BoxGuideContent
 import com.packy.createbox.boxguide.widget.BoxPlaceholder
@@ -73,8 +65,6 @@ import com.packy.createbox.createboax.navigation.CreateBoxNavHost
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.domain.model.box.BoxDesign
 import com.packy.domain.model.createbox.Sticker
-import com.packy.lib.ext.extractYouTubeVideoId
-import com.packy.lib.ext.removeNewlines
 import com.packy.mvi.ext.emitMviIntent
 
 @Composable
@@ -296,7 +286,7 @@ fun BoxGuideScreen(
                 BottomSheetNav(
                     uiState = uiState,
                     bottomSheetRoute = bottomSheetRoute,
-                    closeBottomSheet = {
+                    closeBottomSheetDialog = {
                         bottomSheetCloseDialog = PackyDialogInfo(
                             title = Strings.CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_TITLE,
                             subTitle = Strings.CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_DESCRIPTION,
@@ -368,8 +358,10 @@ fun BoxGuideScreen(
                                 it
                             )
                         )
-                        showBottomSheet = false
                     },
+                    closeBottomSheet = {
+                        showBottomSheet = false
+                    }
                 )
             }
             AnimatedVisibility(
@@ -512,6 +504,7 @@ private fun BottomSheetNav(
     uiState: BoxGuideState,
     modifier: Modifier = Modifier,
     bottomSheetRoute: BoxGuideBottomSheetRoute,
+    closeBottomSheetDialog: () -> Unit,
     closeBottomSheet: () -> Unit,
     savePhoto: (Uri, String) -> Unit,
     saveLetter: (Int, String, String) -> Unit,
@@ -523,14 +516,14 @@ private fun BottomSheetNav(
     when (bottomSheetRoute) {
         BoxGuideBottomSheetRoute.ADD_GIFT -> {
             CreateBoxAddGiftScreen(
-                closeBottomSheet = closeBottomSheet,
+                closeBottomSheet = closeBottomSheetDialog,
                 saveGift = saveGift
             )
         }
 
         BoxGuideBottomSheetRoute.ADD_LATTER -> {
             CreateBoxLetterScreen(
-                closeBottomSheet = closeBottomSheet,
+                closeBottomSheet = closeBottomSheetDialog,
                 saveLetter = saveLetter
             )
         }
@@ -538,21 +531,21 @@ private fun BottomSheetNav(
         BoxGuideBottomSheetRoute.ADD_MUSIC -> {
             CreateBoxNavHost(
                 modifier = Modifier.background(PackyTheme.color.white),
-                closeBottomSheet = closeBottomSheet,
+                closeBottomSheet = closeBottomSheetDialog,
                 saveMusic = saveMusic
             )
         }
 
         BoxGuideBottomSheetRoute.ADD_PHOTO ->
             CreateBoxAddPhotoScreen(
-                closeBottomSheet = closeBottomSheet,
+                closeBottomSheet = closeBottomSheetDialog,
                 savePhoto = savePhoto
             )
 
         BoxGuideBottomSheetRoute.ADD_STICKER_1 -> CreateBoxStickerScreen(
             stickerIndex = 1,
             selectedSticker = uiState.selectedSticker,
-            closeBottomSheet = closeBottomSheet,
+            closeBottomSheet = closeBottomSheetDialog,
             onSaveSticker = {
                 onSaveSticker(
                     1,
@@ -564,7 +557,7 @@ private fun BottomSheetNav(
         BoxGuideBottomSheetRoute.ADD_STICKER_2 -> CreateBoxStickerScreen(
             stickerIndex = 2,
             selectedSticker = uiState.selectedSticker,
-            closeBottomSheet = closeBottomSheet,
+            closeBottomSheet = closeBottomSheetDialog,
             onSaveSticker = {
                 onSaveSticker(
                     2,
@@ -575,12 +568,12 @@ private fun BottomSheetNav(
 
         BoxGuideBottomSheetRoute.CHANGE_BOX -> CreateBoxChangeScreen(
             currentBox = uiState.boxDesign!!,
-            closeBottomSheet = closeBottomSheet,
+            closeBoxChange = closeBottomSheet,
             onSaveBox = onSaveBox,
         )
 
         BoxGuideBottomSheetRoute.EMPTY -> {
-            closeBottomSheet()
+            closeBottomSheetDialog()
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.boxchange
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
@@ -16,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -31,8 +34,8 @@ import com.packy.domain.model.box.BoxDesign
 fun CreateBoxChangeScreen(
     modifier: Modifier = Modifier,
     currentBox: BoxDesign,
-    closeBottomSheet: () -> Unit,
     onSaveBox: (BoxDesign) -> Unit,
+    closeBoxChange: () -> Unit,
     viewModel: CreateBoxChangeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -41,11 +44,18 @@ fun CreateBoxChangeScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 CreateBoxChangeEffect.OnConfirmClick -> {
-                    uiState.currentBox?.let(onSaveBox)
-                    closeBottomSheet()
+                    closeBoxChange()
+                }
+
+                is CreateBoxChangeEffect.ChangeBox -> {
+                   onSaveBox(effect.box)
                 }
             }
         }
+    }
+
+    BackHandler(true) {
+        closeBoxChange()
     }
 
     Column {
@@ -89,14 +99,16 @@ fun CreateBoxChangeScreen(
         LazyRow(
             modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(
-                space = 12.dp,
+                space = 16.dp,
                 alignment = Alignment.CenterHorizontally
             ),
+            contentPadding = PaddingValues(horizontal = 40.dp)
         ) {
             items(uiState.boxDesignList) { boxDesign ->
                 GlideImage(
                     modifier = modifier
-                        .size(67.dp)
+                        .size(64.dp)
+                        .clip(RoundedCornerShape(8.dp))
                         .clickableWithoutRipple {
                             viewModel.emitIntentThrottle(
                                 CreateBoxChangeIntent.ChangeBox(

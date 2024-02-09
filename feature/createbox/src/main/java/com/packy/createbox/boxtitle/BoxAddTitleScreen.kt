@@ -14,7 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,9 +39,13 @@ fun BoxAddTitleScreen(
     viewModel: BoxAddTitleViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val boxNameFocus = remember {
+        FocusRequester()
+    }
 
     LaunchedEffect(Unit) {
         viewModel.initBoxTitle()
+        boxNameFocus.requestFocus()
         viewModel.effect.collect { effect ->
             when (effect) {
                 BoxAddTitleEffect.MoveToBack -> navController.popBackStack()
@@ -88,6 +95,7 @@ fun BoxAddTitleScreen(
             )
             Spacer(height = 40.dp)
             PackyTextField(
+                modifier = Modifier.focusRequester(boxNameFocus),
                 value = uiState.boxTitle,
                 placeholder = Strings.INPUT_MAX_LENGTH_12,
                 onValueChange = {

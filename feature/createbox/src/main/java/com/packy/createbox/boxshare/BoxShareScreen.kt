@@ -112,7 +112,7 @@ fun BoxShareScreen(
                             viewModel.emitIntent(BoxShareIntent.OnBackClick)
                         }
                     } else {
-                        startIconButton(
+                        endIconButton(
                             icon = R.drawable.cancle
                         ) {
                             viewModel.emitIntent(BoxShareIntent.OnCloseClick)
@@ -129,7 +129,7 @@ fun BoxShareScreen(
         ) {
             Spacer(1f)
             Text(
-                text = Strings.CREATE_BOX_ADD_SHARE_TITLE,
+                text = uiState.receiverName + Strings.CREATE_BOX_ADD_SHARE_TITLE,
                 style = PackyTheme.typography.heading01.copy(
                     textAlign = TextAlign.Center
                 ),

@@ -71,6 +71,7 @@ class BoxGuideViewModel @Inject constructor(
 
     private fun saveBox(): suspend (BoxGuideState, BoxGuideIntent.SaveBox) -> BoxGuideState =
         { state, intent ->
+            getBoxDesignUseCase.setBoxDesignLocal(intent.boxDesign)
             createBoxUseCase.boxDesign(intent.boxDesign.id)
             state.copy(boxDesign = intent.boxDesign)
         }

@@ -14,6 +14,7 @@ sealed interface BoxShareIntent : MviIntent {
 data class BoxShareState(
     val boxImageUrl: String?,
     val boxTitle: String?,
+    val receiverName: String?,
     val shared: Boolean?
 ) : UiState
 

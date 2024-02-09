@@ -21,6 +21,7 @@ class BoxShareViewModel @Inject constructor(
     override fun createInitialState(): BoxShareState = BoxShareState(
         boxImageUrl = null,
         boxTitle = null,
+        receiverName = null,
         shared = null
     )
 
@@ -49,11 +50,12 @@ class BoxShareViewModel @Inject constructor(
 
     suspend fun initState() {
         val boxImageUrl = boxDesignUseCase.getBoxDesignLocal().firstOrNull()?.boxNormal
-        val boxTitle = createBoxUseCase.getCreatedBox().name
+        val createBox = createBoxUseCase.getCreatedBox()
         setState(
             currentState.copy(
                 boxImageUrl = boxImageUrl,
-                boxTitle = boxTitle
+                boxTitle = createBox.name,
+                receiverName = createBox.receiverName
             )
         )
     }

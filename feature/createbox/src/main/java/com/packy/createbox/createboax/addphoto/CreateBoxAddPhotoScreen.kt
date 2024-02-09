@@ -7,6 +7,7 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.util.Base64
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,6 +48,7 @@ import com.packy.core.permissions.checkAndRequestPermissions
 import com.packy.core.permissions.storagePermissions
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.createbox.createboax.addgift.CreateBoxAddGiftIntent
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.feature.core.R
@@ -65,6 +67,7 @@ fun CreateBoxAddPhotoScreen(
 
     val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(null) {
+        viewModel.initPhotoItem()
         viewModel.effect.collect { effect ->
             when (effect) {
                 CreateBoxAddPhotoEffect.CloseBottomSheet -> closeBottomSheet()
@@ -77,10 +80,13 @@ fun CreateBoxAddPhotoScreen(
                         effect.photoItem.imageUri!!,
                         effect.photoItem.contentDescription!!
                     )
-                    closeBottomSheet()
                 }
             }
         }
+    }
+
+    BackHandler(true) {
+        viewModel.emitIntent(CreateBoxAddPhotoIntent.OnCloseClick)
     }
 
     Column(

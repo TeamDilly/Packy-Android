@@ -30,6 +30,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +45,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.designsystem.dialog.PackyDialog
+import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.designsystem.iconbutton.PackyCloseIconButton
 import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.theme.PackyTheme
@@ -90,6 +93,14 @@ fun BoxGuideScreen(
     var bottomSheetRoute by remember { mutableStateOf(BoxGuideBottomSheetRoute.EMPTY) }
 
     var boxPartAnimation by remember { mutableStateOf(false) }
+
+    var bottomSheetCloseDialog by rememberSaveable {
+        mutableStateOf<PackyDialogInfo?>(null)
+    }
+
+    if (bottomSheetCloseDialog != null) {
+        PackyDialog(packyDialogInfo = bottomSheetCloseDialog!!)
+    }
 
     LaunchedEffect(Unit) {
         viewModel.initUiState()
@@ -286,7 +297,22 @@ fun BoxGuideScreen(
                     uiState = uiState,
                     bottomSheetRoute = bottomSheetRoute,
                     closeBottomSheet = {
-                        showBottomSheet = false
+                        bottomSheetCloseDialog = PackyDialogInfo(
+                            title = Strings.CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_TITLE,
+                            subTitle = Strings.CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_DESCRIPTION,
+                            dismiss = Strings.CONFIRM,
+                            confirm = Strings.CANCEL,
+                            onDismiss = {
+                                bottomSheetCloseDialog = null
+                                showBottomSheet = false
+                            },
+                            onConfirm = {
+                                bottomSheetCloseDialog = null
+                            },
+                            backHandler = {
+                                bottomSheetCloseDialog = null
+                            }
+                        )
                     },
                     savePhoto = { uri, description ->
                         viewModel.emitIntent(
@@ -295,6 +321,7 @@ fun BoxGuideScreen(
                                 description
                             )
                         )
+                        showBottomSheet = false
                     },
                     saveLetter = { envelopeId, envelopeUri, letterText ->
                         viewModel.emitIntent(
@@ -308,6 +335,7 @@ fun BoxGuideScreen(
                                 )
                             )
                         )
+                        showBottomSheet = false
                     },
                     saveMusic = { youtubeUrl ->
                         viewModel.emitIntent(
@@ -315,6 +343,7 @@ fun BoxGuideScreen(
                                 youtubeUrl
                             )
                         )
+                        showBottomSheet = false
                     },
                     onSaveSticker = { index, sticker ->
                         viewModel.emitIntent(
@@ -323,6 +352,7 @@ fun BoxGuideScreen(
                                 sticker
                             )
                         )
+                        showBottomSheet = false
                     },
                     saveGift = { uri ->
                         viewModel.emitIntent(
@@ -330,6 +360,7 @@ fun BoxGuideScreen(
                                 uri,
                             )
                         )
+                        showBottomSheet = false
                     },
                     onSaveBox = {
                         viewModel.emitIntent(
@@ -337,6 +368,7 @@ fun BoxGuideScreen(
                                 it
                             )
                         )
+                        showBottomSheet = false
                     },
                 )
             }
@@ -415,7 +447,7 @@ private fun BottomNavButton(
                 )
                 Spacer(width = 8.dp)
                 Text(
-                    text = if(hasGift) Strings.CREATE_BOX_HAS_GIFT else Strings.BOX_GUIDE_GIFT,
+                    text = if (hasGift) Strings.CREATE_BOX_HAS_GIFT else Strings.BOX_GUIDE_GIFT,
                     style = PackyTheme.typography.body04,
                     color = PackyTheme.color.white
                 )

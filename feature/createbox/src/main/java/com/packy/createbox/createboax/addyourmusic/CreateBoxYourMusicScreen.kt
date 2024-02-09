@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.addyourmusic
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.YoutubeState
+import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoIntent
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
@@ -63,6 +65,9 @@ fun CreateBoxYourMusicScreen(
                 }
             }
         }
+    }
+    BackHandler(true) {
+        viewModel.emitIntent(CreateBoxYourMusicIntent.OnCloseClick)
     }
 
     Column(

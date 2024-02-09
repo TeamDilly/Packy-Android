@@ -50,7 +50,13 @@ class CreateBoxStickerViewModel @Inject constructor(
         }
 
         subscribeIntent<CreateBoxStickerIntent.OnSaveClick> {
-            sendEffect(CreateBoxStickerEffect.OnSaveSticker)
+            sendEffect(
+                CreateBoxStickerEffect.OnSaveSticker(
+                    sticker = currentState.selectedSticker?.get(
+                        currentState.currentIndex
+                    )
+                )
+            )
         }
     }
 

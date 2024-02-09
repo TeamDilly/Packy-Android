@@ -131,6 +131,10 @@ object Strings {
     const val CREATE_BOX_TUTORIAL= "빈 공간을 눌러서\n선물박스를 채워보세요"
     const val CREATE_BOX_HAS_GIFT = "담은 선물 보기"
 
+    const val CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_TITLE = "저장하지 않고 나가시겠어요?"
+    const val CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_DESCRIPTION = "입력한 내용이 선물박스에 담기지 않아요"
+
+
     // GiftBox
     fun GIFT_BOX_ARR_TITLE(name: String) = "${name}님이 보낸\n선물박스가 도착했어요!"
     const val GIFT_BOX_OPEN_GIFT = "선물박스를 열어보세요"

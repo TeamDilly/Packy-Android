@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.addpackymusic
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +37,8 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.YoutubeState
+import com.packy.createbox.createboax.addLetter.CreateBoxLetterIntent
+import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoIntent
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
@@ -66,7 +69,6 @@ fun CreateBoxPackyMusicScreen(
                 CreateBoxPackyMusicEffect.CloseBottomSheet -> closeBottomSheet()
                 is CreateBoxPackyMusicEffect.SaveMusic -> {
                     saveMusic(effect.youtubeMusic)
-                    closeBottomSheet()
                     navController.popBackStack(
                         route = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC,
                         inclusive = true
@@ -76,6 +78,10 @@ fun CreateBoxPackyMusicScreen(
                 CreateBoxPackyMusicEffect.MoveToBack -> navController.popBackStack()
             }
         }
+    }
+
+    BackHandler(true) {
+        viewModel.emitIntent(CreateBoxPackyMusicIntent.OnCloseClick)
     }
 
     Column(

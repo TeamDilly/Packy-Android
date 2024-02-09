@@ -1,6 +1,7 @@
 package com.packy.createbox.createboax.addlatter
 
 import android.graphics.Color.parseColor
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -47,6 +48,7 @@ import com.packy.core.values.Strings
 import com.packy.core.values.Strings.CREATE_BOX_ADD_LETTER_OVER_FLOW
 import com.packy.createbox.createboax.addLetter.CreateBoxLetterEffect
 import com.packy.createbox.createboax.addLetter.CreateBoxLetterIntent
+import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoIntent
 import com.packy.createbox.createboax.common.BottomSheetTitle
 import com.packy.createbox.createboax.common.BottomSheetTitleContent
 import com.packy.domain.model.createbox.LetterEnvelope
@@ -83,7 +85,6 @@ fun CreateBoxLetterScreen(
                         effect.envelopUri,
                         effect.LetterText
                     )
-                    closeBottomSheet()
                 }
 
                 CreateBoxLetterEffect.OverFlowLetterText -> {
@@ -102,6 +103,11 @@ fun CreateBoxLetterScreen(
             }
         }
     }
+
+    BackHandler(true) {
+        viewModel.emitIntent(CreateBoxLetterIntent.OnCloseClick)
+    }
+
     Scaffold(
         snackbarHost = {
             PackySnackBarHost(

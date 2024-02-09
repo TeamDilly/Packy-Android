@@ -1,5 +1,6 @@
 package com.packy.createbox.createboax.choosemusic
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoIntent
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
@@ -48,6 +50,11 @@ fun CreateBoxChooseMusicScreen(
             }
         }
     }
+
+    BackHandler(true) {
+        viewModel.emitIntent(CreateBoxChooseMusicIntent.OnCloseClick)
+    }
+
     Column {
         PackyTopBar.Builder()
             .endIconButton(icon = R.drawable.cancle) {

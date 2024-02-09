@@ -1,6 +1,7 @@
 package com.packy.createbox.createboax.addgift
 
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -61,10 +62,10 @@ fun CreateBoxAddGiftScreen(
 
     val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(null) {
+        viewModel.initPhotoItem()
         viewModel.effect.collect { effect ->
             when (effect) {
                 CreateBoxAddGiftEffect.CloseBottomSheet -> {
-                    saveGift(null)
                     closeBottomSheet()
                 }
 
@@ -72,10 +73,13 @@ fun CreateBoxAddGiftScreen(
                     saveGift(
                         effect.imageUri
                     )
-                    closeBottomSheet()
                 }
             }
         }
+    }
+
+    BackHandler(true) {
+        viewModel.emitIntent(CreateBoxAddGiftIntent.OnCloseClick)
     }
 
     Column(

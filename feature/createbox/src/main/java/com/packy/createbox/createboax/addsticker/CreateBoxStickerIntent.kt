@@ -19,6 +19,6 @@ data class CreateBoxStickerState(
 ) : UiState
 
 sealed interface CreateBoxStickerEffect : SideEffect {
-    data object OnSaveSticker: CreateBoxStickerEffect
+    data class OnSaveSticker(val sticker: Sticker?): CreateBoxStickerEffect
     data class OnChangeSticker(val sticker: Sticker?) : CreateBoxStickerEffect
 }

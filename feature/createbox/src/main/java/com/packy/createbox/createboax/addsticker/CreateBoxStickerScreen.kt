@@ -70,12 +70,11 @@ fun CreateBoxStickerScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is CreateBoxStickerEffect.OnSaveSticker -> {
-                    closeBottomSheet()
+                    onSaveSticker(effect.sticker)
                 }
 
                 is CreateBoxStickerEffect.OnChangeSticker -> {
                     onSaveSticker(effect.sticker)
-                    closeBottomSheet()
                 }
             }
         }

@@ -16,11 +16,19 @@ android {
     }
     signingConfigs {
         maybeCreate("release").apply{
-            storeFile = STORE_FILE
+            val KEY_ALIAS: String by project
+            val KEY_PASSWORD: String by project
+            val STORE_FILE: String by project
+            val STORE_PASSWORD: String by project
+            keyAlias = KEY_ALIAS
+            storeFile = file(STORE_FILE)
+            keyPassword = KEY_PASSWORD
+            storePassword = STORE_PASSWORD
         }
     }
     buildTypes{
         maybeCreate("debug").apply {
+            signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
             isShrinkResources = false
             proguardFiles(
@@ -29,6 +37,7 @@ android {
             )
         }
         maybeCreate("release").apply {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(

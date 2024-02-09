@@ -59,15 +59,17 @@ object NetworkModule {
                 })
             }
             install(Logging) {
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        Log.i(
-                            "Ktor",
-                            message
-                        )
+                if(BuildConfig.DEBUG){
+                    logger = object : Logger {
+                        override fun log(message: String) {
+                            Log.i(
+                                "Ktor",
+                                message
+                            )
+                        }
                     }
+                    level = LogLevel.ALL
                 }
-                level = LogLevel.ALL
             }
             HttpResponseValidator {
                 handleResponseExceptionWithRequest { exception, request ->

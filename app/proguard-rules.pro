@@ -37,6 +37,7 @@
      kotlinx.serialization.KSerializer serializer(...);
  }
 
+ -keep interface com.kakao.sdk.**.*Api
  -keep class com.kakao.sdk.**.model.* { <fields>; }
  -keep class * extends com.google.gson.TypeAdapter
 

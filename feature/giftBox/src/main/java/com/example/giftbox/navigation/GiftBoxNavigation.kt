@@ -14,6 +14,7 @@ import com.example.giftbox.giftarr.GiftBoxArrScreen
 import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ARG
 import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ID_ARG
 import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_SKIP_ARR_ARG
+import com.packy.core.animations.asFadeInComposable
 import com.packy.core.animations.asFadeInSlidOutComposable
 import com.packy.core.animations.asPagingComposable
 import com.packy.core.animations.asRootComposable
@@ -23,14 +24,14 @@ import kotlinx.serialization.json.Json
 
 fun NavGraphBuilder.giftBoxNavGraph(
     navController: NavHostController,
-    closeGiftBox: () -> Unit
+    closeGiftBox: () -> Unit,
 ) {
     navigation(
         startDestination = GiftBoxRoute.GIFT_BOX_ROOT,
         route = GiftBoxRoute.GIFT_BOX_NAV_GRAPH
     ) {
 
-        asRootComposable(
+        asFadeInComposable(
             route = GiftBoxRoute.GIFT_BOX_ROOT + "/{$GIFT_BOX_ID_ARG}" + "?" + "skipArr={$GIFT_BOX_SKIP_ARR_ARG}",
             arguments = listOf(
                 navArgument(GIFT_BOX_SKIP_ARR_ARG) {
@@ -74,6 +75,7 @@ fun NavGraphBuilder.giftBoxNavGraph(
         ) {
             GiftBoxDetailOpenScreen(
                 navController = navController,
+                closeGiftBox= closeGiftBox
             )
         }
         asFadeInSlidOutComposable(
@@ -82,6 +84,7 @@ fun NavGraphBuilder.giftBoxNavGraph(
         ) {
             GiftBoxDetailOpenScreen(
                 navController = navController,
+                closeGiftBox = closeGiftBox
             )
         }
         asPagingComposable(

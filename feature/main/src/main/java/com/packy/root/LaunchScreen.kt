@@ -53,8 +53,12 @@ fun LaunchScreen(
                 }
 
                 is DeepLinkController.OpenBox -> {
-                    navController.navigate(HomeRoute.HOME_NAV_GRAPH) {
-                       popUpTo(GiftBoxRoute.GIFT_BOX_ROOT + "/${deepLinkController.boxId}" + "?" + "skipArr=false")
+                    navController.navigate(GiftBoxRoute.GIFT_BOX_ROOT + "/${deepLinkController.boxId}" + "?" + "skipArr=false") {
+                        popUpTo(
+                            MainRoute.LAUNCH_ROUTE
+                        ) {
+                            inclusive = true
+                        }
                     }
                 }
             }

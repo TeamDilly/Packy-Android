@@ -1,5 +1,6 @@
 package com.example.giftbox.boxdetailopen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -66,6 +67,7 @@ import kotlinx.coroutines.launch
 fun GiftBoxDetailOpenScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
+    closeGiftBox: () -> Unit,
     viewModel: GiftBoxDetailOpenViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
@@ -82,13 +84,19 @@ fun GiftBoxDetailOpenScreen(
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                GiftBoxDetailOpenEffect.MoveToBack -> navController.popBackStack()
+                GiftBoxDetailOpenEffect.MoveToBack -> {
+                    closeGiftBox()
+                }
                 GiftBoxDetailOpenEffect.GiftBoxClose -> navController.popBackStack(
                     route = GiftBoxRoute.GIFT_BOX_NAV_GRAPH,
                     inclusive = true
                 )
             }
         }
+    }
+
+    BackHandler(true) {
+        closeGiftBox()
     }
 
     Scaffold { innerPadding ->

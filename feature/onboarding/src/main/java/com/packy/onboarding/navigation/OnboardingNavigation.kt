@@ -2,10 +2,12 @@ package com.packy.onboarding.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.packy.core.animations.asPagingComposable
 import com.packy.core.animations.asRootComposable
 import com.packy.onboarding.login.LoginScreen
+import com.packy.onboarding.navigation.OnboardingRouteArgs.NICKNAME
 import com.packy.onboarding.onboarding.OnboardingScreen
 import com.packy.onboarding.signupnickname.SignupNickNameScreen
 import com.packy.onboarding.signupprofile.SignupProfileScreen
@@ -33,9 +35,18 @@ fun NavGraphBuilder.onboardingNavGraph(
             )
         }
         asPagingComposable(
-            route = OnboardingRoute.SIGNUP_NICKNAME,
+            route = OnboardingRoute.SIGNUP_NICKNAME + "?" + "$NICKNAME={$NICKNAME}",
+            arguments = listOf(
+                navArgument(NICKNAME) {
+                    nullable = true
+                    type = androidx.navigation.NavType.StringType
+                    defaultValue = null
+                }
+            )
         ) {
-            SignupNickNameScreen(navController = navController)
+            SignupNickNameScreen(
+                navController = navController,
+            )
         }
         asPagingComposable(
             route = OnboardingRoute.SIGNUP_PROFILE,
@@ -61,4 +72,10 @@ object OnboardingRoute {
     const val SIGNUP_NICKNAME = "signupNickName"
     const val SIGNUP_PROFILE = "signupProfile"
     const val TERMS_AGREEMENT = "termsAgreement"
+    fun getSignupNicknameRoute(nickname: String?) =
+        if (nickname == null) "signupNickname" else "signupNickname?$NICKNAME=$nickname"
+}
+
+object OnboardingRouteArgs {
+    const val NICKNAME = "nickname"
 }

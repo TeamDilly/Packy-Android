@@ -1,14 +1,17 @@
 package com.packy.onboarding.signupnickname
 
+import androidx.lifecycle.SavedStateHandle
 import com.packy.domain.usecase.auth.SignUpUseCase
 import com.packy.mvi.base.MviViewModel
+import com.packy.onboarding.navigation.OnboardingRouteArgs.NICKNAME
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupNickNameViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase
+    private val signUpUseCase: SignUpUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) :
     MviViewModel<SignupNickNameIntent, SignupNickNameState, SignupNickNameEffect>() {
     override fun createInitialState() = SignupNickNameState(
@@ -31,6 +34,12 @@ class SignupNickNameViewModel @Inject constructor(
                 )
             )
             sendEffect(SignupNickNameEffect.NavSignupProfileEffect)
+        }
+    }
+
+    init {
+        savedStateHandle.get<String>(NICKNAME)?.let {
+            emitIntent(SignupNickNameIntent.OnChangeInputNickName(it))
         }
     }
 }

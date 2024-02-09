@@ -26,7 +26,6 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings.LOGIN_TITLE
 import com.packy.feature.core.R
 import com.packy.onboarding.navigation.OnboardingRoute
-import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -45,7 +44,7 @@ fun LoginScreen(
                 }
 
                 LoginEffect.KakaoLoginSuccess -> loggedIn()
-                LoginEffect.KakaoLoginSuccessNotUser -> navController.navigate(OnboardingRoute.SIGNUP_NICKNAME)
+                is LoginEffect.KakaoLoginSuccessNotUser -> navController.navigate(OnboardingRoute.getSignupNicknameRoute(effect.nickname))
                 LoginEffect.KakaoLoginFail -> TODO()
             }
         }

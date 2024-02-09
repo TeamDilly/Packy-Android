@@ -20,6 +20,6 @@ data class LoginState(
 sealed interface LoginEffect : SideEffect {
     data object KakaoLogin : LoginEffect
     data object KakaoLoginSuccess : LoginEffect
-    data object KakaoLoginSuccessNotUser : LoginEffect
+    data class KakaoLoginSuccessNotUser(val nickname: String?) : LoginEffect
     data object KakaoLoginFail : LoginEffect
 }

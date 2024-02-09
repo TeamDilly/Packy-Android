@@ -36,10 +36,11 @@ class LoginViewModel @Inject constructor(
             is KakaoAuth.KakaoLoginSuccess -> {
                 viewModelScope.launch {
                     signInUseCase.signIn(kakaoAuth.token)
-                        .collect {
+                        .collect { resource ->
                             signInController(
-                                kakaoAuth.token,
-                                it
+                                token = kakaoAuth.token,
+                                resource = resource,
+                                nikname = kakaoAuth.nickname
                             )
                         }
                 }
@@ -49,15 +50,16 @@ class LoginViewModel @Inject constructor(
 
     private fun signInController(
         token: String,
-        it: Resource<SignIn>
+        nikname: String?,
+        resource: Resource<SignIn>
     ) {
-        when (it) {
+        when (resource) {
             is Resource.Loading -> Unit
             is Resource.ApiError -> Unit
             is Resource.NetworkError -> Unit
             is Resource.NullResult -> Unit
             is Resource.Success -> {
-                when (it.data.status) {
+                when (resource.data.status) {
                     SignIn.AuthStatus.REGISTERED.name -> {
                         viewModelScope.launch {
                             sendEffect(LoginEffect.KakaoLoginSuccess)
@@ -72,7 +74,7 @@ class LoginViewModel @Inject constructor(
                             signUpUseCase.setUserSignUpInfo(
                                 signUp
                             )
-                            sendEffect(LoginEffect.KakaoLoginSuccessNotUser)
+                            sendEffect(LoginEffect.KakaoLoginSuccessNotUser(nikname))
                         }
                     }
                 }

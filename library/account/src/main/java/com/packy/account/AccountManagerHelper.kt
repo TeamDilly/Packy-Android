@@ -46,6 +46,11 @@ class AccountManagerHelper(
         return accountManager.getUserData(account, authKey.refreshToken)
     }
 
+    fun getNickName(): String? {
+        val account = getAccount() ?: return null
+        return accountManager.getUserData(account, authKey.nickName)
+    }
+
     /**
      * @return authToken을 찾아서 반환 한다.
      */
@@ -62,18 +67,26 @@ class AccountManagerHelper(
      * @param password Account password 필수 적이지 않음.
      * @param token 저장할 토큰.
      */
-    fun setAuthToken(email: String, password: String? = null, token: String, refreshToken: String? = null) {
+    fun setAuthToken(email: String, password: String? = null, token: String, refreshToken: String? = null, nickname: String? = null) {
         val accounts = accountManager.getAccountsByType(authKey.accountType)
         if (accounts.isEmpty()) {
             val account = Account(email, authKey.accountType)
             accountManager.addAccountExplicitly(account, password, null)
             accountManager.setAuthToken(account, authKey.authTokenType, token)
             accountManager.setUserData(account, authKey.refreshToken, refreshToken)
+            accountManager.setUserData(account, authKey.nickName, nickname)
         } else {
             val account = accounts.firstOrNull { it.type == authKey.accountType }
             accountManager.setAuthToken(account, authKey.authTokenType, token)
             accountManager.setUserData(account, authKey.refreshToken, refreshToken)
+            accountManager.setUserData(account, authKey.nickName, nickname)
         }
+    }
+
+    fun setRefreshToken( token: String, refreshToken: String) {
+        val account = getAccount() ?: return
+        accountManager.setAuthToken(account, authKey.authTokenType, token)
+        accountManager.setUserData(account, authKey.refreshToken, refreshToken)
     }
 
     private suspend inline fun <R> AccountManager.callAsync(crossinline operation: AccountManager?.(CoroutineAccountManagerCallback<R>) -> Unit): R {

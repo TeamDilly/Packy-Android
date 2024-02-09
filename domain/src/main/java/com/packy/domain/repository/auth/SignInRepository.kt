@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SignInRepository {
 
-    suspend fun signIn(token: String): Flow<Resource<SignIn>>
+    suspend fun signIn(token: String, nickname: String?): Flow<Resource<SignIn>>
 }

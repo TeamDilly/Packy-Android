@@ -35,7 +35,10 @@ class LoginViewModel @Inject constructor(
             is KakaoAuth.KakaoLoginFail -> sendEffect(LoginEffect.KakaoLoginFail)
             is KakaoAuth.KakaoLoginSuccess -> {
                 viewModelScope.launch {
-                    signInUseCase.signIn(kakaoAuth.token)
+                    signInUseCase.signIn(
+                        token = kakaoAuth.token,
+                        nickname = kakaoAuth.nickname
+                    )
                         .collect { resource ->
                             signInController(
                                 token = kakaoAuth.token,

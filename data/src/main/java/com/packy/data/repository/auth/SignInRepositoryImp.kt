@@ -16,7 +16,7 @@ class SignInRepositoryImp @Inject constructor(
     private val api: SignInService,
     private val accountManagerHelper: AccountManagerHelper
 ) : SignInRepository {
-    override suspend fun signIn(token: String): Flow<Resource<SignIn>> {
+    override suspend fun signIn(token: String, nickname: String?): Flow<Resource<SignIn>> {
         return flow {
             emit(Resource.Loading())
             val signDto = api.signIn(token = token)
@@ -29,7 +29,8 @@ class SignInRepositoryImp @Inject constructor(
                         accountManagerHelper.setAuthToken(
                             email = "Packy",
                             token = it,
-                            refreshToken = token.refreshToken
+                            refreshToken = token.refreshToken,
+                            nickname = nickname
                         )
                     }
                 }

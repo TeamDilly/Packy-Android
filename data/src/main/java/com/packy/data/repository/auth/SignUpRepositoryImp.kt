@@ -43,7 +43,8 @@ class SignUpRepositoryImp @Inject constructor(
                 accountManagerHelper.setAuthToken(
                     email = "Packy",
                     token = signUpResource.data.accessToken,
-                    refreshToken = signUpResource.data.refreshToken
+                    refreshToken = signUpResource.data.refreshToken,
+                    nickname = signUp.nickname
                 )
             }
 

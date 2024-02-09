@@ -23,7 +23,7 @@ class SignupNickNameViewModel @Inject constructor(
         subscribeStateIntent<SignupNickNameIntent.OnChangeInputNickName> { state, intent ->
             state.copy(
                 inputNickName = intent.inputNickName,
-                isAvailableNickName = (state.inputNickName?.length ?: 0) >= 2
+                isAvailableNickName = (intent.inputNickName?.length ?: 0) >= 2
             )
         }
         subscribeIntent<SignupNickNameIntent.OnSaveButtonClick> {

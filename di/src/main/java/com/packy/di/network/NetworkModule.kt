@@ -95,8 +95,7 @@ object NetworkModule {
                             }.toResource<TokenInfo>()
 
                             if (token is Resource.Success) {
-                                accountManagerHelper.setAuthToken(
-                                    email = "Packy",
+                                accountManagerHelper.setRefreshToken(
                                     token = token.data.accessToken,
                                     refreshToken = token.data.refreshToken
                                 )

@@ -48,17 +48,10 @@ fun BoxShareScreen(
     val kakaoShare = KakaoShare()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    DisposableEffect(
+    LaunchedEffect(
         context,
         viewModel
     ) {
-        val broadcastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(
-                context: Context?,
-                intent: Intent?
-            ) {
-            }
-        }
         scope.launch {
             viewModel.initState()
             viewModel.effect.collect { effect ->
@@ -71,11 +64,7 @@ fun BoxShareScreen(
                             kakaoCustomFeed = effect.kakaoCustomFeed,
                             sharedCallBack = {
                                 if (it is Resource.Success) {
-                                    val filter = IntentFilter(it.data)
-                                    context.registerReceiver(
-                                        broadcastReceiver,
-                                        filter
-                                    )
+                                    // TODO
                                 } else {
                                     viewModel.kakaoShare(it)
                                 }
@@ -84,9 +73,6 @@ fun BoxShareScreen(
                     }
                 }
             }
-        }
-        onDispose {
-            context.unregisterReceiver(broadcastReceiver)
         }
     }
 

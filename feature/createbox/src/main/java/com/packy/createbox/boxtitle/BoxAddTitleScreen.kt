@@ -15,10 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,21 +37,23 @@ fun BoxAddTitleScreen(
     viewModel: BoxAddTitleViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val boxNameFocus = remember {
-        FocusRequester()
-    }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(null) {
         viewModel.initBoxTitle()
-        boxNameFocus.requestFocus()
         viewModel.effect.collect { effect ->
             when (effect) {
-                BoxAddTitleEffect.MoveToBack -> navController.popBackStack()
+                BoxAddTitleEffect.MoveToBack -> {
+                    navController.popBackStack()
+                }
                 is BoxAddTitleEffect.SaveBoxTitle -> {
                     navController.navigate(CreateBoxRoute.BOX_SHARE)
                 }
             }
         }
+    }
+
+    BackHandler(true) {
+        navController.popBackStack()
     }
 
     Scaffold(
@@ -96,7 +95,6 @@ fun BoxAddTitleScreen(
             )
             Spacer(height = 40.dp)
             PackyTextField(
-                modifier = Modifier.focusRequester(boxNameFocus),
                 value = uiState.boxTitle,
                 placeholder = Strings.INPUT_MAX_LENGTH_12,
                 onValueChange = {
@@ -105,6 +103,7 @@ fun BoxAddTitleScreen(
             )
             Spacer(1f)
             PackyButton(
+                enabled = uiState.boxAllReady,
                 style = buttonStyle.large.black,
                 text = Strings.NEXT,
                 onClick = {

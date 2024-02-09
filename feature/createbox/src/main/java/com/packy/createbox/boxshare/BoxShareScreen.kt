@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,7 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
@@ -26,14 +30,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.common.kakaoshare.KakaoShare
+import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
+import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.createbox.createboax.addgift.CreateBoxAddGiftIntent
+import com.packy.feature.core.R
 import com.packy.lib.utils.Resource
 import kotlinx.coroutines.launch
 
@@ -42,9 +54,13 @@ import kotlinx.coroutines.launch
 fun BoxShareScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
+    moveToHomeClear: () -> Unit,
     viewModel: BoxShareViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val shared by remember {
+        derivedStateOf { uiState.shared }
+    }
     val kakaoShare = KakaoShare()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -56,27 +72,56 @@ fun BoxShareScreen(
             viewModel.initState()
             viewModel.effect.collect { effect ->
                 when (effect) {
-                    BoxShareEffect.FailedShare -> println("LOGEE FailedShare")
-                    BoxShareEffect.SuccessShare -> println("LOGEE SuccessShare")
                     is BoxShareEffect.KakaoShare -> {
                         kakaoShare.sendGiftBox(
                             context = context,
                             kakaoCustomFeed = effect.kakaoCustomFeed,
                             sharedCallBack = {
-                                if (it is Resource.Success) {
-                                    // TODO
-                                } else {
-                                    viewModel.kakaoShare(it)
-                                }
+                                viewModel.kakaoShare(it)
                             }
                         )
+                    }
+
+                    BoxShareEffect.MoveToBack -> {
+                        navController.popBackStack()
+                    }
+                    BoxShareEffect.MoveToMain -> {
+                        moveToHomeClear()
                     }
                 }
             }
         }
     }
 
-    Scaffold { innerPadding ->
+    BackHandler {
+        if (shared == null) {
+            viewModel.emitIntent(BoxShareIntent.OnBackClick)
+        } else {
+            viewModel.emitIntent(BoxShareIntent.OnCloseClick)
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            PackyTopBar.Builder()
+                .apply {
+                    if (shared == null) {
+                        startIconButton(
+                            icon = R.drawable.arrow_left
+                        ) {
+                            viewModel.emitIntent(BoxShareIntent.OnBackClick)
+                        }
+                    } else {
+                        startIconButton(
+                            icon = R.drawable.cancle
+                        ) {
+                            viewModel.emitIntent(BoxShareIntent.OnCloseClick)
+                        }
+                    }
+                }
+                .build()
+        }
+    ) { innerPadding ->
         Column(
             modifier = modifier
                 .padding(innerPadding),

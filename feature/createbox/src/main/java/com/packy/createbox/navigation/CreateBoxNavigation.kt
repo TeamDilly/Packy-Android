@@ -17,7 +17,8 @@ import com.packy.createbox.boxtitle.BoxAddTitleScreen
 
 fun NavGraphBuilder.createBoxNavGraph(
     navController: NavHostController,
-    closeCreateBox: () -> Unit
+    closeCreateBox: () -> Unit,
+    moveToHomeClear: () -> Unit
 ) {
     navigation(
         startDestination = CreateBoxRoute.BOX_ADD_INFO,
@@ -83,6 +84,7 @@ fun NavGraphBuilder.createBoxNavGraph(
         ) {
             BoxShareScreen(
                 navController = navController,
+                moveToHomeClear = moveToHomeClear,
             )
         }
     }
@@ -101,4 +103,5 @@ object CreateBoxRoute {
     fun getBoxMotionRoute(
         boxId: Int
     ) = "$BOX_MOTION/$boxId"
+
 }

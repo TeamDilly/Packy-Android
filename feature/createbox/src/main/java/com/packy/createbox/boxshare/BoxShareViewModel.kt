@@ -1,6 +1,7 @@
 package com.packy.createbox.boxshare
 
 import com.packy.common.kakaoshare.KakaoCustomFeed
+import com.packy.createbox.boxtitle.BoxAddTitleIntent
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.lib.utils.Resource
@@ -19,11 +20,14 @@ class BoxShareViewModel @Inject constructor(
     MviViewModel<BoxShareIntent, BoxShareState, BoxShareEffect>() {
     override fun createInitialState(): BoxShareState = BoxShareState(
         boxImageUrl = null,
-        boxTitle = null
+        boxTitle = null,
+        shared = null
     )
 
     override fun handleIntent() {
         subscribeIntent<BoxShareIntent.ShareKakao>(createBox())
+        subscribeIntent<BoxShareIntent.OnBackClick> { sendEffect(BoxShareEffect.MoveToBack) }
+        subscribeIntent<BoxShareIntent.OnCloseClick> { sendEffect(BoxShareEffect.MoveToMain) }
     }
 
     private fun createBox(): suspend (BoxShareIntent.ShareKakao) -> Unit =
@@ -56,11 +60,15 @@ class BoxShareViewModel @Inject constructor(
 
     fun kakaoShare(shared: Resource<String?>) {
         when (shared) {
-            is Resource.Success -> sendEffect(BoxShareEffect.SuccessShare)
+            is Resource.Success -> {
+                setState(currentState.copy(shared = true))
+            }
             is Resource.NetworkError,
             is Resource.ApiError,
             is Resource.Loading,
-            is Resource.NullResult -> sendEffect(BoxShareEffect.FailedShare)
+            is Resource.NullResult -> {
+                setState(currentState.copy(shared = false))
+            }
         }
     }
 }

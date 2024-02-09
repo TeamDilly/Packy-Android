@@ -7,18 +7,22 @@ import com.packy.mvi.mvi.UiState
 
 sealed interface BoxShareIntent : MviIntent {
     data object ShareKakao : BoxShareIntent
+    data object OnBackClick: BoxShareIntent
+    data object OnCloseClick : BoxShareIntent
 }
 
 data class BoxShareState(
     val boxImageUrl: String?,
-    val boxTitle: String?
+    val boxTitle: String?,
+    val shared: Boolean?
 ) : UiState
 
 sealed interface BoxShareEffect : SideEffect {
 
     data class KakaoShare(
         val kakaoCustomFeed: KakaoCustomFeed
-    ): BoxShareEffect
-    data object SuccessShare : BoxShareEffect
-    data object FailedShare : BoxShareEffect
+    ) : BoxShareEffect
+
+    data object MoveToBack : BoxShareEffect
+    data object MoveToMain : BoxShareEffect
 }

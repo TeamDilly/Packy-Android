@@ -7,11 +7,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class EnvelopeDto(
     @SerialName("borderColorCode") val borderColorCode: String,
-    @SerialName("imgUrl") val imgUrl: String
+    @SerialName("imgUrl") val imgUrl: String,
+    @SerialName("opacity") val opacity: Int
 )
 
 fun EnvelopeDto.toEntity(): Envelope =
     Envelope(
         imgUrl = imgUrl,
-        borderColorCode = borderColorCode
+        borderColorCode = borderColorCode,
+        opacity = opacity
     )

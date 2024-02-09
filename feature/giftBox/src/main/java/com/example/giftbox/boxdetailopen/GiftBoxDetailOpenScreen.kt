@@ -318,7 +318,7 @@ private fun GiftBoxColumn(
     ) {
         TopBoxPartImage(
             modifier = Modifier.align(Alignment.TopEnd),
-            boxPartImageUrl = uiState.giftBox?.box?.boxPart
+            boxPartImageUrl = uiState.giftBox?.box?.boxTop
         )
         Column(
             modifier = Modifier

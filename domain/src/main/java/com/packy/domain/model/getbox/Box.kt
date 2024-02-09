@@ -7,19 +7,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Box(
-    @SerialName("boxBottom") val boxBottom: String,
-    @SerialName("boxFull") val boxFull: String,
-    @SerialName("boxPart") val boxPart: String
+    @SerialName("boxNormal") val boxNormal: String,
+    @SerialName("boxTop") val boxTop: String,
 ) {
     fun toUrlEncoding(): Box = Box(
-        boxBottom = boxBottom.toEncoding(),
-        boxFull = boxFull.toEncoding(),
-        boxPart = boxPart.toEncoding()
+        boxNormal = boxNormal.toEncoding(),
+        boxTop = boxTop.toEncoding(),
     )
 
     fun toUrlDecoding(): Box = Box(
-        boxBottom = boxBottom.toDecoding(),
-        boxFull = boxFull.toDecoding(),
-        boxPart = boxPart.toDecoding()
+        boxTop = boxTop.toDecoding(),
+        boxNormal = boxNormal.toDecoding(),
     )
 }

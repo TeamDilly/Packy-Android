@@ -270,7 +270,8 @@ fun BoxGuideScreen(
                     BottomNavButton(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        showBottomSheet = viewModel::emitIntentThrottle
+                        showBottomSheet = viewModel::emitIntentThrottle,
+                        hasGift = uiState.gift != null
                     )
                     Spacer(height = 28.dp)
                 }
@@ -371,6 +372,7 @@ fun BoxGuideScreen(
 private fun BottomNavButton(
     modifier: Modifier = Modifier,
     showBottomSheet: emitMviIntent<BoxGuideIntent>,
+    hasGift: Boolean = false
 ) {
     Row(
         modifier = modifier
@@ -407,13 +409,13 @@ private fun BottomNavButton(
             ) {
                 Icon(
                     modifier = Modifier.size(16.dp),
-                    painter = painterResource(id = R.drawable.plus),
+                    painter = painterResource(id = if (hasGift) R.drawable.check else R.drawable.plus),
                     contentDescription = "box guide add gift button",
                     tint = PackyTheme.color.white,
                 )
                 Spacer(width = 8.dp)
                 Text(
-                    text = Strings.BOX_GUIDE_GIFT,
+                    text = if(hasGift) Strings.CREATE_BOX_HAS_GIFT else Strings.BOX_GUIDE_GIFT,
                     style = PackyTheme.typography.body04,
                     color = PackyTheme.color.white
                 )

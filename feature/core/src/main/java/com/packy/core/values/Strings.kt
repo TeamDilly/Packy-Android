@@ -129,6 +129,7 @@ object Strings {
     const val CREATE_BOX_CANCEL_BOX = "선물박스 만들기를 종료할까요?"
 
     const val CREATE_BOX_TUTORIAL= "빈 공간을 눌러서\n선물박스를 채워보세요"
+    const val CREATE_BOX_HAS_GIFT = "담은 선물 보기"
 
     // GiftBox
     fun GIFT_BOX_ARR_TITLE(name: String) = "${name}님이 보낸\n선물박스가 도착했어요!"

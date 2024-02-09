@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -46,6 +47,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.BoxOpenLottie
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.core.widget.animation.TextAnimation
 import com.packy.createbox.navigation.CreateBoxRoute
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
@@ -56,6 +58,8 @@ fun BoxMotionScreen(
     navController: NavController,
     boxId: Int,
 ) {
+
+    val (textAlpha, textOffsetY) = TextAnimation()
 
     Box(
         modifier = modifier
@@ -79,7 +83,9 @@ fun BoxMotionScreen(
         Text(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 104.dp),
+                .padding(top = 104.dp)
+                .offset(y = textOffsetY)
+                .alpha(textAlpha),
             text = Strings.CREATE_BOX_MOTION_TITLE,
             style = PackyTheme.typography.heading01.copy(
                 textAlign = TextAlign.Center

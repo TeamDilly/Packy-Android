@@ -96,6 +96,7 @@ fun HomeScreen(
             modifier = modifier
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
+                .clickableWithoutRipple { viewModel.emitIntentThrottle(HomeIntent.OnCrateBoxClick) },
         ) {
             Spacer(height = 16.dp)
             Column(
@@ -131,8 +132,7 @@ fun HomeScreen(
                         .background(
                             color = PackyTheme.color.white,
                             shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickableWithoutRipple { viewModel.emitIntentThrottle(HomeIntent.OnCrateBoxClick) },
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(

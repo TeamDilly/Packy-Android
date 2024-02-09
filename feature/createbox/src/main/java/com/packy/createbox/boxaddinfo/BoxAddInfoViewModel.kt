@@ -7,16 +7,19 @@ import com.packy.createbox.common.senderName
 import com.packy.domain.model.createbox.LetterSenderReceiver
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.domain.usecase.letter.GetLetterSenderReceiverUseCase
+import com.packy.domain.usecase.my.GetMyNickNameUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BoxAddInfoViewModel @Inject constructor(
-    private val useCase: CreateBoxUseCase
+    private val useCase: CreateBoxUseCase,
+    private val getMyNickNameUseCase: GetMyNickNameUseCase
 ) :
     MviViewModel<BoxAddInfoIntent, BoxAddInfoState, BoxAddInfoEffect>() {
     override fun createInitialState(): BoxAddInfoState = BoxAddInfoState(
@@ -58,9 +61,10 @@ class BoxAddInfoViewModel @Inject constructor(
 
     fun getLetterSenderReceiver() {
         viewModelScope.launch {
+            val defaultNickName = getMyNickNameUseCase.getNickName().firstOrNull()
             val createBox = useCase.getCreatedBox()
             val receiverName = createBox.receiverName
-            val senderName = createBox.senderName
+            val senderName = createBox.senderName ?: defaultNickName
             val newLetterSenderReceiver = currentState.letterSenderReceiver.copy(
                 sender = senderName ?: "",
                 receiver = receiverName ?: ""

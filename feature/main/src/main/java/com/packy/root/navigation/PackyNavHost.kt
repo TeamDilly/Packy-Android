@@ -38,7 +38,7 @@ fun PackyNavHost(
         )
         createBoxNavGraph(
             navController = navController,
-            moveToHomeClear
+            closeCreateBox = moveToHomeClear
         )
         giftBoxNavGraph(
             navController = navController,

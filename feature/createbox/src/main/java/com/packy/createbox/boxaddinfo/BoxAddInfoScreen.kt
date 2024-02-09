@@ -18,9 +18,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.packy.core.common.Spacer
 import com.packy.core.common.keyboardAsState
 import com.packy.core.designsystem.button.PackyButton
@@ -47,7 +49,7 @@ fun BoxAddInfoScreen(
         viewModel.getLetterSenderReceiver()
         viewModel.effect.collect { effect ->
             when (effect) {
-                BoxAddInfoEffect.MoveToBack -> navController.popBackStack()
+                BoxAddInfoEffect.MoveToBack -> closeCreateBox()
                 BoxAddInfoEffect.SaveBoxInfo -> navController.navigate(CreateBoxRoute.BOX_CHOICE)
             }
         }
@@ -160,5 +162,24 @@ private fun AddInfoForm(
             onValueChange = onChange,
             singleLine = true,
         )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun BoxAddInfoTitlePreview() {
+    PackyTheme {
+        BoxAddInfoTitle()
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun AddInfoFormPreview() {
+    PackyTheme {
+        AddInfoForm(
+            text = "홍길동",
+            title = "받는 사람"
+        ) { }
     }
 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -52,7 +53,6 @@ import com.packy.feature.core.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun GiftBoxArrScreen(
     modifier: Modifier = Modifier,
@@ -169,7 +169,7 @@ fun GiftBoxArrScreen(
                     }
                 }
                 Spacer(height = 64.dp)
-                Box(modifier = Modifier.height(screenHeight * 0.36f))
+                Box(modifier = Modifier.height(screenHeight * 0.36f).fillMaxWidth())
                 Spacer(1f)
                 AnimatedVisibility(
                     visible = !lottiePlaying,

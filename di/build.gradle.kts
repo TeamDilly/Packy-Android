@@ -27,6 +27,24 @@ android {
                 "\"https://dev.packyforyou.shop/\""
             )
         }
+        release {
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            defaultConfig {
+                buildConfigField(
+                    "String",
+                    "VERSION_NAME",
+                    "\"1.0.0\""
+                )
+            }
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"https://prod.packyforyou.shop/\""
+            )
+        }
     }
     packaging {
         resources {

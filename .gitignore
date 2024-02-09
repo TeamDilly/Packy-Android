@@ -34,3 +34,5 @@ private_strings.xml
 /upload-keystore.jks
 /app/debug
 /app/release
+gradle.properties
+/gradle.properties

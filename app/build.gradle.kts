@@ -14,11 +14,23 @@ android {
     buildFeatures {
         buildConfig = true
     }
-
+    signingConfigs {
+        maybeCreate("release").apply{
+            storeFile = STORE_FILE
+        }
+    }
     buildTypes{
-        debug {
+        maybeCreate("debug").apply {
             isMinifyEnabled = false
             isShrinkResources = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        maybeCreate("release").apply {
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

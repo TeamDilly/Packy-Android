@@ -57,24 +57,6 @@ fun GiftBoxErrorScreen(
             ) {
                 closeGiftBox()
             }
-            Spacer(8.dp)
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickableWithoutRipple {
-                        // TODO
-                    }
-                    .padding(
-                        vertical = 4.dp,
-                        horizontal = 16.dp
-                    ),
-
-                text = Strings.CONTACT_US,
-                style = PackyTheme.typography.body02.copy(
-                    textAlign = TextAlign.Center
-                ),
-                color = PackyTheme.color.gray900
-            )
             Spacer(24.dp)
         }
     }

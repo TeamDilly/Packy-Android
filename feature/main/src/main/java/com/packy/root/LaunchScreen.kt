@@ -31,23 +31,31 @@ fun LaunchScreen(
 ) {
 
     LaunchedEffect(null) {
-        val startDestination = if (viewModel.checkUserStatusOnAppEntry() == UserState.REGISTERED) {
-            HomeRoute.HOME_NAV_GRAPH
-        } else {
-            OnboardingRoute.ONBOARDING_NAV_GRAPH
-        }
-        delay(1500)
-        when (deepLinkController) {
-            DeepLinkController.NonDeepLink -> navController.navigate(startDestination) {
+        val isUser = viewModel.checkUserStatusOnAppEntry() == UserState.REGISTERED
+        if (!isUser) {
+            navController.navigate(OnboardingRoute.ONBOARDING_NAV_GRAPH) {
                 popUpTo(
                     MainRoute.LAUNCH_ROUTE
                 ) {
                     inclusive = true
                 }
             }
+        } else {
 
-            is DeepLinkController.OpenBox -> {
-                navController.navigate(GiftBoxRoute.GIFT_BOX_ROOT + "/${deepLinkController.boxId}" + "?" + "skipArr=false") {
+            delay(1500)
+            when (deepLinkController) {
+                DeepLinkController.NonDeepLink -> navController.navigate(HomeRoute.HOME_NAV_GRAPH) {
+                    popUpTo(
+                        MainRoute.LAUNCH_ROUTE
+                    ) {
+                        inclusive = true
+                    }
+                }
+
+                is DeepLinkController.OpenBox -> {
+                    navController.navigate(HomeRoute.HOME_NAV_GRAPH) {
+                       popUpTo(GiftBoxRoute.GIFT_BOX_ROOT + "/${deepLinkController.boxId}" + "?" + "skipArr=false")
+                    }
                 }
             }
         }

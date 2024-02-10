@@ -11,6 +11,7 @@ import com.packy.common.authenticator.ext.removeQueryParameters
 import com.packy.data.model.photo.UploadPhotoUrl
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.Resource.Success
+import com.packy.lib.utils.safeRequest
 import com.packy.lib.utils.toResource
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -37,8 +38,9 @@ class PhotoService @Inject constructor(
     private val context: Context
 ) {
 
-    suspend fun getUploadUrl(fileName: String): Resource<UploadPhotoUrl> =
-        httpClient.get("/api/v1/file/presigned-url/${fileName}.jpg").toResource()
+    suspend fun getUploadUrl(fileName: String): Resource<UploadPhotoUrl> = safeRequest {
+        httpClient.get("/api/v1/file/presigned-url/${fileName}.jpg")
+    }
 
     @OptIn(InternalAPI::class)
     suspend fun uploadPhoto(
@@ -115,7 +117,7 @@ class PhotoService @Inject constructor(
         }
     }
 
-    suspend fun rotateBitmapIfRequired(
+    private suspend fun rotateBitmapIfRequired(
         bitmap: Bitmap,
         uri: Uri
     ): Bitmap {

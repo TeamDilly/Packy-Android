@@ -5,6 +5,7 @@ import com.packy.data.model.createbox.CreateBoxDto
 import com.packy.data.model.createbox.box.CreateBoxRequest
 import com.packy.data.model.getbox.GiftBoxDto
 import com.packy.lib.utils.Resource
+import com.packy.lib.utils.safeRequest
 import com.packy.lib.utils.toResource
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -17,20 +18,22 @@ import javax.inject.Inject
 class BoxService @Inject constructor(
     private val httpClient: HttpClient
 ) {
-    suspend fun getBoxDesign(): Resource<List<BoxDesignDto>> =
+    suspend fun getBoxDesign(): Resource<List<BoxDesignDto>> = safeRequest {
         httpClient.get("api/v1/admin/design/boxes")
-            .toResource()
+    }
 
     suspend fun createBox(
         createBoxRequest: CreateBoxRequest
-    ): Resource<CreateBoxDto> = httpClient.post("/api/v1/giftboxes") {
-        contentType(ContentType.Application.Json)
-        setBody(createBoxRequest)
-    }.toResource()
+    ): Resource<CreateBoxDto> = safeRequest {
+        httpClient.post("/api/v1/giftboxes") {
+            contentType(ContentType.Application.Json)
+            setBody(createBoxRequest)
+        }
+    }
 
     suspend fun getGifBox(
         giftBoxId: String
-    ): Resource<GiftBoxDto> =
+    ): Resource<GiftBoxDto> = safeRequest {
         httpClient.get("/api/v1/giftboxes/${giftBoxId}")
-            .toResource()
+    }
 }

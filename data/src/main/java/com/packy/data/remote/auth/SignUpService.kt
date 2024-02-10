@@ -4,6 +4,7 @@ import com.packy.data.model.auth.SignInDto
 import com.packy.data.model.auth.SignUpDto
 import com.packy.data.model.auth.SignUpRequest
 import com.packy.lib.utils.Resource
+import com.packy.lib.utils.safeRequest
 import com.packy.lib.utils.toResource
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -19,14 +20,13 @@ class SignUpService @Inject constructor(
     suspend fun signUp(
         signUpRequest: SignUpRequest,
         token: String
-    ): Resource<SignUpDto> {
-        val response = httpClient.post(urlString = "api/v1/auth/sign-up") {
+    ): Resource<SignUpDto> = safeRequest {
+        httpClient.post(urlString = "api/v1/auth/sign-up") {
             header(
                 "Authorization",
                 token
             )
             setBody(signUpRequest)
-        }.toResource<SignUpDto>()
-        return response
+        }
     }
 }

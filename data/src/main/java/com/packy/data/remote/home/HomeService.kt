@@ -22,7 +22,7 @@ class HomeService @Inject constructor(
         type: String,
         size: Int = 6
     ): Resource<HomeBoxContentDto> = safeRequest {
-        httpClient.get(urlString = "/api/v1/giftbox") {
+        httpClient.get(urlString = "/api/v1/giftboxes") {
             if (timestamp != null) {
                 parameter(
                     "timestamp",

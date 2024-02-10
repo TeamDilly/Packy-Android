@@ -53,11 +53,12 @@ fun <T> Flow<Resource<T>>.filterError(): Flow<Resource<T>> =
 fun <T> Flow<Resource<T>>.errorMessageHandler(
     errorHandler: (String?) -> Unit
 ): Flow<Resource<T>> =
-    filterError()
-        .map {
+    map {
+        if (it is Resource.ApiError || it is Resource.NetworkError || it is Resource.NullResult) {
             errorHandler(it.message)
-            it
         }
+        it
+    }
 
 fun <T> Flow<Resource<T>>.catchError(
     catchErrorFunction: (Resource<T>) -> Unit

@@ -16,6 +16,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,6 +32,7 @@ import com.packy.core.values.Strings
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BoxAddTitleScreen(
     modifier: Modifier = Modifier,
@@ -37,6 +40,7 @@ fun BoxAddTitleScreen(
     viewModel: BoxAddTitleViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LaunchedEffect(null) {
         viewModel.initBoxTitle()
@@ -47,6 +51,7 @@ fun BoxAddTitleScreen(
                 }
 
                 is BoxAddTitleEffect.SaveBoxTitle -> {
+                    keyboardController?.hide()
                     if (effect.showMotion) {
                         navController.navigate(CreateBoxRoute.getBoxShareMotionRoute(effect.boxId))
                     }else{

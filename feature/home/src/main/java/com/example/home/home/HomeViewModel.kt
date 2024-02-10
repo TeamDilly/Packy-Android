@@ -5,7 +5,9 @@ import com.packy.domain.usecase.home.GetHomeBoxUseCase
 import com.packy.domain.usecase.reset.ResetCreateBoxUseCase
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.errorMessageHandler
+import com.packy.lib.utils.filterLoading
 import com.packy.lib.utils.filterSuccess
+import com.packy.lib.utils.loadingHandler
 import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,13 +36,19 @@ class HomeViewModel @Inject constructor(
     fun getGiftBoxes() {
         viewModelScope.launch(Dispatchers.IO) {
             getHomeBoxUseCase.getHomeBox()
+                .loadingHandler { setState { state -> state.copy(isLoading = it) } }
                 .errorMessageHandler { message ->
                     sendEffect(HomeEffect.ThrowError(message))
                 }
                 .filterSuccess()
                 .unwrapResource()
                 .collect { homeBox ->
-                    setState { state -> state.copy(giftBoxes = homeBox) }
+                    setState { state ->
+                        state.copy(
+                            giftBoxes = homeBox,
+                            isLoading = false
+                        )
+                    }
                 }
         }
     }

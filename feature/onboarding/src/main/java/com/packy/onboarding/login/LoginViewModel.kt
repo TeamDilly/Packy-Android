@@ -7,9 +7,12 @@ import com.packy.domain.model.auth.SignIn
 import com.packy.domain.usecase.auth.SignInUseCase
 import com.packy.domain.usecase.auth.SignUpUseCase
 import com.packy.lib.utils.Resource
+import com.packy.lib.utils.filterLoading
+import com.packy.lib.utils.loadingHandler
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,6 +42,7 @@ class LoginViewModel @Inject constructor(
                         token = kakaoAuth.token,
                         nickname = kakaoAuth.nickname
                     )
+                        .loadingHandler { setState { state -> state.copy(isLoading = it) } }
                         .collect { resource ->
                             signInController(
                                 token = kakaoAuth.token,

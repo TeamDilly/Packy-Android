@@ -17,7 +17,8 @@ sealed interface HomeIntent : MviIntent {
 }
 
 data class HomeState(
-    val giftBoxes: List<HomeBox>
+    val giftBoxes: List<HomeBox>,
+    val isLoading: Boolean = false
 ) : UiState
 
 sealed interface HomeEffect : SideEffect {

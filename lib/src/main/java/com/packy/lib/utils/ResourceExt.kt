@@ -34,7 +34,7 @@ fun <T, R> Resource<T>.map(
 fun <T> Flow<Resource<T>>.filterSuccess(): Flow<Resource.Success<T>> =
     filterIsInstance<Resource.Success<T>>()
 
-fun <T> Flow<Resource<T>>.filterLoading(bloc: () -> Unit = {}) =
+fun <T> Flow<Resource<T>>.filterLoading(bloc: suspend () -> Unit = {}) =
     map {
         if (it is Resource.Loading) {
             bloc()
@@ -44,6 +44,18 @@ fun <T> Flow<Resource<T>>.filterLoading(bloc: () -> Unit = {}) =
         .filter {
             it !is Resource.Loading
         }
+
+fun <T> Flow<Resource<T>>.loadingHandler(
+    loadingHandler: suspend (Boolean) -> Unit
+): Flow<Resource<T>> =
+    map {
+        if (it is Resource.Loading) {
+            loadingHandler(true)
+        } else {
+            loadingHandler(false)
+        }
+        it
+    }
 
 fun <T> Flow<Resource<T>>.filterError(): Flow<Resource<T>> =
     filter { resource ->

@@ -12,6 +12,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +26,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.packy.common.authenticator.KakaoAuth
 import com.packy.common.authenticator.KakaoLoginController
+import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings.LOGIN_TITLE
 import com.packy.feature.core.R
@@ -34,8 +39,15 @@ fun LoginScreen(
     loggedIn: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     val kakaoLoginController = KakaoLoginController()
     val context = LocalContext.current
+
+    val loading by remember { derivedStateOf { uiState.isLoading } }
+    if (loading) {
+        PackyProgressDialog()
+    }
+
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
             when (effect) {

@@ -47,6 +47,7 @@ import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
+import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.screen.error.ErrorDialog
 import com.packy.core.screen.error.ErrorDialogInfo
@@ -54,6 +55,7 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.domain.model.home.BoxType
 import com.packy.domain.model.home.HomeBox
+import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(
@@ -73,6 +75,11 @@ fun HomeScreen(
         ErrorDialog(
             errorDialog!!
         )
+    }
+
+    val loading by remember { derivedStateOf { uiState.isLoading } }
+    if (loading) {
+        PackyProgressDialog()
     }
 
     LaunchedEffect(Unit) {

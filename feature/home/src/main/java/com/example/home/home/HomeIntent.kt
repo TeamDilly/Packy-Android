@@ -27,4 +27,5 @@ sealed interface HomeEffect : SideEffect {
     data class MoveToBoxDetail(val boxId: Long) : HomeEffect
 
     data object MoveToMoreBox: HomeEffect
+    data class ThrowError(val message: String?): HomeEffect
 }

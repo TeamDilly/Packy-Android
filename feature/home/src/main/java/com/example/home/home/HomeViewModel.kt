@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
 import com.packy.domain.usecase.reset.ResetCreateBoxUseCase
 import com.packy.lib.utils.Resource
+import com.packy.lib.utils.errorMessageHandler
 import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
@@ -33,6 +34,9 @@ class HomeViewModel @Inject constructor(
     fun getGiftBoxes() {
         viewModelScope.launch(Dispatchers.IO) {
             getHomeBoxUseCase.getHomeBox()
+                .errorMessageHandler { message ->
+                    sendEffect(HomeEffect.ThrowError(message))
+                }
                 .filterSuccess()
                 .unwrapResource()
                 .collect { homeBox ->
@@ -41,7 +45,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun resetPoint(){
+    fun resetPoint() {
         viewModelScope.launch(Dispatchers.IO) {
             resetCreateBoxUseCase.resetCreateBox()
         }

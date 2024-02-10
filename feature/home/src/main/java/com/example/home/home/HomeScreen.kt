@@ -28,7 +28,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -46,6 +48,8 @@ import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
+import com.packy.core.screen.error.ErrorDialog
+import com.packy.core.screen.error.ErrorDialogInfo
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.domain.model.home.BoxType
@@ -64,6 +68,13 @@ fun HomeScreen(
         derivedStateOf { uiState.giftBoxes }
     }
 
+    var errorDialog by remember { mutableStateOf<ErrorDialogInfo?>(null) }
+    if (errorDialog != null) {
+        ErrorDialog(
+            errorDialog!!
+        )
+    }
+
     LaunchedEffect(Unit) {
         viewModel.getGiftBoxes()
         viewModel.resetPoint()
@@ -76,6 +87,13 @@ fun HomeScreen(
                 is HomeEffect.MoveToBoxDetail -> moveToBoxDetail(effect.boxId)
                 HomeEffect.MoveToCreateBox -> moveToCreateBox()
                 HomeEffect.MoveToMoreBox -> navController.navigate(HomeRoute.MY_BOX)
+                is HomeEffect.ThrowError -> {
+                    errorDialog = ErrorDialogInfo(
+                        message = effect.message,
+                        retry = { errorDialog = null },
+                        backHandler = { errorDialog = null }
+                    )
+                }
             }
         }
     }

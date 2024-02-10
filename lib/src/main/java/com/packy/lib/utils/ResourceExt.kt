@@ -45,6 +45,19 @@ fun <T> Flow<Resource<T>>.filterLoading(bloc: () -> Unit = {}) =
             it !is Resource.Loading
         }
 
+fun <T> Flow<Resource<T>>.filterError(): Flow<Resource<T>> =
+    filter { resource ->
+        resource !is Resource.Success<T> && resource !is Resource.Loading
+    }
+
+fun <T> Flow<Resource<T>>.errorMessageHandler(
+    errorHandler: (String?) -> Unit
+): Flow<Resource<T>> =
+    filterError()
+        .map {
+            errorHandler(it.message)
+            it
+        }
 
 fun <T> Flow<Resource<T>>.catchError(
     catchErrorFunction: (Resource<T>) -> Unit

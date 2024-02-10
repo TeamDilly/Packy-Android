@@ -71,16 +71,17 @@ object NetworkModule {
                     level = LogLevel.ALL
                 }
             }
-            HttpResponseValidator {
-                handleResponseExceptionWithRequest { exception, request ->
-                    val clientException = exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
-                    val exceptionResponse = clientException.response
-                    if(exceptionResponse.status.value == 404) {
-                        accountManagerHelper.removeAuthToken()
-                        accountPrefManager.clearAll()
-                    }
-                }
-            }
+            // TODO : token 만료 시 정책 구분 및 정의
+//            HttpResponseValidator {
+//                handleResponseExceptionWithRequest { exception, request ->
+//                    val clientException = exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
+//                    val exceptionResponse = clientException.response
+//                    if(exceptionResponse.status.value == 404) {
+//                        accountManagerHelper.removeAuthToken()
+//                        accountPrefManager.clearAll()
+//                    }
+//                }
+//            }
             install(Auth) {
                 bearer {
                     refreshTokens {

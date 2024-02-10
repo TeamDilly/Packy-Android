@@ -156,16 +156,17 @@ private fun PhotoFrame(
             )
         } else {
             // FIXME 권한 안줬을떄 처리
+            println("권한 안줬을때 처리")
         }
     }
 
     Box(
         modifier = modifier
             .clickableWithoutRipple {
-                checkAndRequestPermissions(
-                    context,
-                    storagePermissions,
-                    launcherMultiplePermissions
+                launcher.launch(
+                    PickVisualMediaRequest(
+                        mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly,
+                    )
                 )
             }
             .background(

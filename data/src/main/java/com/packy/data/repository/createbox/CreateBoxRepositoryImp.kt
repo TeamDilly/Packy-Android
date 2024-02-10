@@ -39,6 +39,13 @@ class CreateBoxRepositoryImp @Inject constructor(
         prefManager.shouldShowBoxTutorial.putData(false)
     }
 
+    override suspend fun shouldShowBoxSharMotion(): Flow<Boolean> =
+        prefManager.shouldShowBoxShareMotion.getData()
+
+    override suspend fun shownShowBoxSharMotion() {
+        prefManager.shouldShowBoxShareMotion.putData(false)
+    }
+
     override suspend fun setCreateBox(createBox: CreateBox) {
         prefManager.createBox.putData(createBox)
     }

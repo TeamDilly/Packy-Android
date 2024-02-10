@@ -82,6 +82,12 @@ class AccountPrefManager @Inject constructor(
         true,
         Boolean::class
     )
+
+    val shouldShowBoxShareMotion = createNonNullMemoryPrefItem<Boolean>(
+        "shouldShowBoxShareMotion",
+        true,
+        Boolean::class
+    )
     val shouldShowBoxTutorial = createNonNullMemoryPrefItem<Boolean>(
         "shouldShowBoxTutorial",
         true,

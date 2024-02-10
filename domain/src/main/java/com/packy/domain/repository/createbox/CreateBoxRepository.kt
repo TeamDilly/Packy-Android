@@ -12,6 +12,9 @@ interface CreateBoxRepository {
     suspend fun shouldShowBoxTutorial(): Flow<Boolean>
     suspend fun shownShowBoxTutorial(): Unit
 
+    suspend fun shouldShowBoxSharMotion(): Flow<Boolean>
+    suspend fun shownShowBoxSharMotion(): Unit
+
     suspend fun setCreateBox(createBox: CreateBox): Unit
 
     suspend fun getCreatedBox(): CreateBox

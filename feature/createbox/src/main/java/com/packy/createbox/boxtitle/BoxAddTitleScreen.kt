@@ -45,8 +45,13 @@ fun BoxAddTitleScreen(
                 BoxAddTitleEffect.MoveToBack -> {
                     navController.popBackStack()
                 }
+
                 is BoxAddTitleEffect.SaveBoxTitle -> {
-                    navController.navigate(CreateBoxRoute.BOX_SHARE)
+                    if (effect.showMotion) {
+                        navController.navigate(CreateBoxRoute.getBoxShareMotionRoute(effect.boxId))
+                    }else{
+                        navController.navigate(CreateBoxRoute.BOX_SHARE)
+                    }
                 }
             }
         }

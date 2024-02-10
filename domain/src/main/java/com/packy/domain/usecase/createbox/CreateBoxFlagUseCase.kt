@@ -8,4 +8,7 @@ interface CreateBoxFlagUseCase {
 
     suspend fun shouldShowBoxTutorial(): Flow<Boolean>
     suspend fun shownShowBoxTutorial(): Unit
+
+    suspend fun shouldShowBoxSharMotion(): Flow<Boolean>
+    suspend fun shownShowBoxSharMotion(): Unit
 }

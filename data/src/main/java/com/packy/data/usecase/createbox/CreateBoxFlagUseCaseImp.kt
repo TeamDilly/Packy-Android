@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class CreateBoxFlagUseCaseImp @Inject constructor(
     private val repository: CreateBoxRepository
-): CreateBoxFlagUseCase {
+) : CreateBoxFlagUseCase {
     override suspend fun shouldShowBoxMotion(): Flow<Boolean> = repository.shouldShowBoxMotion()
     override suspend fun shownShowBoxMotion() {
         repository.shownShowBoxMotion()
@@ -17,5 +17,12 @@ class CreateBoxFlagUseCaseImp @Inject constructor(
 
     override suspend fun shownShowBoxTutorial() {
         repository.shownShowBoxTutorial()
+    }
+
+    override suspend fun shouldShowBoxSharMotion(): Flow<Boolean> =
+        repository.shouldShowBoxSharMotion()
+
+    override suspend fun shownShowBoxSharMotion() {
+        repository.shownShowBoxSharMotion()
     }
 }

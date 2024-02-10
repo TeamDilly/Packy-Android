@@ -20,6 +20,7 @@ sealed interface BoxAddTitleEffect : SideEffect {
     data object MoveToBack : BoxAddTitleEffect
     data class SaveBoxTitle(
         val boxId: Int,
-        val boxTitle: String
+        val boxTitle: String,
+        val showMotion: Boolean = false,
     ) : BoxAddTitleEffect
 }

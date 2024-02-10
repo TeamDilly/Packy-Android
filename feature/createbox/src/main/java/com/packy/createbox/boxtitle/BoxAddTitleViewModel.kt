@@ -2,16 +2,20 @@ package com.packy.createbox.boxtitle
 
 import androidx.lifecycle.viewModelScope
 import com.packy.createbox.common.name
+import com.packy.domain.usecase.createbox.CreateBoxFlagUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BoxAddTitleViewModel @Inject constructor(
-    private val createBoxUseCase: CreateBoxUseCase
-) :
+    private val createBoxUseCase: CreateBoxUseCase,
+    private val createBoxFlagUseCase: CreateBoxFlagUseCase,
+
+    ) :
     MviViewModel<BoxAddTitleIntent, BoxAddTitleState, BoxAddTitleEffect>() {
     override fun createInitialState(): BoxAddTitleState = BoxAddTitleState(
         boxTitle = ""
@@ -32,10 +36,13 @@ class BoxAddTitleViewModel @Inject constructor(
         }
         subscribeIntent<BoxAddTitleIntent.MoveToNext> {
             createBoxUseCase.name(currentState.boxTitle)
+            val showMotion = createBoxFlagUseCase.shouldShowBoxSharMotion().firstOrNull() ?: false
+            createBoxFlagUseCase.shownShowBoxSharMotion()
             sendEffect(
                 BoxAddTitleEffect.SaveBoxTitle(
                     boxId = createBoxUseCase.getCreatedBox().boxId ?: 0,
-                    boxTitle = currentState.boxTitle
+                    boxTitle = currentState.boxTitle,
+                    showMotion = showMotion
                 )
             )
         }

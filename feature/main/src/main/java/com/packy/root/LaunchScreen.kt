@@ -24,9 +24,9 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun LaunchScreen(
+    modifier: Modifier = Modifier,
     navController: NavController,
     deepLinkController: DeepLinkController = DeepLinkController.NonDeepLink,
-    modifier: Modifier = Modifier,
     viewModel: RootComposeViewModel = hiltViewModel()
 ) {
 

@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.giftbox.navigation.giftBoxNavGraph
+import com.example.home.navigation.HomeRoute.HOME_NAV_GRAPH
 import com.example.home.navigation.homeNavGraph
 import com.packy.core.page.navigation.commonNavGraph
 import com.packy.createbox.navigation.createBoxNavGraph
@@ -26,7 +27,7 @@ fun PackyNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = startDestination,
+        startDestination = HOME_NAV_GRAPH,
     ) {
 
         deepLinkNavGraph(
@@ -54,6 +55,12 @@ fun PackyNavHost(
         )
         commonNavGraph(
             navController = navController
+        )
+        homeNavGraph(
+            navController = navController,
+            moveToCreateBox = moveToCreateBox,
+            moveToBoxDetail = moveToBoxDetail,
+            logout = logout
         )
     }
 }

@@ -2,16 +2,14 @@ package com.example.home.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.home.home.HomeScreen
-import com.example.home.mybox.MyBoxScreen
-import com.example.home.navigation.HomeRoute.HOME
-import com.example.home.navigation.HomeRoute.MY_BOX
+import com.example.home.bottomnavigation.HomeRootScreen
+import com.example.home.navigation.HomeRoute.HOME_ROOT
 import com.example.home.settingaccount.SettingAccountScreen
 import com.example.home.settings.SettingsScreen
 import com.example.home.withdrawal.WithdrawalScreen
 import com.packy.core.animations.asPagingComposable
-import com.packy.core.animations.asRootComposable
 
 fun NavGraphBuilder.homeNavGraph(
     navController: NavHostController,
@@ -20,26 +18,15 @@ fun NavGraphBuilder.homeNavGraph(
     logout: () -> Unit
 ) {
     navigation(
-        startDestination = HomeRoute.HOME,
+        startDestination = HOME_ROOT,
         route = HomeRoute.HOME_NAV_GRAPH,
     ) {
-        asRootComposable(
-            route = HOME
+        composable(
+            route = HOME_ROOT
         ) {
-            HomeScreen(
-                navController = navController,
+            HomeRootScreen(
                 moveToCreateBox = moveToCreateBox,
-                moveToBoxDetail = moveToBoxDetail
-            )
-        }
-
-        asPagingComposable(
-            route = MY_BOX
-        ) {
-            MyBoxScreen(
-                navController = navController,
-                moveToCreateBox = moveToCreateBox,
-                moveToBoxDetail = moveToBoxDetail
+                moveToBoxDetail = moveToBoxDetail,
             )
         }
 
@@ -74,6 +61,7 @@ fun NavGraphBuilder.homeNavGraph(
 object HomeRoute {
     const val HOME_NAV_GRAPH = "homeNavGraph"
 
+    const val HOME_ROOT = "homeRootRoute"
     const val HOME = "home"
     const val MY_BOX = "myBox"
     const val SETTING = "setting"

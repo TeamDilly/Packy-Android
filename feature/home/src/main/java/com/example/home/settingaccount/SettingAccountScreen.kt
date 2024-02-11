@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.home.navigation.HomeRoute
+import com.example.home.navigation.SettingsRoute.WITHDRAWAL
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.topbar.PackyTopBar
@@ -82,7 +82,7 @@ fun SettingAccountScreen(
                         vertical = 12.dp
                     )
                     .clickableWithoutRipple {
-                        navController.navigate(HomeRoute.WITHDRAWAL)
+                        navController.navigate(WITHDRAWAL)
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {

@@ -11,7 +11,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.giftbox.navigation.GiftBoxRoute
-import com.example.home.navigation.HomeRoute
+import com.example.home.bottomnavigation.HomeRoute.HOME_ROOT
+import com.example.home.navigation.SettingsRoute
 import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.values.Strings
@@ -53,7 +54,7 @@ fun RootCompose(
             }
         },
         moveToHomeClear = {
-            navController.navigate(HomeRoute.HOME_NAV_GRAPH) {
+            navController.navigate(HOME_ROOT){
                 popUpTo(navController.graph.id) { inclusive = true }
                 launchSingleTop = true
             }
@@ -65,13 +66,16 @@ fun RootCompose(
             navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH)
         },
         kakaoLinkScheme = kakaoLinkScheme,
+        moveSettings = {
+            navController.navigate(SettingsRoute.SETTINGS_NAV_GRAPH)
+        },
         closeCreateBox = {
             val closePackyDialog = PackyDialogInfo(
                 title = CREATE_BOX_CANCEL_BOX,
                 dismiss = Strings.CONFIRM,
                 confirm = Strings.CANCEL,
                 onDismiss = {
-                    navController.navigate(HomeRoute.HOME_NAV_GRAPH) {
+                    navController.navigate(HOME_ROOT) {
                         popUpTo(navController.graph.id) { inclusive = true }
                         launchSingleTop = true
                     }

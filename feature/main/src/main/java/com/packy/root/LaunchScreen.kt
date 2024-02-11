@@ -13,9 +13,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.giftbox.navigation.GiftBoxRoute
-import com.example.home.navigation.HomeRoute
+import com.example.home.bottomnavigation.HomeRoute.HOME_ROOT
 import com.packy.core.theme.PackyTheme
-import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
 import com.packy.onboarding.navigation.OnboardingRoute
 import com.packy.root.deeplink.DeepLinkController
@@ -44,7 +43,7 @@ fun LaunchScreen(
 
             delay(1500)
             when (deepLinkController) {
-                DeepLinkController.NonDeepLink -> navController.navigate(HomeRoute.HOME_NAV_GRAPH) {
+                DeepLinkController.NonDeepLink -> navController.navigate(HOME_ROOT) {
                     popUpTo(
                         MainRoute.LAUNCH_ROUTE
                     ) {

@@ -7,13 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -41,12 +38,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.home.bottomnavigation.HomeRoute.MY_BOX
 import com.packy.feature.core.R
-import com.example.home.navigation.HomeRoute
+import com.example.home.navigation.SettingsRoute
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
-import com.packy.core.designsystem.button.PackyButton
-import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.screen.error.ErrorDialog
@@ -62,6 +58,7 @@ fun HomeScreen(
     navController: NavController,
     moveToCreateBox: () -> Unit,
     moveToBoxDetail: (Long) -> Unit,
+    moveSettings: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -88,12 +85,12 @@ fun HomeScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is HomeEffect.MoveToSetting -> {
-                    navController.navigate(HomeRoute.SETTING)
+                    moveSettings()
                 }
 
                 is HomeEffect.MoveToBoxDetail -> moveToBoxDetail(effect.boxId)
                 HomeEffect.MoveToCreateBox -> moveToCreateBox()
-                HomeEffect.MoveToMoreBox -> navController.navigate(HomeRoute.MY_BOX)
+                HomeEffect.MoveToMoreBox -> navController.navigate(MY_BOX)
                 is HomeEffect.ThrowError -> {
                     errorDialog = ErrorDialogInfo(
                         message = effect.message,

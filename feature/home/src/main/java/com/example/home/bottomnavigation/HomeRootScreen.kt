@@ -20,14 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.home.home.HomeScreen
 import com.example.home.mybox.MyBoxScreen
-import com.example.home.navigation.HomeRoute
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
 import com.packy.feature.core.R
@@ -44,6 +42,7 @@ fun HomeRootScreen(
     modifier: Modifier = Modifier,
     moveToCreateBox: () -> Unit,
     moveToBoxDetail: (Long) -> Unit,
+    moveSettings: () -> Unit,
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -104,7 +103,7 @@ fun HomeRootScreen(
         }
     ) { innerPadding ->
         NavHost(
-            modifier = Modifier.padding(innerPadding),
+            modifier = modifier.padding(innerPadding),
             navController = navController,
             startDestination = HomeRoute.HOME
         ) {
@@ -114,7 +113,8 @@ fun HomeRootScreen(
                 HomeScreen(
                     navController = navController,
                     moveToCreateBox = moveToCreateBox,
-                    moveToBoxDetail = moveToBoxDetail
+                    moveToBoxDetail = moveToBoxDetail,
+                    moveSettings = moveSettings
                 )
             }
             composable(
@@ -128,4 +128,10 @@ fun HomeRootScreen(
             }
         }
     }
+}
+
+object HomeRoute {
+    const val HOME_ROOT = "homeRootRoute"
+    const val HOME = "home"
+    const val MY_BOX = "myBox"
 }

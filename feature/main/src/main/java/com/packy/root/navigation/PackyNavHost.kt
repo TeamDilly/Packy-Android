@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.example.giftbox.navigation.giftBoxNavGraph
-import com.example.home.navigation.HomeRoute.HOME_NAV_GRAPH
-import com.example.home.navigation.homeNavGraph
+import com.example.home.bottomnavigation.HomeRootScreen
+import com.example.home.bottomnavigation.HomeRoute.HOME_ROOT
+import com.example.home.navigation.settingsNavGraph
 import com.packy.core.page.navigation.commonNavGraph
 import com.packy.createbox.navigation.createBoxNavGraph
 import com.packy.onboarding.navigation.onboardingNavGraph
@@ -21,13 +23,14 @@ fun PackyNavHost(
     kakaoLinkScheme: String,
     moveToCreateBox: () -> Unit,
     moveToBoxDetail: (Long) -> Unit,
+    moveSettings: () -> Unit,
     closeCreateBox: () -> Unit,
     logout: () -> Unit
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = HOME_NAV_GRAPH,
+        startDestination = HOME_ROOT,
     ) {
 
         deepLinkNavGraph(
@@ -47,21 +50,22 @@ fun PackyNavHost(
             navController = navController,
             closeGiftBox = moveToHomeClear
         )
-        homeNavGraph(
+        settingsNavGraph(
             navController = navController,
-            moveToCreateBox = moveToCreateBox,
-            moveToBoxDetail = moveToBoxDetail,
             logout = logout
         )
         commonNavGraph(
             navController = navController
         )
-        homeNavGraph(
-            navController = navController,
-            moveToCreateBox = moveToCreateBox,
-            moveToBoxDetail = moveToBoxDetail,
-            logout = logout
-        )
+        composable(
+            route = HOME_ROOT
+        ){
+            HomeRootScreen(
+                moveToCreateBox = moveToCreateBox,
+                moveToBoxDetail = moveToBoxDetail,
+                moveSettings= moveSettings,
+            )
+        }
     }
 }
 

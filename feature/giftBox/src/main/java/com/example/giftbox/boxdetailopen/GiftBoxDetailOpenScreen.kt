@@ -67,6 +67,7 @@ import kotlinx.coroutines.launch
 fun GiftBoxDetailOpenScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
+    showBackArrow: Boolean,
     closeGiftBox: () -> Unit,
     viewModel: GiftBoxDetailOpenViewModel = hiltViewModel()
 ) {
@@ -85,18 +86,22 @@ fun GiftBoxDetailOpenScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 GiftBoxDetailOpenEffect.MoveToBack -> {
+                    navController.popBackStack()
+                }
+
+                GiftBoxDetailOpenEffect.GiftBoxClose -> {
                     closeGiftBox()
                 }
-                GiftBoxDetailOpenEffect.GiftBoxClose -> navController.popBackStack(
-                    route = GiftBoxRoute.GIFT_BOX_NAV_GRAPH,
-                    inclusive = true
-                )
             }
         }
     }
 
     BackHandler(true) {
-        closeGiftBox()
+        if(showBackArrow){
+            navController.popBackStack()
+        }else{
+            closeGiftBox()
+        }
     }
 
     Scaffold { innerPadding ->
@@ -116,7 +121,8 @@ fun GiftBoxDetailOpenScreen(
                     0 -> GiftBoxColumn(
                         modifier = Modifier.fillMaxSize(),
                         uiState = uiState,
-                        viewModel = viewModel
+                        viewModel = viewModel,
+                        showBackArrow = showBackArrow
                     )
 
                     1 -> {
@@ -317,6 +323,7 @@ private fun GiftDetail(
 @Composable
 private fun GiftBoxColumn(
     modifier: Modifier,
+    showBackArrow: Boolean,
     uiState: GiftBoxDetailOpenState,
     viewModel: GiftBoxDetailOpenViewModel
 ) {
@@ -336,6 +343,7 @@ private fun GiftBoxColumn(
             Spacer(height = 8.dp)
             GiftBoxTopBar(
                 title = "${Strings.BOX_ADD_INFO_SENDER} ${uiState.giftBox?.senderName}",
+                showBackArrow = showBackArrow,
                 onBackClick = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnBackClick) },
                 rightButton = {
                     PackyCloseIconButton(style = closeIconButtonStyle.large.white) {

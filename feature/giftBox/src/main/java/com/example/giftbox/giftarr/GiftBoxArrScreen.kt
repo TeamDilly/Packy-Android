@@ -1,5 +1,6 @@
 package com.example.giftbox.giftarr
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -57,6 +58,7 @@ import kotlinx.coroutines.launch
 fun GiftBoxArrScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
+    closeGiftBox: () -> Unit,
     viewModel: GiftBoxArrViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -76,10 +78,7 @@ fun GiftBoxArrScreen(
         if (progress == 1f) {
             val giftBox = uiState.giftBox
             if (giftBox != null) {
-                navController.navigate(GiftBoxRoute.getGiftBoxDetailOpenFadeRoute(giftBox)) {
-                    val currentRoute = navController.currentBackStackEntry?.destination?.route
-                    currentRoute?.let { popUpTo(it) { inclusive = true } }
-                }
+                navController.navigate(GiftBoxRoute.getGiftBoxDetailOpenFadeRoute(giftBox))
             } else {
                 // TODO ERROR 페이지
             }
@@ -89,16 +88,19 @@ fun GiftBoxArrScreen(
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                GiftBoxArrEffect.MoveToBack -> navController.popBackStack(
-                    route = GiftBoxRoute.GIFT_BOX_NAV_GRAPH,
-                    inclusive = true
-                )
+                GiftBoxArrEffect.MoveToBack -> {
+                    closeGiftBox()
+                }
 
                 GiftBoxArrEffect.MoveToOpenBox -> {
                     lottiePlaying = true
                 }
             }
         }
+    }
+
+    BackHandler {
+        closeGiftBox()
     }
 
     Scaffold(
@@ -169,7 +171,9 @@ fun GiftBoxArrScreen(
                     }
                 }
                 Spacer(height = 64.dp)
-                Box(modifier = Modifier.height(screenHeight * 0.36f).fillMaxWidth())
+                Box(modifier = Modifier
+                    .height(screenHeight * 0.36f)
+                    .fillMaxWidth())
                 Spacer(1f)
                 AnimatedVisibility(
                     visible = !lottiePlaying,

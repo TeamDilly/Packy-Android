@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.absoluteOffset
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -75,6 +76,7 @@ fun BoxMotionScreen(
         LottieAnimation(
             modifier = Modifier
                 .fillMaxSize()
+                .aspectRatio(16f / 35f)
                 .align(Alignment.Center),
             composition = composition,
             progress = { progress },

@@ -68,6 +68,7 @@ fun NavGraphBuilder.giftBoxNavGraph(
         ) {
             GiftBoxArrScreen(
                 navController = navController,
+                closeGiftBox = closeGiftBox,
             )
         }
         asPagingComposable(
@@ -75,7 +76,8 @@ fun NavGraphBuilder.giftBoxNavGraph(
         ) {
             GiftBoxDetailOpenScreen(
                 navController = navController,
-                closeGiftBox= closeGiftBox
+                closeGiftBox= closeGiftBox,
+                showBackArrow = false
             )
         }
         asFadeInSlidOutComposable(
@@ -84,7 +86,8 @@ fun NavGraphBuilder.giftBoxNavGraph(
         ) {
             GiftBoxDetailOpenScreen(
                 navController = navController,
-                closeGiftBox = closeGiftBox
+                closeGiftBox = closeGiftBox,
+                showBackArrow = true
             )
         }
         asPagingComposable(

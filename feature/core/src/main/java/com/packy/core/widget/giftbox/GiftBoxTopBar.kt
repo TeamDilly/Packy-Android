@@ -23,6 +23,7 @@ import com.packy.feature.core.R
 @Composable
 fun GiftBoxTopBar(
     title: String,
+    showBackArrow: Boolean = true,
     onBackClick: () -> Unit,
     rightButton: @Composable () -> Unit = {},
 ) {
@@ -35,24 +36,26 @@ fun GiftBoxTopBar(
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .background(
-                    color = PackyTheme.color.white,
-                    shape = CircleShape
-                )
-                .clickableWithoutRipple {
-                    onBackClick()
-                }
-        ) {
-            Icon(
+        if(showBackArrow) {
+            Box(
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .size(24.dp),
-                painter = painterResource(id = R.drawable.arrow_left),
-                contentDescription = "back guide screen"
-            )
+                    .size(40.dp)
+                    .background(
+                        color = PackyTheme.color.white,
+                        shape = CircleShape
+                    )
+                    .clickableWithoutRipple {
+                        onBackClick()
+                    }
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.arrow_left),
+                    contentDescription = "back guide screen"
+                )
+            }
         }
         Spacer(width = 16.dp)
         Text(

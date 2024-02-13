@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.home.archive.ArchiveScreen
 import com.example.home.home.HomeScreen
 import com.example.home.mybox.MyBoxScreen
 import com.packy.core.common.clickableWithoutRipple
@@ -65,7 +66,7 @@ fun HomeRootScreen(
             title = "모아보기",
             selectedIcon = ImageVector.vectorResource(id = R.drawable.archivebox_fill),
             unselectedIcon = ImageVector.vectorResource(id = R.drawable.archivebox),
-            route = HomeRoute.HOME
+            route = HomeRoute.ARCHIVE
         )
     )
 
@@ -126,6 +127,13 @@ fun HomeRootScreen(
                     moveToBoxDetail = moveToBoxDetail
                 )
             }
+            composable(
+                route = HomeRoute.ARCHIVE
+            ) {
+                ArchiveScreen(
+                    navController = navController
+                )
+            }
         }
     }
 }
@@ -134,4 +142,5 @@ object HomeRoute {
     const val HOME_ROOT = "homeRootRoute"
     const val HOME = "home"
     const val MY_BOX = "myBox"
+    const val ARCHIVE = "archive"
 }

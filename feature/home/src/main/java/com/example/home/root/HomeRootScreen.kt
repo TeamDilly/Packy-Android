@@ -2,7 +2,10 @@ package com.example.home.root
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -66,41 +69,9 @@ fun HomeRootScreen(
         )
     )
 
-    Scaffold(
-        bottomBar = {
-            Row {
-                bottomNavigationItems.forEach { item ->
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(72.dp)
-                            .background(PackyTheme.color.white)
-                            .clickableWithoutRipple {
-                                navController.navigate(item.route) {
-                                    navController.currentBackStackEntry?.destination?.route?.let { route ->
-                                        popUpTo(route) {
-                                            saveState = true
-                                            inclusive = true
-                                        }
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(22.dp),
-                            imageVector = if (currentRoute == item.route) item.selectedIcon else item.unselectedIcon,
-                            contentDescription = item.title
-                        )
-                    }
-                }
-            }
-        }
-    ) { innerPadding ->
+    Column {
         NavHost(
-            modifier = modifier.padding(innerPadding),
+            modifier = modifier.weight(1f),
             navController = navController,
             startDestination = HomeRoute.HOME
         ) {
@@ -129,6 +100,39 @@ fun HomeRootScreen(
                 ArchiveScreen(
                     navController = navController
                 )
+            }
+        }
+        Row(
+            modifier = Modifier
+                .height(72.dp)
+                .fillMaxWidth()
+        ) {
+            bottomNavigationItems.forEach { item ->
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .background(PackyTheme.color.white)
+                        .clickableWithoutRipple {
+                            navController.navigate(item.route) {
+                                navController.currentBackStackEntry?.destination?.route?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
+                                        inclusive = true
+                                    }
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        modifier = Modifier.size(22.dp),
+                        imageVector = if (currentRoute == item.route) item.selectedIcon else item.unselectedIcon,
+                        contentDescription = item.title
+                    )
+                }
             }
         }
     }

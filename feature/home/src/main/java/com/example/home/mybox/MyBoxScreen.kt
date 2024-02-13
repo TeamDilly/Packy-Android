@@ -105,15 +105,7 @@ fun MyBoxScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            PackyTopBar.Builder()
-                .startIconButton(icon = R.drawable.arrow_left) {
-                    viewModel.emitIntent(MyBoxIntent.OnBackClick)
-                }
-                .build()
-        }
-    ) { innerPadding ->
+    Scaffold{ innerPadding ->
         Column(
             modifier = modifier.padding(innerPadding)
         ) {

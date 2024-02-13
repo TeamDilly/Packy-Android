@@ -30,7 +30,7 @@ fun PackyNavHost(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = HOME_ROOT,
+        startDestination = startDestination,
     ) {
 
         deepLinkNavGraph(

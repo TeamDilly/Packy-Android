@@ -33,8 +33,8 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 fun YoutubePlayer(
     modifier: Modifier = Modifier,
     videoId: String,
-    stateListener: (YoutubeState) -> Unit = {},
     youtubeState: YoutubeState,
+    stateListener: (YoutubeState) -> Unit = {},
     autoPlay: Boolean = true,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 ) {
@@ -43,7 +43,7 @@ fun YoutubePlayer(
     }
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-           if (event == Lifecycle.Event.ON_STOP) {
+           if (event == Lifecycle.Event.ON_STOP || event == Lifecycle.Event.ON_PAUSE) {
                 player?.pause()
             }
         }
@@ -65,6 +65,7 @@ fun YoutubePlayer(
         modifier = modifier,
         factory = {
             val view = YouTubePlayerView(it)
+            lifecycleOwner.lifecycle.addObserver(view)
             view.enableAutomaticInitialization = false
             view.isClickable = false
             view.initialize(

@@ -1,17 +1,12 @@
-package com.example.home.bottomnavigation
+package com.example.home.root
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.home.archive.ArchiveScreen
 import com.example.home.home.HomeScreen
 import com.example.home.mybox.MyBoxScreen
+import com.packy.core.animations.asFadeInComposable
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
 import com.packy.feature.core.R
@@ -108,7 +104,7 @@ fun HomeRootScreen(
             navController = navController,
             startDestination = HomeRoute.HOME
         ) {
-            composable(
+            asFadeInComposable(
                 route = HomeRoute.HOME
             ) {
                 HomeScreen(
@@ -118,7 +114,7 @@ fun HomeRootScreen(
                     moveSettings = moveSettings
                 )
             }
-            composable(
+            asFadeInComposable(
                 route = HomeRoute.MY_BOX
             ) {
                 MyBoxScreen(
@@ -127,7 +123,7 @@ fun HomeRootScreen(
                     moveToBoxDetail = moveToBoxDetail
                 )
             }
-            composable(
+            asFadeInComposable(
                 route = HomeRoute.ARCHIVE
             ) {
                 ArchiveScreen(

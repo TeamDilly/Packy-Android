@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
@@ -38,9 +37,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.home.bottomnavigation.HomeRoute.MY_BOX
+import com.example.home.root.HomeRoute.MY_BOX
 import com.packy.feature.core.R
-import com.example.home.navigation.SettingsRoute
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.progress.PackyProgressDialog
@@ -51,7 +49,6 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.domain.model.home.BoxType
 import com.packy.domain.model.home.HomeBox
-import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(

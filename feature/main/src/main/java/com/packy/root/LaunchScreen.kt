@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.giftbox.navigation.GiftBoxRoute
-import com.example.home.bottomnavigation.HomeRoute.HOME_ROOT
+import com.example.home.root.HomeRoute.HOME_ROOT
 import com.packy.core.theme.PackyTheme
 import com.packy.feature.core.R
 import com.packy.onboarding.navigation.OnboardingRoute

@@ -6,8 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.giftbox.navigation.giftBoxNavGraph
-import com.example.home.bottomnavigation.HomeRootScreen
-import com.example.home.bottomnavigation.HomeRoute.HOME_ROOT
+import com.example.home.root.HomeRootScreen
+import com.example.home.root.HomeRoute.HOME_ROOT
 import com.example.home.navigation.settingsNavGraph
 import com.packy.core.page.navigation.commonNavGraph
 import com.packy.createbox.navigation.createBoxNavGraph

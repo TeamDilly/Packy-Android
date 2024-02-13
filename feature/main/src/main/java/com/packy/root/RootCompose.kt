@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.giftbox.navigation.GiftBoxRoute
-import com.example.home.bottomnavigation.HomeRoute.HOME_ROOT
+import com.example.home.root.HomeRoute.HOME_ROOT
 import com.example.home.navigation.SettingsRoute
 import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo

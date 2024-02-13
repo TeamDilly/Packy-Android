@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class  HomeViewModel @Inject constructor(
     private val getHomeBoxUseCase: GetHomeBoxUseCase,
     private val resetCreateBoxUseCase: ResetCreateBoxUseCase
 ) :

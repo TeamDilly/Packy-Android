@@ -12,6 +12,8 @@ class ArchiveViewModel @Inject constructor() :
     )
 
     override fun handleIntent() {
-
+        subscribeStateIntent<ArchiveIntent.OnArchiveTypeClick> { state, intent ->
+            state.copy(showArchiveType = intent.type)
+        }
     }
 }

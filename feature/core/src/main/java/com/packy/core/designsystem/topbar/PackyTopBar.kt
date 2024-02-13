@@ -195,7 +195,8 @@ class PackyTopBar {
                             Text(
                                 modifier = Modifier
                                     .weight(1f)
-                                    .fillMaxHeight(),
+                                    .fillMaxHeight()
+                                    .wrapContentHeight(align = Alignment.CenterVertically),
                                 text = startTitle!!,
                                 style = PackyTheme.typography.body01,
                                 color = PackyTheme.color.gray900,

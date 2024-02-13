@@ -143,6 +143,13 @@ object Strings {
     const val GIFT_BOX_ERROR_MESSAGE = "이 선물박스는 열 수 없어요"
     const val GIFT_BOX_ERROR_ALREADY_OPENED = "선물박스는 한 명만 열 수 있어요.\n선물박스의 주인이라면 패키에게 문의해주세요."
 
+    // Archive
+    const val ARCHIVE_TITLE = "모아보기"
+    const val ARCHIVE_TAP_PHOTO = "사진"
+    const val ARCHIVE_TAP_LETTER = "편지"
+    const val ARCHIVE_TAP_MUSIC = "음악"
+    const val ARCHIVE_TAP_GIFT = "선물"
+
     // ERROR
     const val ERROR_TITLE = "오류가 생겼어요"
     const val ERROR_DESCRIPTION = "잠시 후 다시 시도해주세요"

@@ -24,6 +24,7 @@ class SettingsViewModel @Inject constructor(
     )
 
     override fun handleIntent() {
+        subscribeIntent<SettingsIntent.OnBackClick> { sendEffect(SettingsEffect.MoveToBack) }
         subscribeIntent<SettingsIntent.OnWebSettingClick> { sendEffect(SettingsEffect.MoveToWeb(it.url)) }
         subscribeIntent<SettingsIntent.OnLogoutClick> { sendEffect(SettingsEffect.Logout) }
         subscribeIntent<SettingsIntent.OnAccountManageClick> { sendEffect(SettingsEffect.MoveToAccountManage) }

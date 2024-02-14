@@ -193,8 +193,8 @@ private fun AddInfoForm(
         )
         Spacer(1f)
         PackyTextField(
-            modifier = Modifier
-                .focusRequester(textFieldFocus),
+            modifier = Modifier,
+            focusRequester = textFieldFocus,
             value = text,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,

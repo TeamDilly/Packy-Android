@@ -24,11 +24,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.packy.core.theme.PackyTheme
@@ -39,6 +47,9 @@ fun PackyTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
+    focusRequester: FocusRequester = remember {
+        FocusRequester()
+    },
     textAlign: TextAlign = TextAlign.Start,
     textFieldColor: Color = PackyTheme.color.gray100,
     placeholder: String? = null,
@@ -47,22 +58,26 @@ fun PackyTextField(
     minLines: Int = 1,
     maxValues: Int = Int.MAX_VALUE,
     label: String? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardOptions: KeyboardOptions = if(maxLines == 1)  KeyboardOptions(imeAction = ImeAction.Done) else KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     showTrailingIcon: Boolean = false,
     trailingIconOnClick: (() -> Unit) = {
         onValueChange("")
     },
 ) {
+
+    var focused by remember { mutableStateOf(false) }
+
     val customTextSelectionColors = TextSelectionColors(
         handleColor = PackyTheme.color.gray900,
         backgroundColor = PackyTheme.color.gray400
     )
 
     CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
-
         BasicTextField(
             modifier = modifier
+                .onFocusChanged { focused = it.isFocused }
+                .focusRequester(focusRequester)
                 .height(50.dp)
                 .background(
                     color = textFieldColor,
@@ -113,7 +128,8 @@ fun PackyTextField(
                             Placeholder(
                                 placeholder,
                                 value,
-                                textAlign
+                                textAlign,
+                                focused
                             )
                             innerTextField()
                         }
@@ -152,9 +168,10 @@ private fun CloseButton(trailingIconOnClick: () -> Unit) {
 private fun Placeholder(
     placeholder: String?,
     value: String,
-    textAlign: TextAlign
+    textAlign: TextAlign,
+    focused: Boolean
 ) {
-    if (placeholder != null && value.isEmpty()) {
+    if (placeholder != null && value.isEmpty() && !focused) {
         Text(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -162,9 +179,7 @@ private fun Placeholder(
             style = PackyTheme.typography.body04.copy(
                 textAlign = textAlign
             ),
-            color = PackyTheme.color.gray400.copy(
-                alpha = 0.5f,
-            ),
+            color = PackyTheme.color.gray500,
         )
     }
 }

@@ -105,9 +105,11 @@ fun MyBoxScreen(
         }
     }
 
-    Scaffold{ innerPadding ->
+    Scaffold { innerPadding ->
         Column(
-            modifier = modifier.padding(innerPadding)
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
             MyBoxTab(
                 selectedTab = uiState.showTab,

@@ -133,8 +133,7 @@ fun BoxChoiceScreen(
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(67.dp)
-                    .padding(horizontal = 40.dp),
+                    .height(67.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 items(uiState.boxDesignList) { boxDesign ->
@@ -157,7 +156,7 @@ fun BoxChoiceScreen(
                     .height(48.dp)
                     .padding(horizontal = 24.dp),
                 style = buttonStyle.large.black,
-                text = Strings.SAVE,
+                text = Strings.NEXT,
                 enabled = uiState.selectedBox != null
             ) {
                 viewModel.emitIntentThrottle(BoxChoiceIntent.OnSaveClick)

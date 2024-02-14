@@ -28,6 +28,7 @@ class KakaoShare @Inject constructor() {
                 context = context,
                 templateId = CUSTOM_FEED_ID,
                 templateArgs = kakaoCustomFeed.toFeedArgs(),
+                serverCallbackArgs = null
             ) { sharingResult, error ->
                 if (error != null) {
                     sharedCallBack(Resource.NetworkError(error))

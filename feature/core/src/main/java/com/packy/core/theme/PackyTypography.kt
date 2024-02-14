@@ -59,21 +59,21 @@ val defaultPackyTypography = object : PackyTypography {
         fontStyle = FontStyle.Normal
     )
     override val body01: TextStyle = PackyFontStyle.copy(
-        fontSize = 18.sp,
-        lineHeight = 24.sp,
+        fontSize = 16.sp,
+        lineHeight = 26.sp,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Normal
     )
     override val body02: TextStyle = PackyFontStyle.copy(
         fontSize = 16.sp,
         lineHeight = 26.sp,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Normal,
         fontStyle = FontStyle.Normal
     )
     override val body03: TextStyle = PackyFontStyle.copy(
         fontSize = 14.sp,
         lineHeight = 22.sp,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Normal
     )
     override val body04: TextStyle = PackyFontStyle.copy(

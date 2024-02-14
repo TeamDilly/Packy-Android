@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 
 interface PackyColor {
     val black: Color
+    val gray950: Color
     val gray900: Color
     val gray800: Color
     val gray700: Color
@@ -38,6 +39,7 @@ interface PackyColor {
 
 internal val lightPackyColor = object: PackyColor {
     override val black: Color = Color(0xFF000000)
+    override val gray950: Color = Color(0xFF171717)
     override val gray900: Color = Color(0xFF222222)
     override val gray800: Color = Color(0xFF444444)
     override val gray700: Color = Color(0xFF717171)
@@ -48,14 +50,14 @@ internal val lightPackyColor = object: PackyColor {
     override val gray200: Color = Color(0xFFE9E9E9)
     override val gray100: Color = Color(0xFFF3F3F3)
     override val white: Color = Color(0xFFFFFFFF)
-    override val purple800: Color = Color(0xFF2F2F7C)
-    override val purple700: Color = Color(0xFF3C37A4)
-    override val purple600: Color = Color(0xFF4545D1)
-    override val purple500: Color = Color(0xFF635DF0)
-    override val purple400: Color = Color(0xFF7979F7)
-    override val purple300: Color = Color(0xFFA4A1FF)
-    override val purple200: Color = Color(0xFFCACAFC)
-    override val purple100: Color = Color(0xFFEBEAFF)
+    override val purple800: Color = Color(0xFF3C3775)
+    override val purple700: Color = Color(0xFF46389B)
+    override val purple600: Color = Color(0xFF5844D1)
+    override val purple500: Color = Color(0xFF6B60E9)
+    override val purple400: Color = Color(0xFF8177F5)
+    override val purple300: Color = Color(0xFFA8A0FF)
+    override val purple200: Color = Color(0xFFCFCBFF)
+    override val purple100: Color = Color(0xFFEBE9FF)
     override val pink800: Color = Color(0xFFAF3893)
     override val pink700: Color = Color(0xFFD44B81)
     override val pink600: Color = Color(0xFFED76A5)

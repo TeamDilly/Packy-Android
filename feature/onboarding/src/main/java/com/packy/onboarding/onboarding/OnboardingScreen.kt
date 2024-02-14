@@ -88,7 +88,9 @@ fun OnboardingScreen(
                 .padding(innerPadding),
         ) {
             OnboardingPager(
-                modifier = modifier.align(Alignment.Center),
+                modifier = modifier
+                    .align(Alignment.Center)
+                    .padding(bottom = 40.dp),
                 pagerState = pagerState,
             )
             Column(
@@ -98,7 +100,7 @@ fun OnboardingScreen(
                     modifier = Modifier,
                     pagerState = pagerState
                 )
-                Spacer(119.dp)
+                Spacer(103.dp)
                 PackyButton(
                     modifier = Modifier
                         .padding(horizontal = 24.dp),

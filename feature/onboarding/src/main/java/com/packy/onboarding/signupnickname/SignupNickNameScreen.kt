@@ -70,7 +70,8 @@ fun SignupNickNameScreen(
                 },
                 showTrailingIcon = uiState.inputNickName?.isNotEmpty() ?: false,
                 placeholder = SIGNUP_NICK_NAME_MAX_VALUE,
-                maxValues = MAX_NICK_NAME_LENGTH
+                maxValues = MAX_NICK_NAME_LENGTH,
+                maxLines = 1
             )
             Spacer(1f)
             PackyButton(

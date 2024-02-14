@@ -37,8 +37,8 @@ fun PackyButton(
     val isPressed by interactionSource.collectIsPressedAsState()
     val backgroundColor = when {
         !enabled -> style.buttonColor.disabled
-        isPressed -> style.buttonColor.default
-        !isPressed -> style.buttonColor.pressed
+        isPressed -> style.buttonColor.pressed
+        !isPressed -> style.buttonColor.default
         else -> style.buttonColor.disabled
     }
 

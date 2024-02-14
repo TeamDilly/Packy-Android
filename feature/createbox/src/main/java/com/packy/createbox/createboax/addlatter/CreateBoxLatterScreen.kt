@@ -136,12 +136,14 @@ fun CreateBoxLetterScreen(
             )
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 24.dp)
                     .fillMaxSize(),
             ) {
 
                 Spacer(height = 32.dp)
                 LetterForm(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
                     uiState.letterText,
                     uiState.getLetterEnvelope(),
                     viewModel::emitIntent,
@@ -180,11 +182,14 @@ fun CreateBoxLetterScreen(
 
 @Composable
 private fun LetterForm(
+    modifier: Modifier = Modifier,
     text: String,
     envelope: LetterEnvelope?,
     onValueChange: emitMviIntent<CreateBoxLetterIntent>,
 ) {
-    Box {
+    Box(
+        modifier= modifier
+    ) {
         PackyTextField(
             value = text,
             onValueChange = { onValueChange(CreateBoxLetterIntent.ChangeLetterText(it)) },

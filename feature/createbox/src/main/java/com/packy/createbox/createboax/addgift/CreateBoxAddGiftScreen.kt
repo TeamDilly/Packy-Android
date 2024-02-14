@@ -155,7 +155,7 @@ fun CreateBoxAddGiftScreen(
                     vertical = 14.dp
                 )
                 .clickableWithoutRipple {
-                    viewModel.emitIntentThrottle(CreateBoxAddGiftIntent.OnCloseClick)
+                    viewModel.emitIntentThrottle(CreateBoxAddGiftIntent.OnResetGiftClick)
                 }
         )
         Spacer(height = 20.dp)

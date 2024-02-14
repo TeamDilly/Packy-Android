@@ -7,6 +7,7 @@ import com.packy.mvi.mvi.UiState
 
 sealed interface CreateBoxAddGiftIntent : MviIntent {
     data object OnCloseClick : CreateBoxAddGiftIntent
+    data object OnResetGiftClick: CreateBoxAddGiftIntent
     data object OnSaveClick : CreateBoxAddGiftIntent
     data object OnCancelImageClick : CreateBoxAddGiftIntent
 

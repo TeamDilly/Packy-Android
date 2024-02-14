@@ -3,12 +3,14 @@ package com.packy.createbox.boxaddinfo
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -105,11 +107,13 @@ fun BoxAddInfoScreen(
             Column(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
+                    .requiredHeightIn(min = 124.dp)
                     .background(
                         color = PackyTheme.color.gray100,
                         shape = RoundedCornerShape(16.dp)
                     )
                     .clip(RoundedCornerShape(16.dp)),
+                verticalArrangement = Arrangement.SpaceAround
             ) {
                 AddInfoForm(
                     text = uiState.letterSenderReceiver.receiver,

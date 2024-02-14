@@ -18,8 +18,8 @@ class CreateBoxAddGiftViewModel @Inject constructor(
     )
 
     override fun handleIntent() {
+        subscribeIntent<CreateBoxAddGiftIntent.OnResetGiftClick> { sendEffect(CreateBoxAddGiftEffect.SavePhotoItem(imageUri = null)) }
         subscribeIntent<CreateBoxAddGiftIntent.OnCloseClick> {
-            setState(currentState.copy(imageUri = null))
             sendEffect(CreateBoxAddGiftEffect.CloseBottomSheet)
         }
         subscribeIntent<CreateBoxAddGiftIntent.OnSaveClick> {
@@ -29,7 +29,11 @@ class CreateBoxAddGiftViewModel @Inject constructor(
             state.copy(imageUri = null)
         }
         subscribeStateIntent<CreateBoxAddGiftIntent.ChangeImageUri> { state, intent ->
-            state.copy(imageUri = intent.imageUri)
+            if(intent.imageUri != null) {
+                state.copy(imageUri = intent.imageUri)
+            }else{
+                state
+            }
         }
     }
 

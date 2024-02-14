@@ -63,10 +63,10 @@ class CreateBoxRepositoryImp @Inject constructor(
             }
 
             val uploadGiftDeferred = async(Dispatchers.IO) {
-                createBox.gift?.let {
+                createBox.gift?.url?.let { url ->
                     photoRepository.uploadFile(
                         fileName = UUID.randomUUID().toString(),
-                        uri = it.url
+                        uri = url
                     )
                 } ?: Resource.Success(
                     "gift should be null",
@@ -87,7 +87,7 @@ class CreateBoxRepositoryImp @Inject constructor(
             val createBoxRequest = CreateBoxRequest.formEntity(
                 createBox = createBox,
                 photoUrl = uploadPhotoUrl.data,
-                giftUrl = if(createBox.gift == null) null else giftUrl.data
+                giftUrl = if (createBox.gift == null) null else giftUrl.data
             ) ?: run {
                 return@withContext Resource.ApiError(
                     data = null,

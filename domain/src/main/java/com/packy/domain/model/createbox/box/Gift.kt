@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Gift(
     @SerialName("type") val type: String,
-    @SerialName("url") val url: String
+    @SerialName("url") val url: String?
 )

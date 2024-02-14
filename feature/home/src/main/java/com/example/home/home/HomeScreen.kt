@@ -165,22 +165,24 @@ fun HomeScreen(
                 }
             }
             Spacer(height = 16.dp)
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .background(
-                        color = PackyTheme.color.white,
-                        shape = RoundedCornerShape(24.dp)
-                    ),
-            ) {
-                Spacer(height = 24.dp)
-                HomeGiftBoxes(
-                    giftBoxes = giftBoxes,
-                    onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnMoreBoxClick) },
-                    moveToBoxDetail = { viewModel.emitIntentThrottle(HomeIntent.OnBoxDetailClick(it)) }
-                )
-                Spacer(height = 24.dp)
+            if (giftBoxes.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .background(
+                            color = PackyTheme.color.white,
+                            shape = RoundedCornerShape(24.dp)
+                        ),
+                ) {
+                    Spacer(height = 24.dp)
+                    HomeGiftBoxes(
+                        giftBoxes = giftBoxes,
+                        onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnMoreBoxClick) },
+                        moveToBoxDetail = { viewModel.emitIntentThrottle(HomeIntent.OnBoxDetailClick(it)) }
+                    )
+                    Spacer(height = 24.dp)
+                }
             }
         }
     }
@@ -234,8 +236,9 @@ private fun GiftBoxItem(
             contentDescription = homeBox.title,
         )
         Spacer(height = 12.dp)
+        val displayType = if (homeBox.type == BoxType.SENT) Strings.TO else Strings.FROM
         Text(
-            text = if (homeBox.type == BoxType.SENT) Strings.TO else Strings.FROM + homeBox.displayName,
+            text = displayType + homeBox.displayName,
             style = PackyTheme.typography.body06,
             color = PackyTheme.color.purple500,
             maxLines = 1,

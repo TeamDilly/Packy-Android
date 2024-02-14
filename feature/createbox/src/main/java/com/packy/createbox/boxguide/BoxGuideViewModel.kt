@@ -81,7 +81,7 @@ class BoxGuideViewModel @Inject constructor(
             createBoxUseCase.gift(
                 Gift(
                     type = "photo",
-                    url = intent.imageUri.toString()
+                    url = intent.imageUri?.toString()
                 )
             )
             state.copy(gift = intent.imageUri)
@@ -181,7 +181,7 @@ class BoxGuideViewModel @Inject constructor(
     private fun saveYoutubeMusic(): suspend (BoxGuideState, BoxGuideIntent.SaveMusic) -> BoxGuideState =
         { state, intent ->
             createBoxUseCase.youtubeUrl(intent.youtubeUrl)
-            state.copy(youtubeUrl = intent.youtubeUrl)
+            state.copy(youtubeUrl = intent.youtubeUrl, youtubeState = YoutubeState.PLAYING)
         }
 
     private fun saveLetterBoxGuideState(): suspend (BoxGuideState, BoxGuideIntent.SaveLetter) -> BoxGuideState =

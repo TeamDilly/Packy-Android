@@ -254,6 +254,13 @@ fun BoxGuideScreen(
                         content = uiState.youtubeUrl?.let { youtubeUri ->
                             {
                                 MusicForm(
+                                    modifier = Modifier
+                                        .heightIn(
+                                            min = 0.dp,
+                                            max = 146.dp
+                                        )
+                                        .aspectRatio(16f / 9f)
+                                        .fillMaxWidth(),
                                     youtubeUri = youtubeUri,
                                     youtubeState = uiState.youtubeState,
                                     clearMusic = {

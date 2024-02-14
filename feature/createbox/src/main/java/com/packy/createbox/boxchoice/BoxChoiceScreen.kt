@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -78,7 +79,7 @@ fun BoxChoiceScreen(
                             )
                         )
                     } else {
-                        navController.navigate(CreateBoxRoute.BOX_GUIDE_PAGING){
+                        navController.navigate(CreateBoxRoute.BOX_GUIDE_PAGING) {
                             launchSingleTop = true
                         }
                     }
@@ -122,11 +123,10 @@ fun BoxChoiceScreen(
             Spacer(height = 48.dp)
             GlideImage(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 75.dp)
-                    .aspectRatio(1f),
+                    .width(232.dp)
+                    .height(260.dp),
                 model = uiState.selectedBox?.boxSet,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
                 contentDescription = "Selected Box"
             )
             Spacer(height = 40.dp)
@@ -136,9 +136,11 @@ fun BoxChoiceScreen(
                     .height(67.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
+                item { Spacer(width = 40.dp) }
                 items(uiState.boxDesignList) { boxDesign ->
                     GlideImage(
                         modifier = Modifier
+                            .size(64.dp)
                             .clip(RoundedCornerShape(12.dp))
                             .clickableWithoutRipple {
                                 viewModel.emitIntent(BoxChoiceIntent.ChangeSelectBox(boxDesign))
@@ -148,6 +150,7 @@ fun BoxChoiceScreen(
                         contentDescription = "Box Design"
                     )
                 }
+                item { Spacer(width = 40.dp) }
             }
             Spacer(1f)
             PackyButton(

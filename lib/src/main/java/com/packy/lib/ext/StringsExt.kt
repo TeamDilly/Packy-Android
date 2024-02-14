@@ -1,25 +1,30 @@
 package com.packy.lib.ext
 
 import java.net.URI
+import java.util.regex.Pattern
 
 
 fun extractYouTubeVideoId(url: String): String? {
     val videoIdKey = "v="
     val shortUrlKey = "youtu.be/"
+    val shareUrlKey = "youtu.be/share/"
 
     val index = url.indexOf(videoIdKey)
     val shortIndex = url.indexOf(shortUrlKey)
+    val shareIndex = url.indexOf(shareUrlKey)
 
     return when {
         index != -1 -> {
-            val startIndex = index + videoIdKey.length
-            val endIndex = url.indexOf("&", startIndex).takeIf { it != -1 } ?: url.length
-            url.substring(startIndex, endIndex)
+            val endIndex = url.indexOf("&", index + videoIdKey.length).takeIf { it != -1 } ?: url.indexOf("?", index + videoIdKey.length).takeIf { it != -1 } ?: url.length
+            url.substring(index + videoIdKey.length, endIndex)
         }
         shortIndex != -1 -> {
-            val startIndex = shortIndex + shortUrlKey.length
-            val endIndex = url.indexOf("&", startIndex).takeIf { it != -1 } ?: url.length
-            url.substring(startIndex, endIndex)
+            val endIndex = url.indexOf("&", shortIndex + shortUrlKey.length).takeIf { it != -1 } ?: url.indexOf("?", shortIndex + shortUrlKey.length).takeIf { it != -1 } ?: url.length
+            url.substring(shortIndex + shortUrlKey.length, endIndex)
+        }
+        shareIndex != -1 -> {
+            val endIndex = url.indexOf("&", shareIndex + shareUrlKey.length).takeIf { it != -1 } ?: url.indexOf("?", shareIndex + shareUrlKey.length).takeIf { it != -1 } ?: url.length
+            url.substring(shareIndex + shareUrlKey.length, endIndex)
         }
         else -> null
     }

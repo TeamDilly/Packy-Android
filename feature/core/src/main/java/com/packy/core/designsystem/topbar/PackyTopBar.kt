@@ -171,7 +171,8 @@ class PackyTopBar {
                     modifier = modifier
                         .windowInsetsPadding(WindowInsets.statusBars)
                         .fillMaxWidth()
-                        .height(TOP_BAR_HEIGHT),
+                        .height(TOP_BAR_HEIGHT)
+                        .padding(top = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(

@@ -70,7 +70,8 @@ fun BoxMotionScreen(
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(lottieAnimation.lottie))
         val progress by animateLottieCompositionAsState(
             composition,
-            isPlaying = true
+            isPlaying = true,
+            speed = 1.4f
         )
 
         LottieAnimation(

@@ -59,6 +59,10 @@ fun CreateBoxPackyMusicScreen(
         uiState.music.size
     })
 
+    LaunchedEffect(pagerState.currentPage) {
+        viewModel.emitIntent(CreateBoxPackyMusicIntent.ChangeMusic(pagerState.currentPage))
+    }
+
     LaunchedEffect(Unit) {
         viewModel.getSuggestionMusic()
     }
@@ -118,15 +122,6 @@ fun CreateBoxPackyMusicScreen(
                 contentPadding = PaddingValues(horizontal = 44.dp),
                 pageSpacing = 16.dp
             ) { index ->
-                viewModel.emitIntent(CreateBoxPackyMusicIntent.ChangeMusic(pagerState.currentPage))
-                if (pagerState.currentPage != index) {
-                    viewModel.emitIntent(
-                        CreateBoxPackyMusicIntent.ChangeMusicState(
-                            index,
-                            YoutubeState.PAUSED
-                        )
-                    )
-                }
 
                 uiState.music.getOrNull(index)?.let { packMusic ->
                     packMusic.videoId?.let { videoId ->

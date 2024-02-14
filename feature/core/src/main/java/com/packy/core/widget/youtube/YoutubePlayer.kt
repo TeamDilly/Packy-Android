@@ -72,12 +72,28 @@ fun YoutubePlayer(
                 youTubePlayerListener = object : AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         super.onReady(youTubePlayer)
-                        youTubePlayer.loadVideo(
+                        youTubePlayer.cueVideo(
                             videoId,
                             0f
                         )
-                        stateListener(if (autoPlay) YoutubeState.PLAYING else YoutubeState.PAUSED)
                         player = youTubePlayer
+                        youTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
+                            override fun onStateChange(
+                                youTubePlayer: YouTubePlayer,
+                                state: PlayerConstants.PlayerState
+                            ) {
+                                super.onStateChange(youTubePlayer, state)
+                                when (state) {
+                                    PlayerConstants.PlayerState.PLAYING -> {
+                                        stateListener(YoutubeState.PLAYING)
+                                    }
+                                    PlayerConstants.PlayerState.PAUSED -> {
+                                        stateListener(YoutubeState.PAUSED)
+                                    }
+                                    else -> Unit
+                                }
+                            }
+                        })
                     }
                 },
                 playerOptions = IFramePlayerOptions.Builder()

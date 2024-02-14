@@ -41,15 +41,17 @@ class CreateBoxPackyMusicViewModel @Inject constructor(
 
         subscribeStateIntent<CreateBoxPackyMusicIntent.ChangeMusicState> { state, intent ->
             val newMusicList = state.music.toMutableList().apply {
-                this.replaceAll { music ->
-                    music.copy(state = YoutubeState.PAUSED)
-                }
                 this[intent.index] = this[intent.index].copy(state = intent.state)
             }
             state.copy(music = newMusicList)
         }
         subscribeStateIntent<CreateBoxPackyMusicIntent.ChangeMusic> { state, intent ->
-            state.copy(currentMusicIndex = intent.index)
+            val music = state.music.toMutableList().apply {
+                this.replaceAll { music ->
+                    music.copy(state = YoutubeState.PAUSED)
+                }
+            }
+            state.copy(currentMusicIndex = intent.index, music = music)
         }
     }
 

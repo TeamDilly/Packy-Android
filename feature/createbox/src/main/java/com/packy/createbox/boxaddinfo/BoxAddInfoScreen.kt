@@ -122,12 +122,10 @@ fun BoxAddInfoScreen(
                 ) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeReceiver(it))
                 }
-                Spacer(16.dp)
                 DottedDivider(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
                     thickness = 1.dp,
                 )
-                Spacer(16.dp)
                 AddInfoForm(
                     text = uiState.letterSenderReceiver.sender,
                     title = Strings.BOX_ADD_INFO_SENDER,

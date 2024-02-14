@@ -1,9 +1,5 @@
 package com.packy.lib.ext
 
-import java.net.URI
-import java.util.regex.Pattern
-
-
 fun extractYouTubeVideoId(url: String): String? {
     val videoIdKey = "v="
     val shortUrlKey = "youtu.be/"

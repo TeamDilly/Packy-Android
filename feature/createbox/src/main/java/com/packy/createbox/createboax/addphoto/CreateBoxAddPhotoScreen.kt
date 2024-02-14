@@ -16,6 +16,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -174,19 +175,18 @@ private fun PhotoFrame(
             )
             .padding(all = 16.dp)
             .fillMaxWidth()
-            .height(374.dp)
     ) {
         Column(
             modifier = Modifier
                 .align(Alignment.Center),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
                 modifier = Modifier
                     .background(color = PackyTheme.color.white)
                     .fillMaxWidth()
-                    .weight(80f),
+                    .aspectRatio(1f / 1f),
             ) {
                 if (imageItem.imageUri != null) {
                     GlideImage(
@@ -216,10 +216,8 @@ private fun PhotoFrame(
                 }
 
             }
-            Spacer(6f)
             PackyTextField(
-                modifier = Modifier
-                    .weight(14f),
+                modifier = Modifier,
                 value = imageItem.contentDescription ?: "",
                 placeholder = Strings.CREATE_BOX_ADD_PHOTO_PLACEHOLDER,
                 textAlign = TextAlign.Center,

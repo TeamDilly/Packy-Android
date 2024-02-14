@@ -20,7 +20,7 @@ fun ColumnScope.BottomSheetTitle(bottomSheetTitle: BottomSheetTitleContent) {
         style = PackyTheme.typography.heading01,
         color = PackyTheme.color.gray900
     )
-    Spacer(height = 4.dp)
+    Spacer(height = 8.dp)
     Text(
         modifier = Modifier
             .padding(horizontal = 24.dp),

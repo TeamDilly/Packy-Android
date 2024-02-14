@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -121,7 +122,12 @@ fun BoxAddInfoScreen(
                 ) {
                     viewModel.emitIntent(BoxAddInfoIntent.ChangeReceiver(it))
                 }
-                DottedDivider(modifier = Modifier.padding(vertical = 16.dp))
+                Spacer(16.dp)
+                DottedDivider(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+                    thickness = 1.dp,
+                )
+                Spacer(16.dp)
                 AddInfoForm(
                     text = uiState.letterSenderReceiver.sender,
                     title = Strings.BOX_ADD_INFO_SENDER,

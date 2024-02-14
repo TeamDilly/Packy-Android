@@ -98,10 +98,10 @@ fun BoxAddTitleScreen(
             Spacer(height = 8.dp)
             Text(
                 text = Strings.CREATE_BOX_ADD_TITLE_DESCRIPTION,
-                style = PackyTheme.typography.body01.copy(
+                style = PackyTheme.typography.body04.copy(
                     textAlign = TextAlign.Center
                 ),
-                color = PackyTheme.color.gray700
+                color = PackyTheme.color.gray600
             )
             Spacer(height = 40.dp)
             PackyTextField(

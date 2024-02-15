@@ -28,6 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Packy"
         android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <service
             android:name="com.packy.account.AuthenticatorService"

@@ -130,7 +130,7 @@ fun SettingsScreen(
                     style = PackyTheme.typography.body02,
                     color = PackyTheme.color.gray900
                 )
-                Spacer(2.dp)
+                Spacer(8.dp)
                 Text(
                     text = BuildConfig.VERSION_NAME,
                     style = PackyTheme.typography.body04,

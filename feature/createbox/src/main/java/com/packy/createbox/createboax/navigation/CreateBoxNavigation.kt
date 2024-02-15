@@ -16,7 +16,7 @@ import com.packy.createbox.createboax.choosemusic.CreateBoxChooseMusicScreen
 @Composable
 fun CreateBoxNavHost(
     modifier: Modifier = Modifier,
-    closeBottomSheet: () -> Unit,
+    closeBottomSheet: (Boolean) -> Unit,
     saveMusic: (String) -> Unit,
 ) {
     val navController = rememberNavController()
@@ -35,7 +35,7 @@ fun CreateBoxNavHost(
 
 fun NavGraphBuilder.createBoxBottomSheetNavGraph(
     navController: NavHostController,
-    closeBottomSheet: () -> Unit,
+    closeBottomSheet: (Boolean) -> Unit,
     saveMusic: (String) -> Unit,
 ) {
     navigation(

@@ -61,7 +61,7 @@ import java.io.FileOutputStream
 @Composable
 fun CreateBoxAddPhotoScreen(
     modifier: Modifier = Modifier,
-    closeBottomSheet: () -> Unit,
+    closeBottomSheet: (Boolean) -> Unit,
     savePhoto: (Uri, String) -> Unit,
     viewModel: CreateBoxAddPhotoViewModel = hiltViewModel()
 ) {
@@ -71,7 +71,7 @@ fun CreateBoxAddPhotoScreen(
         viewModel.initPhotoItem()
         viewModel.effect.collect { effect ->
             when (effect) {
-                CreateBoxAddPhotoEffect.CloseBottomSheet -> closeBottomSheet()
+                is CreateBoxAddPhotoEffect.CloseBottomSheet -> closeBottomSheet(effect.changed)
                 is CreateBoxAddPhotoEffect.SavePhotoItem -> {
                     savePhoto(
                         /**

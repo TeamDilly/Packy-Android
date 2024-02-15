@@ -16,19 +16,26 @@ sealed interface CreateBoxLetterIntent : MviIntent {
 data class CreateBoxLetterState(
     val letterText: String,
     val envelopeId: Int,
-    val envelopeList: List<LetterEnvelope>
-) : UiState{
-    fun getLetterEnvelope(): LetterEnvelope? = envelopeList.firstOrNull{
+    val previousLetterText: String,
+    val previousEnvelopeId: Int,
+    val envelopeList: List<LetterEnvelope>,
+) : UiState {
+    val changed: Boolean get() = letterText != previousLetterText || envelopeId != previousEnvelopeId
+    fun getLetterEnvelope(): LetterEnvelope? = envelopeList.firstOrNull {
         it.id == envelopeId
     }
 }
 
 sealed interface CreateBoxLetterEffect : SideEffect {
-    data object CloseBottomSheet : CreateBoxLetterEffect
+    data class CloseBottomSheet(
+        val changed: Boolean = false
+    ) : CreateBoxLetterEffect
+
     data class SaveLetter(
         val envelopId: Int,
         val envelopUri: String,
         val LetterText: String,
-    ): CreateBoxLetterEffect
+    ) : CreateBoxLetterEffect
+
     data object OverFlowLetterText : CreateBoxLetterEffect
 }

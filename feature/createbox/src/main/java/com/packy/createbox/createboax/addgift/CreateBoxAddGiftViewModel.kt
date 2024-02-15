@@ -14,25 +14,48 @@ class CreateBoxAddGiftViewModel @Inject constructor(
 ) :
     MviViewModel<CreateBoxAddGiftIntent, CreateBoxAddGiftState, CreateBoxAddGiftEffect>() {
     override fun createInitialState(): CreateBoxAddGiftState = CreateBoxAddGiftState(
-        imageUri = null
+        imageUri = null,
+        previousImageUri = null
     )
 
     override fun handleIntent() {
-        subscribeIntent<CreateBoxAddGiftIntent.OnResetGiftClick> { sendEffect(CreateBoxAddGiftEffect.SavePhotoItem(imageUri = null)) }
+        subscribeIntent<CreateBoxAddGiftIntent.OnResetGiftClick> {
+            sendEffect(
+                CreateBoxAddGiftEffect.SavePhotoItem(
+                    imageUri = null,
+                )
+            )
+        }
         subscribeIntent<CreateBoxAddGiftIntent.OnCloseClick> {
-            sendEffect(CreateBoxAddGiftEffect.CloseBottomSheet)
+            sendEffect(
+                CreateBoxAddGiftEffect.CloseBottomSheet(
+                    changed = currentState.changed
+                )
+            )
         }
         subscribeIntent<CreateBoxAddGiftIntent.OnSaveClick> {
-            sendEffect(CreateBoxAddGiftEffect.SavePhotoItem(imageUri = currentState.imageUri))
+            sendEffect(
+                CreateBoxAddGiftEffect.SavePhotoItem(
+                    imageUri = currentState.imageUri,
+                )
+            )
         }
         subscribeStateIntent<CreateBoxAddGiftIntent.OnCancelImageClick> { state, _ ->
-            state.copy(imageUri = null)
+            val changed = state.imageUri != state.previousImageUri
+            state.copy(
+                imageUri = null,
+                changed = changed
+            )
         }
         subscribeStateIntent<CreateBoxAddGiftIntent.ChangeImageUri> { state, intent ->
-            if(intent.imageUri != null) {
-                state.copy(imageUri = intent.imageUri)
-            }else{
-                state
+            val changed = intent.imageUri != state.previousImageUri
+            if (intent.imageUri != null) {
+                state.copy(
+                    imageUri = intent.imageUri,
+                    changed = changed
+                )
+            } else {
+                state.copy(changed = changed)
             }
         }
     }
@@ -43,7 +66,8 @@ class CreateBoxAddGiftViewModel @Inject constructor(
             val photoUri = createBox.gift?.url?.let { Uri.parse(it) }
             setState {
                 CreateBoxAddGiftState(
-                    imageUri = photoUri
+                    imageUri = photoUri,
+                    previousImageUri = photoUri,
                 )
             }
         }

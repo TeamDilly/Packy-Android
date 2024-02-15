@@ -16,12 +16,13 @@ class CreateBoxAddPhotoViewModel @Inject constructor(
 ) :
     MviViewModel<CreateBoxAddPhotoIntent, CreateBoxAddPhotoState, CreateBoxAddPhotoEffect>() {
     override fun createInitialState(): CreateBoxAddPhotoState = CreateBoxAddPhotoState(
-        emptyImageItem,
+        photoItem = emptyImageItem,
+        previousPhotoItem = emptyImageItem
     )
 
     override fun handleIntent() {
         subscribeIntent<CreateBoxAddPhotoIntent.OnCloseClick> {
-            sendEffect(CreateBoxAddPhotoEffect.CloseBottomSheet)
+            sendEffect(CreateBoxAddPhotoEffect.CloseBottomSheet(currentState.changed ?: false))
         }
         subscribeIntent<CreateBoxAddPhotoIntent.OnSaveClick> {
             sendEffect(
@@ -31,10 +32,14 @@ class CreateBoxAddPhotoViewModel @Inject constructor(
             )
         }
         subscribeStateIntent<CreateBoxAddPhotoIntent.ChangeDescription> { state, intent ->
-            state.copy(photoItem = state.photoItem.copy(contentDescription = intent.newDescription))
+            state.copy(
+                photoItem = state.photoItem.copy(contentDescription = intent.newDescription),
+            )
         }
         subscribeStateIntent<CreateBoxAddPhotoIntent.ChangeImageUri> { state, intent ->
-            state.copy(photoItem = state.photoItem.copy(imageUri = intent.imageUri))
+            state.copy(
+                photoItem = state.photoItem.copy(imageUri = intent.imageUri),
+            )
         }
         subscribeStateIntent<CreateBoxAddPhotoIntent.OnCancelImageClick> { state, _ ->
             state.copy(photoItem = emptyImageItem)
@@ -45,12 +50,14 @@ class CreateBoxAddPhotoViewModel @Inject constructor(
         viewModelScope.launch {
             val createBox = getCreateBoxUseCase.getCreatedBox()
             val photoUri = createBox.photo?.photoUrl?.let { Uri.parse(it) }
+            val newPhotoItem = PhotoItem(
+                imageUri = photoUri,
+                contentDescription = createBox.photo?.description
+            )
             setState {
                 it.copy(
-                    photoItem = PhotoItem(
-                        imageUri = photoUri,
-                        contentDescription = createBox.photo?.description
-                    )
+                    photoItem = newPhotoItem,
+                    previousPhotoItem = newPhotoItem
                 )
             }
         }

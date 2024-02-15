@@ -32,14 +32,14 @@ import com.packy.feature.core.R
 fun CreateBoxChooseMusicScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    closeBottomSheet: () -> Unit,
+    closeBottomSheet: (Boolean) -> Unit,
     viewModel: CreateBoxChooseMusicViewModel = hiltViewModel()
 ) {
 
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                CreateBoxChooseMusicEffect.CloseBottomSheet -> closeBottomSheet()
+                CreateBoxChooseMusicEffect.CloseBottomSheet -> closeBottomSheet(false)
                 CreateBoxChooseMusicEffect.MoveToPackyMusic -> navController.navigate(
                     CreateBoxBottomSheetRoute.CREATE_BOX_ADD_PACKY_MUSIC
                 )

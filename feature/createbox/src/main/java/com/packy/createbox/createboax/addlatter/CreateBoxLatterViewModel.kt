@@ -5,6 +5,7 @@ import com.packy.core.values.Constant
 import com.packy.createbox.createboax.addLetter.CreateBoxLetterEffect
 import com.packy.createbox.createboax.addLetter.CreateBoxLetterIntent
 import com.packy.createbox.createboax.addLetter.CreateBoxLetterState
+import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.domain.usecase.letter.LetterUseCase
 import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.unwrapResource
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateBoxLetterViewModel @Inject constructor(
-    private val letterUseCase: LetterUseCase
+    private val letterUseCase: LetterUseCase,
+    private val getCreateBoxUseCase: CreateBoxUseCase
 ) :
     MviViewModel<CreateBoxLetterIntent, CreateBoxLetterState, CreateBoxLetterEffect>() {
 
@@ -40,12 +42,14 @@ class CreateBoxLetterViewModel @Inject constructor(
     override fun createInitialState(): CreateBoxLetterState = CreateBoxLetterState(
         letterText = "",
         envelopeId = 1,
+        previousLetterText = "",
+        previousEnvelopeId = 1,
         envelopeList = emptyList()
     )
 
     override fun handleIntent() {
         subscribeIntent<CreateBoxLetterIntent.OnCloseClick> {
-            sendEffect(CreateBoxLetterEffect.CloseBottomSheet)
+            sendEffect(CreateBoxLetterEffect.CloseBottomSheet(currentState.changed))
         }
         subscribeIntent<CreateBoxLetterIntent.OnSaveClick> {
             val envelopeItem = currentState.getLetterEnvelope()
@@ -60,12 +64,16 @@ class CreateBoxLetterViewModel @Inject constructor(
             }
         }
         subscribeStateIntent<CreateBoxLetterIntent.ChangeEnvelope> { state, intent ->
-            state.copy(envelopeId = intent.envelopeId)
+            state.copy(
+                envelopeId = intent.envelopeId,
+            )
         }
         subscribeStateIntent<CreateBoxLetterIntent.ChangeLetterText> { state, intent ->
             if (intent.Letter.length <= Constant.MAX_Letter_TEXT) {
                 if (intent.Letter.lines().size <= Constant.MAX_Letter_LINES + 1) {
-                    state.copy(letterText = intent.Letter)
+                    state.copy(
+                        letterText = intent.Letter,
+                    )
                 } else {
                     state
                 }
@@ -76,6 +84,20 @@ class CreateBoxLetterViewModel @Inject constructor(
         }
         subscribeStateIntent<CreateBoxLetterIntent.GetEnvelope> { state, intent ->
             state.copy(envelopeList = intent.envelopeList)
+        }
+    }
+
+    fun initLetter() {
+        viewModelScope.launch {
+            val createBox = getCreateBoxUseCase.getCreatedBox()
+            setState {
+                it.copy(
+                    letterText = createBox.letterContent ?: "",
+                    previousLetterText = createBox.letterContent ?: "",
+                    envelopeId = createBox.envelopeId ?: 1,
+                    previousEnvelopeId = createBox.envelopeId ?: 1,
+                )
+            }
         }
     }
 }

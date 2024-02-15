@@ -26,12 +26,17 @@ data class PhotoItem(
 
 data class CreateBoxAddPhotoState(
     val photoItem: PhotoItem,
+    val previousPhotoItem: PhotoItem,
 ) : UiState {
+    val changed: Boolean get() = photoItem != previousPhotoItem
     val isSavable: Boolean = photoItem.imageUri != null && photoItem.contentDescription != null
 }
 
 sealed interface CreateBoxAddPhotoEffect : SideEffect {
-    data object CloseBottomSheet : CreateBoxAddPhotoEffect
+    data class CloseBottomSheet(
+        val changed: Boolean
+    ) : CreateBoxAddPhotoEffect
+
     data class SavePhotoItem(
         val photoItem: PhotoItem
     ) : CreateBoxAddPhotoEffect

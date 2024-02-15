@@ -47,7 +47,7 @@ import kotlinx.coroutines.flow.map
 fun CreateBoxStickerScreen(
     stickerIndex: Int,
     selectedSticker: SelectedSticker,
-    closeBottomSheet: () -> Unit,
+    closeBottomSheet: (Boolean) -> Unit,
     onSaveSticker: (Sticker?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateBoxStickerViewModel = hiltViewModel()

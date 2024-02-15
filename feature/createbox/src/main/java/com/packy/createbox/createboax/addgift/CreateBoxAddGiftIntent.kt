@@ -7,22 +7,27 @@ import com.packy.mvi.mvi.UiState
 
 sealed interface CreateBoxAddGiftIntent : MviIntent {
     data object OnCloseClick : CreateBoxAddGiftIntent
-    data object OnResetGiftClick: CreateBoxAddGiftIntent
+    data object OnResetGiftClick : CreateBoxAddGiftIntent
     data object OnSaveClick : CreateBoxAddGiftIntent
     data object OnCancelImageClick : CreateBoxAddGiftIntent
 
     data class ChangeImageUri(
-        val imageUri: Uri?
+        val imageUri: Uri?,
     ) : CreateBoxAddGiftIntent
 }
 
 data class CreateBoxAddGiftState(
-    val imageUri: Uri?
+    val imageUri: Uri?,
+    val previousImageUri: Uri?,
+    val changed: Boolean = false
 ) : UiState
 
 sealed interface CreateBoxAddGiftEffect : SideEffect {
-    data object CloseBottomSheet : CreateBoxAddGiftEffect
+    data class CloseBottomSheet(
+        val changed: Boolean
+    ) : CreateBoxAddGiftEffect
+
     data class SavePhotoItem(
-        val imageUri: Uri?
+        val imageUri: Uri?,
     ) : CreateBoxAddGiftEffect
 }

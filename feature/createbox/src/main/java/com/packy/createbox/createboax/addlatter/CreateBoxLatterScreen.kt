@@ -59,7 +59,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun CreateBoxLetterScreen(
     modifier: Modifier = Modifier,
-    closeBottomSheet: () -> Unit,
+    closeBottomSheet: (Boolean) -> Unit,
     saveLetter: (Int, String, String) -> Unit,
     viewModel: CreateBoxLetterViewModel = hiltViewModel()
 ) {
@@ -68,15 +68,16 @@ fun CreateBoxLetterScreen(
     val scope = rememberCoroutineScope()
     var snackBarVisible: Boolean = false
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(viewModel) {
         viewModel.getLetterEnvelope()
+        viewModel.initLetter()
     }
 
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                CreateBoxLetterEffect.CloseBottomSheet -> {
-                    closeBottomSheet()
+                is CreateBoxLetterEffect.CloseBottomSheet -> {
+                    closeBottomSheet(effect.changed)
                 }
 
                 is CreateBoxLetterEffect.SaveLetter -> {

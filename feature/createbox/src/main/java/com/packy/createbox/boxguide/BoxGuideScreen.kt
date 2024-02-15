@@ -100,6 +100,7 @@ fun BoxGuideScreen(
                     viewModel.musicStop()
                     navController.navigate(CreateBoxRoute.BOX_ADD_TITLE)
                 }
+
                 is BoxGuideEffect.ShowBottomSheet -> {
                     bottomSheetRoute = effect.boxGuideBottomSheetRoute
                     showBottomSheet = true
@@ -293,23 +294,27 @@ fun BoxGuideScreen(
                 BottomSheetNav(
                     uiState = uiState,
                     bottomSheetRoute = bottomSheetRoute,
-                    closeBottomSheetDialog = {
-                        bottomSheetCloseDialog = PackyDialogInfo(
-                            title = Strings.CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_TITLE,
-                            subTitle = Strings.CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_DESCRIPTION,
-                            dismiss = Strings.CONFIRM,
-                            confirm = Strings.CANCEL,
-                            onDismiss = {
-                                bottomSheetCloseDialog = null
-                                showBottomSheet = false
-                            },
-                            onConfirm = {
-                                bottomSheetCloseDialog = null
-                            },
-                            backHandler = {
-                                bottomSheetCloseDialog = null
-                            }
-                        )
+                    closeBottomSheetDialog = { shouldShowDialog ->
+                        if (shouldShowDialog) {
+                            bottomSheetCloseDialog = PackyDialogInfo(
+                                title = Strings.CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_TITLE,
+                                subTitle = Strings.CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_DESCRIPTION,
+                                dismiss = Strings.CONFIRM,
+                                confirm = Strings.CANCEL,
+                                onDismiss = {
+                                    bottomSheetCloseDialog = null
+                                    showBottomSheet = false
+                                },
+                                onConfirm = {
+                                    bottomSheetCloseDialog = null
+                                },
+                                backHandler = {
+                                    bottomSheetCloseDialog = null
+                                }
+                            )
+                        } else {
+                            showBottomSheet = false
+                        }
                     },
                     savePhoto = { uri, description ->
                         viewModel.emitIntent(
@@ -511,7 +516,7 @@ private fun BottomSheetNav(
     uiState: BoxGuideState,
     modifier: Modifier = Modifier,
     bottomSheetRoute: BoxGuideBottomSheetRoute,
-    closeBottomSheetDialog: () -> Unit,
+    closeBottomSheetDialog: (Boolean) -> Unit,
     closeBottomSheet: () -> Unit,
     savePhoto: (Uri, String) -> Unit,
     saveLetter: (Int, String, String) -> Unit,
@@ -580,7 +585,7 @@ private fun BottomSheetNav(
         )
 
         BoxGuideBottomSheetRoute.EMPTY -> {
-            closeBottomSheetDialog()
+            closeBottomSheetDialog(false)
         }
     }
 }

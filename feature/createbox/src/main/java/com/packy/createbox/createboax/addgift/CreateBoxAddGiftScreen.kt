@@ -51,7 +51,7 @@ import com.packy.feature.core.R
 @Composable
 fun CreateBoxAddGiftScreen(
     modifier: Modifier = Modifier,
-    closeBottomSheet: () -> Unit,
+    closeBottomSheet: (Boolean) -> Unit,
     saveGift: (Uri?) -> Unit,
     viewModel: CreateBoxAddGiftViewModel = hiltViewModel()
 ) {
@@ -65,8 +65,8 @@ fun CreateBoxAddGiftScreen(
         viewModel.initPhotoItem()
         viewModel.effect.collect { effect ->
             when (effect) {
-                CreateBoxAddGiftEffect.CloseBottomSheet -> {
-                    closeBottomSheet()
+                is CreateBoxAddGiftEffect.CloseBottomSheet -> {
+                    closeBottomSheet(effect.changed)
                 }
 
                 is CreateBoxAddGiftEffect.SavePhotoItem -> {

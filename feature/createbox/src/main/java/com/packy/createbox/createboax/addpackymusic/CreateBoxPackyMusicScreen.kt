@@ -50,7 +50,7 @@ import com.packy.mvi.ext.emitMviIntent
 fun CreateBoxPackyMusicScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    closeBottomSheet: () -> Unit,
+    closeBottomSheet: (Boolean) -> Unit,
     saveMusic: (String) -> Unit,
     viewModel: CreateBoxPackyMusicViewModel = hiltViewModel()
 ) {
@@ -70,7 +70,7 @@ fun CreateBoxPackyMusicScreen(
     LaunchedEffect(null) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                CreateBoxPackyMusicEffect.CloseBottomSheet -> closeBottomSheet()
+                CreateBoxPackyMusicEffect.CloseBottomSheet -> closeBottomSheet(false)
                 is CreateBoxPackyMusicEffect.SaveMusic -> {
                     saveMusic(effect.youtubeMusic)
                     navController.popBackStack(

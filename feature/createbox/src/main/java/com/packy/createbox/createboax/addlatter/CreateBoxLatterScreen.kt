@@ -152,9 +152,10 @@ fun CreateBoxLetterScreen(
                 LazyRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(78.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        .height(96.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
+                    item { Spacer(8.dp) }
                     items(uiState.envelopeList.size) { index ->
                         Envelope(
                             isSelected = uiState.envelopeId == uiState.envelopeList[index].id,
@@ -162,12 +163,14 @@ fun CreateBoxLetterScreen(
                             onClick = viewModel::emitIntent
                         )
                     }
+                    item { Spacer(8.dp) }
                 }
                 Spacer(1f)
                 PackyButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(48.dp),
+                        .height(48.dp)
+                        .padding(horizontal = 24.dp),
                     style = buttonStyle.large.black,
                     text = Strings.SAVE,
                     enabled = uiState.letterText.isNotEmpty()
@@ -188,7 +191,7 @@ private fun LetterForm(
     onValueChange: emitMviIntent<CreateBoxLetterIntent>,
 ) {
     Box(
-        modifier= modifier
+        modifier = modifier
     ) {
         PackyTextField(
             value = text,
@@ -198,7 +201,10 @@ private fun LetterForm(
                 .height(300.dp)
                 .border(
                     width = 4.dp,
-                    color = envelope?.letter?.borderColorCode.colorCodeToColor(PackyTheme.color.gray200),
+                    color = envelope?.letter?.borderColorCode.colorCodeToColor(
+                        fallbackColor = PackyTheme.color.gray200,
+                        alpha = (envelope?.letter?.opacity?.times(0.01f)) ?: 0f
+                    ),
                     shape = RoundedCornerShape(16.dp)
                 ),
             textFieldColor = PackyTheme.color.gray100,
@@ -233,7 +239,10 @@ private fun Envelope(
     } else {
         0.dp
     }
-    val borderColor = envelope.envelope.borderColorCode.colorCodeToColor(PackyTheme.color.gray900)
+    val borderColor = envelope.envelope.borderColorCode.colorCodeToColor(
+        fallbackColor = PackyTheme.color.gray900,
+        alpha = (envelope.envelope.opacity.times(0.01f))
+    )
     Surface(
         modifier = modifier
             .height(96.dp)

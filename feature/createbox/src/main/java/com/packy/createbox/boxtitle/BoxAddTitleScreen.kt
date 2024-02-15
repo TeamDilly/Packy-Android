@@ -54,7 +54,7 @@ fun BoxAddTitleScreen(
                     keyboardController?.hide()
                     if (effect.showMotion) {
                         navController.navigate(CreateBoxRoute.getBoxShareMotionRoute(effect.boxId))
-                    }else{
+                    } else {
                         navController.navigate(CreateBoxRoute.BOX_SHARE)
                     }
                 }
@@ -110,6 +110,7 @@ fun BoxAddTitleScreen(
                 onValueChange = {
                     viewModel.emitIntent(BoxAddTitleIntent.OnTitleChange(it))
                 },
+                maxLines = 1
             )
             Spacer(1f)
             PackyButton(

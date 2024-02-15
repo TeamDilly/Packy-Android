@@ -140,7 +140,8 @@ fun SettingsScreen(
             SettingsDivier()
             SettingItem(
                 title = Strings.LOGOUT,
-                onClick = { viewModel.emitIntentThrottle(SettingsIntent.OnLogoutClick) }
+                onClick = { viewModel.emitIntentThrottle(SettingsIntent.OnLogoutClick) },
+                iconVisible = false
             )
         }
     }
@@ -191,6 +192,7 @@ private fun SettingItem(
     modifier: Modifier = Modifier,
     title: String,
     onClick: (() -> Unit)?,
+    iconVisible: Boolean = true
 ) {
     Row(
         modifier = modifier
@@ -212,7 +214,7 @@ private fun SettingItem(
             overflow = TextOverflow.Ellipsis
         )
         Spacer(1f)
-        if (onClick != null) {
+        if (onClick != null && iconVisible) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.arrow_right),
                 contentDescription = null,

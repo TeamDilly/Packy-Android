@@ -76,10 +76,11 @@ class LoginViewModel @Inject constructor(
                     else -> {
                         viewModelScope.launch {
                             val signUp = signUpUseCase.getUserSignUpInfo().first().copy(
-                                token = token
+                                token = token,
+                                nickname = nikname ?: ""
                             )
                             signUpUseCase.setUserSignUpInfo(
-                                signUp
+                                signUp,
                             )
                             sendEffect(LoginEffect.KakaoLoginSuccessNotUser(nikname))
                         }

@@ -1,6 +1,10 @@
 package com.example.giftbox.boxdetailopen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -97,10 +101,13 @@ fun GiftBoxDetailOpenScreen(
     }
 
     BackHandler(true) {
-        if(showBackArrow){
-            navController.popBackStack()
-        }else{
-            closeGiftBox()
+        when {
+            showDialog != ShowDetail.NONE -> viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog)
+            pagerState.currentPage != 0 -> scope.launch {
+                pagerState.animateScrollToPage(0)
+            }
+            showBackArrow -> navController.popBackStack()
+            else -> closeGiftBox()
         }
     }
 
@@ -141,90 +148,100 @@ fun GiftBoxDetailOpenScreen(
                     }
                 }
             }
-            when (showDialog) {
-                ShowDetail.PHOTO -> Dialog(
-                    modifier = Modifier.padding(horizontal = 38.dp),
-                    click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
-                ) {
-                    Column(
+            AnimatedVisibility(
+                visible = showDialog != ShowDetail.NONE,
+                enter = fadeIn(
+                    animationSpec = tween(durationMillis = 400)
+                ),
+                exit = fadeOut(
+                    animationSpec = tween(durationMillis = 400)
+                )
+            ) {
+                when (showDialog) {
+                    ShowDetail.PHOTO -> Dialog(
+                        modifier = Modifier.padding(horizontal = 38.dp),
+                        click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .background(PackyTheme.color.white)
+                                .padding(16.dp)
+                        ) {
+                            GlideImage(
+                                modifier = Modifier
+                                    .aspectRatio(1f / 1f),
+                                model = uiState.giftBox?.photos?.firstOrNull()?.photoUrl,
+                                contentDescription = "photo",
+                                contentScale = ContentScale.Crop
+                            )
+                            Spacer(height = 16.dp)
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        vertical = 12.dp,
+                                        horizontal = 40.dp
+                                    ),
+                                text = uiState.giftBox?.photos?.firstOrNull()?.description ?: "",
+                                style = PackyTheme.typography.body04.copy(
+                                    textAlign = TextAlign.Center
+                                ),
+                                color = PackyTheme.color.gray900
+                            )
+                        }
+                    }
+
+                    ShowDetail.LETTER -> Dialog(
                         modifier = Modifier
-                            .background(PackyTheme.color.white)
-                            .padding(16.dp)
+                            .padding(horizontal = 24.dp),
+                        click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
+                    ) {
+                        Box(modifier = Modifier
+                            .background(
+                                color = PackyTheme.color.white,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .border(
+                                width = 6.dp,
+                                color = uiState.giftBox?.envelope?.borderColorCode
+                                    ?.let { Color(android.graphics.Color.parseColor("#$it")) }
+                                    ?: PackyTheme.color.gray200,
+                                shape = RoundedCornerShape(16.dp)
+
+                            )
+                            .aspectRatio(1f / 1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(20.dp),
+                                text = uiState.giftBox?.letterContent ?: "",
+                                style = PackyTheme.typography.body04.copy(
+                                    textAlign = TextAlign.Center
+                                ),
+                                color = PackyTheme.color.gray900
+                            )
+                        }
+                    }
+
+                    ShowDetail.GIFT -> Dialog(
+                        modifier = Modifier
+                            .padding(
+                                horizontal = 55.dp,
+                                vertical = 140.dp
+                            ),
+                        click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
                     ) {
                         GlideImage(
-                            modifier = Modifier
-                                .aspectRatio(1f / 1f),
-                            model = uiState.giftBox?.photos?.firstOrNull()?.photoUrl,
-                            contentDescription = "photo",
-                            contentScale = ContentScale.Crop
-                        )
-                        Spacer(height = 16.dp)
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    vertical = 12.dp,
-                                    horizontal = 40.dp
-                                ),
-                            text = uiState.giftBox?.photos?.firstOrNull()?.description ?: "",
-                            style = PackyTheme.typography.body04.copy(
-                                textAlign = TextAlign.Center
-                            ),
-                            color = PackyTheme.color.gray900
+                            modifier = Modifier,
+                            model = uiState.giftBox?.gift?.url,
+                            contentDescription = "gift",
+                            contentScale = ContentScale.Fit
                         )
                     }
+
+                    ShowDetail.NONE -> Unit
                 }
-
-                ShowDetail.LETTER -> Dialog(
-                    modifier = Modifier
-                        .padding(horizontal = 24.dp),
-                    click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
-                ) {
-                    Box(modifier = Modifier
-                        .background(
-                            color = PackyTheme.color.white,
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                        .border(
-                            width = 6.dp,
-                            color = uiState.giftBox?.envelope?.borderColorCode
-                                ?.let { Color(android.graphics.Color.parseColor("#$it")) }
-                                ?: PackyTheme.color.gray200,
-                            shape = RoundedCornerShape(16.dp)
-
-                        )
-                        .aspectRatio(1f / 1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .padding(20.dp),
-                            text = uiState.giftBox?.letterContent ?: "",
-                            style = PackyTheme.typography.body04.copy(
-                                textAlign = TextAlign.Center
-                            ),
-                            color = PackyTheme.color.gray900
-                        )
-                    }
-                }
-
-                ShowDetail.GIFT -> Dialog(
-                    modifier = Modifier
-                        .padding(
-                            horizontal = 55.dp,
-                            vertical = 140.dp
-                        ),
-                    click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
-                ) {
-                    GlideImage(
-                        modifier = Modifier,
-                        model = uiState.giftBox?.gift?.url,
-                        contentDescription = "gift",
-                        contentScale = ContentScale.Fit
-                    )
-                }
-
-                ShowDetail.NONE -> Unit
             }
         }
     }

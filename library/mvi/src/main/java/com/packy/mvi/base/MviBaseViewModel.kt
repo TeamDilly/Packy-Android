@@ -75,7 +75,7 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
         }
     }
 
-    fun emitIntentThrottle(intent: Intent, throttle: Long = 300) {
+    fun emitIntentThrottle(intent: Intent, throttle: Long = 400) {
         viewModelScope.launch {
             if (isIntentProcessing.contains(MviIntentKey(intent::class.java))) return@launch
             isIntentProcessing.add(MviIntentKey(intent::class.java))

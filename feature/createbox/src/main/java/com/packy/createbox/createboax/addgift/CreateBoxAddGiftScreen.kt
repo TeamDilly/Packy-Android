@@ -138,6 +138,7 @@ fun CreateBoxAddGiftScreen(
                 .padding(horizontal = 24.dp),
             style = buttonStyle.large.black,
             text = Strings.SAVE,
+            enabled = uiState.isSavable
         ) {
             viewModel.emitIntentThrottle(CreateBoxAddGiftIntent.OnSaveClick)
         }

@@ -110,7 +110,8 @@ fun BoxAddTitleScreen(
                 onValueChange = {
                     viewModel.emitIntent(BoxAddTitleIntent.OnTitleChange(it))
                 },
-                maxLines = 1
+                maxLines = 1,
+                maxValues = 12,
             )
             Spacer(1f)
             PackyButton(

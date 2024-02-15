@@ -120,7 +120,7 @@ fun BoxChoiceScreen(
                 ),
                 color = PackyTheme.color.gray900
             )
-            Spacer(height = 48.dp)
+            Spacer(height = 60.dp)
             GlideImage(
                 modifier = Modifier
                     .width(232.dp)

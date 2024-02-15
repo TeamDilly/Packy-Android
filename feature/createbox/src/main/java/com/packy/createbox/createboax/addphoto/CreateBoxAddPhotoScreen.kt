@@ -214,8 +214,8 @@ private fun PhotoFrame(
                         tint = PackyTheme.color.gray900,
                     )
                 }
-
             }
+            Spacer(height = 16.dp)
             PackyTextField(
                 modifier = Modifier,
                 value = imageItem.contentDescription ?: "",

@@ -145,7 +145,7 @@ fun CreateBoxPackyMusicScreen(
             PackyButton(
                 modifier = Modifier.padding(horizontal = 24.dp),
                 style = buttonStyle.large.black,
-                text = Strings.SAVE
+                text = Strings.SELECT
             ) {
                 viewModel.emitIntent(CreateBoxPackyMusicIntent.OnSaveClick)
             }

@@ -20,7 +20,9 @@ data class CreateBoxAddGiftState(
     val imageUri: Uri?,
     val previousImageUri: Uri?,
     val changed: Boolean = false
-) : UiState
+) : UiState{
+    val isSavable get() = imageUri != null
+}
 
 sealed interface CreateBoxAddGiftEffect : SideEffect {
     data class CloseBottomSheet(

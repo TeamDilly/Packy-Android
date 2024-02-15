@@ -17,6 +17,7 @@ object Strings {
     const val KAKAO = "카카오"
     const val TO = "To."
     const val FROM = "From."
+    const val SELECT = "선택"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
@@ -89,18 +90,18 @@ object Strings {
     const val CHOOSE_YOUR_MUSIC_TITLE = "직접 음악 선택하기"
     const val CHOOSE_YOUR_MUSIC_DESCRIPTION = "유튜브 링크로 음악을 넣어주세요"
     const val CHOOSE_PACKY_MUSIC_TITLE = "패키의 음악으로 담기"
-    const val CHOOSE_PACKY_MUSIC_DESCRIPTION = "다양한 테마의 음악들을 준비했어요!"
+    const val CHOOSE_PACKY_MUSIC_DESCRIPTION = "기념일에 어울리는 음악을 준비했어요"
 
-    const val CREATE_BOX_ADD_YOUR_MUSIC_TITLE = "들려주고 싶은 음악"
-    const val CREATE_BOX_ADD_YOUR_MUSIC_DESCRIPTION = "유튜브 영상 url을 넣어주세요"
+    const val CREATE_BOX_ADD_YOUR_MUSIC_TITLE = "직접 음악 영상 담기"
+    const val CREATE_BOX_ADD_YOUR_MUSIC_DESCRIPTION = "담고 싶은 음악의 유튜브 영상 링크를 붙여 넣어주세요"
     const val CREATE_BOX_ADD_MUSIC_PLACE_HOLDER = "링크를 붙여주세요"
     const val CREATE_BOX_ADD_MUSIC_FAIL_URL = "올바른 url을 입력해주세요"
 
-    const val CREATE_BOX_ADD_PACKY_MUSIC_TITLE = "패키가 준비한 음악"
-    const val CREATE_BOX_ADD_PACKY_MUSIC_DESCRIPTION = "음악을 선택해주세요"
+    const val CREATE_BOX_ADD_PACKY_MUSIC_TITLE = "패키가 준비한 음악 담기"
+    const val CREATE_BOX_ADD_PACKY_MUSIC_DESCRIPTION = "특별한 날을 더욱 기억에 남게 할 음악을 준비했어요"
 
-    const val CREATE_BOX_ADD_PHOTO_TITLE = "추억을 담은 사진"
-    const val CREATE_BOX_ADD_PHOTO_DESCRIPTION = "추억을 담은 사진"
+    const val CREATE_BOX_ADD_PHOTO_TITLE = "추억 사진 담기"
+    const val CREATE_BOX_ADD_PHOTO_DESCRIPTION = "한 장의 사진으로 소중한 추억을 나눠요 \n사진과 함께 그 날의 이야기도 적어볼까요?"
     const val CREATE_BOX_ADD_PHOTO_PLACEHOLDER = "사진 속 추억을 적어주세요"
 
     const val CREATE_BOX_ADD_LETTER_TITLE = "편지쓰기"

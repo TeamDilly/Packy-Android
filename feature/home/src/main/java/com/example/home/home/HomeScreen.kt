@@ -175,7 +175,6 @@ fun HomeScreen(
                             shape = RoundedCornerShape(24.dp)
                         ),
                 ) {
-                    Spacer(height = 24.dp)
                     HomeGiftBoxes(
                         giftBoxes = giftBoxes,
                         onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnMoreBoxClick) },

@@ -217,7 +217,7 @@ private fun MusicHasTag(packMusic: PackyMusic) {
     ) {
         repeat(packMusic.hashTag.size) {
             Text(
-                text = packMusic.hashTag[it],
+                text = "#" + packMusic.hashTag[it],
                 style = PackyTheme.typography.body04.copy(
                     textAlign = TextAlign.Center
                 ),

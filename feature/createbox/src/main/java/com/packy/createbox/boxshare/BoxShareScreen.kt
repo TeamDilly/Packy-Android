@@ -41,6 +41,7 @@ import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
+import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
@@ -64,6 +65,12 @@ fun BoxShareScreen(
     val kakaoShare = KakaoShare()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+
+    val loading by remember { derivedStateOf { uiState.isLoading } }
+    if (loading) {
+        PackyProgressDialog()
+    }
+
     LaunchedEffect(
         context,
         viewModel

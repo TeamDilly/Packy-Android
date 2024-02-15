@@ -33,16 +33,35 @@ class BoxShareViewModel @Inject constructor(
 
     private fun createBox(): suspend (BoxShareIntent.ShareKakao) -> Unit =
         {
-            val createBox = createBoxUseCase.getCreatedBox()
-
-            val box = createBoxUseCase.createBox(createBox)
-            if (box is Resource.Success) {
+            if (currentState.createdBox == null) {
+                val createBox = createBoxUseCase.getCreatedBox()
+                setState {
+                    it.copy(isLoading = true)
+                }
+                val box = createBoxUseCase.createBox(createBox)
+                setState {
+                    currentState.copy(
+                        createdBox = box.data,
+                        isLoading = false
+                    )
+                }
+                if (box is Resource.Success) {
+                    val boxDesign = boxDesignUseCase.getBoxDesignLocal().first()
+                    val kakaoCustomFeed = KakaoCustomFeed(
+                        sender = createBox.senderName ?: "",
+                        receiver = createBox.receiverName ?: "",
+                        imageUrl = boxDesign?.boxNormal ?: "",
+                        boxId = box.data.id
+                    )
+                    sendEffect(BoxShareEffect.KakaoShare(kakaoCustomFeed))
+                }
+            } else {
                 val boxDesign = boxDesignUseCase.getBoxDesignLocal().first()
                 val kakaoCustomFeed = KakaoCustomFeed(
-                    sender = createBox.senderName ?: "",
-                    receiver = createBox.receiverName ?: "",
+                    sender = createBoxUseCase.getCreatedBox().senderName ?: "",
+                    receiver = createBoxUseCase.getCreatedBox().receiverName ?: "",
                     imageUrl = boxDesign?.boxNormal ?: "",
-                    boxId = box.data.id
+                    boxId = currentState.createdBox?.id ?: ""
                 )
                 sendEffect(BoxShareEffect.KakaoShare(kakaoCustomFeed))
             }
@@ -65,6 +84,7 @@ class BoxShareViewModel @Inject constructor(
             is Resource.Success -> {
                 setState(currentState.copy(shared = true))
             }
+
             is Resource.NetworkError,
             is Resource.ApiError,
             is Resource.Loading,

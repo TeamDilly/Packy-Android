@@ -142,7 +142,8 @@ fun MyBoxScreen(
                         moveToCreateBox = moveToCreateBox,
                         moveToBoxDetail = moveToBoxDetail,
                         emptyText = Strings.HOME_MY_BOX_EMPTY_RECEIVE_BOX,
-                        nameTag = Strings.FROM
+                        nameTag = Strings.FROM,
+                        showCreateBoxButton = false
                     )
                 }
             }
@@ -157,7 +158,8 @@ private fun MyBoxList(
     moveToCreateBox: () -> Unit,
     moveToBoxDetail: (Long) -> Unit,
     emptyText: String,
-    nameTag: String
+    nameTag: String,
+    showCreateBoxButton: Boolean = true,
 ) {
     val state: LazyGridState = rememberLazyGridState()
 
@@ -165,7 +167,8 @@ private fun MyBoxList(
         EmptyMyBoxes(
             modifier = modifier,
             emptyText = emptyText,
-            moveToCreateBox = moveToCreateBox
+            moveToCreateBox = moveToCreateBox,
+            showCreateBoxButton = showCreateBoxButton
         )
     } else {
         LazyVerticalGrid(
@@ -262,7 +265,8 @@ private fun MyBoxItem(
 private fun EmptyMyBoxes(
     modifier: Modifier,
     emptyText: String,
-    moveToCreateBox: () -> Unit
+    moveToCreateBox: () -> Unit,
+    showCreateBoxButton: Boolean = true
 ) {
     Column(
         modifier = modifier
@@ -281,33 +285,35 @@ private fun EmptyMyBoxes(
             style = PackyTheme.typography.body02,
             color = PackyTheme.color.gray600
         )
-        Spacer(height = 24.dp)
-        Row(
-            modifier = Modifier
-                .background(
-                    color = PackyTheme.color.purple500,
-                    shape = CircleShape
+        if (showCreateBoxButton) {
+            Spacer(height = 24.dp)
+            Row(
+                modifier = Modifier
+                    .background(
+                        color = PackyTheme.color.purple500,
+                        shape = CircleShape
+                    )
+                    .padding(
+                        horizontal = 24.dp,
+                        vertical = 17.dp
+                    )
+                    .clickableWithoutRipple(onClick = moveToCreateBox),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = Strings.HOME_CREATE_BUTTON,
+                    style = PackyTheme.typography.body04,
+                    color = PackyTheme.color.white
                 )
-                .padding(
-                    horizontal = 24.dp,
-                    vertical = 17.dp
+                Spacer(width = 8.dp)
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    painter = painterResource(id = R.drawable.arrow_right),
+                    contentDescription = "Add",
+                    tint = PackyTheme.color.white
                 )
-                .clickableWithoutRipple(onClick = moveToCreateBox),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = Strings.HOME_CREATE_BUTTON,
-                style = PackyTheme.typography.body04,
-                color = PackyTheme.color.white
-            )
-            Spacer(width = 8.dp)
-            Icon(
-                modifier = Modifier.size(16.dp),
-                painter = painterResource(id = R.drawable.arrow_right),
-                contentDescription = "Add",
-                tint = PackyTheme.color.white
-            )
+            }
         }
     }
 }

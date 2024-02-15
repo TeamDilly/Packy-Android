@@ -35,7 +35,7 @@ fun YoutubePlayer(
     videoId: String,
     youtubeState: YoutubeState,
     stateListener: (YoutubeState) -> Unit = {},
-    autoPlay: Boolean = true,
+    autoPlay: Boolean = false,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 ) {
     var player by remember {
@@ -72,10 +72,17 @@ fun YoutubePlayer(
                 youTubePlayerListener = object : AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         super.onReady(youTubePlayer)
-                        youTubePlayer.cueVideo(
-                            videoId,
-                            0f
-                        )
+                        if(autoPlay) {
+                            youTubePlayer.loadVideo(
+                                videoId,
+                                0f
+                            )
+                        } else {
+                            youTubePlayer.cueVideo(
+                                videoId,
+                                0f
+                            )
+                        }
                         player = youTubePlayer
                         youTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
                             override fun onStateChange(

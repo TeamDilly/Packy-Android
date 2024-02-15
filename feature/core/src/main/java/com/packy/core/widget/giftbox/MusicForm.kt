@@ -21,6 +21,7 @@ fun MusicForm(
     modifier: Modifier = Modifier,
     youtubeUri: String,
     youtubeState: YoutubeState,
+    autoPlay: Boolean = true,
     clearMusic: (() -> Unit)? = null
 ) {
     val youtubeVideoId = extractYouTubeVideoId(youtubeUri)
@@ -33,6 +34,7 @@ fun MusicForm(
                     .padding(4.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 videoId = youtubeVideoId,
+                autoPlay = autoPlay,
                 youtubeState = youtubeState,
             )
             clearMusic?.let {

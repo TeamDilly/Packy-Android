@@ -261,6 +261,7 @@ fun BoxGuideScreen(
                                         )
                                         .aspectRatio(16f / 9f)
                                         .fillMaxWidth(),
+                                    autoPlay = false,
                                     youtubeUri = youtubeUri,
                                     youtubeState = uiState.youtubeState,
                                     clearMusic = {

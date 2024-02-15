@@ -181,7 +181,7 @@ class BoxGuideViewModel @Inject constructor(
     private fun saveYoutubeMusic(): suspend (BoxGuideState, BoxGuideIntent.SaveMusic) -> BoxGuideState =
         { state, intent ->
             createBoxUseCase.youtubeUrl(intent.youtubeUrl)
-            state.copy(youtubeUrl = intent.youtubeUrl, youtubeState = YoutubeState.PLAYING)
+            state.copy(youtubeUrl = intent.youtubeUrl)
         }
 
     private fun saveLetterBoxGuideState(): suspend (BoxGuideState, BoxGuideIntent.SaveLetter) -> BoxGuideState =

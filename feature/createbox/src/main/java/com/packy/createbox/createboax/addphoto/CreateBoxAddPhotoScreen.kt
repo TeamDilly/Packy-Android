@@ -141,7 +141,9 @@ private fun PhotoFrame(
 ) {
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            getPhotoUri(CreateBoxAddPhotoIntent.ChangeImageUri(imageUri = uri))
+            if (uri != null) {
+                getPhotoUri(CreateBoxAddPhotoIntent.ChangeImageUri(imageUri = uri))
+            }
         }
     val context = LocalContext.current
 

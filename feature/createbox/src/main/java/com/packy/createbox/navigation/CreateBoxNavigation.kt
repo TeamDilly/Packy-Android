@@ -105,7 +105,8 @@ fun NavGraphBuilder.createBoxNavGraph(
 
 
         asFadeInComposable(
-            route = CreateBoxRoute.BOX_SHARE_FADE_IN
+            route = CreateBoxRoute.BOX_SHARE_FADE_IN,
+            enterDuration = 700
         ) {
             BoxShareScreen(
                 navController = navController,

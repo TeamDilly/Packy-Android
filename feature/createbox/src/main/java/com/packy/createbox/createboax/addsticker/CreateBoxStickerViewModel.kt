@@ -26,13 +26,22 @@ class CreateBoxStickerViewModel @Inject constructor(
 
     override fun handleIntent() {
         subscribeStateIntent<CreateBoxStickerIntent.OnStickerClick> { state, intent ->
-            val currentSticker = state.selectedSticker?.get(state.currentIndex)
+            val selectedSticker = state.selectedSticker
             val newSticker = intent.sticker
-            val newSelectedSticker = if (currentSticker == newSticker) {
-                state.selectedSticker?.set(
-                    state.currentIndex,
+            val newSelectedSticker = if (selectedSticker?.isSelected(newSticker) == true) {
+                val selectedLocation = selectedSticker.isSelectedNumber(newSticker)
+                state.selectedSticker.set(
+                    selectedLocation ?: currentState.currentIndex,
                     null
                 )
+                if (selectedLocation != currentState.currentIndex) {
+                    state.selectedSticker.set(
+                        state.currentIndex,
+                        newSticker
+                    )
+                } else {
+                    state.selectedSticker
+                }
             } else {
                 state.selectedSticker?.set(
                     state.currentIndex,
@@ -41,9 +50,7 @@ class CreateBoxStickerViewModel @Inject constructor(
             }
             sendEffect(
                 CreateBoxStickerEffect.OnChangeSticker(
-                    sticker = currentState.selectedSticker?.get(
-                        currentState.currentIndex
-                    )
+                    selectedSticker = currentState.selectedSticker
                 )
             )
             state.copy(selectedSticker = newSelectedSticker)
@@ -52,9 +59,7 @@ class CreateBoxStickerViewModel @Inject constructor(
         subscribeIntent<CreateBoxStickerIntent.OnSaveClick> {
             sendEffect(
                 CreateBoxStickerEffect.OnSaveSticker(
-                    sticker = currentState.selectedSticker?.get(
-                        currentState.currentIndex
-                    )
+                    selectedSticker = currentState.selectedSticker
                 )
             )
         }

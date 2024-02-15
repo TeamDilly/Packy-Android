@@ -89,18 +89,18 @@ class BoxGuideViewModel @Inject constructor(
 
     private fun saveSticker(): suspend (BoxGuideState, BoxGuideIntent.SaveSticker) -> BoxGuideState =
         { state, intent ->
+            val selectedSticker = intent.selectedSticker
             createBoxUseCase.sticker(
-                id = intent.sticker?.id,
-                location = intent.index,
-                imageUri = intent.sticker?.imgUrl
+                id = selectedSticker.get(1)?.id,
+                location = 1,
+                imageUri = selectedSticker.get(1)?.imgUrl
             )
-
-            when (intent.index) {
-                1 -> state.copy(selectedSticker = state.selectedSticker.copy(sticker1 = intent.sticker))
-                2 -> state.copy(selectedSticker = state.selectedSticker.copy(sticker2 = intent.sticker))
-                else -> state
-            }
-            state
+            createBoxUseCase.sticker(
+                id = selectedSticker.get(2)?.id,
+                location = 2,
+                imageUri = selectedSticker.get(2)?.imgUrl
+            )
+            state.copy(selectedSticker = selectedSticker)
         }
 
     suspend fun initUiState() {

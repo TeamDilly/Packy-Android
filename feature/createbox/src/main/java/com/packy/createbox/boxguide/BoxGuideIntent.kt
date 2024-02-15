@@ -30,8 +30,7 @@ sealed interface BoxGuideIntent : MviIntent {
     ) : BoxGuideIntent
 
     data class SaveSticker(
-        val index: Int,
-        val sticker: Sticker?
+        val selectedSticker: SelectedSticker,
     ) : BoxGuideIntent
 
     data class SaveGift(

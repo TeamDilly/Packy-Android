@@ -64,6 +64,7 @@ import com.packy.createbox.createboax.boxchange.CreateBoxChangeScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.domain.model.box.BoxDesign
+import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.domain.model.createbox.Sticker
 import com.packy.mvi.ext.emitMviIntent
 
@@ -347,12 +348,9 @@ fun BoxGuideScreen(
                         )
                         showBottomSheet = false
                     },
-                    onSaveSticker = { index, sticker ->
+                    onSaveSticker = { selectedSticker ->
                         viewModel.emitIntent(
-                            BoxGuideIntent.SaveSticker(
-                                index,
-                                sticker
-                            )
+                            BoxGuideIntent.SaveSticker(selectedSticker)
                         )
                         showBottomSheet = false
                     },
@@ -521,7 +519,7 @@ private fun BottomSheetNav(
     savePhoto: (Uri, String) -> Unit,
     saveLetter: (Int, String, String) -> Unit,
     saveMusic: (String) -> Unit,
-    onSaveSticker: (Int, Sticker?) -> Unit,
+    onSaveSticker: (SelectedSticker) -> Unit,
     saveGift: (Uri?) -> Unit,
     onSaveBox: (BoxDesign) -> Unit,
 ) {
@@ -558,11 +556,8 @@ private fun BottomSheetNav(
             stickerIndex = 1,
             selectedSticker = uiState.selectedSticker,
             closeBottomSheet = closeBottomSheetDialog,
-            onSaveSticker = {
-                onSaveSticker(
-                    1,
-                    it
-                )
+            onSaveSticker = { selectedSticker ->
+                onSaveSticker(selectedSticker)
             },
         )
 
@@ -570,11 +565,8 @@ private fun BottomSheetNav(
             stickerIndex = 2,
             selectedSticker = uiState.selectedSticker,
             closeBottomSheet = closeBottomSheetDialog,
-            onSaveSticker = {
-                onSaveSticker(
-                    2,
-                    it
-                )
+            onSaveSticker = { selectedSticker ->
+                onSaveSticker(selectedSticker)
             },
         )
 

@@ -48,7 +48,7 @@ fun CreateBoxStickerScreen(
     stickerIndex: Int,
     selectedSticker: SelectedSticker,
     closeBottomSheet: (Boolean) -> Unit,
-    onSaveSticker: (Sticker?) -> Unit,
+    onSaveSticker: (SelectedSticker) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateBoxStickerViewModel = hiltViewModel()
 ) {
@@ -70,11 +70,11 @@ fun CreateBoxStickerScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is CreateBoxStickerEffect.OnSaveSticker -> {
-                    onSaveSticker(effect.sticker)
+                    onSaveSticker(effect.selectedSticker ?: selectedSticker)
                 }
 
                 is CreateBoxStickerEffect.OnChangeSticker -> {
-                    onSaveSticker(effect.sticker)
+                    onSaveSticker(effect.selectedSticker ?: selectedSticker)
                 }
             }
         }

@@ -19,7 +19,8 @@ enum class ShowArchiveType(val title: String){
 }
 
 data class ArchiveState(
-    val showArchiveType: ShowArchiveType
+    val showArchiveType: ShowArchiveType,
+    val isLoading: Boolean = false
 ) : UiState
 
 sealed interface ArchiveEffect : SideEffect {}

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -114,9 +115,9 @@ fun HomeScreen(
     ) { innerPadding ->
         Column(
             modifier = modifier
+                .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(innerPadding)
-                .clickableWithoutRipple { viewModel.emitIntentThrottle(HomeIntent.OnCrateBoxClick) },
+                .padding(innerPadding),
         ) {
             Spacer(height = 16.dp)
             Column(
@@ -126,7 +127,8 @@ fun HomeScreen(
                     .background(
                         color = PackyTheme.color.gray900,
                         shape = RoundedCornerShape(16.dp)
-                    ),
+                    )
+                    .clickableWithoutRipple { viewModel.emitIntentThrottle(HomeIntent.OnCrateBoxClick) },
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(

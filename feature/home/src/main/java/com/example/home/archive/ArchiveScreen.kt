@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.designsystem.topbar.PackyTopBarPreview
 import com.packy.core.taps.PackyBoxTap
@@ -40,13 +42,19 @@ fun ArchiveScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    val loading by remember { derivedStateOf { uiState.isLoading } }
+    if (loading) {
+        PackyProgressDialog()
+    }
+
 
     Scaffold(
         topBar = {
             PackyTopBar.Builder()
                 .startTitle(ARCHIVE_TITLE)
                 .build()
-        }
+        },
+        contentWindowInsets = WindowInsets(0.dp)
     ) { innerPadding ->
         Column(
             modifier = modifier

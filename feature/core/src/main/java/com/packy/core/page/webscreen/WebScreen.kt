@@ -32,7 +32,6 @@ fun WebScreen(
     url: String,
     modifier: Modifier = Modifier
 ) {
-    println("LOGEE url : $url")
     var loadingProgress by remember {
         mutableStateOf(false)
     }

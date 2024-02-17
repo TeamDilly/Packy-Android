@@ -52,6 +52,7 @@ object Strings {
     const val HOME_MY_BOX_RECEIVE = "받은 선물박스"
 
     // mybox
+    const val MY_BOX_TITLE = "선물박스"
     const val HOME_MY_BOX_EMPTY_SEND_BOX = "아직 보낸 선물박스가 없어요"
     const val HOME_MY_BOX_EMPTY_RECEIVE_BOX = "아직 받은 선물박스가 없어요"
     const val HOME_MY_BOX_EMPTY_NUDGE = "패키의 선물박스로 마음을 나눠보아요"

@@ -56,6 +56,7 @@ import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.core.values.Strings.MY_BOX_TITLE
 import com.packy.domain.model.home.HomeBox
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
@@ -105,7 +106,13 @@ fun MyBoxScreen(
         }
     }
 
-    Scaffold { innerPadding ->
+    Scaffold(
+        topBar = {
+            PackyTopBar.Builder()
+                .startTitle(MY_BOX_TITLE)
+                .build()
+        }
+    ) { innerPadding ->
         Column(
             modifier = modifier
                 .fillMaxSize()

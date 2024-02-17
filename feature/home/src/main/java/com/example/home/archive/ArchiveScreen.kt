@@ -51,6 +51,7 @@ fun ArchiveScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
+                .background(PackyTheme.color.gray100)
                 .padding(innerPadding)
         ) {
             Spacer(modifier = Modifier.height(16.dp))

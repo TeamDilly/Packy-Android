@@ -122,7 +122,8 @@ fun GiftBoxDetailOpenScreen(
                 modifier = Modifier
                     .blur(if (showDialog != ShowDetail.NONE) 12.dp else 0.dp),
                 state = pagerState,
-                userScrollEnabled = uiState.hasGift
+                userScrollEnabled = uiState.hasGift,
+                beyondBoundsPageCount = 2
             ) {
                 when (it) {
                     0 -> GiftBoxColumn(
@@ -331,7 +332,7 @@ private fun GiftDetail(
                 model = giftImageUrl,
                 contentDescription = "gift_image",
                 alignment = Alignment.TopCenter,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.None,
             )
         }
     }

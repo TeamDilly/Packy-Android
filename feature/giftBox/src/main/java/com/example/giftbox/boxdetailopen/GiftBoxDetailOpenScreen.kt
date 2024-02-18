@@ -48,6 +48,7 @@ import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.giftbox.navigation.GiftBoxRoute
+import com.packy.common.authenticator.ext.colorCodeToColor
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.iconbutton.PackyCloseIconButton
@@ -204,9 +205,10 @@ fun GiftBoxDetailOpenScreen(
                             )
                             .border(
                                 width = 6.dp,
-                                color = uiState.giftBox?.envelope?.borderColorCode
-                                    ?.let { Color(android.graphics.Color.parseColor("#$it")) }
-                                    ?: PackyTheme.color.gray200,
+                                color = uiState.giftBox?.envelope?.borderColorCode.colorCodeToColor(
+                                    fallbackColor = PackyTheme.color.gray200,
+                                    alpha = uiState.giftBox?.envelope?.opacity?.toFloat() ?: 1f
+                                ),
                                 shape = RoundedCornerShape(16.dp)
 
                             )

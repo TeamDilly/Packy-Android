@@ -36,6 +36,12 @@ class ArchiveViewModel @Inject constructor(
         subscribeStateIntent<ArchiveIntent.OnArchiveTypeClick> { state, intent ->
             state.copy(showArchiveType = intent.type)
         }
+        subscribeStateIntent<ArchiveIntent.OnArchiveClick> { state, intent ->
+            state.copy(showArchive = intent.showArchive)
+        }
+        subscribeStateIntent<ArchiveIntent.CloseArchive> { state, _ ->
+            state.copy(showArchive = ShowArchive.NonType)
+        }
     }
 
     fun listInit(){

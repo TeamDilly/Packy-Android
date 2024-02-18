@@ -1,13 +1,14 @@
 package com.packy.data.model.archive
 
 import com.packy.domain.model.archive.ArchiveLetter
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ArchiveLetterDto(
-    val envelope: ArchiveEnvelopeDto,
-    val id: Int,
-    val letterContent: String
+    @SerialName("envelope") val envelope: ArchiveEnvelopeDto,
+    @SerialName("id") val id: Int,
+    @SerialName("letterContent") val letterContent: String
 ){
     fun toEntity(): ArchiveLetter = ArchiveLetter(
         letterContent = letterContent,
@@ -19,8 +20,8 @@ data class ArchiveLetterDto(
 
 @Serializable
 data class ArchiveEnvelopeDto(
-    val borderColorCode: String,
-    val imgUrl: String,
-    val opacity: Int
+    @SerialName("borderColorCode") val borderColorCode: String,
+    @SerialName("imgUrl") val imgUrl: String,
+    @SerialName("opacity") val opacity: Int
 )
 

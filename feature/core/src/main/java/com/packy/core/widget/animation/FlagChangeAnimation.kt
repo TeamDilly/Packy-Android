@@ -10,10 +10,10 @@ import androidx.compose.runtime.Composable
 @Composable
 fun FlagChangeAnimation(
     flag: Boolean,
-    flagOnContent: @Composable () -> Unit,
-    flagOffContent: @Composable () -> Unit,
     enter: EnterTransition = fadeIn(),
     exit: ExitTransition = fadeOut(),
+    flagOnContent: @Composable () -> Unit,
+    flagOffContent: @Composable () -> Unit,
 ) {
     AnimatedVisibility(
         visible = flag,

@@ -12,10 +12,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 
 @Composable
 fun <T> ValueChangeAnimation(
     value: T,
+    modifier: Modifier = Modifier,
     enterAnimation: EnterTransition = fadeIn(),
     exitAnimation: ExitTransition = fadeOut(),
     content: @Composable (T) -> Unit,
@@ -27,6 +29,7 @@ fun <T> ValueChangeAnimation(
     }
 
     AnimatedContent(
+        modifier = modifier,
         targetState = animatedValue,
         transitionSpec = {
             enterAnimation.togetherWith(exitAnimation)

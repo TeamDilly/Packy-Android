@@ -152,6 +152,11 @@ object Strings {
     const val ARCHIVE_TAP_MUSIC = "음악"
     const val ARCHIVE_TAP_GIFT = "선물"
 
+    const val ARCHIVE_TAP_PHOTO_EMPTY = "아직 선물받은 사진이 없어요"
+    const val ARCHIVE_TAP_LETTER_EMPTY = "아직 선물받은 편지가 없어요"
+    const val ARCHIVE_TAP_MUSIC_EMPTY = "아직 선물받은 음악이 없어요"
+    const val ARCHIVE_TAP_GIFT_EMPTY = "아직 선물받은 선물이 없어요"
+
     // ERROR
     const val ERROR_TITLE = "오류가 생겼어요"
     const val ERROR_DESCRIPTION = "잠시 후 다시 시도해주세요"

@@ -228,7 +228,7 @@ fun GiftBoxDetailOpenScreen(
                                     width = 6.dp,
                                     color = uiState.giftBox?.envelope?.borderColorCode.colorCodeToColor(
                                         fallbackColor = PackyTheme.color.gray200,
-                                        alpha = uiState.giftBox?.envelope?.opacity?.toFloat() ?: 1f
+                                        alpha = uiState.giftBox?.envelope?.opacity?.toFloat()?.times(0.01f) ?: 1f
                                     ),
                                     shape = RoundedCornerShape(16.dp)
 

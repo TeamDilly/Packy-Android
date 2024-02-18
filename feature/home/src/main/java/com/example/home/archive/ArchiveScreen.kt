@@ -292,7 +292,7 @@ fun LetterDialog(
                     width = 1.dp,
                     color = letter.borderColor.colorCodeToColor(
                         fallbackColor = PackyTheme.color.gray100,
-                        alpha = letter.borderOpacity.toFloat()
+                        alpha = letter.borderOpacity.toFloat().times(0.01f)
                     ),
                     shape = RoundedCornerShape(16.dp)
                 )

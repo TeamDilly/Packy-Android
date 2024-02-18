@@ -30,9 +30,9 @@ fun BoxGuideBottomSheet(
     changeVisible: () -> Unit,
     modifier: Modifier = Modifier,
     animationDuration: Int = 300,
+    dimVisible: Boolean = true,
     content: @Composable () -> Unit
 ) {
-
 
     Box(modifier = modifier.fillMaxSize()) {
         AnimatedVisibility(
@@ -48,7 +48,7 @@ fun BoxGuideBottomSheet(
                 .fillMaxSize()
                 .background(
                     color = PackyTheme.color.gray900.copy(
-                        alpha = 0.6f
+                        alpha = if(dimVisible) 0.6f else 0f
                     )
                 )
                 .clickableWithoutRipple {

@@ -288,6 +288,7 @@ fun BoxGuideScreen(
             }
             BoxGuideBottomSheet(
                 visible = showBottomSheet,
+                dimVisible = bottomSheetRoute.showDim(),
                 changeVisible = {
                     showBottomSheet = false
                 }

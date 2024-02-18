@@ -5,6 +5,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -131,7 +133,10 @@ fun GiftBoxDetailOpenScreen(
                 ),
                 exit = slideOutVertically(
                     targetOffsetY = { -it },
-                    animationSpec = tween(durationMillis = 400, delayMillis = 200)
+                    animationSpec = tween(
+                        durationMillis = 400,
+                        delayMillis = 200
+                    )
                 )
             ) {
                 TopBoxPartImage(
@@ -174,8 +179,12 @@ fun GiftBoxDetailOpenScreen(
                 visible = showDialog != ShowDetail.NONE,
                 enter = fadeIn(
                     animationSpec = tween(durationMillis = 400)
+                ) + scaleIn(
+                    animationSpec = tween(durationMillis = 400)
                 ),
                 exit = fadeOut(
+                    animationSpec = tween(durationMillis = 400)
+                ) + scaleOut(
                     animationSpec = tween(durationMillis = 400)
                 )
             ) {
@@ -228,7 +237,9 @@ fun GiftBoxDetailOpenScreen(
                                     width = 6.dp,
                                     color = uiState.giftBox?.envelope?.borderColorCode.colorCodeToColor(
                                         fallbackColor = PackyTheme.color.gray200,
-                                        alpha = uiState.giftBox?.envelope?.opacity?.toFloat()?.times(0.01f) ?: 1f
+                                        alpha = uiState.giftBox?.envelope?.opacity
+                                            ?.toFloat()
+                                            ?.times(0.01f) ?: 1f
                                     ),
                                     shape = RoundedCornerShape(16.dp)
 
@@ -257,7 +268,10 @@ fun GiftBoxDetailOpenScreen(
                         click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
                     ) {
                         GlideImage(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .clickableWithoutRipple {
+                                    viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnGiftClick)
+                                },
                             model = uiState.giftBox?.gift?.url,
                             contentDescription = "gift",
                             contentScale = ContentScale.Fit

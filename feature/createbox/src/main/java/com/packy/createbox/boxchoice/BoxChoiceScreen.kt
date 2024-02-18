@@ -43,6 +43,7 @@ import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.core.widget.animation.ValueChangeAnimation
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.core.R
 import java.net.URLEncoder
@@ -121,14 +122,16 @@ fun BoxChoiceScreen(
                 color = PackyTheme.color.gray900
             )
             Spacer(height = 60.dp)
-            GlideImage(
-                modifier = Modifier
-                    .width(232.dp)
-                    .height(260.dp),
-                model = uiState.selectedBox?.boxSet,
-                contentScale = ContentScale.Fit,
-                contentDescription = "Selected Box"
-            )
+            ValueChangeAnimation(value =  uiState.selectedBox?.boxSet,) {
+                GlideImage(
+                    modifier = Modifier
+                        .width(232.dp)
+                        .height(260.dp),
+                    model = it,
+                    contentScale = ContentScale.Fit,
+                    contentDescription = "Selected Box"
+                )
+            }
             Spacer(height = 40.dp)
             LazyRow(
                 modifier = Modifier

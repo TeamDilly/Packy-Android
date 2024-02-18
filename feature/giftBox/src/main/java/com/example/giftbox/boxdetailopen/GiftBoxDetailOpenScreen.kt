@@ -5,6 +5,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -107,6 +109,7 @@ fun GiftBoxDetailOpenScreen(
             pagerState.currentPage != 0 -> scope.launch {
                 pagerState.animateScrollToPage(0)
             }
+
             showBackArrow -> navController.popBackStack()
             else -> closeGiftBox()
         }
@@ -119,6 +122,23 @@ fun GiftBoxDetailOpenScreen(
                 .padding(innerPadding)
                 .background(PackyTheme.color.gray900),
         ) {
+            AnimatedVisibility(
+                modifier = Modifier.align(Alignment.TopEnd),
+                visible = pagerState.currentPage == 0,
+                enter = slideInVertically(
+                    initialOffsetY = { -it },
+                    animationSpec = tween(durationMillis = 400)
+                ),
+                exit = slideOutVertically(
+                    targetOffsetY = { -it },
+                    animationSpec = tween(durationMillis = 400, delayMillis = 200)
+                )
+            ) {
+                TopBoxPartImage(
+                    boxPartImageUrl = uiState.giftBox?.box?.boxTop
+                )
+            }
+
             VerticalPager(
                 modifier = Modifier
                     .blur(if (showDialog != ShowDetail.NONE) 12.dp else 0.dp),
@@ -198,21 +218,22 @@ fun GiftBoxDetailOpenScreen(
                             .padding(horizontal = 24.dp),
                         click = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.CloseDialog) }
                     ) {
-                        Box(modifier = Modifier
-                            .background(
-                                color = PackyTheme.color.white,
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                            .border(
-                                width = 6.dp,
-                                color = uiState.giftBox?.envelope?.borderColorCode.colorCodeToColor(
-                                    fallbackColor = PackyTheme.color.gray200,
-                                    alpha = uiState.giftBox?.envelope?.opacity?.toFloat() ?: 1f
-                                ),
-                                shape = RoundedCornerShape(16.dp)
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = PackyTheme.color.white,
+                                    shape = RoundedCornerShape(16.dp)
+                                )
+                                .border(
+                                    width = 6.dp,
+                                    color = uiState.giftBox?.envelope?.borderColorCode.colorCodeToColor(
+                                        fallbackColor = PackyTheme.color.gray200,
+                                        alpha = uiState.giftBox?.envelope?.opacity?.toFloat() ?: 1f
+                                    ),
+                                    shape = RoundedCornerShape(16.dp)
 
-                            )
-                            .aspectRatio(1f / 1f),
+                                )
+                                .aspectRatio(1f / 1f),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
@@ -351,10 +372,6 @@ private fun GiftBoxColumn(
         modifier = modifier
             .fillMaxSize()
     ) {
-        TopBoxPartImage(
-            modifier = Modifier.align(Alignment.TopEnd),
-            boxPartImageUrl = uiState.giftBox?.box?.boxTop
-        )
         Column(
             modifier = Modifier
                 .fillMaxSize(),

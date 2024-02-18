@@ -44,12 +44,14 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.giftbox.navigation.GiftBoxRoute
 import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
+import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.GIFT_BOX_ARR_TITLE
+import com.packy.core.widget.animation.BoxShakeAnimation
 import com.packy.feature.core.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -171,9 +173,11 @@ fun GiftBoxArrScreen(
                     }
                 }
                 Spacer(height = 64.dp)
-                Box(modifier = Modifier
-                    .height(screenHeight * 0.36f)
-                    .fillMaxWidth())
+                Box(
+                    modifier = Modifier
+                        .height(screenHeight * 0.36f)
+                        .fillMaxWidth()
+                )
                 Spacer(1f)
                 AnimatedVisibility(
                     visible = !lottiePlaying,
@@ -189,21 +193,34 @@ fun GiftBoxArrScreen(
                             text = Strings.OPEN,
                             style = buttonStyle.large.black,
                             onClick = {
-                                viewModel.emitIntentThrottle(GiftBoxArrIntent.OnOpenClick)
+                                if(!lottiePlaying) {
+                                    viewModel.emitIntentThrottle(GiftBoxArrIntent.OnOpenClick)
+                                }
                             }
                         )
                         Spacer(height = 16.dp)
                     }
                 }
             }
-            LottieAnimation(
-                composition = composition,
-                progress = { progress },
+            BoxShakeAnimation(
                 modifier = Modifier
                     .fillMaxSize()
                     .align(Alignment.Center)
-                    .aspectRatio(16f / 35f)
-            )
+                    .clickableWithoutRipple {
+                        if(!lottiePlaying) {
+                            viewModel.emitIntentThrottle(GiftBoxArrIntent.OnOpenClick)
+                        }
+                    },
+                animationPlay = !lottiePlaying
+            ) {
+                LottieAnimation(
+                    composition = composition,
+                    progress = { progress },
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .aspectRatio(16f / 35f)
+                )
+            }
         }
     }
 }

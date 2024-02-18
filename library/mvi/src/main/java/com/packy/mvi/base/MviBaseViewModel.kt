@@ -63,7 +63,7 @@ abstract class MviViewModel<Intent : MviIntent, State : UiState, Effect : SideEf
     }
 
     protected suspend fun setState(builder: (State) -> State) {
-        stateMutex.withLock(_uiState) {
+        stateMutex.withLock {
             val newState = builder(uiState.value)
             _uiState.emit(newState)
         }

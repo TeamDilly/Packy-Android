@@ -97,24 +97,7 @@ fun ArchiveScreen(
     }
 
     LaunchedEffect(viewModel) {
-        viewModel.getPhotos()
-        viewModel.getLetters()
-        viewModel.getGifts()
-        viewModel.getMusics()
-//        when (pagerState.currentPage) {
-//            ShowArchiveType.PHOTO.ordinal -> {
-//                viewModel.getPhotos()
-//            }
-//            ShowArchiveType.LETTER.ordinal -> {
-//                viewModel.getLetters()
-//            }
-//            ShowArchiveType.MUSIC.ordinal -> {
-//                viewModel.getMusics()
-//            }
-//            ShowArchiveType.GIFT.ordinal -> {
-//                viewModel.getGifts()
-//            }
-//        }
+        viewModel.listInit()
     }
 
     LaunchedEffect(uiState.showArchiveType) {
@@ -179,13 +162,13 @@ fun ArchiveScreen(
         },
         contentWindowInsets = WindowInsets(0.dp)
     ) { innerPadding ->
+        Spacer(modifier = Modifier.height(7.dp))
         Column(
             modifier = modifier
                 .fillMaxSize()
                 .background(PackyTheme.color.gray100)
                 .padding(innerPadding)
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier.padding(start = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -201,7 +184,7 @@ fun ArchiveScreen(
             }
             Spacer(modifier = Modifier.height(32.dp))
             HorizontalPager(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp),
                 state = pagerState
             ) { page ->
                 when (page) {

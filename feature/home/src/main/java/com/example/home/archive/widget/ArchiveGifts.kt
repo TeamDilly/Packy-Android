@@ -51,8 +51,8 @@ fun ArchiveGifts(
         LazyVerticalStaggeredGrid(
             modifier = modifier.fillMaxSize(),
             columns = StaggeredGridCells.Fixed(2),
-            verticalItemSpacing = 4.dp,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalItemSpacing = 16.dp,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item {
                 Spacer(modifier = Modifier.height(80.dp))
@@ -61,7 +61,6 @@ fun ArchiveGifts(
                 val gift = gifts[index] ?: return@items
                 GlideImage(
                     modifier = Modifier
-                        .requiredHeight(163.dp)
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .clickableWithoutRipple {

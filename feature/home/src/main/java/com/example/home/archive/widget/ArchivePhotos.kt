@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
@@ -27,7 +28,7 @@ fun ArchivePhotos(
     onClick: (ArchivePhoto) -> Unit = {}
 ) {
     FlagChangeAnimation(
-        flag = photos.itemCount == 0,
+        flag = photos.itemCount == 0 && photos.loadState.refresh !is LoadState.Loading,
         flagOnContent = {
             Box(
                 modifier = modifier.fillMaxSize(),
@@ -43,11 +44,11 @@ fun ArchivePhotos(
         LazyVerticalStaggeredGrid(
             modifier = modifier.fillMaxSize(),
             columns = StaggeredGridCells.Fixed(2),
-            verticalItemSpacing = 4.dp,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalItemSpacing = 32.dp,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item {
-                Spacer(modifier = Modifier.height(80.dp))
+                Spacer(modifier = Modifier.height(40.dp))
             }
             items(photos.itemCount) { index ->
                 val photo = photos[index] ?: return@items

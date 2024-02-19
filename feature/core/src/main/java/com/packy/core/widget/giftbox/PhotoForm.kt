@@ -2,6 +2,7 @@ package com.packy.core.widget.giftbox
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -36,6 +37,7 @@ fun PhotoForm(
             )
     ) {
         GlideImage(
+            modifier = Modifier.aspectRatio(1f),
             model = photo,
             contentDescription = "box guide photo",
             contentScale = ContentScale.Crop

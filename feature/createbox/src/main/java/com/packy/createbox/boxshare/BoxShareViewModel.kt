@@ -34,7 +34,9 @@ class BoxShareViewModel @Inject constructor(
     override fun handleIntent() {
         subscribeIntent<BoxShareIntent.ShareKakao>(sharedBox())
         subscribeIntent<BoxShareIntent.OnBackClick> { sendEffect(BoxShareEffect.MoveToBack) }
-        subscribeIntent<BoxShareIntent.OnCloseClick> { sendEffect(BoxShareEffect.MoveToMain) }
+        subscribeIntent<BoxShareIntent.OnCloseClick> {
+            // TODO:: 나가기 나중에 만들기 필요
+        }
     }
 
     init {

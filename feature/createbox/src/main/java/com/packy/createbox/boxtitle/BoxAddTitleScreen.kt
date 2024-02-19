@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +29,7 @@ import androidx.navigation.NavController
 import com.packy.core.common.Spacer
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
+import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.textfield.PackyTextField
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.screen.error.ErrorDialog
@@ -51,6 +53,11 @@ fun BoxAddTitleScreen(
         ErrorDialog(
             errorDialog!!
         )
+    }
+
+    val loading by remember { derivedStateOf { uiState.isLoading } }
+    if (loading) {
+        PackyProgressDialog()
     }
 
     LaunchedEffect(null) {

@@ -18,6 +18,7 @@ object Strings {
     const val TO = "To."
     const val FROM = "From."
     const val SELECT = "선택"
+    const val EXIT = "나가기"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"

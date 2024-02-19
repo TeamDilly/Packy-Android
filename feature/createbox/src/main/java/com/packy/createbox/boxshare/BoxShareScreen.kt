@@ -101,22 +101,18 @@ fun BoxShareScreen(
     }
 
     BackHandler {
-        if (shared == null) {
-            viewModel.emitIntent(BoxShareIntent.OnBackClick)
-        } else {
-            viewModel.emitIntent(BoxShareIntent.OnCloseClick)
-        }
+        viewModel.emitIntent(BoxShareIntent.OnCloseClick)
     }
 
     Scaffold(
         topBar = {
             PackyTopBar.Builder()
                 .apply {
-                    if (shared == null) {
-                        startIconButton(
-                            icon = R.drawable.arrow_left
+                    if (shared == true) {
+                        endTextButton(
+                            text = Strings.EXIT
                         ) {
-                            viewModel.emitIntent(BoxShareIntent.OnBackClick)
+                            viewModel.emitIntent(BoxShareIntent.OnCloseClick)
                         }
                     } else {
                         endIconButton(

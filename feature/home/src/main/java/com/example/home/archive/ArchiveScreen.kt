@@ -6,17 +6,23 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.pager.HorizontalPager
@@ -33,13 +39,17 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -58,6 +68,7 @@ import com.packy.core.designsystem.topbar.PackyTopBarPreview
 import com.packy.core.taps.PackyBoxTap
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings.ARCHIVE_TITLE
+import com.packy.core.widget.animation.ValueChangeAnimation
 import com.packy.core.widget.giftbox.PhotoForm
 import com.packy.core.widget.youtube.YoutubePlayer
 import com.packy.core.widget.youtube.YoutubeState
@@ -184,8 +195,12 @@ fun ArchiveScreen(
             }
             Spacer(modifier = Modifier.height(32.dp))
             HorizontalPager(
-                modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp),
-                state = pagerState
+                modifier = Modifier
+                    .fillMaxSize(),
+                state = pagerState,
+                beyondBoundsPageCount = 4,
+                pageSpacing = 24.dp,
+                contentPadding = PaddingValues(horizontal = 24.dp)
             ) { page ->
                 when (page) {
                     ShowArchiveType.PHOTO.ordinal -> {
@@ -242,14 +257,15 @@ private fun PhotoDialog(
     Dialog(onDismissRequest = { close() }) {
         Column(
             modifier = Modifier
+                .background(PackyTheme.color.white)
                 .width(312.dp)
                 .height(374.dp)
                 .padding(16.dp)
-                .background(PackyTheme.color.gray200)
                 .clickableWithoutRipple {
                     close()
                 },
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             GlideImage(
                 modifier = Modifier
@@ -262,9 +278,13 @@ private fun PhotoDialog(
                 text = photo.photoContentText,
                 style = PackyTheme.typography.body04,
                 color = PackyTheme.color.gray900,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(46.dp)
+                    .padding(
+                        vertical = 12.dp,
+                        horizontal = 40.dp
+                    )
             )
         }
     }
@@ -285,14 +305,9 @@ fun LetterDialog(
                     shape = RoundedCornerShape(16.dp)
                 )
                 .border(
-                    width = 1.dp,
-                    color = PackyTheme.color.gray200,
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .border(
-                    width = 1.dp,
+                    width = 4.dp,
                     color = letter.borderColor.colorCodeToColor(
-                        fallbackColor = PackyTheme.color.gray100,
+                        fallbackColor = PackyTheme.color.gray200,
                         alpha = letter.borderOpacity
                             .toFloat()
                             .times(0.01f)
@@ -301,7 +316,8 @@ fun LetterDialog(
                 )
                 .clickableWithoutRipple {
                     close()
-                }
+                },
+            contentAlignment = Alignment.Center
         ) {
             Text(
                 modifier = Modifier
@@ -310,8 +326,9 @@ fun LetterDialog(
                 style = PackyTheme.typography.body04.copy(
                     textAlign = TextAlign.Center
                 ),
-                color = PackyTheme.color.gray900
-            )
+                color = PackyTheme.color.gray900,
+
+                )
         }
     }
 }
@@ -324,8 +341,13 @@ fun MusicDialog(
     Dialog(onDismissRequest = close) {
         extractYouTubeVideoId(music.youtubeUrl)?.let { url ->
             YoutubePlayer(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .aspectRatio(16f / 9f)
+                    .clip(RoundedCornerShape(16.dp)),
                 videoId = url,
                 youtubeState = YoutubeState.PLAYING,
+                autoPlay = true
             )
         }
     }
@@ -340,13 +362,14 @@ fun GiftDialog(
     Dialog(onDismissRequest = close) {
         GlideImage(
             modifier = Modifier
+                .sizeIn(
+                    minWidth = 350.dp,
+                    minHeight = 350.dp
+                )
+                .fillMaxSize()
                 .clickableWithoutRipple {
                     close()
-                }
-                .padding(
-                    horizontal = 55.dp,
-                    vertical = 140.dp
-                ),
+                },
             model = gift.giftUrl,
             contentDescription = "",
             contentScale = ContentScale.Fit

@@ -51,7 +51,7 @@ class ArchiveViewModel @Inject constructor(
         getLetters()
     }
 
-    fun getMusics() {
+    private fun getMusics() {
         viewModelScope.launch(Dispatchers.IO) {
             getArchiveMusic.getArchiveMusic()
                 .cachedIn(viewModelScope)
@@ -65,7 +65,7 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    fun getPhotos() {
+    private fun getPhotos() {
         viewModelScope.launch(Dispatchers.IO) {
             getArchivePhoto.getArchivePhoto()
                 .cachedIn(viewModelScope)
@@ -79,7 +79,7 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    fun getGifts() {
+    private fun getGifts() {
         viewModelScope.launch(Dispatchers.IO) {
             getArchiveGift.getArchiveGift()
                 .cachedIn(viewModelScope)
@@ -93,7 +93,7 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    fun getLetters() {
+    private fun getLetters() {
         viewModelScope.launch(Dispatchers.IO) {
             getArchiveLetter.getArchiveLetter()
                 .cachedIn(viewModelScope)

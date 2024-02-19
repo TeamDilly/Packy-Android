@@ -13,6 +13,10 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,7 +34,6 @@ import com.packy.core.widget.animation.FlagChangeAnimation
 import com.packy.domain.model.archive.ArchiveLetter
 import com.packy.domain.model.archive.ArchiveMusic
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ArchiveMusics(
     modifier: Modifier,
@@ -38,7 +41,7 @@ fun ArchiveMusics(
     onClick: (ArchiveMusic) -> Unit = {}
 ) {
     FlagChangeAnimation(
-        flag = musics.itemCount == 0 && musics.loadState.refresh !is LoadState.Loading,
+        flag = musics.itemCount == 0,
         flagOnContent = {
             Box(
                 modifier = modifier.fillMaxSize(),

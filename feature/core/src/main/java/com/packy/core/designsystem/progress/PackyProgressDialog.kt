@@ -19,7 +19,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun PackyProgressDialog(
-    loadingDelay: Long = 500L
+    loadingDelay: Long = 1000L
 ) {
     var isLoading by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {

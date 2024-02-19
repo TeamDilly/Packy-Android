@@ -28,6 +28,15 @@ fun extractYouTubeVideoId(url: String): String? {
 
 fun String.validationYoutubeVideoId() = extractYouTubeVideoId(this) != null
 
+fun String.youtubeIdToThumbnailUrl(): String? {
+    val videoId = extractYouTubeVideoId(this)
+    return if (videoId != null) {
+        "https://img.youtube.com/vi/$videoId/mqdefault.jpg"
+    } else {
+        null
+    }
+}
+
 fun String.removeNewlines(): String {
     return this.replace(
         Regex("[\n\r]"),

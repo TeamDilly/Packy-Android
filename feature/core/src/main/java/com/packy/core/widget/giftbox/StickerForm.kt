@@ -36,7 +36,7 @@ fun StickerForm(
     }) {
         FlagChangeAnimation(
             flag = stickerUri != null,
-            enter = fadeIn(
+            enterAnimation = fadeIn(
                 animationSpec = tween(
                     400,
                     delayMillis = 120
@@ -48,7 +48,7 @@ fun StickerForm(
                     delayMillis = 120
                 )
             ),
-            exit = fadeOut(animationSpec = tween(durationMillis = 120)),
+            exitAnimation = fadeOut(animationSpec = tween(durationMillis = 120)),
             flagOnContent = {
                 ValueChangeAnimation(
                     value = stickerUri,

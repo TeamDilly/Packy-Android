@@ -3,6 +3,7 @@ package com.packy.core.widget.animation
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
@@ -18,8 +19,8 @@ import androidx.compose.ui.Modifier
 fun <T> ValueChangeAnimation(
     value: T,
     modifier: Modifier = Modifier,
-    enterAnimation: EnterTransition = fadeIn(),
-    exitAnimation: ExitTransition = fadeOut(),
+    enterAnimation: EnterTransition = fadeIn(tween(220, 110)),
+    exitAnimation: ExitTransition = fadeOut(tween(110)),
     content: @Composable (T) -> Unit,
 ) {
     var animatedValue by remember { mutableStateOf(value) }

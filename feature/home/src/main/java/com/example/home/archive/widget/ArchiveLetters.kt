@@ -14,6 +14,10 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -37,7 +41,7 @@ fun ArchiveLetters(
     onClick: (ArchiveLetter) -> Unit = {}
 ) {
     FlagChangeAnimation(
-        flag = letters.itemCount == 0 && letters.loadState.refresh !is LoadState.Loading,
+        flag = letters.itemCount == 0,
         flagOnContent = {
             Box(
                 modifier = modifier.fillMaxSize(),
@@ -69,6 +73,7 @@ fun ArchiveLetters(
         }
     }
 }
+
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)

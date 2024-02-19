@@ -15,6 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -27,6 +30,8 @@ import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.textfield.PackyTextField
 import com.packy.core.designsystem.topbar.PackyTopBar
+import com.packy.core.screen.error.ErrorDialog
+import com.packy.core.screen.error.ErrorDialogInfo
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.createbox.navigation.CreateBoxRoute
@@ -41,6 +46,12 @@ fun BoxAddTitleScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
+    var errorDialog by remember { mutableStateOf<ErrorDialogInfo?>(null) }
+    if (errorDialog != null) {
+        ErrorDialog(
+            errorDialog!!
+        )
+    }
 
     LaunchedEffect(null) {
         viewModel.initBoxTitle()
@@ -50,12 +61,25 @@ fun BoxAddTitleScreen(
                     navController.popBackStack()
                 }
 
-                is BoxAddTitleEffect.SaveBoxTitle -> {
+                is BoxAddTitleEffect.FailCreateBox -> {
+                    errorDialog = ErrorDialogInfo(
+                        message = effect.message,
+                        retry = { errorDialog = null },
+                        backHandler = { errorDialog = null }
+                    )
+                }
+
+                is BoxAddTitleEffect.MoveToShared -> {
                     keyboardController?.hide()
                     if (effect.showMotion) {
-                        navController.navigate(CreateBoxRoute.getBoxShareMotionRoute(effect.boxId))
+                        navController.navigate(
+                            CreateBoxRoute.getBoxShareMotionRoute(
+                                effect.motionBoxId,
+                                effect.createBoxId
+                            )
+                        )
                     } else {
-                        navController.navigate(CreateBoxRoute.BOX_SHARE)
+                        navController.navigate(CreateBoxRoute.getBoxShareRoute(effect.createBoxId))
                     }
                 }
             }

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.packy.createbox.common.name
 import com.packy.domain.usecase.createbox.CreateBoxFlagUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
+import com.packy.lib.utils.Resource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.firstOrNull
@@ -36,15 +37,7 @@ class BoxAddTitleViewModel @Inject constructor(
         }
         subscribeIntent<BoxAddTitleIntent.MoveToNext> {
             createBoxUseCase.name(currentState.boxTitle)
-            val showMotion = createBoxFlagUseCase.shouldShowBoxSharMotion().firstOrNull() ?: false
-            createBoxFlagUseCase.shownShowBoxSharMotion()
-            sendEffect(
-                BoxAddTitleEffect.SaveBoxTitle(
-                    boxId = createBoxUseCase.getCreatedBox().boxId ?: 0,
-                    boxTitle = currentState.boxTitle,
-                    showMotion = showMotion
-                )
-            )
+            createBox()
         }
     }
 
@@ -60,6 +53,27 @@ class BoxAddTitleViewModel @Inject constructor(
                     boxAllReady = boxAllReady
                 )
             )
+        }
+    }
+
+    private suspend fun createBox() {
+        val createBox = createBoxUseCase.getCreatedBox()
+        setState {
+            it.copy(isLoading = true)
+        }
+        val box = createBoxUseCase.createBox(createBox)
+        if (box is Resource.Success) {
+            val showMotion = createBoxFlagUseCase.shouldShowBoxSharMotion().firstOrNull() ?: false
+            createBoxFlagUseCase.shownShowBoxSharMotion()
+            sendEffect(
+                BoxAddTitleEffect.MoveToShared(
+                    motionBoxId = createBoxUseCase.getCreatedBox().boxId ?: 0,
+                    createBoxId = box.data.id,
+                    showMotion = showMotion
+                )
+            )
+        } else {
+            sendEffect(BoxAddTitleEffect.FailCreateBox(box.message))
         }
     }
 }

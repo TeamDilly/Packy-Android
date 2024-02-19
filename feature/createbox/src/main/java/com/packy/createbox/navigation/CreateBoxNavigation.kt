@@ -72,10 +72,13 @@ fun NavGraphBuilder.createBoxNavGraph(
             )
         }
         asFadeInComposable(
-            route = CreateBoxRoute.BOX_SHARE_MOTION + "/{boxId}",
+            route = CreateBoxRoute.BOX_SHARE_MOTION + "/{boxId}" + "/{createdBoxId}",
             arguments = listOf(
                 navArgument("boxId") {
                     type = androidx.navigation.NavType.IntType
+                },
+                navArgument("createdBoxId") {
+                    type = androidx.navigation.NavType.StringType
                 }
             ),
         ) {
@@ -95,7 +98,12 @@ fun NavGraphBuilder.createBoxNavGraph(
         }
 
         asPagingComposable(
-            route = CreateBoxRoute.BOX_SHARE
+            route = CreateBoxRoute.BOX_SHARE + "/{createdBoxId}",
+            arguments = listOf(
+                navArgument("createdBoxId") {
+                    type = androidx.navigation.NavType.StringType
+                }
+            ),
         ) {
             BoxShareScreen(
                 navController = navController,
@@ -133,7 +141,11 @@ object CreateBoxRoute {
     ) = "$BOX_MOTION/$boxId"
 
     fun getBoxShareMotionRoute(
-        boxId: Int
-    ) = "$BOX_SHARE_MOTION/$boxId"
+        boxId: Int,
+        createdBoxId: String
+    ) = "$BOX_SHARE_MOTION/$boxId/$createdBoxId"
 
+    fun getBoxShareRoute(
+        createdBoxId: String
+    ) = "$BOX_SHARE/$createdBoxId"
 }

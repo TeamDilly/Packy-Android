@@ -13,14 +13,18 @@ sealed interface BoxAddTitleIntent : MviIntent {
 
 data class BoxAddTitleState(
     val boxTitle: String,
-    val boxAllReady: Boolean = false
+    val boxAllReady: Boolean = false,
+    val isLoading: Boolean = false
 ) : UiState
 
 sealed interface BoxAddTitleEffect : SideEffect {
     data object MoveToBack : BoxAddTitleEffect
-    data class SaveBoxTitle(
-        val boxId: Int,
-        val boxTitle: String,
-        val showMotion: Boolean = false,
+    data class MoveToShared(
+        val motionBoxId: Int,
+        val createBoxId: String,
+        val showMotion: Boolean
+    ) : BoxAddTitleEffect
+    data class FailCreateBox(
+        val message: String?
     ) : BoxAddTitleEffect
 }

@@ -1,7 +1,10 @@
 package com.packy.createbox.boxshare
 
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.packy.common.kakaoshare.KakaoCustomFeed
 import com.packy.createbox.boxtitle.BoxAddTitleIntent
+import com.packy.createbox.navigation.CreateBoxArgs
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.lib.utils.Resource
@@ -10,61 +13,52 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BoxShareViewModel @Inject constructor(
     private val createBoxUseCase: CreateBoxUseCase,
     private val boxDesignUseCase: GetBoxDesignUseCase,
+    private val savedStateHandle: SavedStateHandle
 ) :
     MviViewModel<BoxShareIntent, BoxShareState, BoxShareEffect>() {
     override fun createInitialState(): BoxShareState = BoxShareState(
         boxImageUrl = null,
         boxTitle = null,
         receiverName = null,
-        shared = null
+        shared = false,
+        createdBox = null,
     )
 
     override fun handleIntent() {
-        subscribeIntent<BoxShareIntent.ShareKakao>(createBox())
+        subscribeIntent<BoxShareIntent.ShareKakao>(sharedBox())
         subscribeIntent<BoxShareIntent.OnBackClick> { sendEffect(BoxShareEffect.MoveToBack) }
         subscribeIntent<BoxShareIntent.OnCloseClick> { sendEffect(BoxShareEffect.MoveToMain) }
     }
 
-    private fun createBox(): suspend (BoxShareIntent.ShareKakao) -> Unit =
-        {
-            if (currentState.createdBox == null) {
-                val createBox = createBoxUseCase.getCreatedBox()
+    init {
+        savedStateHandle.get<String>(CreateBoxArgs.CREATED_BOX_ID)?.let { createBoxId ->
+            viewModelScope.launch {
                 setState {
-                    it.copy(isLoading = true)
-                }
-                val box = createBoxUseCase.createBox(createBox)
-                setState {
-                    currentState.copy(
-                        createdBox = box.data,
-                        isLoading = false
+                    it.copy(
+                        createdBox = createBoxId
                     )
                 }
-                if (box is Resource.Success) {
-                    val boxDesign = boxDesignUseCase.getBoxDesignLocal().first()
-                    val kakaoCustomFeed = KakaoCustomFeed(
-                        sender = createBox.senderName ?: "",
-                        receiver = createBox.receiverName ?: "",
-                        imageUrl = boxDesign?.boxNormal ?: "",
-                        boxId = box.data.id
-                    )
-                    sendEffect(BoxShareEffect.KakaoShare(kakaoCustomFeed))
-                }
-            } else {
-                val boxDesign = boxDesignUseCase.getBoxDesignLocal().first()
-                val kakaoCustomFeed = KakaoCustomFeed(
-                    sender = createBoxUseCase.getCreatedBox().senderName ?: "",
-                    receiver = createBoxUseCase.getCreatedBox().receiverName ?: "",
-                    imageUrl = boxDesign?.boxNormal ?: "",
-                    boxId = currentState.createdBox?.id ?: ""
-                )
-                sendEffect(BoxShareEffect.KakaoShare(kakaoCustomFeed))
             }
+        }
+    }
+
+    private fun sharedBox(): suspend (BoxShareIntent.ShareKakao) -> Unit =
+        {
+            val boxDesign = boxDesignUseCase.getBoxDesignLocal().first()
+            val kakaoCustomFeed = KakaoCustomFeed(
+                sender = createBoxUseCase.getCreatedBox().senderName ?: "",
+                receiver = createBoxUseCase.getCreatedBox().receiverName ?: "",
+                imageUrl = boxDesign?.boxNormal ?: "",
+                boxId = currentState.createdBox ?: ""
+            )
+            sendEffect(BoxShareEffect.KakaoShare(kakaoCustomFeed))
         }
 
     suspend fun initState() {

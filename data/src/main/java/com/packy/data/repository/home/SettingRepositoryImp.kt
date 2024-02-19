@@ -1,5 +1,6 @@
 package com.packy.data.repository.home
 
+import com.packy.account.AccountManagerHelper
 import com.packy.data.remote.home.SettingService
 import com.packy.data.remote.my.MyProfileService
 import com.packy.domain.model.my.MyProfile
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 class SettingRepositoryImp @Inject constructor(
     private val api: SettingService,
-    private val myProfileApi: MyProfileService
+    private val myProfileApi: MyProfileService,
+    private val accountManagerHelper: AccountManagerHelper
 ) : SettingRepository {
     override suspend fun getSettings(): Flow<Resource<List<SettingItem>>> = flow {
         emit(Resource.Loading())
@@ -28,6 +30,9 @@ class SettingRepositoryImp @Inject constructor(
     override suspend fun getMyProfile(): Flow<Resource<MyProfile>> = flow {
         emit(Resource.Loading())
         val myProfile = myProfileApi.getMyProfile()
+        if(myProfile is Resource.Success){
+            accountManagerHelper.setNickName(myProfile.data.nickname)
+        }
         emit(
             myProfile.map { dto -> dto.toEntity() }
         )

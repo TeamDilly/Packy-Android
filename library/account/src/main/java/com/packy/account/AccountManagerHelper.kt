@@ -89,6 +89,11 @@ class AccountManagerHelper(
         accountManager.setUserData(account, authKey.refreshToken, refreshToken)
     }
 
+    fun setNickName(nickname: String) {
+        val account = getAccount() ?: return
+        accountManager.setUserData(account, authKey.nickName, nickname)
+    }
+
     private suspend inline fun <R> AccountManager.callAsync(crossinline operation: AccountManager?.(CoroutineAccountManagerCallback<R>) -> Unit): R {
         return suspendCancellableCoroutine { cont ->
             operation(CoroutineAccountManagerCallback(cont))

@@ -25,7 +25,7 @@ class StickerPagingSource(
             }
             LoadResult.Page(
                 data = stickers,
-                prevKey = lastId,
+                prevKey = params.key,
                 nextKey = if (stickersDto.data.last) null else stickers.last().id
             )
         } else {

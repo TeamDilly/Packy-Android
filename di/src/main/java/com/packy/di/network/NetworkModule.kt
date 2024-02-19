@@ -59,7 +59,7 @@ object NetworkModule {
                 })
             }
             install(Logging) {
-                if(BuildConfig.DEBUG){
+                if (BuildConfig.DEBUG) {
                     logger = object : Logger {
                         override fun log(message: String) {
                             Log.i(
@@ -71,17 +71,17 @@ object NetworkModule {
                     level = LogLevel.ALL
                 }
             }
-            // TODO : token 만료 시 정책 구분 및 정의
-//            HttpResponseValidator {
-//                handleResponseExceptionWithRequest { exception, request ->
-//                    val clientException = exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
-//                    val exceptionResponse = clientException.response
-//                    if(exceptionResponse.status.value == 404) {
-//                        accountManagerHelper.removeAuthToken()
-//                        accountPrefManager.clearAll()
-//                    }
-//                }
-//            }
+        }
+    }
+
+    @Provides
+    @Singleton
+    @Packy
+    fun provideKtorClient(
+        @Default httpClient: HttpClient,
+        accountManagerHelper: AccountManagerHelper,
+    ): HttpClient {
+        return httpClient.config {
             install(Auth) {
                 bearer {
                     refreshTokens {
@@ -116,17 +116,17 @@ object NetworkModule {
                     }
                 }
             }
-        }
-    }
-
-    @Provides
-    @Singleton
-    @Packy
-    fun provideKtorClient(
-        @Default httpClient: HttpClient,
-        accountManagerHelper: AccountManagerHelper,
-    ): HttpClient {
-        return httpClient.config {
+            // TODO : token 만료 시 정책 구분 및 정의
+//            HttpResponseValidator {
+//                handleResponseExceptionWithRequest { exception, request ->
+//                    val clientException = exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
+//                    val exceptionResponse = clientException.response
+//                    if(exceptionResponse.status.value == 404) {
+//                        accountManagerHelper.removeAuthToken()
+//                        accountPrefManager.clearAll()
+//                    }
+//                }
+//            }
             install(DefaultRequest) {
                 url(BuildConfig.BASE_URL)
                 header(

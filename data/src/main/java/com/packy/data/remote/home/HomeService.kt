@@ -9,6 +9,8 @@ import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.request
+import io.ktor.http.URLBuilder
 import kotlinx.serialization.SerializationException
 import java.io.IOException
 import java.sql.Timestamp
@@ -22,10 +24,11 @@ class HomeService @Inject constructor(
         type: String,
         size: Int = 6
     ): Resource<HomeBoxContentDto> = safeRequest {
+
         httpClient.get(urlString = "/api/v1/giftboxes") {
             if (timestamp != null) {
                 parameter(
-                    "timestamp",
+                    "lastGiftBoxDate",
                     timestamp
                 )
             }

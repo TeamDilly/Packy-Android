@@ -31,13 +31,15 @@ class HomeRepositoryImp @Inject constructor(
 
     override suspend fun getHomeBoxes(
         type: String
-    ): Flow<PagingData<HomeBox>> = Pager(
-        config = PagingConfig(pageSize = 8),
-        pagingSourceFactory = {
-            MyBoxPagingSource(
-                homeService,
-                type
-            )
-        }
-    ).flow
+    ): Flow<PagingData<HomeBox>>{
+        return Pager(
+            config = PagingConfig(pageSize = 6),
+            pagingSourceFactory = {
+                MyBoxPagingSource(
+                    homeService,
+                    type
+                )
+            }
+        ).flow
+    }
 }

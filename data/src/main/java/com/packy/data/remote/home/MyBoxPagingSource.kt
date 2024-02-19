@@ -20,14 +20,14 @@ class MyBoxPagingSource(
         val homeBoxResource = api.getHomoBoxes(
             timestamp = lastTimestamp,
             type = type,
-            size = 10
+            size = 6
         )
         val result = if (homeBoxResource is Resource.Success) {
             val homeBoxes = homeBoxResource.data.content.map { it.toEntity() }
             LoadResult.Page(
                 data = homeBoxes,
                 prevKey = lastTimestamp,
-                nextKey = if (homeBoxResource.data.last) null else homeBoxResource.data.content.last().giftBoxDate
+                nextKey = if (homeBoxResource.data.last) null else homeBoxes.last().giftBoxDate
             )
         } else {
             LoadResult.Error(Exception(homeBoxResource.message))

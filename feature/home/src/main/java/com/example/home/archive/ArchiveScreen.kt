@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -96,7 +97,24 @@ fun ArchiveScreen(
     }
 
     LaunchedEffect(viewModel) {
-        viewModel.listInit()
+        viewModel.getPhotos()
+        viewModel.getLetters()
+        viewModel.getGifts()
+        viewModel.getMusics()
+//        when (pagerState.currentPage) {
+//            ShowArchiveType.PHOTO.ordinal -> {
+//                viewModel.getPhotos()
+//            }
+//            ShowArchiveType.LETTER.ordinal -> {
+//                viewModel.getLetters()
+//            }
+//            ShowArchiveType.MUSIC.ordinal -> {
+//                viewModel.getMusics()
+//            }
+//            ShowArchiveType.GIFT.ordinal -> {
+//                viewModel.getGifts()
+//            }
+//        }
     }
 
     LaunchedEffect(uiState.showArchiveType) {
@@ -292,7 +310,9 @@ fun LetterDialog(
                     width = 1.dp,
                     color = letter.borderColor.colorCodeToColor(
                         fallbackColor = PackyTheme.color.gray100,
-                        alpha = letter.borderOpacity.toFloat().times(0.01f)
+                        alpha = letter.borderOpacity
+                            .toFloat()
+                            .times(0.01f)
                     ),
                     shape = RoundedCornerShape(16.dp)
                 )

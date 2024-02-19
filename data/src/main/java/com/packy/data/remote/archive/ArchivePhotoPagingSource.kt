@@ -14,7 +14,7 @@ class ArchivePhotoPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArchivePhoto> {
         val lastId = params.key
-        val photoResource = api.getArchivePhotos()
+        val photoResource = api.getArchivePhotos(lastId)
         val result = if (photoResource is Resource.Success) {
             val archivePhotos = photoResource.data.content.map { it.toEntity() }
             LoadResult.Page(

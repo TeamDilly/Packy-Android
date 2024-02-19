@@ -26,14 +26,14 @@ class GiftBoxRootViewModel @Inject constructor(
     override fun handleIntent() {}
 
     init {
-        savedStateHandle.get<String>(GIFT_BOX_ID_ARG)?.let {
-            getGiftBox(it)
+        savedStateHandle.get<Long>(GIFT_BOX_ID_ARG)?.let {
+            getGiftBox(it.toString())
         } ?: run{
             sendEffect(GiftBoxRootEffect.FailToGetGIftBox)
         }
     }
 
-    fun getGiftBox(boxId: String) {
+    private fun getGiftBox(boxId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             getBoxUseCase.getBox(boxId)
                 .filterLoading()

@@ -61,9 +61,9 @@ fun NavGraphBuilder.createBoxNavGraph(
         asFadeInComposable(
             route = CreateBoxRoute.BOX_MOTION + "/{$MOTION_BOX_ID}",
             arguments = listOf(
-               navArgument(MOTION_BOX_ID) {
-                   type = androidx.navigation.NavType.IntType
-               }
+                navArgument(MOTION_BOX_ID) {
+                    type = androidx.navigation.NavType.IntType
+                }
             ),
             enterDuration = 700
         ) {
@@ -85,9 +85,11 @@ fun NavGraphBuilder.createBoxNavGraph(
             ),
         ) {
             val boxId = it.arguments?.getInt(MOTION_BOX_ID)
+            val createdBoxId = it.arguments?.getString(CREATED_BOX_ID)
             BoxShareMotionScreen(
                 navController = navController,
                 boxId = boxId ?: 0,
+                createdBoxId = createdBoxId ?: ""
             )
         }
 
@@ -115,8 +117,13 @@ fun NavGraphBuilder.createBoxNavGraph(
 
 
         asFadeInComposable(
-            route = CreateBoxRoute.BOX_SHARE_FADE_IN,
-            enterDuration = 700
+            route = CreateBoxRoute.BOX_SHARE_FADE_IN + "/{$CREATED_BOX_ID}",
+            enterDuration = 700,
+            arguments = listOf(
+                navArgument(CREATED_BOX_ID) {
+                    type = androidx.navigation.NavType.StringType
+                }
+            ),
         ) {
             BoxShareScreen(
                 navController = navController,
@@ -150,9 +157,13 @@ object CreateBoxRoute {
     fun getBoxShareRoute(
         createdBoxId: String
     ) = "$BOX_SHARE/$createdBoxId"
+
+    fun getBoxShareFadeInRoute(
+        createdBoxId: String
+    ) = "$BOX_SHARE_FADE_IN/$createdBoxId"
 }
 
-object CreateBoxArgs{
+object CreateBoxArgs {
     const val MOTION_BOX_ID = "motionBoxId"
     const val CREATED_BOX_ID = "createdBoxId"
 }

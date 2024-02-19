@@ -32,12 +32,14 @@ fun NavGraphBuilder.giftBoxNavGraph(
     ) {
 
         asFadeInComposable(
-            route = GiftBoxRoute.GIFT_BOX_ROOT + "/{$GIFT_BOX_ID_ARG}" + "?" + "skipArr={$GIFT_BOX_SKIP_ARR_ARG}",
+            route = GiftBoxRoute.GIFT_BOX_ROOT + "/{$GIFT_BOX_ID_ARG}" + "/{$GIFT_BOX_SKIP_ARR_ARG}",
             arguments = listOf(
+                navArgument(GIFT_BOX_ID_ARG){
+                    type = NavType.LongType
+                },
                 navArgument(GIFT_BOX_SKIP_ARR_ARG) {
                     type = NavType.BoolType
-                    defaultValue = true
-                }
+                },
             )
         ) {
             val skipArr = it.arguments?.getBoolean(GIFT_BOX_SKIP_ARR_ARG) ?: true
@@ -114,8 +116,9 @@ object GiftBoxRoute {
     const val GIFT_BOX_SKIP_ARR_ARG = "skipArr"
     const val GIFT_BOX_ARG = "giftBoxArg"
 
-    fun getGiftBoxRootRoute(giftBoxId: Long): String {
-        return "$GIFT_BOX_ROOT/$giftBoxId"
+    fun getGiftBoxRootRoute(giftBoxId: Long,skipArr: Boolean = true): String {
+        println("$GIFT_BOX_ROOT/$giftBoxId/$skipArr")
+        return "$GIFT_BOX_ROOT/$giftBoxId/$skipArr"
     }
 
     fun getGiftBoxMotionRoute(giftBox: GiftBox): String {

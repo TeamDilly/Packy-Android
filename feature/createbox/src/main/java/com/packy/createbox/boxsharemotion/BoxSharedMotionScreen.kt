@@ -20,6 +20,7 @@ fun BoxShareMotionScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     boxId: Int,
+    createdBoxId: String?
 ) {
 
     Box(
@@ -37,7 +38,8 @@ fun BoxShareMotionScreen(
                 initialProgress = 1f
             )
             if (anim.value < 0.1f) {
-                navController.navigate(CreateBoxRoute.BOX_SHARE_FADE_IN) {
+                // 여기서 createdBoxId 가 null 인 경우는 완전한 버그이다.
+                navController.navigate(CreateBoxRoute.getBoxShareFadeInRoute(createdBoxId!!)) {
                     val currentRoute = navController.currentBackStackEntry?.destination?.route
                     currentRoute?.let { popUpTo(it) { inclusive = true } }
                     launchSingleTop = true

@@ -29,6 +29,7 @@ import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.home.navigation.SettingsArgs
+import com.example.home.navigation.SettingsArgs.SELECTED_PROFILE_URL
 import com.example.home.navigation.SettingsRoute
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
@@ -40,6 +41,7 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.SETTING_NICKNAME_TITLE
 import com.packy.feature.core.R
+import kotlinx.coroutines.flow.filterNotNull
 
 @Composable
 fun SettingNicknameScreen(
@@ -54,6 +56,14 @@ fun SettingNicknameScreen(
                     uiState.currentNickName != uiState.prevNickname &&
                     (uiState.currentNickName?.length ?: 0) >= 2
         }
+    }
+
+    LaunchedEffect(navController) {
+        navController.currentBackStackEntry?.savedStateHandle?.getStateFlow<String?>(SELECTED_PROFILE_URL, null)
+            ?.filterNotNull()
+            ?.collect{
+                viewModel.emitIntent(SettingNicknameIntent.ChangeProfileImage(it))
+            }
     }
 
     LaunchedEffect(viewModel) {

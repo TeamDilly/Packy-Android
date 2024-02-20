@@ -50,9 +50,9 @@ fun SettingsProfileImageScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 SettingsProfileImageEffect.MoveToBack -> {
-                    navController.currentBackStackEntry?.savedStateHandle?.set(
-                        SettingsArgs.PROFILE_URL,
-                        uiState.currentProfileImageUrl
+                    navController.previousBackStackEntry?.savedStateHandle?.set(
+                        SettingsArgs.SELECTED_PROFILE_URL,
+                        uiState.prevProfileImageUrl
                     )
                     navController.popBackStack()
                 }

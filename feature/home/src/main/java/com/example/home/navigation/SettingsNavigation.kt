@@ -103,4 +103,5 @@ object SettingsRoute {
 object SettingsArgs {
     const val NICKNAME = "nickname"
     const val PROFILE_URL = "profileUrl"
+    const val SELECTED_PROFILE_URL = "selectedProfileUrl"
 }

@@ -9,6 +9,10 @@ sealed interface SettingNicknameIntent : MviIntent {
         val nickname: String
     ) : SettingNicknameIntent
 
+    data class ChangeProfileImage(
+        val profileImage: String
+    ) : SettingNicknameIntent
+
     data object OnBackClick : SettingNicknameIntent
     data object OnSaveClick : SettingNicknameIntent
     data object OnSettingProfileClick : SettingNicknameIntent

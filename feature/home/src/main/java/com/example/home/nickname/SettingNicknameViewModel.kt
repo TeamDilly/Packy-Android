@@ -26,6 +26,11 @@ class SettingNicknameViewModel @Inject constructor(
                 currentNickName = intent.nickname
             )
         }
+        subscribeStateIntent<SettingNicknameIntent.ChangeProfileImage>{ state, intent ->
+            state.copy(
+                profileImage = intent.profileImage
+            )
+        }
     }
     init {
         savedStateHandle.getStateFlow(key = SettingsArgs.NICKNAME, initialValue = "").let{ nickname ->

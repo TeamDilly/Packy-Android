@@ -11,6 +11,8 @@ sealed interface SettingsIntent : MviIntent {
     data class OnWebSettingClick(val url: String) : SettingsIntent
     data object OnAccountManageClick : SettingsIntent
     data object OnLogoutClick : SettingsIntent
+
+    data object OnModifyProfileClick: SettingsIntent
 }
 
 data class SettingsState(
@@ -25,4 +27,9 @@ sealed interface SettingsEffect : SideEffect {
 
     data object MoveToAccountManage : SettingsEffect
     data object MoveToBack : SettingsEffect
+
+    data class MoveToModifyProfile(
+        val profileName: String?,
+        val profileImage: String?,
+    ): SettingsEffect
 }

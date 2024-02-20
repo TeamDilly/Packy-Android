@@ -1,6 +1,7 @@
 package com.example.home.settings
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -31,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.home.navigation.SettingsRoute
 import com.example.home.navigation.SettingsRoute.SETTING_ACCOUNT
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
@@ -39,6 +41,7 @@ import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.page.navigation.CommonRoute
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.core.values.Strings.MODIFY_PROFILE
 import com.packy.di.BuildConfig
 import com.packy.domain.model.settings.SettingItem
 import com.packy.feature.core.R
@@ -70,6 +73,15 @@ fun SettingsScreen(
                         route = CommonRoute.getWebScreenRoute(effect.url.toEncoding())
                     )
                 }
+
+                is SettingsEffect.MoveToModifyProfile -> {
+                    navController.navigate(
+                        route = SettingsRoute.getSettingNicknameRoute(
+                            profileUrl = effect.profileImage ?: "",
+                            nickname = effect.profileName ?: ""
+                        )
+                    )
+                }
             }
         }
     }
@@ -84,7 +96,7 @@ fun SettingsScreen(
                 logout()
             },
             onDismiss = { logOutDialog = false },
-            backHandler = { logOutDialog = false}
+            backHandler = { logOutDialog = false }
         )
     }
 
@@ -106,7 +118,8 @@ fun SettingsScreen(
             Profile(
                 modifier = modifier.fillMaxWidth(),
                 imageUrl = { uiState.profileImage ?: "" },
-                nickName = { uiState.profileName ?: "" }
+                nickName = { uiState.profileName ?: "" },
+                modifyProfile = { viewModel.emitIntentThrottle(SettingsIntent.OnModifyProfileClick) }
             )
             Spacer(height = 12.dp)
             SettingItem(
@@ -160,9 +173,10 @@ private fun ColumnScope.SettingsDivier() {
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 private fun Profile(
+    modifier: Modifier = Modifier,
     imageUrl: () -> String,
     nickName: () -> String,
-    modifier: Modifier = Modifier
+    modifyProfile: () -> Unit = {},
 ) {
     Row(
         modifier = modifier.padding(horizontal = 24.dp),
@@ -183,6 +197,22 @@ private fun Profile(
             color = PackyTheme.color.gray900,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
+        )
+        Spacer(1f)
+        Text(
+            text = MODIFY_PROFILE,
+            style = PackyTheme.typography.body06,
+            color = PackyTheme.color.gray900,
+            modifier = Modifier
+                .background(
+                    PackyTheme.color.gray100,
+                    CircleShape
+                )
+                .padding(
+                    vertical = 8.dp,
+                    horizontal = 16.dp
+                )
+                .clickableWithoutRipple { modifyProfile() }
         )
     }
 }

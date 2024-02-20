@@ -28,6 +28,14 @@ class SettingsViewModel @Inject constructor(
         subscribeIntent<SettingsIntent.OnWebSettingClick> { sendEffect(SettingsEffect.MoveToWeb(it.url)) }
         subscribeIntent<SettingsIntent.OnLogoutClick> { sendEffect(SettingsEffect.Logout) }
         subscribeIntent<SettingsIntent.OnAccountManageClick> { sendEffect(SettingsEffect.MoveToAccountManage) }
+        subscribeIntent<SettingsIntent.OnModifyProfileClick> {
+            sendEffect(
+                SettingsEffect.MoveToModifyProfile(
+                    profileName = currentState.profileName,
+                    profileImage = currentState.profileImage
+                )
+            )
+        }
     }
 
     fun getSetting() {

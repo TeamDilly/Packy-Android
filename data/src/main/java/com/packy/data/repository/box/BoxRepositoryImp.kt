@@ -6,6 +6,7 @@ import com.packy.data.model.createbox.toEntity
 import com.packy.domain.model.getbox.GiftBox
 import com.packy.data.model.getbox.toEntity
 import com.packy.data.remote.box.BoxService
+import com.packy.domain.model.box.BoxDeliverStatus
 import com.packy.domain.model.box.BoxDesign
 import com.packy.domain.repository.box.BoxRepository
 import com.packy.lib.utils.Resource
@@ -52,6 +53,12 @@ class BoxRepositoryImp @Inject constructor(
     override suspend fun deleteBox(giftBoxId: String): Flow<Resource<Unit>> = flow {
         emit(Resource.Loading())
         val deleteBox = api.deleteBox(giftBoxId)
+        emit(deleteBox.map { })
+    }
+
+    override suspend fun updateBoxDeliverStatus(giftBoxId: String, status: BoxDeliverStatus): Flow<Resource<Unit>> = flow {
+        emit(Resource.Loading())
+        val deleteBox = api.updateBoxDeliverStatus(giftBoxId, status)
         emit(deleteBox.map { })
     }
 }

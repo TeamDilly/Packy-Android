@@ -2,14 +2,17 @@ package com.packy.data.remote.box
 
 import com.packy.data.model.createbox.BoxDesignDto
 import com.packy.data.model.createbox.CreateBoxDto
+import com.packy.data.model.createbox.UpdateBoxDeliverStatusRequest
 import com.packy.data.model.createbox.box.CreateBoxRequest
 import com.packy.data.model.getbox.GiftBoxDto
+import com.packy.domain.model.box.BoxDeliverStatus
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.safeRequest
 import com.packy.lib.utils.toResource
 import io.ktor.client.HttpClient
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -42,5 +45,14 @@ class BoxService @Inject constructor(
         giftBoxId: String
     ): Resource<String> = safeRequest {
         httpClient.delete("/api/v1/giftboxes/${giftBoxId}")
+    }
+
+    suspend fun updateBoxDeliverStatus(
+        giftBoxId: String,
+        boxDeliverStatus: BoxDeliverStatus
+    ): Resource<String> = safeRequest {
+        httpClient.patch("/api/v1/giftboxes/${giftBoxId}"){
+            setBody(UpdateBoxDeliverStatusRequest(boxDeliverStatus))
+        }
     }
 }

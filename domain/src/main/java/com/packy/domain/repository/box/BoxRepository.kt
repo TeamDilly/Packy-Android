@@ -1,5 +1,6 @@
 package com.packy.domain.repository.box
 
+import com.packy.domain.model.box.BoxDeliverStatus
 import com.packy.domain.model.getbox.GiftBox
 import com.packy.domain.model.box.BoxDesign
 import com.packy.lib.utils.Resource
@@ -12,4 +13,9 @@ interface BoxRepository {
     suspend fun getBoxDesign(): Flow<Resource<List<BoxDesign>>>
 
     suspend fun deleteBox(giftBoxId: String): Flow<Resource<Unit>>
+
+    suspend fun updateBoxDeliverStatus(
+        giftBoxId: String,
+        status: BoxDeliverStatus
+    ): Flow<Resource<Unit>>
 }

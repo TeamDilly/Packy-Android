@@ -11,6 +11,7 @@ sealed interface SettingNicknameIntent : MviIntent {
 
     data object OnBackClick : SettingNicknameIntent
     data object OnSaveClick : SettingNicknameIntent
+    data object OnSettingProfileClick : SettingNicknameIntent
 }
 
 data class SettingNicknameState(
@@ -23,4 +24,8 @@ sealed interface SettingNicknameEffect : SideEffect {
     data object MoveToBack : SettingNicknameEffect
     data object SavedNewNickName : SettingNicknameEffect
     data object FailSaveNewNickName : SettingNicknameEffect
+
+    data class MoveToSettingProfile(
+        val profileImage: String? = null
+    ) : SettingNicknameEffect
 }

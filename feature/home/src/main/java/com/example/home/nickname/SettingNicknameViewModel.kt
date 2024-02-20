@@ -19,6 +19,7 @@ class SettingNicknameViewModel @Inject constructor(
 
     override fun handleIntent() {
         subscribeIntent<SettingNicknameIntent.OnBackClick> { sendEffect(SettingNicknameEffect.MoveToBack) }
+        subscribeIntent<SettingNicknameIntent.OnSettingProfileClick> { sendEffect(SettingNicknameEffect.MoveToSettingProfile(currentState.profileImage)) }
         subscribeIntent<SettingNicknameIntent.OnSaveClick> {  }
         subscribeStateIntent<SettingNicknameIntent.ChangeNickName>{ state, intent ->
             state.copy(
@@ -26,24 +27,27 @@ class SettingNicknameViewModel @Inject constructor(
             )
         }
     }
-
     init {
-        savedStateHandle.get<String>(SettingsArgs.NICKNAME)?.let{ nickname ->
+        savedStateHandle.getStateFlow(key = SettingsArgs.NICKNAME, initialValue = "").let{ nickname ->
             viewModelScope.launch {
-                setState {
-                    it.copy(
-                        prevNickname = nickname,
-                        currentNickName = nickname
-                    )
+                nickname.collect { nickname ->
+                    setState {
+                        it.copy(
+                            prevNickname = nickname,
+                            currentNickName = nickname
+                        )
+                    }
                 }
             }
         }
-        savedStateHandle.get<String>(SettingsArgs.PROFILE_URL)?.let{ profileUrl ->
+        savedStateHandle.getStateFlow(key = SettingsArgs.PROFILE_URL, initialValue = "").let{ profileUrl ->
             viewModelScope.launch {
-                setState {
-                    it.copy(
-                        profileImage = profileUrl,
-                    )
+                profileUrl.collect { profileUrl ->
+                    setState {
+                        it.copy(
+                            profileImage = profileUrl
+                        )
+                    }
                 }
             }
         }

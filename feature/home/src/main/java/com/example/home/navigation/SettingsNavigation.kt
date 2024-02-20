@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.home.nickname.SettingNicknameScreen
+import com.example.home.profileimage.SettingsProfileImageScreen
 import com.example.home.settingaccount.SettingAccountScreen
 import com.example.home.settings.SettingsScreen
 import com.example.home.withdrawal.WithdrawalScreen
@@ -59,8 +60,21 @@ fun NavGraphBuilder.settingsNavGraph(
                     type = NavType.StringType
                 }
             )
-        ) {
+        ) { entry ->
             SettingNicknameScreen(
+                navController = navController,
+            )
+        }
+
+        asPagingComposable(
+            route = SettingsRoute.SETTING_PROFILE + "/{${SettingsArgs.PROFILE_URL}}",
+            arguments = listOf(
+                navArgument(SettingsArgs.PROFILE_URL) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            SettingsProfileImageScreen(
                 navController = navController
             )
         }
@@ -74,11 +88,16 @@ object SettingsRoute {
     const val SETTING_ACCOUNT = "settingAccount"
     const val WITHDRAWAL = "withdrawal"
     const val SETTING_NICKNAME = "settingNickname"
+    const val SETTING_PROFILE = "settingProfile"
 
     fun getSettingNicknameRoute(
         nickname: String,
         profileUrl: String
     ) = "$SETTING_NICKNAME/$nickname/${profileUrl.toEncoding()}"
+
+    fun getSettingProfileRoute(
+        profileUrl: String?
+    ) = "$SETTING_PROFILE/${profileUrl?.toEncoding()}"
 }
 
 object SettingsArgs {

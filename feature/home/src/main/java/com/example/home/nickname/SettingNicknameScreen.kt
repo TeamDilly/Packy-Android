@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -27,7 +28,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.home.navigation.SettingsArgs
+import com.example.home.navigation.SettingsRoute
 import com.packy.core.common.Spacer
+import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.textfield.PackyTextField
@@ -52,6 +56,18 @@ fun SettingNicknameScreen(
         }
     }
 
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                SettingNicknameEffect.SavedNewNickName -> Unit
+                SettingNicknameEffect.FailSaveNewNickName -> Unit
+                SettingNicknameEffect.MoveToBack -> navController.popBackStack()
+                is SettingNicknameEffect.MoveToSettingProfile -> navController.navigate(SettingsRoute.getSettingProfileRoute(effect.profileImage))
+            }
+        }
+
+    }
+
     Scaffold(
         topBar = {
             PackyTopBar.Builder()
@@ -64,11 +80,17 @@ fun SettingNicknameScreen(
         }
     ) { innerPadding ->
         Column(
-            modifier = modifier.padding(innerPadding).fillMaxSize(),
+            modifier = modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
         ) {
             Spacer(height = 40.dp)
             Profile(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .clickableWithoutRipple {
+                        viewModel.emitIntentThrottle(SettingNicknameIntent.OnSettingProfileClick)
+                    },
                 profileImage = uiState.profileImage
             )
             Spacer(height = 40.dp)

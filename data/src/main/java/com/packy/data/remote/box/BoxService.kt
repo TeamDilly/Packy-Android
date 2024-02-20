@@ -8,6 +8,7 @@ import com.packy.lib.utils.Resource
 import com.packy.lib.utils.safeRequest
 import com.packy.lib.utils.toResource
 import io.ktor.client.HttpClient
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -35,5 +36,11 @@ class BoxService @Inject constructor(
         giftBoxId: String
     ): Resource<GiftBoxDto> = safeRequest {
         httpClient.get("/api/v1/giftboxes/${giftBoxId}")
+    }
+
+    suspend fun deleteBox(
+        giftBoxId: String
+    ): Resource<String> = safeRequest {
+        httpClient.delete("/api/v1/giftboxes/${giftBoxId}")
     }
 }

@@ -10,4 +10,6 @@ interface BoxRepository {
     suspend fun getBoxDesignLocal(): Flow<BoxDesign?>
     suspend fun setBoxDesignLocal(boxDesign: BoxDesign): Unit
     suspend fun getBoxDesign(): Flow<Resource<List<BoxDesign>>>
+
+    suspend fun deleteBox(giftBoxId: String): Flow<Resource<Unit>>
 }

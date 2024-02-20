@@ -48,4 +48,10 @@ class BoxRepositoryImp @Inject constructor(
             boxDesign.map { it.toEntity() }
         })
     }
+
+    override suspend fun deleteBox(giftBoxId: String): Flow<Resource<Unit>> = flow {
+        emit(Resource.Loading())
+        val deleteBox = api.deleteBox(giftBoxId)
+        emit(deleteBox.map { })
+    }
 }

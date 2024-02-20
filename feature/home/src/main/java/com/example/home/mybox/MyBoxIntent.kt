@@ -11,6 +11,11 @@ sealed interface MyBoxIntent : MviIntent {
     data object OnBackClick : MyBoxIntent
     data class ChangeShowBoxType(val boxType: MyBoxType) : MyBoxIntent
     data class ClickMyBox(val boxId: Long) : MyBoxIntent
+
+    data class OnMyBoxMoreClick(val boxId: Long) : MyBoxIntent
+    data class OnClickDeleteMyBoxBottomSheet(val boxId: Long) : MyBoxIntent
+
+    data class OnDeleteBoxClick(val boxId: Long): MyBoxIntent
 }
 
 enum class MyBoxType(val title: String) {
@@ -22,9 +27,14 @@ data class MyBoxState(
     val showTab: MyBoxType,
     val sendBox: PagingData<HomeBox>,
     val receiveBox: PagingData<HomeBox>,
+    val isLoading: Boolean = false,
+    val removeItemBox: Set<Long> = emptySet()
 ) : UiState
 
 sealed interface MyBoxEffect : SideEffect {
     data object MoveToBack : MyBoxEffect
     data class MoveToBoxDetail(val boxId: Long) : MyBoxEffect
+
+    data class ShowDeleteBottomSheet(val boxId: Long) : MyBoxEffect
+    data class ShowDeleteDialog(val boxId: Long): MyBoxEffect
 }

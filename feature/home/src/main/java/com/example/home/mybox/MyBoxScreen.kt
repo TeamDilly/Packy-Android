@@ -3,6 +3,7 @@ package com.example.home.mybox
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -22,38 +22,54 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.LocalRippleTheme
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.filter
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.common.authenticator.ext.toFormatTimeStampString
 import com.packy.core.common.NoRippleTheme
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.designsystem.dialog.PackyDialog
+import com.packy.core.designsystem.dialog.PackyDialogInfo
+import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
@@ -61,10 +77,15 @@ import com.packy.core.values.Strings.MY_BOX_TITLE
 import com.packy.domain.model.home.HomeBox
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class
+)
 @Composable
 fun MyBoxScreen(
     modifier: Modifier = Modifier,
@@ -75,11 +96,21 @@ fun MyBoxScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val sendBox: LazyPagingItems<HomeBox> =
-        viewModel.uiState.map { it.sendBox }.collectAsLazyPagingItems()
+        viewModel.uiState.map { it.sendBox.filter { box -> !uiState.removeItemBox.contains(box.boxId)  } }.collectAsLazyPagingItems()
     val receiveBox: LazyPagingItems<HomeBox> =
-        viewModel.uiState.map { it.receiveBox }.collectAsLazyPagingItems()
+        viewModel.uiState.map { it.receiveBox.filter { box -> !uiState.removeItemBox.contains(box.boxId)  }  }.collectAsLazyPagingItems()
 
     val pagerState = rememberPagerState(pageCount = { 2 })
+
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf<Long?>(null) }
+    var showDeleteDialog by remember { mutableStateOf<PackyDialogInfo?>(null) }
+
+    val loading by remember { derivedStateOf { uiState.isLoading } }
+    if (loading) {
+        PackyProgressDialog()
+    }
 
     LaunchedEffect(Unit) {
         viewModel.getReceiveBoxes()
@@ -88,6 +119,23 @@ fun MyBoxScreen(
             when (effect) {
                 is MyBoxEffect.MoveToBack -> navController.popBackStack()
                 is MyBoxEffect.MoveToBoxDetail -> moveToBoxDetail(effect.boxId)
+                is MyBoxEffect.ShowDeleteBottomSheet -> {
+                    showBottomSheet = effect.boxId
+                }
+
+                is MyBoxEffect.ShowDeleteDialog -> {
+                    showDeleteDialog = PackyDialogInfo(
+                        title = Strings.DELETE_BOX_TITLE,
+                        subTitle = Strings.DELETE_BOX_SUB_TIELE,
+                        dismiss = Strings.DELETE,
+                        confirm = Strings.CANCEL,
+                        onConfirm = { showDeleteDialog = null },
+                        onDismiss = {
+                            viewModel.emitIntentThrottle(MyBoxIntent.OnDeleteBoxClick(effect.boxId))
+                            showDeleteDialog = null
+                        }
+                    )
+                }
             }
         }
     }
@@ -107,6 +155,10 @@ fun MyBoxScreen(
         }
     }
 
+    if (showDeleteDialog != null) {
+        PackyDialog(showDeleteDialog!!)
+    }
+
     Scaffold(
         topBar = {
             PackyTopBar.Builder()
@@ -115,6 +167,17 @@ fun MyBoxScreen(
         },
         contentWindowInsets = WindowInsets(0.dp)
     ) { innerPadding ->
+
+        if (showBottomSheet != null) {
+            MyBoxDeleteBottomSheet(
+                boxId = showBottomSheet!!,
+                sheetState = sheetState,
+                scope = scope,
+                onDeleteClick = { boxId -> viewModel.emitIntentThrottle(MyBoxIntent.OnClickDeleteMyBoxBottomSheet(boxId)) },
+                closeSheet = { showBottomSheet = null }
+            )
+        }
+
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -132,8 +195,10 @@ fun MyBoxScreen(
                     MyBoxType.SEND.ordinal -> MyBoxList(
                         modifier = Modifier.fillMaxSize(),
                         boxes = sendBox,
+                        isDeletedBox = { boxId -> uiState.removeItemBox.contains(boxId) },
                         moveToCreateBox = moveToCreateBox,
                         moveToBoxDetail = moveToBoxDetail,
+                        deleteMyBox = { boxId -> viewModel.emitIntent(MyBoxIntent.OnMyBoxMoreClick(boxId)) },
                         emptyText = Strings.HOME_MY_BOX_EMPTY_SEND_BOX,
                         nameTag = Strings.TO
                     )
@@ -141,8 +206,10 @@ fun MyBoxScreen(
                     MyBoxType.RECEIVE.ordinal -> MyBoxList(
                         modifier = Modifier.fillMaxSize(),
                         boxes = receiveBox,
+                        isDeletedBox = { boxId -> uiState.removeItemBox.contains(boxId) },
                         moveToCreateBox = moveToCreateBox,
                         moveToBoxDetail = moveToBoxDetail,
+                        deleteMyBox = { boxId -> viewModel.emitIntent(MyBoxIntent.OnMyBoxMoreClick(boxId)) },
                         emptyText = Strings.HOME_MY_BOX_EMPTY_RECEIVE_BOX,
                         nameTag = Strings.FROM,
                         showCreateBoxButton = false
@@ -154,11 +221,83 @@ fun MyBoxScreen(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun MyBoxDeleteBottomSheet(
+    boxId: Long,
+    sheetState: SheetState,
+    scope: CoroutineScope = rememberCoroutineScope(),
+    onDeleteClick: (Long) -> Unit = {},
+    closeSheet: () -> Unit = {}
+) {
+    ModalBottomSheet(
+        onDismissRequest = closeSheet,
+        sheetState = sheetState,
+        dragHandle = null,
+        containerColor = PackyTheme.color.white,
+    ) {
+        Column {
+            Spacer(height = 8.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .clickableWithoutRipple {
+                        scope
+                            .launch { sheetState.hide() }
+                            .invokeOnCompletion {
+                                onDeleteClick(boxId)
+                                if (!sheetState.isVisible) {
+                                    closeSheet()
+                                }
+                            }
+                    },
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+
+                    text = Strings.DELETE,
+                    style = PackyTheme.typography.body02,
+                    color = PackyTheme.color.gray900,
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            Divider()
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .clickableWithoutRipple {
+                        scope
+                            .launch { sheetState.hide() }
+                            .invokeOnCompletion {
+                                if (!sheetState.isVisible) {
+                                    closeSheet()
+                                }
+                            }
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = Strings.CANCEL,
+                    style = PackyTheme.typography.body02,
+                    color = PackyTheme.color.gray900,
+                    textAlign = TextAlign.Center
+                )
+            }
+            Spacer(height = 16.dp)
+        }
+    }
+}
+
+@Composable
 private fun MyBoxList(
     modifier: Modifier = Modifier,
     boxes: LazyPagingItems<HomeBox>,
+    isDeletedBox: (Long) -> Boolean,
     moveToCreateBox: () -> Unit,
     moveToBoxDetail: (Long) -> Unit,
+    deleteMyBox: (Long) -> Unit = {},
     emptyText: String,
     nameTag: String,
     showCreateBoxButton: Boolean = true,
@@ -188,6 +327,7 @@ private fun MyBoxList(
                     modifier = Modifier
                         .fillMaxSize(),
                     moveToBoxDetail = moveToBoxDetail,
+                    deleteMyBox = deleteMyBox,
                     box = box,
                     nameTag = nameTag
                 )
@@ -201,6 +341,7 @@ private fun MyBoxList(
 private fun MyBoxItem(
     modifier: Modifier = Modifier,
     moveToBoxDetail: (Long) -> Unit,
+    deleteMyBox: (Long) -> Unit = {},
     box: HomeBox,
     nameTag: String
 ) {
@@ -249,16 +390,31 @@ private fun MyBoxItem(
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
-        Text(
+        Row(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            text = box.giftBoxDate.toFormatTimeStampString(),
-            style = PackyTheme.typography.body06,
-            color = PackyTheme.color.gray600,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = box.giftBoxDate.toFormatTimeStampString(),
+                style = PackyTheme.typography.body06,
+                color = PackyTheme.color.gray600,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(1f)
+            Icon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickableWithoutRipple {
+                        deleteMyBox(box.boxId)
+                    },
+                imageVector = ImageVector.vectorResource(id = R.drawable.ellipsis),
+                contentDescription = "Delete",
+                tint = PackyTheme.color.gray600,
+            )
+        }
         Spacer(height = 16.dp)
     }
 }

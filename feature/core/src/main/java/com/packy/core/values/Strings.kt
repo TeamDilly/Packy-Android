@@ -20,6 +20,7 @@ object Strings {
     const val SELECT = "선택"
     const val EXIT = "나가기"
     const val NICKNAME = "닉네임"
+    const val DELETE = "삭제하기"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
@@ -58,6 +59,9 @@ object Strings {
     const val HOME_MY_BOX_EMPTY_SEND_BOX = "아직 보낸 선물박스가 없어요"
     const val HOME_MY_BOX_EMPTY_RECEIVE_BOX = "아직 받은 선물박스가 없어요"
     const val HOME_MY_BOX_EMPTY_NUDGE = "패키의 선물박스로 마음을 나눠보아요"
+
+    const val DELETE_BOX_TITLE = "선물박스를 삭제할까요?"
+    const val DELETE_BOX_SUB_TIELE = "선물박스를 삭제하면 다시 볼 수 없어요\n선물박스에 담긴 선물들도 사라져요"
 
     // settings
     const val ACCOUNT_MANAGE = "계정 관리"

@@ -8,14 +8,14 @@ import com.packy.mvi.mvi.UiState
 sealed interface SettingsProfileImageIntent : MviIntent {
     data object OnBackClick: SettingsProfileImageIntent
     data class OnChangeProfile(
-        val newProfileImageUrl: String
+        val newProfileImage: ProfileDesign
     ): SettingsProfileImageIntent
     data object OnSaveClick: SettingsProfileImageIntent
 }
 
 data class SettingsProfileImageState(
     val prevProfileImageUrl: String? = null,
-    val currentProfileImageUrl: String? = null,
+    val currentProfileImage: ProfileDesign? = null,
     val profiles: List<ProfileDesign> = emptyList()
 ) : UiState
 

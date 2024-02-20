@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.home.navigation.SettingsArgs.PROFILE_URL
 import com.packy.domain.usecase.profile.GetProfilesUseCase
+import com.packy.domain.usecase.profile.UpdateProfileUseCase
 import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
@@ -14,6 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsProfileImageViewModel @Inject constructor(
+    private val updateProfileUseCase: UpdateProfileUseCase,
     private val getProfilesUseCase: GetProfilesUseCase,
     private val savedStateHandle: SavedStateHandle
 ) :
@@ -23,22 +25,36 @@ class SettingsProfileImageViewModel @Inject constructor(
     )
 
     override fun handleIntent() {
-        subscribeIntent<SettingsProfileImageIntent.OnSaveClick> {  }
+        subscribeIntent<SettingsProfileImageIntent.OnSaveClick> {
+            currentState.currentProfileImage?.id?.toInt()
+                ?.let { id ->
+                    updateProfileUseCase.updateProfile(id)
+                        .filterSuccess()
+                        .unwrapResource()
+                        .collect{
+                            setState {
+                                it.copy(
+                                    prevProfileImageUrl = currentState.currentProfileImage?.imageUrl
+                                )
+                            }
+                            sendEffect(SettingsProfileImageEffect.MoveToBack)
+                        }
+                }
+        }
         subscribeIntent<SettingsProfileImageIntent.OnBackClick> { sendEffect(SettingsProfileImageEffect.MoveToBack) }
-        subscribeStateIntent<SettingsProfileImageIntent.OnChangeProfile>{ state, intent ->
+        subscribeStateIntent<SettingsProfileImageIntent.OnChangeProfile> { state, intent ->
             state.copy(
-                currentProfileImageUrl = intent.newProfileImageUrl
+                currentProfileImage = intent.newProfileImage
             )
         }
     }
 
     init {
-        savedStateHandle.get<String>(PROFILE_URL)?.let{ profileUrl ->
+        savedStateHandle.get<String>(PROFILE_URL)?.let { profileUrl ->
             viewModelScope.launch {
-                setState{
+                setState {
                     it.copy(
                         prevProfileImageUrl = profileUrl,
-                        currentProfileImageUrl = profileUrl
                     )
                 }
             }
@@ -53,6 +69,7 @@ class SettingsProfileImageViewModel @Inject constructor(
                 .collect { prfiles ->
                     setState { state ->
                         state.copy(
+                            currentProfileImage = prfiles.firstOrNull { it.imageUrl == state.prevProfileImageUrl },
                             profiles = prfiles
                         )
                     }

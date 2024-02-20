@@ -43,7 +43,7 @@ fun SettingsProfileImageScreen(
     viewModel: SettingsProfileImageViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val saved by remember { derivedStateOf { uiState.currentProfileImageUrl != uiState.prevProfileImageUrl } }
+    val saved by remember { derivedStateOf { uiState.currentProfileImage?.imageUrl != uiState.prevProfileImageUrl } }
 
     LaunchedEffect(viewModel) {
         viewModel.initProfile()
@@ -80,7 +80,7 @@ fun SettingsProfileImageScreen(
                 modifier = Modifier
                     .size(160.dp)
                     .clip(CircleShape),
-                model = uiState.currentProfileImageUrl,
+                model = uiState.currentProfileImage?.imageUrl,
                 contentDescription = "profile image"
             )
             Spacer(height = 40.dp)
@@ -100,7 +100,7 @@ fun SettingsProfileImageScreen(
                             .clickableWithoutRipple {
                                 viewModel.emitIntentThrottle(
                                     SettingsProfileImageIntent.OnChangeProfile(
-                                        newProfileImageUrl = profile.imageUrl
+                                        newProfileImage = profile
                                     )
                                 )
                             },

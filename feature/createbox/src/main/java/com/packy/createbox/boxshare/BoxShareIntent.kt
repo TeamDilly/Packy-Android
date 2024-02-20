@@ -10,6 +10,10 @@ sealed interface BoxShareIntent : MviIntent {
     data object ShareKakao : BoxShareIntent
     data object OnBackClick: BoxShareIntent
     data object OnCloseClick : BoxShareIntent
+
+    data object OnExitClick: BoxShareIntent
+
+    data object OnLazySharClick: BoxShareIntent
 }
 
 data class BoxShareState(

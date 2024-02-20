@@ -5,9 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.packy.common.kakaoshare.KakaoCustomFeed
 import com.packy.createbox.boxtitle.BoxAddTitleIntent
 import com.packy.createbox.navigation.CreateBoxArgs
+import com.packy.domain.model.box.BoxDeliverStatus
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
+import com.packy.domain.usecase.box.UpdateBoxDeliverStatusUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.lib.utils.Resource
+import com.packy.lib.utils.filterSuccess
+import com.packy.lib.utils.loadingHandler
+import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
@@ -20,7 +25,8 @@ import javax.inject.Inject
 class BoxShareViewModel @Inject constructor(
     private val createBoxUseCase: CreateBoxUseCase,
     private val boxDesignUseCase: GetBoxDesignUseCase,
-    private val savedStateHandle: SavedStateHandle
+    private val updateBoxDeliverStatusUseCase: UpdateBoxDeliverStatusUseCase,
+    private val savedStateHandle: SavedStateHandle,
 ) :
     MviViewModel<BoxShareIntent, BoxShareState, BoxShareEffect>() {
     override fun createInitialState(): BoxShareState = BoxShareState(
@@ -34,9 +40,27 @@ class BoxShareViewModel @Inject constructor(
     override fun handleIntent() {
         subscribeIntent<BoxShareIntent.ShareKakao>(sharedBox())
         subscribeIntent<BoxShareIntent.OnBackClick> { sendEffect(BoxShareEffect.MoveToBack) }
+        subscribeIntent<BoxShareIntent.OnLazySharClick> {
+            lazyShar()
+        }
+        subscribeIntent<BoxShareIntent.OnExitClick> {
+            // TODO:: 결정 필요
+        }
         subscribeIntent<BoxShareIntent.OnCloseClick> {
             // TODO:: 나가기 나중에 만들기 필요
         }
+    }
+
+    private suspend fun lazyShar() {
+        updateBoxDeliverStatusUseCase.updateBoxDeliverStatus(
+            currentState.createdBox ?: "",
+            BoxDeliverStatus.WAITING,
+        ).loadingHandler { setState { state -> state.copy(isLoading = it) } }
+            .filterSuccess()
+            .unwrapResource()
+            .collect {
+                // TODO:: 결정 필요
+            }
     }
 
     init {
@@ -78,7 +102,18 @@ class BoxShareViewModel @Inject constructor(
     fun kakaoShare(shared: Resource<String?>) {
         when (shared) {
             is Resource.Success -> {
-                setState(currentState.copy(shared = true))
+                viewModelScope.launch {
+                    updateBoxDeliverStatusUseCase.updateBoxDeliverStatus(
+                        currentState.createdBox ?: "",
+                        BoxDeliverStatus.DELIVERED
+                    ).loadingHandler { setState { state -> state.copy(isLoading = it) } }
+                        .filterSuccess()
+                        .unwrapResource()
+                        .collect {
+                           // TODO :: 결정 필요
+                        }
+                    setState(currentState.copy(shared = true))
+                }
             }
 
             is Resource.NetworkError,

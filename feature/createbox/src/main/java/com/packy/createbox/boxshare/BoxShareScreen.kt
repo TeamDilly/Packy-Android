@@ -39,6 +39,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.common.kakaoshare.KakaoShare
 import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
+import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.progress.PackyProgressDialog
@@ -101,7 +102,11 @@ fun BoxShareScreen(
     }
 
     BackHandler {
-        viewModel.emitIntent(BoxShareIntent.OnCloseClick)
+        if (shared == true) {
+            viewModel.emitIntent(BoxShareIntent.OnExitClick)
+        } else {
+            viewModel.emitIntent(BoxShareIntent.OnBackClick)
+        }
     }
 
     Scaffold(
@@ -112,7 +117,7 @@ fun BoxShareScreen(
                         endTextButton(
                             text = Strings.EXIT
                         ) {
-                            viewModel.emitIntent(BoxShareIntent.OnCloseClick)
+                            viewModel.emitIntent(BoxShareIntent.OnExitClick)
                         }
                     } else {
                         endIconButton(
@@ -175,7 +180,18 @@ fun BoxShareScreen(
                     viewModel.emitIntentThrottle(BoxShareIntent.ShareKakao)
                 }
             )
-            Spacer(height = 62.dp)
+            Spacer(height = 8.dp)
+            Text(
+                modifier = Modifier.clickableWithoutRipple {
+                    viewModel.emitIntent(BoxShareIntent.OnLazySharClick)
+                },
+                text = Strings.CREATE_BOX_ADD_SHARE_LAZY,
+                style = PackyTheme.typography.body02.copy(
+                    textAlign = TextAlign.Center
+                ),
+                color = PackyTheme.color.gray900
+            )
+            Spacer(height = 20.dp)
         }
     }
 }

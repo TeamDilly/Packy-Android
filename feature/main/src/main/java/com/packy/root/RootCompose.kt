@@ -34,7 +34,7 @@ fun RootCompose(
 
     var globalPopUp by rememberSaveable { mutableStateOf<PackyDialogInfo?>(null) }
 
-    if(globalPopUp != null){
+    if (globalPopUp != null) {
         PackyDialog(packyDialogInfo = globalPopUp!!)
     }
 
@@ -54,13 +54,18 @@ fun RootCompose(
             }
         },
         moveToHomeClear = {
-            navController.navigate(HOME_ROOT){
+            navController.navigate(HOME_ROOT) {
                 popUpTo(navController.graph.id) { inclusive = true }
                 launchSingleTop = true
             }
         },
-        moveToBoxDetail = {
-            navController.navigate(GiftBoxRoute.getGiftBoxRootRoute(it))
+        moveToBoxDetail = { boxId, shouldShowShared ->
+            navController.navigate(
+                GiftBoxRoute.getGiftBoxRootRoute(
+                    giftBoxId = boxId,
+                    shouldShowShared = shouldShowShared
+                )
+            )
         },
         moveToCreateBox = {
             navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH)

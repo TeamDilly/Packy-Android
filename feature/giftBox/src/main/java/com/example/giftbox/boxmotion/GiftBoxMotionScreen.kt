@@ -24,7 +24,7 @@ fun GiftBoxMotionScreen(
 ) {
     LaunchedEffect(null) {
         delay(1000)
-        navController.navigate(GiftBoxRoute.getGiftBoxDetailOpenRoute(giftBox)){
+        navController.navigate(GiftBoxRoute.getGiftBoxDetailOpenRoute(giftBox, false)){
             popUpTo(GiftBoxRoute.GIFT_BOX_MOTION) {
                 inclusive = true
             }

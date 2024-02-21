@@ -11,7 +11,7 @@ import com.packy.mvi.mvi.UiState
 sealed interface MyBoxIntent : MviIntent {
     data object OnBackClick : MyBoxIntent
     data class ChangeShowBoxType(val boxType: MyBoxType) : MyBoxIntent
-    data class ClickMyBox(val boxId: Long) : MyBoxIntent
+    data class ClickMyBox(val boxId: Long, val shouldShowShared: Boolean) : MyBoxIntent
 
     data class OnMyBoxMoreClick(val boxId: Long) : MyBoxIntent
     data class OnLayBoxMoreClick(val boxId: Long) : MyBoxIntent
@@ -42,7 +42,7 @@ data class MyBoxState(
 
 sealed interface MyBoxEffect : SideEffect {
     data object MoveToBack : MyBoxEffect
-    data class MoveToBoxDetail(val boxId: Long) : MyBoxEffect
+    data class MoveToBoxDetail(val boxId: Long, val shouldShowShared: Boolean) : MyBoxEffect
 
     data class ShowDeleteBottomSheet(
         val boxId: Long,

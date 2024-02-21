@@ -46,7 +46,7 @@ data class BottomNavigationItem(
 fun HomeRootScreen(
     modifier: Modifier = Modifier,
     moveToCreateBox: () -> Unit,
-    moveToBoxDetail: (Long) -> Unit,
+    moveToBoxDetail: (Long, Boolean) -> Unit,
     moveSettings: () -> Unit,
 ) {
     val navController = rememberNavController()

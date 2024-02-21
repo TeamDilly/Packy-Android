@@ -1,10 +1,12 @@
 package com.example.giftbox.boxdetailopen
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.example.giftbox.giftarr.GiftBoxArrState
 import com.example.giftbox.navigation.GiftBoxRoute
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +24,15 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
                 GiftBoxRoute.getGiftBoxArg(savedStateHandle)
             )
         )
+        savedStateHandle.get<Boolean>(GiftBoxRoute.GIFT_BOX_SHOULD_SHOW_SHARED)?.let { shouldShow ->
+            viewModelScope.launch {
+                setState {
+                    it.copy(
+                        shouldShowShared = shouldShow
+                    )
+                }
+            }
+        }
     }
 
     override fun handleIntent() {

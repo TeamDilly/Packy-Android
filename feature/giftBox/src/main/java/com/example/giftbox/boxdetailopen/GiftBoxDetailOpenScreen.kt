@@ -397,8 +397,29 @@ private fun GiftBoxColumn(
                 showBackArrow = showBackArrow,
                 onBackClick = { viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnBackClick) },
                 rightButton = {
-                    PackyCloseIconButton(style = closeIconButtonStyle.large.white) {
-                        viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnCloseClick)
+                    if (uiState.shouldShowShared) {
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = PackyTheme.color.white,
+                                    shape = CircleShape
+                                )
+                                .padding(
+                                    horizontal = 16.dp,
+                                    vertical = 11.dp
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = Strings.SEND,
+                                style = PackyTheme.typography.body02,
+                                color = PackyTheme.color.gray900
+                            )
+                        }
+                    } else {
+                        PackyCloseIconButton(style = closeIconButtonStyle.large.white) {
+                            viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnCloseClick)
+                        }
                     }
                 }
             )

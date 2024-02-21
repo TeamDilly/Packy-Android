@@ -23,6 +23,7 @@ fun GiftBoxRootScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     skipArr: Boolean,
+    shouldShowShared: Boolean,
     viewModel: GiftBoxRootViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
@@ -37,7 +38,7 @@ fun GiftBoxRootScreen(
 
                 is GiftBoxRootEffect.GetGiftBox -> {
                     val route =
-                        if (skipArr) GiftBoxRoute.getGiftBoxDetailOpenRoute(effect.giftBox)
+                        if (skipArr) GiftBoxRoute.getGiftBoxDetailOpenRoute(effect.giftBox, shouldShowShared)
                         else GiftBoxRoute.getGiftBoxArrRoute(effect.giftBox)
                     navController.navigate(route) {
                         val currentRoute = navController.currentBackStackEntry?.destination?.route

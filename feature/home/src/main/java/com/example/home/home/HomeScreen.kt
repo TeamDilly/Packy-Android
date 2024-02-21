@@ -55,7 +55,7 @@ import com.packy.domain.model.home.HomeBox
 fun HomeScreen(
     navController: NavController,
     moveToCreateBox: () -> Unit,
-    moveToBoxDetail: (Long) -> Unit,
+    moveToBoxDetail: (Long, Boolean) -> Unit,
     moveSettings: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
@@ -86,7 +86,7 @@ fun HomeScreen(
                     moveSettings()
                 }
 
-                is HomeEffect.MoveToBoxDetail -> moveToBoxDetail(effect.boxId)
+                is HomeEffect.MoveToBoxDetail -> moveToBoxDetail(effect.boxId, false)
                 HomeEffect.MoveToCreateBox -> moveToCreateBox()
                 HomeEffect.MoveToMoreBox -> navController.navigate(MY_BOX)
                 is HomeEffect.ThrowError -> {

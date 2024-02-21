@@ -99,7 +99,7 @@ fun MyBoxScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     moveToCreateBox: () -> Unit,
-    moveToBoxDetail: (Long) -> Unit,
+    moveToBoxDetail: (Long, Boolean) -> Unit,
     viewModel: MyBoxViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -148,7 +148,11 @@ fun MyBoxScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is MyBoxEffect.MoveToBack -> navController.popBackStack()
-                is MyBoxEffect.MoveToBoxDetail -> moveToBoxDetail(effect.boxId)
+                is MyBoxEffect.MoveToBoxDetail -> moveToBoxDetail(
+                    effect.boxId,
+                    effect.shouldShowShared
+                )
+
                 is MyBoxEffect.ShowDeleteBottomSheet -> {
                     showBottomSheet = effect.boxId to effect.isLazyBox
                 }
@@ -190,8 +194,8 @@ fun MyBoxScreen(
             .distinctUntilChanged()
             .filter { pagerState.pageCount != uiState.showTab.ordinal }
             .collect { page ->
-            viewModel.emitIntent(MyBoxIntent.ChangeShowBoxType(MyBoxType.entries[page]))
-        }
+                viewModel.emitIntent(MyBoxIntent.ChangeShowBoxType(MyBoxType.entries[page]))
+            }
     }
 
     if (showDeleteDialog != null) {
@@ -255,7 +259,14 @@ fun MyBoxScreen(
                     ) { page ->
                         LazyBoxItem(
                             lazyBox = lazyBox[page],
-                            onClick = { boxId -> viewModel.emitIntent(MyBoxIntent.ClickMyBox(boxId)) },
+                            onClick = { boxId ->
+                                viewModel.emitIntent(
+                                    MyBoxIntent.ClickMyBox(
+                                        boxId,
+                                        true
+                                    )
+                                )
+                            },
                             onMoreClick = { boxId -> viewModel.emitIntent(MyBoxIntent.OnLayBoxMoreClick(boxId)) }
                         )
                     }
@@ -381,7 +392,7 @@ private fun MyBoxList(
     boxes: LazyPagingItems<HomeBox>,
     isDeletedBox: (Long) -> Boolean,
     moveToCreateBox: () -> Unit,
-    moveToBoxDetail: (Long) -> Unit,
+    moveToBoxDetail: (Long, Boolean) -> Unit,
     deleteMyBox: (Long) -> Unit = {},
     emptyText: String,
     nameTag: String,
@@ -424,7 +435,7 @@ private fun MyBoxList(
 @Composable
 private fun MyBoxItem(
     modifier: Modifier = Modifier,
-    moveToBoxDetail: (Long) -> Unit,
+    moveToBoxDetail: (Long, Boolean) -> Unit,
     deleteMyBox: (Long) -> Unit = {},
     box: HomeBox,
     nameTag: String
@@ -436,7 +447,10 @@ private fun MyBoxItem(
                 shape = RoundedCornerShape(8.dp)
             )
             .clickableWithoutRipple {
-                moveToBoxDetail(box.boxId)
+                moveToBoxDetail(
+                    box.boxId,
+                    false
+                )
             },
     ) {
         Spacer(height = 16.dp)

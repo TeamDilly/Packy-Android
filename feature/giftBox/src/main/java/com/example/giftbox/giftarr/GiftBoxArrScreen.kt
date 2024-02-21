@@ -80,7 +80,7 @@ fun GiftBoxArrScreen(
         if (progress == 1f) {
             val giftBox = uiState.giftBox
             if (giftBox != null) {
-                navController.navigate(GiftBoxRoute.getGiftBoxDetailOpenFadeRoute(giftBox))
+                navController.navigate(GiftBoxRoute.getGiftBoxDetailOpenFadeRoute(giftBox, false))
             } else {
                 // TODO ERROR 페이지
             }

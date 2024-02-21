@@ -22,7 +22,7 @@ fun PackyNavHost(
     startDestination: String,
     kakaoLinkScheme: String,
     moveToCreateBox: () -> Unit,
-    moveToBoxDetail: (Long) -> Unit,
+    moveToBoxDetail: (Long, Boolean) -> Unit,
     moveSettings: () -> Unit,
     closeCreateBox: () -> Unit,
     logout: () -> Unit

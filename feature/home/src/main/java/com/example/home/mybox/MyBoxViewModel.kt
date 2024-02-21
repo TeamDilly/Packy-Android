@@ -33,9 +33,23 @@ class MyBoxViewModel @Inject constructor(
 
     override fun handleIntent() {
         subscribeIntent<MyBoxIntent.OnBackClick> { sendEffect(MyBoxEffect.MoveToBack) }
-        subscribeIntent<MyBoxIntent.ClickMyBox> { sendEffect(MyBoxEffect.MoveToBoxDetail(it.boxId)) }
+        subscribeIntent<MyBoxIntent.ClickMyBox> {
+            sendEffect(
+                MyBoxEffect.MoveToBoxDetail(
+                    it.boxId,
+                    it.shouldShowShared
+                )
+            )
+        }
         subscribeIntent<MyBoxIntent.OnMyBoxMoreClick> { sendEffect(MyBoxEffect.ShowDeleteBottomSheet(it.boxId)) }
-        subscribeIntent<MyBoxIntent.OnClickDeleteMyBoxBottomSheet> { sendEffect(MyBoxEffect.ShowDeleteDialog(it.boxId, it.isLazyBox)) }
+        subscribeIntent<MyBoxIntent.OnClickDeleteMyBoxBottomSheet> {
+            sendEffect(
+                MyBoxEffect.ShowDeleteDialog(
+                    it.boxId,
+                    it.isLazyBox
+                )
+            )
+        }
         subscribeIntent<MyBoxIntent.OnLayBoxMoreClick> {
             sendEffect(
                 MyBoxEffect.ShowDeleteBottomSheet(
@@ -50,7 +64,7 @@ class MyBoxViewModel @Inject constructor(
                 .filterSuccess()
                 .collect {
                     setState { state ->
-                        if(intent.isLazyBox) {
+                        if (intent.isLazyBox) {
                             state.copy(
                                 lazyBox = state.lazyBox.filter { it.boxId != intent.boxId }
                             )

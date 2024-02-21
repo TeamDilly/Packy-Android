@@ -32,7 +32,8 @@ enum class ShowDetail {
 data class GiftBoxDetailOpenState(
     val giftBox: GiftBox?,
     val youtubeState: YoutubeState = YoutubeState.INIT,
-    val showDetail: ShowDetail = ShowDetail.NONE
+    val showDetail: ShowDetail = ShowDetail.NONE,
+    val shouldShowShared: Boolean = false
 ) : UiState {
     val hasGift get() = giftBox?.gift != null
 }

@@ -21,6 +21,7 @@ object Strings {
     const val EXIT = "나가기"
     const val NICKNAME = "닉네임"
     const val DELETE = "삭제하기"
+    const val SEND = "보내기"
 
     // onboarding
     const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"

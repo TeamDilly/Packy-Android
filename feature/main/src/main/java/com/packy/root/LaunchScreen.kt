@@ -52,7 +52,10 @@ fun LaunchScreen(
                 }
 
                 is DeepLinkController.OpenBox -> {
-                    navController.navigate(GiftBoxRoute.getGiftBoxRootRoute(deepLinkController.boxId.toLong(), false)) {
+                    navController.navigate(GiftBoxRoute.getGiftBoxRootRoute(deepLinkController.boxId.toLong(),
+                        skipArr = false,
+                        shouldShowShared = false
+                    )) {
                         popUpTo(
                             MainRoute.LAUNCH_ROUTE
                         ) {

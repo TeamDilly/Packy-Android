@@ -4,10 +4,12 @@ import com.packy.data.remote.home.HomeService
 import com.packy.data.repository.home.HomeRepositoryImp
 import com.packy.data.usecase.home.GetHomeBoxPaginationUseCaseImp
 import com.packy.data.usecase.home.GetHomeBoxUseCaseImp
+import com.packy.data.usecase.home.GetLazyBoxUseCaseImp
 import com.packy.di.network.Packy
 import com.packy.domain.repository.home.HomeRepository
 import com.packy.domain.usecase.home.GetHomeBoxPaginationUseCase
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
+import com.packy.domain.usecase.home.GetLazyBoxUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -38,4 +40,7 @@ abstract class HomeRepositoryModule {
 
     @Binds
     abstract fun bindGetHomeBoxPaginationUseCase(useCase: GetHomeBoxPaginationUseCaseImp): GetHomeBoxPaginationUseCase
+
+    @Binds
+    abstract fun bindGetLazyBoxUseCase(useCase: GetLazyBoxUseCaseImp): GetLazyBoxUseCase
 }

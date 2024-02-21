@@ -1,6 +1,7 @@
 package com.packy.data.remote.home
 
 import com.packy.data.model.home.HomeBoxContentDto
+import com.packy.data.model.home.LazyBoxDto
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.safeRequest
 import com.packy.lib.utils.toResource
@@ -42,5 +43,9 @@ class HomeService @Inject constructor(
                 size
             )
         }
+    }
+
+    suspend fun getLazyBoxes(): Resource<List<LazyBoxDto>> = safeRequest {
+        httpClient.get(urlString = "/api/v1/giftboxes/waiting")
     }
 }

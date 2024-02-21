@@ -7,6 +7,7 @@ import com.packy.data.model.home.toEntity
 import com.packy.data.remote.home.HomeService
 import com.packy.data.remote.home.MyBoxPagingSource
 import com.packy.domain.model.home.HomeBox
+import com.packy.domain.model.home.LazyBox
 import com.packy.domain.repository.home.HomeRepository
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.map
@@ -41,5 +42,11 @@ class HomeRepositoryImp @Inject constructor(
                 )
             }
         ).flow
+    }
+
+    override suspend fun getLazyBox(): Flow<Resource<List<LazyBox>>> = flow {
+        emit(Resource.Loading())
+        val lazyBoxes = homeService.getLazyBoxes()
+        emit(lazyBoxes.map { it.map { it.toEntity() } })
     }
 }

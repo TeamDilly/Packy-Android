@@ -85,6 +85,7 @@ import com.packy.domain.model.home.HomeBox
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -104,6 +105,9 @@ fun MyBoxScreen(
     val uiState by viewModel.uiState.collectAsState()
     val lazyBox by remember {
         derivedStateOf { uiState.lazyBox }
+    }
+    val showType by remember {
+        derivedStateOf { uiState.showTab }
     }
     val sendBox: LazyPagingItems<HomeBox> =
         viewModel.uiState.map { it.sendBox.filter { box -> !uiState.removeItemBox.contains(box.boxId) } }
@@ -130,9 +134,9 @@ fun MyBoxScreen(
 
     val visibleLazyBox = @Composable {
         val firstVisibleItemIndex = if (pagerState.currentPage == 0) {
-            remember { derivedStateOf { sendBoxState.firstVisibleItemIndex == 0 && sendBoxState.firstVisibleItemScrollOffset < 0.5f } }
+            remember { derivedStateOf { lazyBoxScrollVisible(sendBoxState) } }
         } else {
-            remember { derivedStateOf { receiverBoxState.firstVisibleItemIndex == 0 && receiverBoxState.firstVisibleItemScrollOffset < 0.5f } }
+            remember { derivedStateOf { lazyBoxScrollVisible(receiverBoxState) } }
         }
         firstVisibleItemIndex.value && lazyBox.isNotEmpty()
     }
@@ -171,17 +175,21 @@ fun MyBoxScreen(
         }
     }
 
-    LaunchedEffect(uiState.showTab) {
+    LaunchedEffect(true) {
         viewModel.uiState
             .map { it.showTab }
             .filter { it.ordinal != pagerState.pageCount }
+            .distinctUntilChanged()
             .collect {
                 pagerState.animateScrollToPage(it.ordinal)
             }
     }
 
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect { page ->
+    LaunchedEffect(true) {
+        snapshotFlow { pagerState.currentPage }
+            .distinctUntilChanged()
+            .filter { pagerState.pageCount != uiState.showTab.ordinal }
+            .collect { page ->
             viewModel.emitIntent(MyBoxIntent.ChangeShowBoxType(MyBoxType.entries[page]))
         }
     }
@@ -260,7 +268,8 @@ fun MyBoxScreen(
             )
             HorizontalPager(
                 modifier = Modifier.fillMaxSize(),
-                state = pagerState
+                state = pagerState,
+                beyondBoundsPageCount = 1
             ) {
                 when (it) {
                     MyBoxType.SEND.ordinal -> MyBoxList(
@@ -292,6 +301,9 @@ fun MyBoxScreen(
         }
     }
 }
+
+private fun lazyBoxScrollVisible(sendBoxState: LazyGridState) =
+    sendBoxState.firstVisibleItemIndex == 0 && sendBoxState.firstVisibleItemScrollOffset in 0..150
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

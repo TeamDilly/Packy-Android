@@ -3,15 +3,12 @@ package com.example.giftbox.boxroot
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ID_ARG
-import com.packy.domain.model.box.BoxId
 import com.packy.domain.usecase.box.GetBoxUseCase
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.filterLoading
-import com.packy.lib.utils.filterSuccess
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

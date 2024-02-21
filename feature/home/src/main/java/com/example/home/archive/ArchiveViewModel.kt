@@ -67,12 +67,18 @@ class ArchiveViewModel @Inject constructor(
 
     private fun getPhotos() {
         viewModelScope.launch(Dispatchers.IO) {
+            setState {
+                it.copy(
+                    isLoading = true
+                )
+            }
             getArchivePhoto.getArchivePhoto()
                 .cachedIn(viewModelScope)
                 .collect { photos ->
                     setState {
                         it.copy(
-                            photos = photos
+                            photos = photos,
+                            isLoading = false
                         )
                     }
                 }

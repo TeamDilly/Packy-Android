@@ -22,7 +22,8 @@ sealed interface BoxAddTitleEffect : SideEffect {
     data class MoveToShared(
         val motionBoxId: Int,
         val createBoxId: String,
-        val showMotion: Boolean
+        val showMotion: Boolean,
+        val kakaoMessageImgUrl: String,
     ) : BoxAddTitleEffect
     data class FailCreateBox(
         val message: String?

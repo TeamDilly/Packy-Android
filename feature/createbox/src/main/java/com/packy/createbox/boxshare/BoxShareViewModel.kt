@@ -39,15 +39,14 @@ class BoxShareViewModel @Inject constructor(
 
     override fun handleIntent() {
         subscribeIntent<BoxShareIntent.ShareKakao>(sharedBox())
-        subscribeIntent<BoxShareIntent.OnBackClick> { sendEffect(BoxShareEffect.MoveToBack) }
         subscribeIntent<BoxShareIntent.OnLazySharClick> {
+            sendEffect(BoxShareEffect.ShowLazyShareDialog)
+        }
+        subscribeIntent<BoxShareIntent.LazyShared> {
             lazyShar()
         }
         subscribeIntent<BoxShareIntent.OnExitClick> {
-            // TODO:: 결정 필요
-        }
-        subscribeIntent<BoxShareIntent.OnCloseClick> {
-            // TODO:: 나가기 나중에 만들기 필요
+            sendEffect(BoxShareEffect.MoveToMain)
         }
     }
 
@@ -59,7 +58,7 @@ class BoxShareViewModel @Inject constructor(
             .filterSuccess()
             .unwrapResource()
             .collect {
-                // TODO:: 결정 필요
+                sendEffect(BoxShareEffect.MoveToMain)
             }
     }
 
@@ -73,6 +72,16 @@ class BoxShareViewModel @Inject constructor(
                 }
             }
         }
+        savedStateHandle.get<String>(CreateBoxArgs.KAKAO_MESSAGE_IMG_URL)
+            ?.let { kakaoMessageImgUrl ->
+                viewModelScope.launch {
+                    setState {
+                        it.copy(
+                            kakaoMessageImgUrl = kakaoMessageImgUrl
+                        )
+                    }
+                }
+            }
     }
 
     private fun sharedBox(): suspend (BoxShareIntent.ShareKakao) -> Unit =
@@ -81,7 +90,7 @@ class BoxShareViewModel @Inject constructor(
             val kakaoCustomFeed = KakaoCustomFeed(
                 sender = createBoxUseCase.getCreatedBox().senderName ?: "",
                 receiver = createBoxUseCase.getCreatedBox().receiverName ?: "",
-                imageUrl = boxDesign?.boxNormal ?: "",
+                imageUrl = currentState.kakaoMessageImgUrl ?: "",
                 boxId = currentState.createdBox ?: ""
             )
             sendEffect(BoxShareEffect.KakaoShare(kakaoCustomFeed))
@@ -110,9 +119,8 @@ class BoxShareViewModel @Inject constructor(
                         .filterSuccess()
                         .unwrapResource()
                         .collect {
-                           // TODO :: 결정 필요
+                            setState(currentState.copy(shared = true))
                         }
-                    setState(currentState.copy(shared = true))
                 }
             }
 

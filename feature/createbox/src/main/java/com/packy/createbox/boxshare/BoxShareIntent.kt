@@ -1,19 +1,19 @@
 package com.packy.createbox.boxshare
 
 import com.packy.common.kakaoshare.KakaoCustomFeed
-import com.packy.domain.model.box.BoxId
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
 
 sealed interface BoxShareIntent : MviIntent {
     data object ShareKakao : BoxShareIntent
-    data object OnBackClick: BoxShareIntent
-    data object OnCloseClick : BoxShareIntent
+    data object OnExitClick : BoxShareIntent
 
-    data object OnExitClick: BoxShareIntent
+    data object OnLazySharClick : BoxShareIntent
 
-    data object OnLazySharClick: BoxShareIntent
+    data object OnLaySharedTextClick : BoxShareIntent
+
+    data object LazyShared : BoxShareIntent
 }
 
 data class BoxShareState(
@@ -22,7 +22,8 @@ data class BoxShareState(
     val receiverName: String?,
     val shared: Boolean?,
     val createdBox: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val kakaoMessageImgUrl: String? = null
 ) : UiState
 
 sealed interface BoxShareEffect : SideEffect {
@@ -33,4 +34,6 @@ sealed interface BoxShareEffect : SideEffect {
 
     data object MoveToBack : BoxShareEffect
     data object MoveToMain : BoxShareEffect
+
+    data object ShowLazyShareDialog : BoxShareEffect
 }

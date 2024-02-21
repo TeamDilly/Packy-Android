@@ -144,6 +144,7 @@ object Strings {
 
     const val CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_TITLE = "저장하지 않고 나가시겠어요?"
     const val CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_DESCRIPTION = "입력한 내용이 선물박스에 담기지 않아요"
+    const val CREATE_BOX_LAZY_SHARE_DIALOG_TITLE = "선물박스를 보내지 않으시겠어요?"
 
 
     // GiftBox

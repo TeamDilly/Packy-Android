@@ -21,8 +21,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +44,8 @@ import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
 import com.packy.core.designsystem.button.buttonStyle
+import com.packy.core.designsystem.dialog.PackyDialog
+import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
@@ -72,6 +76,13 @@ fun BoxShareScreen(
         PackyProgressDialog()
     }
 
+    var lazyShareDialog by remember {
+        mutableStateOf<PackyDialogInfo?>(null)
+    }
+    if(lazyShareDialog != null){
+        PackyDialog(packyDialogInfo = lazyShareDialog!!)
+    }
+
     LaunchedEffect(
         context,
         viewModel
@@ -93,8 +104,24 @@ fun BoxShareScreen(
                     BoxShareEffect.MoveToBack -> {
                         navController.popBackStack()
                     }
+
                     BoxShareEffect.MoveToMain -> {
                         moveToHomeClear()
+                    }
+
+                    BoxShareEffect.ShowLazyShareDialog ->{
+                        lazyShareDialog = PackyDialogInfo(
+                            title = Strings.CREATE_BOX_LAZY_SHARE_DIALOG_TITLE,
+                            dismiss = Strings.CONFIRM,
+                            confirm = Strings.CANCEL,
+                            onConfirm = {
+                                lazyShareDialog = null
+                            },
+                            onDismiss = {
+                                viewModel.emitIntent(BoxShareIntent.LazyShared)
+                                lazyShareDialog = null
+                            }
+                        )
                     }
                 }
             }
@@ -105,7 +132,7 @@ fun BoxShareScreen(
         if (shared == true) {
             viewModel.emitIntent(BoxShareIntent.OnExitClick)
         } else {
-            viewModel.emitIntent(BoxShareIntent.OnBackClick)
+            viewModel.emitIntent(BoxShareIntent.OnLazySharClick)
         }
     }
 
@@ -123,7 +150,7 @@ fun BoxShareScreen(
                         endIconButton(
                             icon = R.drawable.cancle
                         ) {
-                            viewModel.emitIntent(BoxShareIntent.OnCloseClick)
+                            viewModel.emitIntent(BoxShareIntent.OnLazySharClick)
                         }
                     }
                 }
@@ -135,7 +162,7 @@ fun BoxShareScreen(
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(1f)
+            Spacer(48.dp)
             Text(
                 text = uiState.receiverName + Strings.CREATE_BOX_ADD_SHARE_TITLE,
                 style = PackyTheme.typography.heading01.copy(
@@ -180,18 +207,20 @@ fun BoxShareScreen(
                     viewModel.emitIntentThrottle(BoxShareIntent.ShareKakao)
                 }
             )
-            Spacer(height = 8.dp)
-            Text(
-                modifier = Modifier.clickableWithoutRipple {
-                    viewModel.emitIntent(BoxShareIntent.OnLazySharClick)
-                },
-                text = Strings.CREATE_BOX_ADD_SHARE_LAZY,
-                style = PackyTheme.typography.body02.copy(
-                    textAlign = TextAlign.Center
-                ),
-                color = PackyTheme.color.gray900
-            )
-            Spacer(height = 20.dp)
+            Spacer(height = 12.dp)
+            if(shared == false){
+                Text(
+                    modifier = Modifier.clickableWithoutRipple {
+                        viewModel.emitIntent(BoxShareIntent.OnLazySharClick)
+                    },
+                    text = Strings.CREATE_BOX_ADD_SHARE_LAZY,
+                    style = PackyTheme.typography.body02.copy(
+                        textAlign = TextAlign.Center
+                    ),
+                    color = PackyTheme.color.gray900
+                )
+            }
+            Spacer(height = 24.dp)
         }
     }
 }

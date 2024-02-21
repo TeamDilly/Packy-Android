@@ -69,7 +69,8 @@ class BoxAddTitleViewModel @Inject constructor(
                 BoxAddTitleEffect.MoveToShared(
                     motionBoxId = createBoxUseCase.getCreatedBox().boxId ?: 0,
                     createBoxId = box.data.id,
-                    showMotion = showMotion
+                    showMotion = showMotion,
+                    kakaoMessageImgUrl = box.data.kakaoMessageImgUrl
                 )
             )
         } else {

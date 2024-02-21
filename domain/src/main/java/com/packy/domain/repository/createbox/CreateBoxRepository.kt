@@ -1,6 +1,6 @@
 package com.packy.domain.repository.createbox
 
-import com.packy.domain.model.box.BoxId
+import com.packy.domain.model.box.CreatedBox
 import com.packy.domain.model.createbox.box.CreateBox
 import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -19,5 +19,5 @@ interface CreateBoxRepository {
 
     suspend fun getCreatedBox(): CreateBox
 
-    suspend fun createBox(createBox: CreateBox) : Resource<BoxId>
+    suspend fun createBox(createBox: CreateBox) : Resource<CreatedBox>
 }

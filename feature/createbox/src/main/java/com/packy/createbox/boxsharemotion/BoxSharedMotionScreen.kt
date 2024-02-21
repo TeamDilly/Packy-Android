@@ -20,6 +20,7 @@ fun BoxShareMotionScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     boxId: Int,
+    kakaoMessageImgUrl: String,
     createdBoxId: String?
 ) {
 
@@ -39,7 +40,12 @@ fun BoxShareMotionScreen(
             )
             if (anim.value < 0.1f) {
                 // 여기서 createdBoxId 가 null 인 경우는 완전한 버그이다.
-                navController.navigate(CreateBoxRoute.getBoxShareFadeInRoute(createdBoxId!!)) {
+                navController.navigate(
+                    CreateBoxRoute.getBoxShareFadeInRoute(
+                        createdBoxId = createdBoxId!!,
+                        kakaoMessageImgUrl = kakaoMessageImgUrl
+                    )
+                ) {
                     val currentRoute = navController.currentBackStackEntry?.destination?.route
                     currentRoute?.let { popUpTo(it) { inclusive = true } }
                     launchSingleTop = true

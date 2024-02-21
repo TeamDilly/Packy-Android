@@ -16,7 +16,9 @@ import com.packy.createbox.boxsharemotion.BoxShareMotionScreen
 import com.packy.createbox.boxshare.BoxShareScreen
 import com.packy.createbox.boxtitle.BoxAddTitleScreen
 import com.packy.createbox.navigation.CreateBoxArgs.CREATED_BOX_ID
+import com.packy.createbox.navigation.CreateBoxArgs.KAKAO_MESSAGE_IMG_URL
 import com.packy.createbox.navigation.CreateBoxArgs.MOTION_BOX_ID
+import com.packy.lib.ext.toEncoding
 
 fun NavGraphBuilder.createBoxNavGraph(
     navController: NavHostController,
@@ -74,22 +76,27 @@ fun NavGraphBuilder.createBoxNavGraph(
             )
         }
         asFadeInComposable(
-            route = CreateBoxRoute.BOX_SHARE_MOTION + "/{$MOTION_BOX_ID}" + "/{$CREATED_BOX_ID}",
+            route = CreateBoxRoute.BOX_SHARE_MOTION + "/{$MOTION_BOX_ID}" + "/{$CREATED_BOX_ID}" + "/{$KAKAO_MESSAGE_IMG_URL}",
             arguments = listOf(
                 navArgument(MOTION_BOX_ID) {
                     type = androidx.navigation.NavType.IntType
                 },
                 navArgument(CREATED_BOX_ID) {
                     type = androidx.navigation.NavType.StringType
+                },
+                navArgument(KAKAO_MESSAGE_IMG_URL) {
+                    type = androidx.navigation.NavType.StringType
                 }
             ),
         ) {
             val boxId = it.arguments?.getInt(MOTION_BOX_ID)
             val createdBoxId = it.arguments?.getString(CREATED_BOX_ID)
+            val kakaoMessageImgUrl = it.arguments?.getString(KAKAO_MESSAGE_IMG_URL)
             BoxShareMotionScreen(
                 navController = navController,
                 boxId = boxId ?: 0,
-                createdBoxId = createdBoxId ?: ""
+                createdBoxId = createdBoxId ?: "",
+                kakaoMessageImgUrl = kakaoMessageImgUrl ?: ""
             )
         }
 
@@ -102,9 +109,12 @@ fun NavGraphBuilder.createBoxNavGraph(
         }
 
         asPagingComposable(
-            route = CreateBoxRoute.BOX_SHARE + "/{$CREATED_BOX_ID}",
+            route = CreateBoxRoute.BOX_SHARE + "/{$CREATED_BOX_ID}" + "/{$KAKAO_MESSAGE_IMG_URL}",
             arguments = listOf(
                 navArgument(CREATED_BOX_ID) {
+                    type = androidx.navigation.NavType.StringType
+                },
+                navArgument(KAKAO_MESSAGE_IMG_URL) {
                     type = androidx.navigation.NavType.StringType
                 }
             ),
@@ -117,10 +127,13 @@ fun NavGraphBuilder.createBoxNavGraph(
 
 
         asFadeInComposable(
-            route = CreateBoxRoute.BOX_SHARE_FADE_IN + "/{$CREATED_BOX_ID}",
+            route = CreateBoxRoute.BOX_SHARE_FADE_IN + "/{$CREATED_BOX_ID}" + "/{$KAKAO_MESSAGE_IMG_URL}",
             enterDuration = 700,
             arguments = listOf(
                 navArgument(CREATED_BOX_ID) {
+                    type = androidx.navigation.NavType.StringType
+                },
+                navArgument(KAKAO_MESSAGE_IMG_URL) {
                     type = androidx.navigation.NavType.StringType
                 }
             ),
@@ -151,19 +164,23 @@ object CreateBoxRoute {
 
     fun getBoxShareMotionRoute(
         boxId: Int,
-        createdBoxId: String
-    ) = "$BOX_SHARE_MOTION/$boxId/$createdBoxId"
+        createdBoxId: String,
+        kakaoMessageImgUrl: String
+    ) = "$BOX_SHARE_MOTION/$boxId/$createdBoxId/${kakaoMessageImgUrl.toEncoding()}"
 
     fun getBoxShareRoute(
-        createdBoxId: String
-    ) = "$BOX_SHARE/$createdBoxId"
+        createdBoxId: String,
+        kakaoMessageImgUrl: String
+    ) = "$BOX_SHARE/$createdBoxId/${kakaoMessageImgUrl.toEncoding()}"
 
     fun getBoxShareFadeInRoute(
-        createdBoxId: String
-    ) = "$BOX_SHARE_FADE_IN/$createdBoxId"
+        createdBoxId: String,
+        kakaoMessageImgUrl: String
+    ) = "$BOX_SHARE_FADE_IN/$createdBoxId/${kakaoMessageImgUrl.toEncoding()}"
 }
 
 object CreateBoxArgs {
     const val MOTION_BOX_ID = "motionBoxId"
     const val CREATED_BOX_ID = "createdBoxId"
+    const val KAKAO_MESSAGE_IMG_URL = "kakaoMessageImgUrl"
 }

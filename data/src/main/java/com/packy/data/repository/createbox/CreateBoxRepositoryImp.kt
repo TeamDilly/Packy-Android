@@ -3,19 +3,16 @@ package com.packy.data.repository.createbox
 import com.packy.data.local.AccountPrefManager
 import com.packy.data.model.createbox.box.CreateBoxRequest
 import com.packy.data.remote.box.BoxService
-import com.packy.domain.model.box.BoxId
+import com.packy.domain.model.box.CreatedBox
 import com.packy.domain.model.createbox.box.CreateBox
 import com.packy.domain.repository.createbox.CreateBoxRepository
 import com.packy.domain.repository.photo.PhotoRepository
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.map
-import io.ktor.client.network.sockets.mapEngineExceptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
@@ -51,7 +48,7 @@ class CreateBoxRepositoryImp @Inject constructor(
     }
 
     override suspend fun getCreatedBox(): CreateBox = prefManager.createBox.getData().first()
-    override suspend fun createBox(createBox: CreateBox): Resource<BoxId> =
+    override suspend fun createBox(createBox: CreateBox): Resource<CreatedBox> =
         withContext(Dispatchers.IO) {
             val uploadPhotoDeferred = async(Dispatchers.IO) {
                 createBox.photo?.let {
@@ -98,7 +95,10 @@ class CreateBoxRepositoryImp @Inject constructor(
 
             val createBoxDto = boxService.createBox(createBoxRequest)
             return@withContext createBoxDto.map {
-                BoxId(it.id.toString())
+                CreatedBox(
+                    id = it.id.toString(),
+                    kakaoMessageImgUrl = it.kakaoMessageImgUrl
+                )
             }
         }
 

@@ -63,6 +63,8 @@ object Strings {
     const val DELETE_BOX_TITLE = "선물박스를 삭제할까요?"
     const val DELETE_BOX_SUB_TIELE = "선물박스를 삭제하면 다시 볼 수 없어요\n선물박스에 담긴 선물들도 사라져요"
 
+    const val LAZY_BOX_TITLE = "보내지 않은 선물박스"
+
     // settings
     const val ACCOUNT_MANAGE = "계정 관리"
     const val LOGOUT = "로그아웃"

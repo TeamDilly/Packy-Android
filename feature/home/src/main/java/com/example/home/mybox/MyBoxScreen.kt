@@ -63,6 +63,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.filter
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.home.mybox.widget.LazyBoxItem
 import com.packy.common.authenticator.ext.toFormatTimeStampString
 import com.packy.core.common.NoRippleTheme
 import com.packy.core.common.Spacer
@@ -95,16 +96,22 @@ fun MyBoxScreen(
     viewModel: MyBoxViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val lazyBox by remember {
+        derivedStateOf { uiState.lazyBox }
+    }
     val sendBox: LazyPagingItems<HomeBox> =
-        viewModel.uiState.map { it.sendBox.filter { box -> !uiState.removeItemBox.contains(box.boxId)  } }.collectAsLazyPagingItems()
+        viewModel.uiState.map { it.sendBox.filter { box -> !uiState.removeItemBox.contains(box.boxId) } }
+            .collectAsLazyPagingItems()
     val receiveBox: LazyPagingItems<HomeBox> =
-        viewModel.uiState.map { it.receiveBox.filter { box -> !uiState.removeItemBox.contains(box.boxId)  }  }.collectAsLazyPagingItems()
+        viewModel.uiState.map { it.receiveBox.filter { box -> !uiState.removeItemBox.contains(box.boxId) } }
+            .collectAsLazyPagingItems()
 
+    val lazyBoxState = rememberPagerState(pageCount = { lazyBox.size })
     val pagerState = rememberPagerState(pageCount = { 2 })
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf<Long?>(null) }
+    var showBottomSheet by remember { mutableStateOf<Pair<Long, Boolean>?>(null) }
     var showDeleteDialog by remember { mutableStateOf<PackyDialogInfo?>(null) }
 
     val loading by remember { derivedStateOf { uiState.isLoading } }
@@ -115,12 +122,13 @@ fun MyBoxScreen(
     LaunchedEffect(Unit) {
         viewModel.getReceiveBoxes()
         viewModel.getSendBoxes()
+        viewModel.getLazyBoxes()
         viewModel.effect.collect { effect ->
             when (effect) {
                 is MyBoxEffect.MoveToBack -> navController.popBackStack()
                 is MyBoxEffect.MoveToBoxDetail -> moveToBoxDetail(effect.boxId)
                 is MyBoxEffect.ShowDeleteBottomSheet -> {
-                    showBottomSheet = effect.boxId
+                    showBottomSheet = effect.boxId to effect.isLazyBox
                 }
 
                 is MyBoxEffect.ShowDeleteDialog -> {
@@ -131,7 +139,12 @@ fun MyBoxScreen(
                         confirm = Strings.CANCEL,
                         onConfirm = { showDeleteDialog = null },
                         onDismiss = {
-                            viewModel.emitIntentThrottle(MyBoxIntent.OnDeleteBoxClick(effect.boxId))
+                            viewModel.emitIntentThrottle(
+                                MyBoxIntent.OnDeleteBoxClick(
+                                    boxId = effect.boxId,
+                                    isLazyBox = effect.isLazyBox
+                                )
+                            )
                             showDeleteDialog = null
                         }
                     )
@@ -170,10 +183,13 @@ fun MyBoxScreen(
 
         if (showBottomSheet != null) {
             MyBoxDeleteBottomSheet(
-                boxId = showBottomSheet!!,
+                boxId = showBottomSheet!!.first,
                 sheetState = sheetState,
                 scope = scope,
-                onDeleteClick = { boxId -> viewModel.emitIntentThrottle(MyBoxIntent.OnClickDeleteMyBoxBottomSheet(boxId)) },
+                onDeleteClick = { boxId ->
+                    val isLazyBox = showBottomSheet!!.second
+                   viewModel.emitIntent(MyBoxIntent.OnClickDeleteMyBoxBottomSheet(boxId, isLazyBox))
+                },
                 closeSheet = { showBottomSheet = null }
             )
         }
@@ -183,6 +199,32 @@ fun MyBoxScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            if (lazyBox.isNotEmpty()) {
+                Spacer(32.dp)
+                Text(
+                    text = Strings.LAZY_BOX_TITLE,
+                    style = PackyTheme.typography.body01,
+                    color = PackyTheme.color.gray900,
+                    modifier = Modifier.padding(horizontal = 24.dp)
+                )
+                Spacer(12.dp)
+                HorizontalPager(
+                    modifier = Modifier.fillMaxWidth(),
+                    state = lazyBoxState,
+                    contentPadding = PaddingValues(
+                        start = 14.dp,
+                        end = 40.dp
+                    ),
+                    pageSpacing = 16.dp
+                ) { page ->
+                    LazyBoxItem(
+                        lazyBox = lazyBox[page],
+                        onClick = { boxId -> viewModel.emitIntent(MyBoxIntent.ClickMyBox(boxId)) },
+                        onMoreClick = { boxId -> viewModel.emitIntent(MyBoxIntent.OnLayBoxMoreClick(boxId)) }
+                    )
+                }
+                Spacer(24.dp)
+            }
             MyBoxTab(
                 selectedTab = uiState.showTab,
                 onClick = viewModel::emitIntent

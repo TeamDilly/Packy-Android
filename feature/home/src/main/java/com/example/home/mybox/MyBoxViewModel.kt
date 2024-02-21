@@ -6,8 +6,10 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import com.packy.domain.usecase.box.DeleteBoxUseCase
 import com.packy.domain.usecase.home.GetHomeBoxPaginationUseCase
+import com.packy.domain.usecase.home.GetLazyBoxUseCase
 import com.packy.lib.utils.filterSuccess
 import com.packy.lib.utils.loadingHandler
+import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MyBoxViewModel @Inject constructor(
     private val getHomeBoxPaginationUseCase: GetHomeBoxPaginationUseCase,
-    private val deleteBoxUseCase: DeleteBoxUseCase
+    private val deleteBoxUseCase: DeleteBoxUseCase,
+    private val getLazyBoxUseCase: GetLazyBoxUseCase
 ) :
     MviViewModel<MyBoxIntent, MyBoxState, MyBoxEffect>() {
 
@@ -32,16 +35,30 @@ class MyBoxViewModel @Inject constructor(
         subscribeIntent<MyBoxIntent.OnBackClick> { sendEffect(MyBoxEffect.MoveToBack) }
         subscribeIntent<MyBoxIntent.ClickMyBox> { sendEffect(MyBoxEffect.MoveToBoxDetail(it.boxId)) }
         subscribeIntent<MyBoxIntent.OnMyBoxMoreClick> { sendEffect(MyBoxEffect.ShowDeleteBottomSheet(it.boxId)) }
-        subscribeIntent<MyBoxIntent.OnClickDeleteMyBoxBottomSheet> { sendEffect(MyBoxEffect.ShowDeleteDialog(it.boxId)) }
+        subscribeIntent<MyBoxIntent.OnClickDeleteMyBoxBottomSheet> { sendEffect(MyBoxEffect.ShowDeleteDialog(it.boxId, it.isLazyBox)) }
+        subscribeIntent<MyBoxIntent.OnLayBoxMoreClick> {
+            sendEffect(
+                MyBoxEffect.ShowDeleteBottomSheet(
+                    boxId = it.boxId,
+                    isLazyBox = true
+                )
+            )
+        }
         subscribeIntent<MyBoxIntent.OnDeleteBoxClick> { intent ->
             deleteBoxUseCase.deleteBox(intent.boxId.toString())
                 .loadingHandler { setState { state -> state.copy(isLoading = it) } }
                 .filterSuccess()
                 .collect {
                     setState { state ->
-                        state.copy(
-                            removeItemBox = state.removeItemBox + intent.boxId
-                        )
+                        if(intent.isLazyBox) {
+                            state.copy(
+                                lazyBox = state.lazyBox.filter { it.boxId != intent.boxId }
+                            )
+                        } else {
+                            state.copy(
+                                removeItemBox = state.removeItemBox + intent.boxId
+                            )
+                        }
                     }
                 }
         }
@@ -58,7 +75,7 @@ class MyBoxViewModel @Inject constructor(
                 .collect { sendBox ->
                     setState {
                         it.copy(
-                            sendBox =  sendBox
+                            sendBox = sendBox
                         )
                     }
                 }
@@ -74,6 +91,21 @@ class MyBoxViewModel @Inject constructor(
                     setState {
                         it.copy(
                             receiveBox = receiveBox
+                        )
+                    }
+                }
+        }
+    }
+
+    fun getLazyBoxes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getLazyBoxUseCase.getLazyBox()
+                .filterSuccess()
+                .unwrapResource()
+                .collect { lazyBox ->
+                    setState {
+                        it.copy(
+                            lazyBox = lazyBox
                         )
                     }
                 }

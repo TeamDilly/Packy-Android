@@ -1,5 +1,11 @@
 package com.example.home.mybox
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -119,6 +125,18 @@ fun MyBoxScreen(
         PackyProgressDialog()
     }
 
+    val sendBoxState: LazyGridState = rememberLazyGridState()
+    val receiverBoxState: LazyGridState = rememberLazyGridState()
+
+    val visibleLazyBox = @Composable {
+        val firstVisibleItemIndex = if (pagerState.currentPage == 0) {
+            remember { derivedStateOf { sendBoxState.firstVisibleItemIndex == 0 && sendBoxState.firstVisibleItemScrollOffset < 0.5f } }
+        } else {
+            remember { derivedStateOf { receiverBoxState.firstVisibleItemIndex == 0 && receiverBoxState.firstVisibleItemScrollOffset < 0.5f } }
+        }
+        firstVisibleItemIndex.value && lazyBox.isNotEmpty()
+    }
+
     LaunchedEffect(Unit) {
         viewModel.getReceiveBoxes()
         viewModel.getSendBoxes()
@@ -188,7 +206,12 @@ fun MyBoxScreen(
                 scope = scope,
                 onDeleteClick = { boxId ->
                     val isLazyBox = showBottomSheet!!.second
-                   viewModel.emitIntent(MyBoxIntent.OnClickDeleteMyBoxBottomSheet(boxId, isLazyBox))
+                    viewModel.emitIntent(
+                        MyBoxIntent.OnClickDeleteMyBoxBottomSheet(
+                            boxId,
+                            isLazyBox
+                        )
+                    )
                 },
                 closeSheet = { showBottomSheet = null }
             )
@@ -199,31 +222,37 @@ fun MyBoxScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            if (lazyBox.isNotEmpty()) {
-                Spacer(32.dp)
-                Text(
-                    text = Strings.LAZY_BOX_TITLE,
-                    style = PackyTheme.typography.body01,
-                    color = PackyTheme.color.gray900,
-                    modifier = Modifier.padding(horizontal = 24.dp)
-                )
-                Spacer(12.dp)
-                HorizontalPager(
-                    modifier = Modifier.fillMaxWidth(),
-                    state = lazyBoxState,
-                    contentPadding = PaddingValues(
-                        start = 14.dp,
-                        end = 40.dp
-                    ),
-                    pageSpacing = 16.dp
-                ) { page ->
-                    LazyBoxItem(
-                        lazyBox = lazyBox[page],
-                        onClick = { boxId -> viewModel.emitIntent(MyBoxIntent.ClickMyBox(boxId)) },
-                        onMoreClick = { boxId -> viewModel.emitIntent(MyBoxIntent.OnLayBoxMoreClick(boxId)) }
+            AnimatedVisibility(
+                visible = visibleLazyBox(),
+                enter = fadeIn(tween(500)) + expandVertically(tween(500)),
+                exit = fadeOut(tween(500)) + shrinkVertically(tween(500)),
+            ) {
+                Column {
+                    Spacer(32.dp)
+                    Text(
+                        text = Strings.LAZY_BOX_TITLE,
+                        style = PackyTheme.typography.body01,
+                        color = PackyTheme.color.gray900,
+                        modifier = Modifier.padding(horizontal = 24.dp)
                     )
+                    Spacer(12.dp)
+                    HorizontalPager(
+                        modifier = Modifier.fillMaxWidth(),
+                        state = lazyBoxState,
+                        contentPadding = PaddingValues(
+                            start = 14.dp,
+                            end = 40.dp
+                        ),
+                        pageSpacing = 16.dp
+                    ) { page ->
+                        LazyBoxItem(
+                            lazyBox = lazyBox[page],
+                            onClick = { boxId -> viewModel.emitIntent(MyBoxIntent.ClickMyBox(boxId)) },
+                            onMoreClick = { boxId -> viewModel.emitIntent(MyBoxIntent.OnLayBoxMoreClick(boxId)) }
+                        )
+                    }
+                    Spacer(24.dp)
                 }
-                Spacer(24.dp)
             }
             MyBoxTab(
                 selectedTab = uiState.showTab,
@@ -242,7 +271,8 @@ fun MyBoxScreen(
                         moveToBoxDetail = moveToBoxDetail,
                         deleteMyBox = { boxId -> viewModel.emitIntent(MyBoxIntent.OnMyBoxMoreClick(boxId)) },
                         emptyText = Strings.HOME_MY_BOX_EMPTY_SEND_BOX,
-                        nameTag = Strings.TO
+                        nameTag = Strings.TO,
+                        state = sendBoxState
                     )
 
                     MyBoxType.RECEIVE.ordinal -> MyBoxList(
@@ -254,7 +284,8 @@ fun MyBoxScreen(
                         deleteMyBox = { boxId -> viewModel.emitIntent(MyBoxIntent.OnMyBoxMoreClick(boxId)) },
                         emptyText = Strings.HOME_MY_BOX_EMPTY_RECEIVE_BOX,
                         nameTag = Strings.FROM,
-                        showCreateBoxButton = false
+                        showCreateBoxButton = false,
+                        state = receiverBoxState
                     )
                 }
             }
@@ -343,9 +374,8 @@ private fun MyBoxList(
     emptyText: String,
     nameTag: String,
     showCreateBoxButton: Boolean = true,
+    state: LazyGridState
 ) {
-    val state: LazyGridState = rememberLazyGridState()
-
     if (boxes.itemCount == 0 && boxes.loadState.refresh !is LoadState.Loading) {
         EmptyMyBoxes(
             modifier = modifier,

@@ -74,6 +74,14 @@ fun RootCompose(
         moveSettings = {
             navController.navigate(SettingsRoute.SETTINGS_NAV_GRAPH)
         },
+        moveToShared = { giftBoxId ->
+            navController.navigate(
+                CreateBoxRoute.getBoxShareRoute(
+                    giftBoxId.toString(),
+                    ""
+                )
+            )
+        },
         closeCreateBox = {
             val closePackyDialog = PackyDialogInfo(
                 title = CREATE_BOX_CANCEL_BOX,

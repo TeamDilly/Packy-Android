@@ -159,11 +159,11 @@ object CreateBoxRoute {
     const val BOX_SHARE = "boxShare"
     const val BOX_SHARE_FADE_IN = "boxShareFadeIn"
     fun getBoxMotionRoute(
-        boxId: Int
+        boxId: Long
     ) = "$BOX_MOTION/$boxId"
 
     fun getBoxShareMotionRoute(
-        boxId: Int,
+        boxId: Long,
         createdBoxId: String,
         kakaoMessageImgUrl: String
     ) = "$BOX_SHARE_MOTION/$boxId/$createdBoxId/${kakaoMessageImgUrl.toEncoding()}"

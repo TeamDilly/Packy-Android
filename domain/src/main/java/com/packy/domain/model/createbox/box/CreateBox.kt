@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateBox(
-    @SerialName("boxId") val boxId: Int?,
+    @SerialName("boxId") val boxId: Long?,
     @SerialName("envelopeId") val envelopeId: Int?,
     @SerialName("envelopeUrl") val envelopeUrl: String?,
     @SerialName("gift") val gift: Gift?,

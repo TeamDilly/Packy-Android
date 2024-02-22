@@ -112,7 +112,7 @@ fun BoxShareScreen(
                     BoxShareEffect.ShowLazyShareDialog ->{
                         lazyShareDialog = PackyDialogInfo(
                             title = Strings.CREATE_BOX_LAZY_SHARE_DIALOG_TITLE,
-                            dismiss = Strings.CONFIRM,
+                            dismiss = Strings.EXIT,
                             confirm = Strings.CANCEL,
                             onConfirm = {
                                 lazyShareDialog = null

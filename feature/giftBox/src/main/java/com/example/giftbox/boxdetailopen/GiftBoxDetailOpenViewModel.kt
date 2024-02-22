@@ -4,6 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.giftbox.giftarr.GiftBoxArrState
 import com.example.giftbox.navigation.GiftBoxRoute
+import com.packy.domain.model.createbox.box.CreateBox
+import com.packy.domain.model.createbox.box.Gift
+import com.packy.domain.model.createbox.box.Photo
+import com.packy.domain.model.createbox.box.Stickers
+import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -11,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GiftBoxDetailOpenViewModel @Inject constructor(
+    private val createBoxUseCase: CreateBoxUseCase,
     savedStateHandle: SavedStateHandle,
 ) :
     MviViewModel<GiftBoxDetailOpenIntent, GiftBoxDetailOpenState, GiftBoxDetailOpenEffect>() {
@@ -19,19 +25,59 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
     )
 
     init {
-        setState(
-            GiftBoxDetailOpenState(
-                GiftBoxRoute.getGiftBoxArg(savedStateHandle)
-            )
-        )
-        savedStateHandle.get<Boolean>(GiftBoxRoute.GIFT_BOX_SHOULD_SHOW_SHARED)?.let { shouldShow ->
-            viewModelScope.launch {
-                setState {
-                    it.copy(
-                        shouldShowShared = shouldShow
-                    )
-                }
+        viewModelScope.launch {
+            val giftBox = GiftBoxRoute.getGiftBoxArg(savedStateHandle)
+            val photo = giftBox?.photos?.first() ?: return@launch
+            setState {
+                GiftBoxDetailOpenState(
+                    giftBox
+                )
             }
+            savedStateHandle.get<Boolean>(GiftBoxRoute.GIFT_BOX_SHOULD_SHOW_SHARED)
+                ?.let { shouldShow ->
+
+                    setState {
+                        it.copy(
+                            shouldShowShared = shouldShow
+                        )
+                    }
+
+                    if (shouldShow) {
+                        createBoxUseCase.setCreateBox(
+                            CreateBox(
+                                boxId = giftBox.box.id,
+                                envelopeId = -1,
+                                envelopeUrl = giftBox.envelope?.imgUrl,
+                                gift = Gift(
+                                    type = giftBox.gift!!.type,
+                                    url = giftBox.gift!!.url
+                                ),
+                                letterContent = giftBox.letterContent,
+                                name = giftBox.name,
+                                photo = Photo(
+                                    description = photo.description,
+                                    photoUrl = photo.photoUrl,
+                                    sequence = 1
+                                ),
+                                receiverName = giftBox.receiverName,
+                                senderName = giftBox.senderName,
+                                stickers = listOf(
+                                    Stickers(
+                                        id = 1,
+                                        imageUri = giftBox.stickers[0].imgUrl,
+                                        location = giftBox.stickers[0].location
+                                    ),
+                                    Stickers(
+                                        id = 2,
+                                        imageUri = giftBox.stickers[1].imgUrl,
+                                        location = giftBox.stickers[1].location
+                                    ),
+                                ),
+                                youtubeUrl = giftBox.youtubeUrl
+                            )
+                        )
+                    }
+                }
         }
     }
 

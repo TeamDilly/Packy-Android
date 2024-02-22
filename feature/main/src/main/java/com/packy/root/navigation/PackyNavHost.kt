@@ -25,6 +25,7 @@ fun PackyNavHost(
     moveToBoxDetail: (Long, Boolean) -> Unit,
     moveSettings: () -> Unit,
     closeCreateBox: () -> Unit,
+    moveToShared: (Long) -> Unit,
     logout: () -> Unit
 ) {
     NavHost(
@@ -48,7 +49,8 @@ fun PackyNavHost(
         )
         giftBoxNavGraph(
             navController = navController,
-            closeGiftBox = moveToHomeClear
+            closeGiftBox = moveToHomeClear,
+            moveToShared = moveToShared
         )
         settingsNavGraph(
             navController = navController,
@@ -59,11 +61,11 @@ fun PackyNavHost(
         )
         composable(
             route = HOME_ROOT
-        ){
+        ) {
             HomeRootScreen(
                 moveToCreateBox = moveToCreateBox,
                 moveToBoxDetail = moveToBoxDetail,
-                moveSettings= moveSettings,
+                moveSettings = moveSettings,
             )
         }
     }

@@ -20,7 +20,7 @@ data class BoxAddTitleState(
 sealed interface BoxAddTitleEffect : SideEffect {
     data object MoveToBack : BoxAddTitleEffect
     data class MoveToShared(
-        val motionBoxId: Int,
+        val motionBoxId: Long,
         val createBoxId: String,
         val showMotion: Boolean,
         val kakaoMessageImgUrl: String,

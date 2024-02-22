@@ -26,6 +26,7 @@ import kotlinx.serialization.json.Json
 fun NavGraphBuilder.giftBoxNavGraph(
     navController: NavHostController,
     closeGiftBox: () -> Unit,
+    moveToShared: (Long) -> Unit,
 ) {
     navigation(
         startDestination = GiftBoxRoute.GIFT_BOX_ROOT,
@@ -93,6 +94,7 @@ fun NavGraphBuilder.giftBoxNavGraph(
             GiftBoxDetailOpenScreen(
                 navController = navController,
                 closeGiftBox = closeGiftBox,
+                moveToShared = moveToShared,
                 showBackArrow = false
             )
         }
@@ -111,6 +113,7 @@ fun NavGraphBuilder.giftBoxNavGraph(
             GiftBoxDetailOpenScreen(
                 navController = navController,
                 closeGiftBox = closeGiftBox,
+                moveToShared = moveToShared,
                 showBackArrow = true
             )
         }

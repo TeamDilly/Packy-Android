@@ -78,6 +78,7 @@ fun GiftBoxDetailOpenScreen(
     navController: NavController,
     showBackArrow: Boolean,
     closeGiftBox: () -> Unit,
+    moveToShared: (Long) -> Unit,
     viewModel: GiftBoxDetailOpenViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()

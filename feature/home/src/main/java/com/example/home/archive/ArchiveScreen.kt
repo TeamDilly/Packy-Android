@@ -78,6 +78,7 @@ import com.packy.domain.model.archive.ArchiveMusic
 import com.packy.domain.model.archive.ArchivePhoto
 import com.packy.domain.model.home.HomeBox
 import com.packy.lib.ext.extractYouTubeVideoId
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 
@@ -93,6 +94,9 @@ fun ArchiveScreen(
     val uiState by viewModel.uiState.collectAsState()
     val showArchive by remember {
         derivedStateOf { uiState.showArchive }
+    }
+    val showArchiveType by remember {
+        derivedStateOf { uiState.showArchiveType }
     }
 
     val photos = viewModel.uiState.map { it.photos }.collectAsLazyPagingItems()
@@ -111,19 +115,23 @@ fun ArchiveScreen(
         viewModel.listInit()
     }
 
-    LaunchedEffect(uiState.showArchiveType) {
+    LaunchedEffect(true) {
         viewModel.uiState
             .map { it.showArchiveType }
             .filter { it.ordinal != pagerState.pageCount }
+            .distinctUntilChanged()
             .collect {
                 pagerState.animateScrollToPage(it.ordinal)
             }
     }
 
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect { page ->
-            viewModel.emitIntentThrottle(ArchiveIntent.OnArchiveTypeClick(ShowArchiveType.entries[page]))
-        }
+    LaunchedEffect(true) {
+        snapshotFlow { pagerState.currentPage }
+            .distinctUntilChanged()
+            .filter { pagerState.pageCount != showArchiveType.ordinal }
+            .collect { page ->
+                viewModel.emitIntent(ArchiveIntent.OnArchiveTypeClick(ShowArchiveType.entries[page]))
+            }
     }
     when (showArchive) {
         is ShowArchive.ShowArchivePhoto -> {

@@ -236,7 +236,7 @@ fun MyBoxScreen(
         ) {
             AnimatedVisibility(
                 visible = visibleLazyBox(),
-                enter = fadeIn(tween(500)) + expandVertically(tween(500)),
+                enter = fadeIn(tween(500, 500)) + expandVertically(tween(500, 500)),
                 exit = fadeOut(tween(500)) + shrinkVertically(tween(500)),
             ) {
                 Column {
@@ -275,7 +275,7 @@ fun MyBoxScreen(
             }
             MyBoxTab(
                 selectedTab = uiState.showTab,
-                onClick = viewModel::emitIntent
+                onClick = viewModel::emitIntentThrottle
             )
             HorizontalPager(
                 modifier = Modifier.fillMaxSize(),

@@ -118,8 +118,7 @@ fun ArchiveScreen(
     LaunchedEffect(true) {
         viewModel.uiState
             .map { it.showArchiveType }
-            .filter { it.ordinal != pagerState.pageCount }
-            .distinctUntilChanged()
+            .filter { it.ordinal != pagerState.currentPage }
             .collect {
                 pagerState.animateScrollToPage(it.ordinal)
             }
@@ -127,8 +126,7 @@ fun ArchiveScreen(
 
     LaunchedEffect(true) {
         snapshotFlow { pagerState.currentPage }
-            .distinctUntilChanged()
-            .filter { pagerState.pageCount != showArchiveType.ordinal }
+            .filter { pagerState.currentPage != showArchiveType.ordinal }
             .collect { page ->
                 viewModel.emitIntent(ArchiveIntent.OnArchiveTypeClick(ShowArchiveType.entries[page]))
             }

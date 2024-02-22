@@ -184,7 +184,7 @@ fun MyBoxScreen(
     LaunchedEffect(true) {
         viewModel.uiState
             .map { it.showTab }
-            .filter { it.ordinal != pagerState.pageCount }
+            .filter { it.ordinal != pagerState.currentPage }
             .distinctUntilChanged()
             .collect {
                 pagerState.animateScrollToPage(it.ordinal)
@@ -194,7 +194,7 @@ fun MyBoxScreen(
     LaunchedEffect(true) {
         snapshotFlow { pagerState.currentPage }
             .distinctUntilChanged()
-            .filter { pagerState.pageCount != uiState.showTab.ordinal }
+            .filter { pagerState.currentPage != uiState.showTab.ordinal }
             .collect { page ->
                 viewModel.emitIntent(MyBoxIntent.ChangeShowBoxType(MyBoxType.entries[page]))
             }

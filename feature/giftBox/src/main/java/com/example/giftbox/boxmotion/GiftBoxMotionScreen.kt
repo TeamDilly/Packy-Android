@@ -36,7 +36,7 @@ fun GiftBoxMotionScreen(
     )
     val progress by animateLottieCompositionAsState(
         composition = composition,
-        speed = 1.4f
+        speed = 1.3f
     )
     LaunchedEffect(progress) {
         if (progress == 1f) {

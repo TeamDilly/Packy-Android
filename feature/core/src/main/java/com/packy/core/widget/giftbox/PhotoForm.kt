@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
@@ -34,7 +35,8 @@ fun PhotoForm(
             .padding(
                 top = 8.dp,
                 bottom = 40.dp
-            )
+            ),
+        contentAlignment = Alignment.Center
     ) {
         GlideImage(
             modifier = Modifier.aspectRatio(1f),

@@ -42,6 +42,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -59,6 +60,7 @@ import com.packy.core.designsystem.iconbutton.PackyCloseIconButton
 import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.core.widget.animation.FlagChangeAnimation
 import com.packy.core.widget.giftbox.GiftBoxTopBar
 import com.packy.core.widget.giftbox.LetterForm
 import com.packy.core.widget.giftbox.MusicForm
@@ -66,6 +68,7 @@ import com.packy.core.widget.giftbox.PhotoForm
 import com.packy.core.widget.giftbox.StickerForm
 import com.packy.core.widget.giftbox.TopBoxPartImage
 import com.packy.feature.core.R
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(
@@ -448,24 +451,39 @@ private fun GiftBoxColumn(
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    PhotoForm(
+                    BoxItemInitAnimation(
                         modifier = Modifier
+                            .rotate(-3f)
                             .aspectRatio(160f / 192f)
                             .fillMaxWidth()
-                            .weight(38f)
-                            .clickableWithoutRipple {
-                                viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnPhotoClick)
-                            },
-                        inclination = -3f,
-                        photo = uiState.giftBox?.photos?.firstOrNull()?.photoUrl
+                            .weight(38f),
+                        delayMillis = 200,
+                        content = {
+                            PhotoForm(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clickableWithoutRipple {
+                                        viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnPhotoClick)
+                                    },
+                                photo = uiState.giftBox?.photos?.firstOrNull()?.photoUrl
+                            )
+                        }
                     )
                     Spacer(28.dp)
-                    StickerForm(
+                    BoxItemInitAnimation(
                         modifier = Modifier
+                            .rotate(10f)
                             .aspectRatio(1f / 1f)
-                            .weight(28f),
-                        inclination = 10f,
-                        stickerUri = uiState.giftBox?.stickers?.firstOrNull()?.imgUrl,
+                            .fillMaxWidth()
+                            .weight(34f),
+                        delayMillis = 300,
+                        content = {
+                            StickerForm(
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                stickerUri = uiState.giftBox?.stickers?.firstOrNull()?.imgUrl,
+                            )
+                        }
                     )
                 }
                 Spacer(height = 20.dp)
@@ -474,29 +492,44 @@ private fun GiftBoxColumn(
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    StickerForm(
+                    BoxItemInitAnimation(
                         modifier = Modifier
+                            .rotate(-10f)
                             .aspectRatio(1f / 1f)
+                            .fillMaxWidth()
                             .weight(30f),
-                        inclination = -10f,
-                        stickerUri = uiState.giftBox?.stickers?.getOrNull(1)?.imgUrl,
+                        delayMillis = 400,
+                        content = {
+                            StickerForm(
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                stickerUri = uiState.giftBox?.stickers?.getOrNull(1)?.imgUrl,
+                            )
+                        }
                     )
                     Spacer(22.dp)
-                    LetterForm(
+                    BoxItemInitAnimation(
                         modifier = Modifier
+                            .rotate(3f)
                             .aspectRatio(180f / 150f)
                             .fillMaxWidth()
-                            .weight(42f)
-                            .clickableWithoutRipple {
-                                viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnLetterClick)
-                            },
-                        inclination = 3f,
-                        letterContent = uiState.giftBox?.letterContent ?: "",
-                        envelopeUrl = uiState.giftBox?.envelope?.imgUrl,
+                            .weight(42f),
+                        delayMillis = 500,
+                        content = {
+                            LetterForm(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clickableWithoutRipple {
+                                        viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnLetterClick)
+                                    },
+                                letterContent = uiState.giftBox?.letterContent ?: "",
+                                envelopeUrl = uiState.giftBox?.envelope?.imgUrl,
+                            )
+                        }
                     )
                 }
                 Spacer(height = 29.dp)
-                MusicForm(
+                BoxItemInitAnimation(
                     modifier = Modifier
                         .heightIn(
                             min = 0.dp,
@@ -504,8 +537,15 @@ private fun GiftBoxColumn(
                         )
                         .aspectRatio(16f / 9f)
                         .fillMaxWidth(),
-                    youtubeUri = uiState.giftBox?.youtubeUrl ?: "",
-                    youtubeState = uiState.youtubeState,
+                    delayMillis = 600,
+                    content = {
+                        MusicForm(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            youtubeUri = uiState.giftBox?.youtubeUrl ?: "",
+                            youtubeState = uiState.youtubeState,
+                        )
+                    }
                 )
             }
             Spacer(1f)
@@ -531,4 +571,42 @@ private fun GiftBoxColumn(
             }
         }
     }
+}
+
+@Composable
+private fun BoxItemInitAnimation(
+    modifier: Modifier = Modifier,
+    delayMillis: Int,
+    content: @Composable () -> Unit
+) {
+    var visible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        delay(delayMillis.toLong())
+        visible = true
+    }
+
+    FlagChangeAnimation(
+        modifier = modifier,
+        flag = visible,
+        enterAnimation = fadeIn(
+            animationSpec = tween(
+                400,
+            )
+        ) + scaleIn(
+            initialScale = 1.3f,
+            animationSpec = tween(
+                400,
+            )
+
+        ),
+        exitAnimation = fadeOut(),
+        flagOffContent = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        },
+        flagOnContent = content
+    )
 }

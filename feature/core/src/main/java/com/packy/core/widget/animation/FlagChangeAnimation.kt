@@ -12,23 +12,31 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 
 @Composable
 fun FlagChangeAnimation(
     flag: Boolean,
-    enterAnimation: EnterTransition = fadeIn(tween(300, 110)),
+    modifier: Modifier = Modifier,
+    enterAnimation: EnterTransition = fadeIn(
+        tween(
+            300,
+            110
+        )
+    ),
     exitAnimation: ExitTransition = fadeOut(tween(110)),
     flagOnContent: @Composable () -> Unit,
     flagOffContent: @Composable () -> Unit,
 ) {
     ValueChangeAnimation(
+        modifier = modifier,
         value = flag,
         enterAnimation = enterAnimation,
         exitAnimation = exitAnimation
-    ){
-        if(it){
+    ) {
+        if (it) {
             flagOnContent()
-        }else{
+        } else {
             flagOffContent()
         }
     }

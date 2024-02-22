@@ -28,6 +28,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.options.IFramePlayerOptions
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun YoutubePlayer(
@@ -72,17 +75,20 @@ fun YoutubePlayer(
                 youTubePlayerListener = object : AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         super.onReady(youTubePlayer)
-                        if(autoPlay) {
-                            youTubePlayer.loadVideo(
-                                videoId,
-                                0f
-                            )
-                        } else {
-                            youTubePlayer.cueVideo(
-                                videoId,
-                                0f
-                            )
+                        CoroutineScope(Dispatchers.IO).launch {
+                            if(autoPlay) {
+                                youTubePlayer.loadVideo(
+                                    videoId,
+                                    0f
+                                )
+                            } else {
+                                youTubePlayer.cueVideo(
+                                    videoId,
+                                    0f
+                                )
+                            }
                         }
+
                         player = youTubePlayer
                         youTubePlayer.addListener(object : AbstractYouTubePlayerListener() {
                             override fun onStateChange(

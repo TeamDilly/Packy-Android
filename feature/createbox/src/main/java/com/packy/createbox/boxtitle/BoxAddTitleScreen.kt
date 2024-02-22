@@ -83,14 +83,12 @@ fun BoxAddTitleScreen(
                             CreateBoxRoute.getBoxShareMotionRoute(
                                 boxId = effect.motionBoxId,
                                 createdBoxId = effect.createBoxId,
-                                kakaoMessageImgUrl = effect.kakaoMessageImgUrl
                             )
                         )
                     } else {
                         navController.navigate(
                             CreateBoxRoute.getBoxShareRoute(
                                 createdBoxId = effect.createBoxId,
-                                kakaoMessageImgUrl = effect.kakaoMessageImgUrl
                             )
                         )
                     }

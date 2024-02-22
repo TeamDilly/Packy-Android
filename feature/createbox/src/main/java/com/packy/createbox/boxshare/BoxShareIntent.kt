@@ -23,7 +23,6 @@ data class BoxShareState(
     val shared: Boolean?,
     val createdBox: String? = null,
     val isLoading: Boolean = false,
-    val kakaoMessageImgUrl: String? = null
 ) : UiState
 
 sealed interface BoxShareEffect : SideEffect {

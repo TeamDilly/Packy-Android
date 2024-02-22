@@ -55,4 +55,10 @@ class BoxService @Inject constructor(
             setBody(UpdateBoxDeliverStatusRequest(boxDeliverStatus))
         }
     }
+
+    suspend fun getKakaoMessageImage(
+        giftBoxId: Long
+    ): Resource<String> = safeRequest {
+        httpClient.get("/api/v1/giftboxes/${giftBoxId}/kakao-image")
+    }
 }

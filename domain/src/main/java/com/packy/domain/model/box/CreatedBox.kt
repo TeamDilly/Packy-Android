@@ -6,5 +6,4 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CreatedBox(
     @SerialName("id") val id: String,
-    @SerialName("kakaoMessageImgUrl") val kakaoMessageImgUrl: String
 )

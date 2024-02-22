@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
@@ -97,9 +98,14 @@ class CreateBoxRepositoryImp @Inject constructor(
             return@withContext createBoxDto.map {
                 CreatedBox(
                     id = it.id.toString(),
-                    kakaoMessageImgUrl = it.kakaoMessageImgUrl
                 )
             }
         }
+
+    override suspend fun getKakaoMessageImage(giftBoxId: Long): Flow<Resource<String>> = flow {
+        emit(Resource.Loading())
+        val kakaoMessageImage = boxService.getKakaoMessageImage(giftBoxId)
+        emit(kakaoMessageImage)
+    }
 
 }

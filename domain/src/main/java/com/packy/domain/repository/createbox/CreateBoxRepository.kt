@@ -20,4 +20,6 @@ interface CreateBoxRepository {
     suspend fun getCreatedBox(): CreateBox
 
     suspend fun createBox(createBox: CreateBox) : Resource<CreatedBox>
+
+    suspend fun getKakaoMessageImage(giftBoxId: Long): Flow<Resource<String>>
 }

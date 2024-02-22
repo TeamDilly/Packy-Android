@@ -47,11 +47,13 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
                             CreateBox(
                                 boxId = giftBox.box.id,
                                 envelopeId = -1,
-                                envelopeUrl = giftBox.envelope?.imgUrl,
-                                gift = Gift(
-                                    type = giftBox.gift!!.type,
-                                    url = giftBox.gift!!.url
-                                ),
+                                envelopeUrl = giftBox.envelope.imgUrl,
+                                gift = giftBox.gift?.type?.let {
+                                    Gift(
+                                        type = it,
+                                        url = giftBox.gift?.url
+                                    )
+                                },
                                 letterContent = giftBox.letterContent,
                                 name = giftBox.name,
                                 photo = Photo(

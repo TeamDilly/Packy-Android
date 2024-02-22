@@ -20,7 +20,6 @@ fun BoxShareMotionScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     boxId: Int,
-    kakaoMessageImgUrl: String,
     createdBoxId: String?
 ) {
 
@@ -43,7 +42,6 @@ fun BoxShareMotionScreen(
                 navController.navigate(
                     CreateBoxRoute.getBoxShareFadeInRoute(
                         createdBoxId = createdBoxId!!,
-                        kakaoMessageImgUrl = kakaoMessageImgUrl
                     )
                 ) {
                     val currentRoute = navController.currentBackStackEntry?.destination?.route

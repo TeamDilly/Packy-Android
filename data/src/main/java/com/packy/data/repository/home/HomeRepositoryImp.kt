@@ -33,7 +33,7 @@ class HomeRepositoryImp @Inject constructor(
 
     override suspend fun getHomeBoxes(
         type: String
-    ): Flow<PagingData<HomeBox>>{
+    ): Flow<PagingData<HomeBox>> {
         return Pager(
             config = PagingConfig(pageSize = 6),
             pagingSourceFactory = {
@@ -51,7 +51,9 @@ class HomeRepositoryImp @Inject constructor(
         emit(lazyBoxes.map { it.map { it.toEntity() } })
     }
 
-    override suspend fun getNoticeGiftBox(): Flow<Resource<NoticeGiftBox>> {
-        TODO("Not yet implemented")
+    override suspend fun getNoticeGiftBox(): Flow<Resource<NoticeGiftBox?>> = flow {
+        emit(Resource.Loading())
+        val noticeGiftBox = homeService.getNoticeGiftBox()
+        emit(noticeGiftBox.map { it?.toEntity() })
     }
 }

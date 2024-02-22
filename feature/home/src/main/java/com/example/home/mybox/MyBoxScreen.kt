@@ -140,7 +140,7 @@ fun MyBoxScreen(
         } else {
             remember { derivedStateOf { lazyBoxScrollVisible(receiverBoxState) } }
         }
-        firstVisibleItemIndex.value && lazyBox.isNotEmpty()
+        firstVisibleItemIndex.value && lazyBox.isNotEmpty() &&lazyBox.size > 2
     }
 
     LaunchedEffect(Unit) {
@@ -251,7 +251,7 @@ fun MyBoxScreen(
                 ),
                 exit = fadeOut(tween(500)) + shrinkVertically(tween(500)),
             ) {
-                firstVisibleDelay = true
+                firstVisibleDelay = false
                 Column {
                     Spacer(32.dp)
                     Text(

@@ -123,6 +123,7 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         viewModel.getGiftBoxes()
         viewModel.resetPoint()
+        viewModel.getNoticeGiftBox()
         viewModel.effect.collect { effect ->
             when (effect) {
                 is HomeEffect.MoveToSetting -> {

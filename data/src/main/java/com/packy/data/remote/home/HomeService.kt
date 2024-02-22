@@ -2,6 +2,8 @@ package com.packy.data.remote.home
 
 import com.packy.data.model.home.HomeBoxContentDto
 import com.packy.data.model.home.LazyBoxDto
+import com.packy.data.model.home.NoticeGiftBoxDto
+import com.packy.domain.model.home.NoticeGiftBox
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.safeRequest
 import com.packy.lib.utils.toResource
@@ -47,5 +49,9 @@ class HomeService @Inject constructor(
 
     suspend fun getLazyBoxes(): Resource<List<LazyBoxDto>> = safeRequest {
         httpClient.get(urlString = "/api/v1/giftboxes/waiting")
+    }
+
+    suspend fun getNoticeGiftBox(): Resource<NoticeGiftBoxDto?> = safeRequest {
+        httpClient.get(urlString = "/api/v1/giftboxes/main")
     }
 }

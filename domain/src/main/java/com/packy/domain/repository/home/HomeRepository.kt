@@ -19,5 +19,5 @@ interface HomeRepository {
 
     suspend fun getLazyBox(): Flow<Resource<List<LazyBox>>>
 
-    suspend fun getNoticeGiftBox(): Flow<Resource<NoticeGiftBox>>
+    suspend fun getNoticeGiftBox(): Flow<Resource<NoticeGiftBox?>>
 }

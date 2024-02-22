@@ -6,6 +6,7 @@ import com.packy.domain.usecase.box.DeleteBoxUseCase
 import com.packy.domain.usecase.box.GetBoxUseCase
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
 import com.packy.domain.usecase.home.GetLazyBoxUseCase
+import com.packy.domain.usecase.home.GetNoticeGiftBoxUseCase
 import com.packy.domain.usecase.reset.ResetCreateBoxUseCase
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.errorMessageHandler
@@ -29,18 +30,14 @@ class HomeViewModel @Inject constructor(
     private val getLazyBoxUseCase: GetLazyBoxUseCase,
     private val deleteBoxUseCase: DeleteBoxUseCase,
     private val resetCreateBoxUseCase: ResetCreateBoxUseCase,
+    private val getNoticeGiftBoxUseCase: GetNoticeGiftBoxUseCase,
     private val getGiftBoxUseCase: GetBoxUseCase
 ) :
     MviViewModel<HomeIntent, HomeState, HomeEffect>() {
     override fun createInitialState(): HomeState = HomeState(
         giftBoxes = emptyList(),
         lazyBox = emptyList(),
-        noticeGiftBox = NoticeGiftBox(
-            giftBoxId = 100,
-            title = "프로그래머스",
-            boxImage = "https://packy-bucket.s3.ap-northeast-2.amazonaws.com/admin/design/Box/Box_2%401x.png",
-            sender = "제이"
-        )
+        noticeGiftBox = null
     )
 
     override fun handleIntent() {
@@ -136,6 +133,23 @@ class HomeViewModel @Inject constructor(
     fun resetPoint() {
         viewModelScope.launch(Dispatchers.IO) {
             resetCreateBoxUseCase.resetCreateBox()
+        }
+    }
+
+    fun getNoticeGiftBox(){
+        viewModelScope.launch(Dispatchers.IO) {
+            getNoticeGiftBoxUseCase.getNoticeGiftBox()
+                .loadingHandler { setState { state -> state.copy(isLoading = it) } }
+                .filterSuccess()
+                .unwrapResource()
+                .collect { noticeGiftBox ->
+                    setState { state ->
+                        state.copy(
+                            noticeGiftBox = noticeGiftBox,
+                            isLoading = false
+                        )
+                    }
+                }
         }
     }
 }

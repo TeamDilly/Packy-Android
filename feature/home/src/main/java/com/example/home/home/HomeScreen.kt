@@ -17,8 +17,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +29,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
@@ -38,11 +41,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.home.common.widget.DeleteBottomSheet
 import com.example.home.common.widget.LazyBoxItem
+import com.example.home.mybox.MyBoxIntent
 import com.example.home.root.HomeRoute.MY_BOX
 import com.packy.feature.core.R
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.designsystem.dialog.PackyDialog
+import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.screen.error.ErrorDialog
@@ -51,7 +58,9 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.domain.model.home.BoxType
 import com.packy.domain.model.home.HomeBox
+import com.packy.domain.model.home.LazyBox
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
@@ -61,6 +70,8 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val scope = rememberCoroutineScope()
+
     val uiState by viewModel.uiState.collectAsState()
     val giftBoxes by remember {
         derivedStateOf { uiState.giftBoxes }
@@ -79,6 +90,13 @@ fun HomeScreen(
     val loading by remember { derivedStateOf { uiState.isLoading } }
     if (loading) {
         PackyProgressDialog()
+    }
+
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf<Long?>(null) }
+    var showDeleteDialog by remember { mutableStateOf<PackyDialogInfo?>(null) }
+    if (showDeleteDialog != null) {
+        PackyDialog(showDeleteDialog!!)
     }
 
     LaunchedEffect(Unit) {
@@ -104,6 +122,28 @@ fun HomeScreen(
                         backHandler = { errorDialog = null }
                     )
                 }
+
+                is HomeEffect.ShowBottomSheetMore -> {
+                    showBottomSheet = effect.boxId
+                }
+
+                is HomeEffect.ShowDeleteDialog -> {
+                    showDeleteDialog = PackyDialogInfo(
+                        title = Strings.DELETE_BOX_TITLE,
+                        subTitle = Strings.DELETE_BOX_SUB_TIELE,
+                        dismiss = Strings.DELETE,
+                        confirm = Strings.CANCEL,
+                        onConfirm = { showDeleteDialog = null },
+                        onDismiss = {
+                            viewModel.emitIntentThrottle(
+                                HomeIntent.OnDeleteBoxClick(
+                                    boxId = effect.boxId,
+                                )
+                            )
+                            showDeleteDialog = null
+                        }
+                    )
+                }
             }
         }
     }
@@ -121,6 +161,23 @@ fun HomeScreen(
         },
         containerColor = PackyTheme.color.gray100
     ) { innerPadding ->
+
+        if (showBottomSheet != null) {
+            DeleteBottomSheet(
+                boxId = showBottomSheet!!,
+                sheetState = sheetState,
+                scope = scope,
+                onDeleteClick = { boxId ->
+                    viewModel.emitIntent(
+                        HomeIntent.OnClickDeleteMyBoxBottomSheet(
+                            boxId,
+                        )
+                    )
+                },
+                closeSheet = { showBottomSheet = null }
+            )
+        }
+
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -185,37 +242,52 @@ fun HomeScreen(
             }
             if (lazyBoxes.isNotEmpty()) {
                 Spacer(height = 16.dp)
-                Column(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .background(
-                            color = PackyTheme.color.white,
-                            shape = RoundedCornerShape(24.dp)
-                        ),
-                    verticalArrangement = Arrangement.spacedBy(24.dp)
-                ) {
-                    Box(modifier = Modifier)
-                    Text(
-                        text = Strings.LAZY_BOX_TITLE,
-                        style = PackyTheme.typography.heading02,
-                        color = PackyTheme.color.gray900,
-                        modifier = Modifier.padding(horizontal = 24.dp)
-                    )
-                    lazyBoxes.forEach { lazyBox ->
-                        LazyBoxItem(
-                            lazyBox = lazyBox,
-                            modifier = Modifier
-                                .padding(horizontal = 24.dp)
-                                .fillMaxWidth(),
-                            onClick = { viewModel.emitIntentThrottle(HomeIntent.OnLazyBoxDetailClick(it)) },
-                            onMoreClick = { }
-                        )
-                    }
-                    Box(modifier = Modifier)
-                }
+                LazyBoxes(
+                    modifier = Modifier,
+                    lazyBoxes = lazyBoxes,
+                    onClick = { viewModel.emitIntentThrottle(HomeIntent.OnLazyBoxDetailClick(it)) },
+                    onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnBottomSheetMoreClick(it)) }
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun LazyBoxes(
+    modifier: Modifier,
+    lazyBoxes: List<LazyBox>,
+    onClick: (Long) -> Unit,
+    onMoreClick: (Long) -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .background(
+                color = PackyTheme.color.white,
+                shape = RoundedCornerShape(24.dp)
+            ),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        Box(modifier = Modifier)
+        Text(
+            text = Strings.LAZY_BOX_TITLE,
+            style = PackyTheme.typography.heading02,
+            color = PackyTheme.color.gray900,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
+        lazyBoxes.forEach { lazyBox ->
+            LazyBoxItem(
+                lazyBox = lazyBox,
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .fillMaxWidth(),
+                onClick = onClick,
+                onMoreClick = onMoreClick
+            )
+        }
+        Box(modifier = Modifier)
     }
 }
 

@@ -69,6 +69,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.filter
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.home.common.widget.DeleteBottomSheet
 import com.example.home.common.widget.LazyBoxItem
 import com.packy.common.authenticator.ext.toFormatTimeStampString
 import com.packy.core.common.NoRippleTheme
@@ -121,6 +122,7 @@ fun MyBoxScreen(
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    var firstVisibleDelay by remember { mutableStateOf(true) }
     var showBottomSheet by remember { mutableStateOf<Pair<Long, Boolean>?>(null) }
     var showDeleteDialog by remember { mutableStateOf<PackyDialogInfo?>(null) }
 
@@ -212,7 +214,7 @@ fun MyBoxScreen(
     ) { innerPadding ->
 
         if (showBottomSheet != null) {
-            MyBoxDeleteBottomSheet(
+            DeleteBottomSheet(
                 boxId = showBottomSheet!!.first,
                 sheetState = sheetState,
                 scope = scope,
@@ -239,16 +241,17 @@ fun MyBoxScreen(
                 enter = fadeIn(
                     tween(
                         500,
-                        500
+                        if(firstVisibleDelay) 500 else 0
                     )
                 ) + expandVertically(
                     tween(
                         500,
-                        500
+                        if(firstVisibleDelay) 500 else 0
                     )
                 ),
                 exit = fadeOut(tween(500)) + shrinkVertically(tween(500)),
             ) {
+                firstVisibleDelay = true
                 Column {
                     Spacer(32.dp)
                     Text(
@@ -331,76 +334,6 @@ fun MyBoxScreen(
 
 private fun lazyBoxScrollVisible(sendBoxState: LazyGridState) =
     sendBoxState.firstVisibleItemIndex == 0 && sendBoxState.firstVisibleItemScrollOffset in 0..150
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun MyBoxDeleteBottomSheet(
-    boxId: Long,
-    sheetState: SheetState,
-    scope: CoroutineScope = rememberCoroutineScope(),
-    onDeleteClick: (Long) -> Unit = {},
-    closeSheet: () -> Unit = {}
-) {
-    ModalBottomSheet(
-        onDismissRequest = closeSheet,
-        sheetState = sheetState,
-        dragHandle = null,
-        containerColor = PackyTheme.color.white,
-    ) {
-        Column {
-            Spacer(height = 8.dp)
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .clickableWithoutRipple {
-                        scope
-                            .launch { sheetState.hide() }
-                            .invokeOnCompletion {
-                                onDeleteClick(boxId)
-                                if (!sheetState.isVisible) {
-                                    closeSheet()
-                                }
-                            }
-                    },
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-
-                    text = Strings.DELETE,
-                    style = PackyTheme.typography.body02,
-                    color = PackyTheme.color.gray900,
-                    textAlign = TextAlign.Center
-                )
-            }
-
-            Divider()
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .clickableWithoutRipple {
-                        scope
-                            .launch { sheetState.hide() }
-                            .invokeOnCompletion {
-                                if (!sheetState.isVisible) {
-                                    closeSheet()
-                                }
-                            }
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = Strings.CANCEL,
-                    style = PackyTheme.typography.body02,
-                    color = PackyTheme.color.gray900,
-                    textAlign = TextAlign.Center
-                )
-            }
-            Spacer(height = 16.dp)
-        }
-    }
-}
 
 @Composable
 private fun MyBoxList(

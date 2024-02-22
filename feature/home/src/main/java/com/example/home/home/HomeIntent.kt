@@ -18,6 +18,18 @@ sealed interface HomeIntent : MviIntent {
         val boxId: Long
     ) : HomeIntent
 
+    data class OnBottomSheetMoreClick(
+        val boxId: Long
+    ) : HomeIntent
+
+    data class OnClickDeleteMyBoxBottomSheet(
+        val boxId: Long
+    ) : HomeIntent
+
+    data class OnDeleteBoxClick(
+        val boxId: Long
+    ) : HomeIntent
+
     data object OnMoreBoxClick : HomeIntent
 }
 
@@ -38,4 +50,6 @@ sealed interface HomeEffect : SideEffect {
 
     data object MoveToMoreBox : HomeEffect
     data class ThrowError(val message: String?) : HomeEffect
+    data class ShowBottomSheetMore(val boxId: Long) : HomeEffect
+    data class ShowDeleteDialog(val boxId: Long) : HomeEffect
 }

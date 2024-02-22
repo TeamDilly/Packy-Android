@@ -1,6 +1,7 @@
 package com.example.home.home
 
 import androidx.lifecycle.viewModelScope
+import com.packy.domain.usecase.box.DeleteBoxUseCase
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
 import com.packy.domain.usecase.home.GetLazyBoxUseCase
 import com.packy.domain.usecase.reset.ResetCreateBoxUseCase
@@ -25,6 +26,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getHomeBoxUseCase: GetHomeBoxUseCase,
     private val getLazyBoxUseCase: GetLazyBoxUseCase,
+    private val deleteBoxUseCase: DeleteBoxUseCase,
     private val resetCreateBoxUseCase: ResetCreateBoxUseCase
 ) :
     MviViewModel<HomeIntent, HomeState, HomeEffect>() {
@@ -50,10 +52,33 @@ class HomeViewModel @Inject constructor(
                 )
             )
         }
+        subscribeIntent<HomeIntent.OnBottomSheetMoreClick> {
+            sendEffect(HomeEffect.ShowBottomSheetMore(it.boxId))
+        }
+        subscribeIntent<HomeIntent.OnClickDeleteMyBoxBottomSheet> {
+            sendEffect(HomeEffect.ShowDeleteDialog(it.boxId))
+        }
+        subscribeIntent<HomeIntent.OnDeleteBoxClick> {
+            deleteBox(it.boxId)
+        }
         subscribeIntent<HomeIntent.OnCrateBoxClick> { sendEffect(HomeEffect.MoveToCreateBox) }
         subscribeIntent<HomeIntent.OnSettingClick> { sendEffect(HomeEffect.MoveToSetting) }
         subscribeIntent<HomeIntent.OnMoreBoxClick> { sendEffect(HomeEffect.MoveToMoreBox) }
     }
+
+    private fun deleteBox(giftBoxId: Long) =
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteBoxUseCase.deleteBox(giftBoxId.toString())
+                .loadingHandler { setState { state -> state.copy(isLoading = it) } }
+                .errorMessageHandler { message ->
+                    sendEffect(HomeEffect.ThrowError(message))
+                }
+                .filterSuccess()
+                .unwrapResource()
+                .collect {
+                    getGiftBoxes()
+                }
+        }
 
     fun getGiftBoxes() {
         viewModelScope.launch(Dispatchers.IO) {

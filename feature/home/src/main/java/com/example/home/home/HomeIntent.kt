@@ -1,6 +1,7 @@
 package com.example.home.home
 
 import com.packy.domain.model.home.HomeBox
+import com.packy.domain.model.home.LazyBox
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
@@ -18,6 +19,7 @@ sealed interface HomeIntent : MviIntent {
 
 data class HomeState(
     val giftBoxes: List<HomeBox>,
+    val lazyBox: List<LazyBox>,
     val isLoading: Boolean = false
 ) : UiState
 

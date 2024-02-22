@@ -83,3 +83,48 @@ fun <T> Flow<Resource<T>>.catchError(
     }
 
 fun <T> Flow<Resource.Success<T>>.unwrapResource(): Flow<T> = this.map { it.data }
+
+inline operator fun <reified T, reified R> Resource<T>.plus(resource: Resource<R>): Resource<Pair<T, R>> =
+    when {
+        this is Resource.Loading || resource is Resource.Loading -> Resource.Loading()
+        this is Resource.ApiError -> Resource.ApiError(
+            null,
+            message,
+            code
+        )
+
+        resource is Resource.ApiError -> Resource.ApiError(
+            null,
+            resource.message,
+            resource.code
+        )
+
+        this is Resource.NetworkError -> Resource.NetworkError(throwable)
+        resource is Resource.NetworkError -> Resource.NetworkError(resource.throwable)
+
+        this is Resource.NullResult -> Resource.NullResult(
+            message,
+            code
+        )
+
+        resource is Resource.NullResult -> Resource.NullResult(
+            resource.message,
+            resource.code
+        )
+
+        this is Resource.Success && resource is Resource.Success -> Resource.Success(
+            Pair(
+                this.data,
+                resource.data
+            ),
+            message,
+            code
+        )
+
+        else -> {
+            Resource.NullResult(
+                "",
+                "Resource failed to combine"
+            )
+        }
+    }

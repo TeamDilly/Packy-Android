@@ -11,6 +11,7 @@ import com.example.home.root.HomeRoute.HOME_ROOT
 import com.example.home.navigation.settingsNavGraph
 import com.packy.core.page.navigation.commonNavGraph
 import com.packy.createbox.navigation.createBoxNavGraph
+import com.packy.domain.model.getbox.GiftBox
 import com.packy.onboarding.navigation.onboardingNavGraph
 import com.packy.root.deeplink.deepLinkNavGraph
 
@@ -26,6 +27,7 @@ fun PackyNavHost(
     moveSettings: () -> Unit,
     closeCreateBox: () -> Unit,
     moveToShared: (Long) -> Unit,
+    moveToBoxOpenMotion: (GiftBox) -> Unit,
     logout: () -> Unit
 ) {
     NavHost(
@@ -66,6 +68,7 @@ fun PackyNavHost(
                 moveToCreateBox = moveToCreateBox,
                 moveToBoxDetail = moveToBoxDetail,
                 moveSettings = moveSettings,
+                moveToBoxOpenMotion=  moveToBoxOpenMotion,
             )
         }
     }

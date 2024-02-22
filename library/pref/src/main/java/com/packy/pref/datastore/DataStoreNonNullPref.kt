@@ -26,6 +26,12 @@ class DataStoreNonNullPref(
     private val domain: String
 ) : NonNullPref {
 
+    val jsonObject = Json {
+        prettyPrint = true
+        isLenient = true
+        ignoreUnknownKeys = true
+    }
+
     private val dataStore = PreferenceDataStoreFactory.create {
         context.preferencesDataStoreFile(domain)
     }
@@ -49,7 +55,7 @@ class DataStoreNonNullPref(
                     String::class -> preferences[stringPreferencesKey(key)]
                     else -> {
                         val json = preferences[stringPreferencesKey(key)]
-                        json?.let { Json.decodeFromString(it) }
+                        json?.let { jsonObject.decodeFromString(it) }
                     }
                 }
 
@@ -85,7 +91,7 @@ class DataStoreNonNullPref(
             }
 
             is KSerializer<*> -> {
-                val serializedData = Json.encodeToString(data)
+                val serializedData = jsonObject.encodeToString(data)
                 safeDataStoreOperation<KClass<Any>>(key) { preferences ->
                     preferences[stringPreferencesKey(key)] = serializedData
                 }

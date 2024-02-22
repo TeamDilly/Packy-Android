@@ -19,6 +19,7 @@ import com.packy.core.animations.asFadeInComposable
 import com.packy.core.animations.asFadeInSlidOutComposable
 import com.packy.core.animations.asPagingComposable
 import com.packy.core.animations.asRootComposable
+import com.packy.core.common.PackyJson
 import com.packy.domain.model.getbox.GiftBox
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -151,12 +152,12 @@ object GiftBoxRoute {
     }
 
     fun getGiftBoxMotionRoute(giftBox: GiftBox): String {
-        val giftBoxJson = Json.encodeToString(giftBox.toUrlEncoding())
+        val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
         return "${GIFT_BOX_MOTION}/$giftBoxJson"
     }
 
     fun getGiftBoxArrRoute(giftBox: GiftBox): String {
-        val giftBoxJson = Json.encodeToString(giftBox.toUrlEncoding())
+        val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
         return "${GIFT_BOX_ARR}/$giftBoxJson"
     }
 
@@ -164,7 +165,7 @@ object GiftBoxRoute {
         giftBox: GiftBox,
         shouldShowShared: Boolean
     ): String {
-        val giftBoxJson = Json.encodeToString(giftBox.toUrlEncoding())
+        val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
         return "${GIFT_BOX_DETAIL_OPEN}/$giftBoxJson/$shouldShowShared"
     }
 
@@ -172,12 +173,12 @@ object GiftBoxRoute {
         giftBox: GiftBox,
         shouldShowShared: Boolean
     ): String {
-        val giftBoxJson = Json.encodeToString(giftBox.toUrlEncoding())
+        val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
         return "${GIFT_BOX_DETAIL_OPEN_FADE}/$giftBoxJson/$shouldShowShared"
     }
 
     fun getGiftBoxArg(savedStateHandle: SavedStateHandle): GiftBox? {
         val giftBoxJson = savedStateHandle.get<String>(GIFT_BOX_ARG)
-        return giftBoxJson?.let { Json.decodeFromString<GiftBox>(it) }
+        return giftBoxJson?.let { PackyJson.decodeFromString<GiftBox>(it) }
     }
 }

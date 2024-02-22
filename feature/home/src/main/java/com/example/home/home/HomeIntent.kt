@@ -1,7 +1,9 @@
 package com.example.home.home
 
+import com.packy.domain.model.getbox.GiftBox
 import com.packy.domain.model.home.HomeBox
 import com.packy.domain.model.home.LazyBox
+import com.packy.domain.model.home.NoticeGiftBox
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect
 import com.packy.mvi.mvi.UiState
@@ -11,7 +13,8 @@ sealed interface HomeIntent : MviIntent {
     data object OnCrateBoxClick : HomeIntent
 
     data class OnBoxDetailClick(
-        val boxId: Long
+        val giftBoxId: Long,
+        val showMotion: Boolean = false
     ) : HomeIntent
 
     data class OnLazyBoxDetailClick(
@@ -31,12 +34,15 @@ sealed interface HomeIntent : MviIntent {
     ) : HomeIntent
 
     data object OnMoreBoxClick : HomeIntent
+
+    data object HideBottomSheet: HomeIntent
 }
 
 data class HomeState(
     val giftBoxes: List<HomeBox>,
     val lazyBox: List<LazyBox>,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val noticeGiftBox: NoticeGiftBox? = null
 ) : UiState
 
 sealed interface HomeEffect : SideEffect {
@@ -45,7 +51,10 @@ sealed interface HomeEffect : SideEffect {
 
     data class MoveToBoxDetail(
         val boxId: Long,
-        val isLazyBox: Boolean
+        val isLazyBox: Boolean,
+    ) : HomeEffect
+    data class MoveToBoxOpenMotion(
+        val giftBox: GiftBox,
     ) : HomeEffect
 
     data object MoveToMoreBox : HomeEffect

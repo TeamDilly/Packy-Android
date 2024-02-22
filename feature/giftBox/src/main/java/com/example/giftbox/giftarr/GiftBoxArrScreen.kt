@@ -72,7 +72,8 @@ fun GiftBoxArrScreen(
     )
     val progress by animateLottieCompositionAsState(
         composition,
-        isPlaying = lottiePlaying
+        isPlaying = lottiePlaying,
+        speed = 1.4f
     )
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp

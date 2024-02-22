@@ -33,6 +33,7 @@ import com.example.home.mybox.MyBoxScreen
 import com.packy.core.animations.asFadeInComposable
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.theme.PackyTheme
+import com.packy.domain.model.getbox.GiftBox
 import com.packy.feature.core.R
 
 data class BottomNavigationItem(
@@ -47,6 +48,7 @@ fun HomeRootScreen(
     modifier: Modifier = Modifier,
     moveToCreateBox: () -> Unit,
     moveToBoxDetail: (Long, Boolean) -> Unit,
+    moveToBoxOpenMotion: (GiftBox) -> Unit,
     moveSettings: () -> Unit,
 ) {
     val navController = rememberNavController()
@@ -91,7 +93,8 @@ fun HomeRootScreen(
                     navController = navController,
                     moveToCreateBox = moveToCreateBox,
                     moveToBoxDetail = moveToBoxDetail,
-                    moveSettings = moveSettings
+                    moveSettings = moveSettings,
+                    moveToBoxOpenMotion = moveToBoxOpenMotion
                 )
             }
             asFadeInComposable(

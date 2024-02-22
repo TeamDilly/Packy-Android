@@ -101,6 +101,9 @@ fun RootCompose(
                 }
             )
             globalPopUp = closePackyDialog
+        },
+        moveToBoxOpenMotion = {
+            navController.navigate(GiftBoxRoute.getGiftBoxMotionRoute(it))
         }
     )
 }

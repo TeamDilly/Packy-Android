@@ -2,6 +2,7 @@ package com.example.home.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +20,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.ui.Modifier
@@ -34,7 +38,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -44,11 +50,12 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.home.common.widget.DeleteBottomSheet
 import com.example.home.common.widget.LazyBoxItem
-import com.example.home.mybox.MyBoxIntent
 import com.example.home.root.HomeRoute.MY_BOX
 import com.packy.feature.core.R
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.designsystem.button.PackyButton
+import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.designsystem.progress.PackyProgressDialog
@@ -57,9 +64,14 @@ import com.packy.core.screen.error.ErrorDialog
 import com.packy.core.screen.error.ErrorDialogInfo
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.core.widget.animation.BoxShakeAnimation
+import com.packy.domain.model.getbox.GiftBox
 import com.packy.domain.model.home.BoxType
 import com.packy.domain.model.home.HomeBox
 import com.packy.domain.model.home.LazyBox
+import com.packy.domain.model.home.NoticeGiftBox
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,6 +79,7 @@ fun HomeScreen(
     navController: NavController,
     moveToCreateBox: () -> Unit,
     moveToBoxDetail: (Long, Boolean) -> Unit,
+    moveToBoxOpenMotion: (GiftBox) -> Unit,
     moveSettings: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
@@ -79,6 +92,13 @@ fun HomeScreen(
     }
     val lazyBoxes by remember {
         derivedStateOf { uiState.lazyBox }
+    }
+
+    val showNoticeGiftBoxBottomSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+    val noticeGiftBox by remember {
+        derivedStateOf { uiState.noticeGiftBox }
     }
 
     var errorDialog by remember { mutableStateOf<ErrorDialogInfo?>(null) }
@@ -145,6 +165,10 @@ fun HomeScreen(
                         }
                     )
                 }
+
+                is HomeEffect.MoveToBoxOpenMotion -> {
+                    moveToBoxOpenMotion(effect.giftBox)
+                }
             }
         }
     }
@@ -177,6 +201,23 @@ fun HomeScreen(
                     )
                 },
                 closeSheet = { showBottomSheet = null }
+            )
+        }
+
+        if (noticeGiftBox != null) {
+            NoticeGiftBoxBottomSheet(
+                noticeGiftBox = noticeGiftBox!!,
+                sheetState = showNoticeGiftBoxBottomSheetState,
+                scope = scope,
+                hideBottomSheet = { viewModel.emitIntentThrottle(HomeIntent.HideBottomSheet) },
+                openClick = { boxId ->
+                    viewModel.emitIntentThrottle(
+                        HomeIntent.OnBoxDetailClick(
+                            giftBoxId = boxId,
+                            showMotion = true
+                        )
+                    )
+                }
             )
         }
 
@@ -251,6 +292,125 @@ fun HomeScreen(
                     onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnBottomSheetMoreClick(it)) }
                 )
             }
+        }
+    }
+}
+
+@Composable
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalGlideComposeApi::class
+)
+private fun NoticeGiftBoxBottomSheet(
+    sheetState: SheetState,
+    scope: CoroutineScope = rememberCoroutineScope(),
+    hideBottomSheet: () -> Unit,
+    noticeGiftBox: NoticeGiftBox,
+    openClick: (Long) -> Unit = {}
+) {
+    ModalBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = {
+            scope
+                .launch { sheetState.hide() }
+                .invokeOnCompletion {
+                    hideBottomSheet()
+                }
+        },
+        dragHandle = null,
+        containerColor = PackyTheme.color.white,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Box(
+                modifier = Modifier
+                    .height(48.dp)
+                    .padding(
+                        vertical = 4.dp,
+                        horizontal = 16.dp
+                    )
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.CenterEnd,
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.cancle),
+                    contentDescription = "close",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .clickableWithoutRipple {
+                            scope
+                                .launch { sheetState.hide() }
+                                .invokeOnCompletion {
+                                    hideBottomSheet()
+                                }
+                        }
+                )
+            }
+            Text(
+                text = Strings.GIFT_BOX_ARR_TITLE(noticeGiftBox.sender),
+                style = PackyTheme.typography.heading01,
+                color = PackyTheme.color.gray900,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(16.dp)
+            Text(
+                modifier = Modifier
+                    .border(
+                        1.dp,
+                        PackyTheme.color.gray300,
+                        RoundedCornerShape(40.dp)
+                    )
+                    .background(
+                        PackyTheme.color.gray100,
+                        RoundedCornerShape(40.dp)
+                    )
+                    .padding(
+                        horizontal = 24.dp,
+                        vertical = 12.dp
+                    ),
+                text = noticeGiftBox.title,
+                style = PackyTheme.typography.body04.copy(
+                    textAlign = TextAlign.Center
+                ),
+            )
+            Spacer(40.dp)
+            BoxShakeAnimation(
+                modifier = Modifier
+                    .width(138.dp)
+                    .height(160.dp)
+                    .clickableWithoutRipple {
+                        scope
+                            .launch { sheetState.hide() }
+                            .invokeOnCompletion {
+                                openClick(noticeGiftBox.giftBoxId)
+                                hideBottomSheet()
+                            }
+                    },
+            ) {
+                GlideImage(
+                    model = noticeGiftBox.boxImage,
+                    contentDescription = "gift box",
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
+            }
+            Spacer(48.dp)
+            PackyButton(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                text = Strings.OPEN,
+                style = buttonStyle.large.black,
+                onClick = {
+                    scope
+                        .launch { sheetState.hide() }
+                        .invokeOnCompletion {
+                            openClick(noticeGiftBox.giftBoxId)
+                            hideBottomSheet()
+                        }
+                }
+            )
+            Spacer(16.dp)
         }
     }
 }

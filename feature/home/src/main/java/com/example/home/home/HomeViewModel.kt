@@ -1,7 +1,9 @@
 package com.example.home.home
 
 import androidx.lifecycle.viewModelScope
+import com.packy.domain.model.home.NoticeGiftBox
 import com.packy.domain.usecase.box.DeleteBoxUseCase
+import com.packy.domain.usecase.box.GetBoxUseCase
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
 import com.packy.domain.usecase.home.GetLazyBoxUseCase
 import com.packy.domain.usecase.reset.ResetCreateBoxUseCase
@@ -15,7 +17,6 @@ import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.zip
@@ -27,22 +28,33 @@ class HomeViewModel @Inject constructor(
     private val getHomeBoxUseCase: GetHomeBoxUseCase,
     private val getLazyBoxUseCase: GetLazyBoxUseCase,
     private val deleteBoxUseCase: DeleteBoxUseCase,
-    private val resetCreateBoxUseCase: ResetCreateBoxUseCase
+    private val resetCreateBoxUseCase: ResetCreateBoxUseCase,
+    private val getGiftBoxUseCase: GetBoxUseCase
 ) :
     MviViewModel<HomeIntent, HomeState, HomeEffect>() {
     override fun createInitialState(): HomeState = HomeState(
         giftBoxes = emptyList(),
-        lazyBox = emptyList()
+        lazyBox = emptyList(),
+        noticeGiftBox = NoticeGiftBox(
+            giftBoxId = 100,
+            title = "프로그래머스",
+            boxImage = "https://packy-bucket.s3.ap-northeast-2.amazonaws.com/admin/design/Box/Box_2%401x.png",
+            sender = "제이"
+        )
     )
 
     override fun handleIntent() {
         subscribeIntent<HomeIntent.OnBoxDetailClick> {
-            sendEffect(
-                HomeEffect.MoveToBoxDetail(
-                    it.boxId,
-                    false
+            if (it.showMotion) {
+                routeGiftBoxMotion(it)
+            } else {
+                sendEffect(
+                    HomeEffect.MoveToBoxDetail(
+                        it.giftBoxId,
+                        false
+                    )
                 )
-            )
+            }
         }
         subscribeIntent<HomeIntent.OnLazyBoxDetailClick> {
             sendEffect(
@@ -64,6 +76,23 @@ class HomeViewModel @Inject constructor(
         subscribeIntent<HomeIntent.OnCrateBoxClick> { sendEffect(HomeEffect.MoveToCreateBox) }
         subscribeIntent<HomeIntent.OnSettingClick> { sendEffect(HomeEffect.MoveToSetting) }
         subscribeIntent<HomeIntent.OnMoreBoxClick> { sendEffect(HomeEffect.MoveToMoreBox) }
+        subscribeStateIntent<HomeIntent.HideBottomSheet> { state, _ ->
+            state.copy(noticeGiftBox = null)
+        }
+    }
+
+    private suspend fun routeGiftBoxMotion(it: HomeIntent.OnBoxDetailClick) {
+        getGiftBoxUseCase.getBox(it.giftBoxId.toString())
+            .loadingHandler { setState { state -> state.copy(isLoading = it) } }
+            .filterSuccess()
+            .unwrapResource()
+            .collect { giftBox ->
+                sendEffect(
+                    HomeEffect.MoveToBoxOpenMotion(
+                        giftBox
+                    )
+                )
+            }
     }
 
     private fun deleteBox(giftBoxId: Long) =

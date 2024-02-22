@@ -14,6 +14,10 @@ sealed interface HomeIntent : MviIntent {
         val boxId: Long
     ) : HomeIntent
 
+    data class OnLazyBoxDetailClick(
+        val boxId: Long
+    ) : HomeIntent
+
     data object OnMoreBoxClick : HomeIntent
 }
 
@@ -27,8 +31,11 @@ sealed interface HomeEffect : SideEffect {
     data object MoveToSetting : HomeEffect
     data object MoveToCreateBox : HomeEffect
 
-    data class MoveToBoxDetail(val boxId: Long) : HomeEffect
+    data class MoveToBoxDetail(
+        val boxId: Long,
+        val isLazyBox: Boolean
+    ) : HomeEffect
 
-    data object MoveToMoreBox: HomeEffect
-    data class ThrowError(val message: String?): HomeEffect
+    data object MoveToMoreBox : HomeEffect
+    data class ThrowError(val message: String?) : HomeEffect
 }

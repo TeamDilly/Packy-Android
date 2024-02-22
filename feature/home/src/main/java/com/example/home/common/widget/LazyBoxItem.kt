@@ -1,4 +1,4 @@
-package com.example.home.mybox.widget
+package com.example.home.common.widget
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -37,11 +37,6 @@ fun LazyBoxItem(
 ) {
     Row(
         modifier = modifier
-            .background(
-                color = PackyTheme.color.gray100,
-                shape = RoundedCornerShape(16.dp)
-            )
-            .padding(17.dp)
             .clickableWithoutRipple {
                 onClick(lazyBox.boxId)
             },

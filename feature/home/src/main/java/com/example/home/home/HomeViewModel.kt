@@ -34,7 +34,22 @@ class HomeViewModel @Inject constructor(
     )
 
     override fun handleIntent() {
-        subscribeIntent<HomeIntent.OnBoxDetailClick> { sendEffect(HomeEffect.MoveToBoxDetail(it.boxId)) }
+        subscribeIntent<HomeIntent.OnBoxDetailClick> {
+            sendEffect(
+                HomeEffect.MoveToBoxDetail(
+                    it.boxId,
+                    false
+                )
+            )
+        }
+        subscribeIntent<HomeIntent.OnLazyBoxDetailClick> {
+            sendEffect(
+                HomeEffect.MoveToBoxDetail(
+                    it.boxId,
+                    true
+                )
+            )
+        }
         subscribeIntent<HomeIntent.OnCrateBoxClick> { sendEffect(HomeEffect.MoveToCreateBox) }
         subscribeIntent<HomeIntent.OnSettingClick> { sendEffect(HomeEffect.MoveToSetting) }
         subscribeIntent<HomeIntent.OnMoreBoxClick> { sendEffect(HomeEffect.MoveToMoreBox) }

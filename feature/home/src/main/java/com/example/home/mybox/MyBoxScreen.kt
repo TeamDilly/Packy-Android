@@ -69,7 +69,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.filter
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.home.mybox.widget.LazyBoxItem
+import com.example.home.common.widget.LazyBoxItem
 import com.packy.common.authenticator.ext.toFormatTimeStampString
 import com.packy.core.common.NoRippleTheme
 import com.packy.core.common.Spacer
@@ -236,7 +236,17 @@ fun MyBoxScreen(
         ) {
             AnimatedVisibility(
                 visible = visibleLazyBox(),
-                enter = fadeIn(tween(500, 500)) + expandVertically(tween(500, 500)),
+                enter = fadeIn(
+                    tween(
+                        500,
+                        500
+                    )
+                ) + expandVertically(
+                    tween(
+                        500,
+                        500
+                    )
+                ),
                 exit = fadeOut(tween(500)) + shrinkVertically(tween(500)),
             ) {
                 Column {
@@ -258,6 +268,12 @@ fun MyBoxScreen(
                         pageSpacing = 16.dp
                     ) { page ->
                         LazyBoxItem(
+                            modifier = Modifier
+                                .background(
+                                    color = PackyTheme.color.gray100,
+                                    shape = RoundedCornerShape(16.dp)
+                                )
+                                .padding(17.dp),
                             lazyBox = lazyBox[page],
                             onClick = { boxId ->
                                 viewModel.emitIntent(

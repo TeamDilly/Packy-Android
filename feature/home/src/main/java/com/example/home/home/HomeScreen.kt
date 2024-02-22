@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.home.common.widget.LazyBoxItem
 import com.example.home.root.HomeRoute.MY_BOX
 import com.packy.feature.core.R
 import com.packy.core.common.Spacer
@@ -64,6 +65,9 @@ fun HomeScreen(
     val giftBoxes by remember {
         derivedStateOf { uiState.giftBoxes }
     }
+    val lazyBoxes by remember {
+        derivedStateOf { uiState.lazyBox }
+    }
 
     var errorDialog by remember { mutableStateOf<ErrorDialogInfo?>(null) }
     if (errorDialog != null) {
@@ -86,7 +90,11 @@ fun HomeScreen(
                     moveSettings()
                 }
 
-                is HomeEffect.MoveToBoxDetail -> moveToBoxDetail(effect.boxId, false)
+                is HomeEffect.MoveToBoxDetail -> moveToBoxDetail(
+                    effect.boxId,
+                    effect.isLazyBox
+                )
+
                 HomeEffect.MoveToCreateBox -> moveToCreateBox()
                 HomeEffect.MoveToMoreBox -> navController.navigate(MY_BOX)
                 is HomeEffect.ThrowError -> {
@@ -116,8 +124,8 @@ fun HomeScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState()),
         ) {
             Spacer(height = 16.dp)
             Column(
@@ -166,26 +174,73 @@ fun HomeScreen(
                     )
                 }
             }
-            Spacer(height = 16.dp)
             if (giftBoxes.isNotEmpty()) {
+                Spacer(height = 16.dp)
+                HomeGiftBox(
+                    modifier = Modifier,
+                    giftBoxes = giftBoxes,
+                    onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnMoreBoxClick) },
+                    moveToBoxDetail = { viewModel.emitIntentThrottle(HomeIntent.OnBoxDetailClick(it)) }
+                )
+            }
+            if (lazyBoxes.isNotEmpty()) {
+                Spacer(height = 16.dp)
                 Column(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                         .background(
                             color = PackyTheme.color.white,
                             shape = RoundedCornerShape(24.dp)
                         ),
+                    verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
-                    HomeGiftBoxes(
-                        giftBoxes = giftBoxes,
-                        onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnMoreBoxClick) },
-                        moveToBoxDetail = { viewModel.emitIntentThrottle(HomeIntent.OnBoxDetailClick(it)) }
+                    Box(modifier = Modifier)
+                    Text(
+                        text = Strings.LAZY_BOX_TITLE,
+                        style = PackyTheme.typography.heading02,
+                        color = PackyTheme.color.gray900,
+                        modifier = Modifier.padding(horizontal = 24.dp)
                     )
-                    Spacer(height = 24.dp)
+                    lazyBoxes.forEach { lazyBox ->
+                        LazyBoxItem(
+                            lazyBox = lazyBox,
+                            modifier = Modifier
+                                .padding(horizontal = 24.dp)
+                                .fillMaxWidth(),
+                            onClick = { viewModel.emitIntentThrottle(HomeIntent.OnLazyBoxDetailClick(it)) },
+                            onMoreClick = { }
+                        )
+                    }
+                    Box(modifier = Modifier)
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun HomeGiftBox(
+    modifier: Modifier = Modifier,
+    giftBoxes: List<HomeBox>,
+    onMoreClick: () -> Unit,
+    moveToBoxDetail: (Long) -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .background(
+                color = PackyTheme.color.white,
+                shape = RoundedCornerShape(24.dp)
+            ),
+    ) {
+        HomeGiftBoxes(
+            giftBoxes = giftBoxes,
+            onMoreClick = onMoreClick,
+            moveToBoxDetail = moveToBoxDetail
+        )
+        Spacer(height = 24.dp)
     }
 }
 

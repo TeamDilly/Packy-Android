@@ -105,7 +105,7 @@ class CreateBoxRepositoryImp @Inject constructor(
     override suspend fun getKakaoMessageImage(giftBoxId: Long): Flow<Resource<String>> = flow {
         emit(Resource.Loading())
         val kakaoMessageImage = boxService.getKakaoMessageImage(giftBoxId)
-        emit(kakaoMessageImage)
+        emit(kakaoMessageImage.map { it.kakaoMessageImgUrl })
     }
 
 }

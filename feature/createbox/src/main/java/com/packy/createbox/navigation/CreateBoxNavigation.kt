@@ -53,7 +53,8 @@ fun NavGraphBuilder.createBoxNavGraph(
             )
         }
         asFadeInSlidOutComposable(
-            route = CreateBoxRoute.BOX_GUIDE_FADE_IN
+            route = CreateBoxRoute.BOX_GUIDE_FADE_IN,
+            enterDuration = 700
         ) {
             BoxGuideScreen(
                 navController = navController,

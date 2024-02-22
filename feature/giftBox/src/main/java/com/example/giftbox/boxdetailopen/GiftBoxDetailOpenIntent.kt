@@ -20,6 +20,8 @@ sealed interface GiftBoxDetailOpenIntent : MviIntent {
 
     data object OnBackClick : GiftBoxDetailOpenIntent
     data object OnCloseClick : GiftBoxDetailOpenIntent
+
+    data object BoxShared: GiftBoxDetailOpenIntent
 }
 
 enum class ShowDetail {
@@ -42,4 +44,6 @@ sealed interface GiftBoxDetailOpenEffect : SideEffect {
 
     data object MoveToBack : GiftBoxDetailOpenEffect
     data object GiftBoxClose : GiftBoxDetailOpenEffect
+
+    data class MoveToShared(val giftBoxId: Long): GiftBoxDetailOpenEffect
 }

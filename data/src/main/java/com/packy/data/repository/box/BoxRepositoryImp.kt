@@ -23,7 +23,7 @@ class BoxRepositoryImp @Inject constructor(
     override suspend fun getBox(giftBoxId: String): Flow<Resource<GiftBox>> = flow {
         emit(Resource.Loading())
         val giftBoxDto = api.getGifBox(giftBoxId)
-        emit(giftBoxDto.map { it.toEntity() })
+        emit(giftBoxDto.map { it.toEntity(giftBoxId.toLong()) })
     }
 
     override suspend fun getBoxDesignLocal(): Flow<BoxDesign?> =

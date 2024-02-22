@@ -8,6 +8,7 @@ import com.packy.domain.model.createbox.box.CreateBox
 import com.packy.domain.model.createbox.box.Gift
 import com.packy.domain.model.createbox.box.Photo
 import com.packy.domain.model.createbox.box.Stickers
+import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GiftBoxDetailOpenViewModel @Inject constructor(
     private val createBoxUseCase: CreateBoxUseCase,
+    private val getBoxDesignUseCase: GetBoxDesignUseCase,
     savedStateHandle: SavedStateHandle,
 ) :
     MviViewModel<GiftBoxDetailOpenIntent, GiftBoxDetailOpenState, GiftBoxDetailOpenEffect>() {
@@ -75,7 +77,8 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
                                         location = giftBox.stickers[1].location
                                     ),
                                 ),
-                                youtubeUrl = giftBox.youtubeUrl
+                                youtubeUrl = giftBox.youtubeUrl,
+                                boxImage = giftBox.box.boxNormal
                             )
                         )
                     }
@@ -94,6 +97,9 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
         }
         subscribeIntent<GiftBoxDetailOpenIntent.OnBackClick> { sendEffect(GiftBoxDetailOpenEffect.MoveToBack) }
         subscribeIntent<GiftBoxDetailOpenIntent.OnCloseClick> { sendEffect(GiftBoxDetailOpenEffect.GiftBoxClose) }
+        subscribeIntent<GiftBoxDetailOpenIntent.BoxShared> {
+            currentState.giftBox?.id?.let { giftBoxId -> sendEffect(GiftBoxDetailOpenEffect.MoveToShared(giftBoxId)) }
+        }
     }
 
     private fun showGift(): suspend (GiftBoxDetailOpenState, GiftBoxDetailOpenIntent.OnGiftClick) -> GiftBoxDetailOpenState =

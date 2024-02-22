@@ -78,7 +78,6 @@ fun RootCompose(
             navController.navigate(
                 CreateBoxRoute.getBoxShareRoute(
                     giftBoxId.toString(),
-                    ""
                 )
             )
         },

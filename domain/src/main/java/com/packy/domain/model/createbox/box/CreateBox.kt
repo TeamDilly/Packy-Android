@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CreateBox(
     @SerialName("boxId") val boxId: Long?,
+    @SerialName("boxImage") val boxImage: String?,
     @SerialName("envelopeId") val envelopeId: Int?,
     @SerialName("envelopeUrl") val envelopeUrl: String?,
     @SerialName("gift") val gift: Gift?,
@@ -15,7 +16,7 @@ data class CreateBox(
     @SerialName("receiverName") val receiverName: String?,
     @SerialName("senderName") val senderName: String?,
     @SerialName("stickers") val stickers: List<Stickers>,
-    @SerialName("youtubeUrl") val youtubeUrl: String?
+    @SerialName("youtubeUrl") val youtubeUrl: String?,
 ) {
     fun boxAllReady(): Boolean = boxId != null &&
             envelopeId != null &&

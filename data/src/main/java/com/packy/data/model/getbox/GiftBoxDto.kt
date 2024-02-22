@@ -18,7 +18,8 @@ data class GiftBoxDto(
     @SerialName("youtubeUrl") val youtubeUrl: String
 )
 
-fun GiftBoxDto.toEntity(): GiftBox = GiftBox(
+fun GiftBoxDto.toEntity(giftBoxId: Long): GiftBox = GiftBox(
+    id = giftBoxId,
     box = box.toEntity(),
     envelope = envelope.toEntity(),
     gift = gift?.toEntity(),

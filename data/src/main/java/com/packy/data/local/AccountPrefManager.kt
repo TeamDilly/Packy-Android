@@ -72,7 +72,8 @@ class AccountPrefManager @Inject constructor(
             receiverName = null,
             senderName = null,
             stickers = emptyList(),
-            youtubeUrl = null
+            youtubeUrl = null,
+            boxImage = null
         ),
         BoxDesignDto::class
     )

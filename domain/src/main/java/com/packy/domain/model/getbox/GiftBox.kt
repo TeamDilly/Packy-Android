@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GiftBox(
+    @SerialName("id") val id: Long,
     @SerialName("box") val box: Box,
     @SerialName("envelope") val envelope: Envelope,
     @SerialName("gift") val gift: Gift?,
@@ -27,6 +28,7 @@ data class GiftBox(
         val urlEncodingYoutubeUrl = this.youtubeUrl.toEncoding()
 
         return GiftBox(
+            id = this.id,
             box = urlEncodingBox,
             envelope = urlEncodingEnvelope,
             gift = urlEncodingGift,
@@ -49,6 +51,7 @@ data class GiftBox(
         val urlDecodingYoutubeUrl = this.youtubeUrl.toDecoding()
 
         return GiftBox(
+            id = this.id,
             box = urlDecodingBox,
             envelope = urlDecodingEnvelope,
             gift = urlDecodingGift,

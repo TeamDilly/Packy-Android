@@ -115,12 +115,7 @@ fun NavGraphBuilder.asFadeInSlidOutComposable(
             animationSpec = tween(enterDuration)
         )
     },
-    exitTransition = {
-        slideOutOfContainer(
-            towards = AnimatedContentTransitionScope.SlideDirection.Left,
-            animationSpec = tween(exitDuration)
-        )
-    },
+    exitTransition = null,
     popEnterTransition = null,
     popExitTransition = {
         slideOutOfContainer(

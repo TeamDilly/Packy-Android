@@ -102,6 +102,10 @@ fun GiftBoxDetailOpenScreen(
                 GiftBoxDetailOpenEffect.GiftBoxClose -> {
                     closeGiftBox()
                 }
+
+                is GiftBoxDetailOpenEffect.MoveToShared -> {
+                    moveToShared(effect.giftBoxId)
+                }
             }
         }
     }
@@ -157,7 +161,10 @@ fun GiftBoxDetailOpenScreen(
                         modifier = Modifier.fillMaxSize(),
                         uiState = uiState,
                         viewModel = viewModel,
-                        showBackArrow = showBackArrow
+                        showBackArrow = showBackArrow,
+                        moveToShared = {
+                            viewModel.emitIntent(GiftBoxDetailOpenIntent.BoxShared)
+                        }
                     )
 
                     1 -> {
@@ -381,6 +388,7 @@ private fun GiftBoxColumn(
     modifier: Modifier,
     showBackArrow: Boolean,
     uiState: GiftBoxDetailOpenState,
+    moveToShared: () -> Unit,
     viewModel: GiftBoxDetailOpenViewModel
 ) {
     Box(
@@ -408,7 +416,10 @@ private fun GiftBoxColumn(
                                 .padding(
                                     horizontal = 16.dp,
                                     vertical = 11.dp
-                                ),
+                                )
+                                .clickableWithoutRipple {
+                                    moveToShared()
+                                },
                             contentAlignment = Alignment.Center
                         ) {
                             Text(

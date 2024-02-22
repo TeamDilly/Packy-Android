@@ -2,6 +2,7 @@ package com.packy.data.remote.box
 
 import com.packy.data.model.createbox.BoxDesignDto
 import com.packy.data.model.createbox.CreateBoxDto
+import com.packy.data.model.createbox.KakaoMessageImgUrlDto
 import com.packy.data.model.createbox.UpdateBoxDeliverStatusRequest
 import com.packy.data.model.createbox.box.CreateBoxRequest
 import com.packy.data.model.getbox.GiftBoxDto
@@ -58,7 +59,7 @@ class BoxService @Inject constructor(
 
     suspend fun getKakaoMessageImage(
         giftBoxId: Long
-    ): Resource<String> = safeRequest {
+    ): Resource<KakaoMessageImgUrlDto> = safeRequest {
         httpClient.get("/api/v1/giftboxes/${giftBoxId}/kakao-image")
     }
 }

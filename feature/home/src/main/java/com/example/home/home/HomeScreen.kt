@@ -293,6 +293,7 @@ fun HomeScreen(
                     onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnBottomSheetMoreClick(it)) }
                 )
             }
+            Spacer(height = 16.dp)
         }
     }
 }

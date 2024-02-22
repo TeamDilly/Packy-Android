@@ -81,7 +81,6 @@ fun WebScreen(
                         settings.loadWithOverviewMode = true
                         settings.useWideViewPort = true
                         settings.domStorageEnabled = true
-
                     }
                 },
                 update = { webView ->

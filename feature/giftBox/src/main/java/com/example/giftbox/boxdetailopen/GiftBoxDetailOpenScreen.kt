@@ -161,7 +161,7 @@ fun GiftBoxDetailOpenScreen(
                         modifier = Modifier.fillMaxSize(),
                         uiState = uiState,
                         viewModel = viewModel,
-                        showBackArrow = showBackArrow,
+                        showBackArrow = showBackArrow || uiState.shouldShowShared,
                         moveToShared = {
                             viewModel.emitIntent(GiftBoxDetailOpenIntent.BoxShared)
                         }

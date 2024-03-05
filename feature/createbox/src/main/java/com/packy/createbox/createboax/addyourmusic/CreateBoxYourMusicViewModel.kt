@@ -1,12 +1,20 @@
 package com.packy.createbox.createboax.addyourmusic
 
+import com.packy.domain.usecase.youtube.ValidationYoutubeUrlUseCase
 import com.packy.lib.ext.validationYoutubeVideoId
+import com.packy.lib.utils.errorMessageHandler
+import com.packy.lib.utils.filterSuccess
+import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateBoxYourMusicViewModel @Inject constructor() :
+class CreateBoxYourMusicViewModel @Inject constructor(
+    private val validationYoutubeUrlUseCase: ValidationYoutubeUrlUseCase
+) :
     MviViewModel<CreateBoxYourMusicIntent, CreateBoxYourMusicState, CreateBoxYourMusicEffect>() {
     override fun createInitialState(): CreateBoxYourMusicState = CreateBoxYourMusicState(
         youtubeLink = "",
@@ -27,11 +35,21 @@ class CreateBoxYourMusicViewModel @Inject constructor() :
             )
         }
         subscribeIntent<CreateBoxYourMusicIntent.OnSaveClick>(saveYoutubeMusic())
-        subscribeStateIntent<CreateBoxYourMusicIntent.OnValidateCheckYoutubeLink> { state, _ ->
-            val validationLink = state.youtubeLink.validationYoutubeVideoId()
-            state.copy(
-                validationYoutubeLink = validationLink,
-            )
+        subscribeIntent<CreateBoxYourMusicIntent.OnValidateCheckYoutubeLink> { _ ->
+            validationYoutubeUrlUseCase.validationYoutubeUrl(currentState.youtubeLink)
+                .errorMessageHandler {
+                    setState {
+                        it.copy(validationYoutubeLink = false)
+                    }
+                }
+                .filterSuccess()
+                .unwrapResource()
+                .take(1)
+                .collect{ value ->
+                    setState {
+                        it.copy(validationYoutubeLink = value )
+                    }
+                }
         }
         subscribeStateIntent<CreateBoxYourMusicIntent.OnYoutubeCancelClick> { state, _ ->
             state.copy(

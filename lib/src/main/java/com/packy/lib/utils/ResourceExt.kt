@@ -63,7 +63,7 @@ fun <T> Flow<Resource<T>>.filterError(): Flow<Resource<T>> =
     }
 
 fun <T> Flow<Resource<T>>.errorMessageHandler(
-    errorHandler: (String?) -> Unit
+     errorHandler: suspend (String?) -> Unit
 ): Flow<Resource<T>> =
     map {
         if (it is Resource.ApiError || it is Resource.NetworkError || it is Resource.NullResult) {

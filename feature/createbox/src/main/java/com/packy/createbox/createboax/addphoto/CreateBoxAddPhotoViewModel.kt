@@ -42,7 +42,11 @@ class CreateBoxAddPhotoViewModel @Inject constructor(
             )
         }
         subscribeStateIntent<CreateBoxAddPhotoIntent.OnCancelImageClick> { state, _ ->
-            state.copy(photoItem = emptyImageItem)
+            val newPhoto = PhotoItem(
+                imageUri = null,
+                contentDescription = state.photoItem.contentDescription
+            )
+            state.copy(photoItem = newPhoto)
         }
     }
 

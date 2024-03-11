@@ -65,7 +65,6 @@ import com.packy.createbox.createboax.navigation.CreateBoxNavHost
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.domain.model.box.BoxDesign
 import com.packy.domain.model.createbox.SelectedSticker
-import com.packy.domain.model.createbox.Sticker
 import com.packy.mvi.ext.emitMviIntent
 
 @Composable
@@ -211,7 +210,7 @@ fun BoxGuideScreen(
                             stickerUri = uiState.selectedSticker.sticker2?.imgUrl,
                             onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_2)) }
                         )
-                        Spacer(22.dp)
+                        Spacer(9.dp)
                         BoxGuideContent(
                             modifier = Modifier
                                 .aspectRatio(180f / 150f)
@@ -221,7 +220,7 @@ fun BoxGuideScreen(
                             placeholder = {
                                 BoxPlaceholder(
                                     icon = R.drawable.envelope,
-                                    title = Strings.BOX_GUIDE_Letter
+                                    title = Strings.BOX_GUIDE_LETTER
                                 )
                             },
                             content = uiState.letter?.let { letter ->

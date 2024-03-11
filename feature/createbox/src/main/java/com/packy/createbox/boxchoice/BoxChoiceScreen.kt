@@ -90,6 +90,7 @@ fun BoxChoiceScreen(
     }
 
     Scaffold(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
         topBar = {
             PackyTopBar.Builder()
                 .startIconButton(

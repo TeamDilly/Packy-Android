@@ -169,7 +169,6 @@ class PackyTopBar {
             CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
                 Row(
                     modifier = modifier
-                        .windowInsetsPadding(WindowInsets.statusBars)
                         .fillMaxWidth()
                         .height(TOP_BAR_HEIGHT)
                         .padding(top = 8.dp),

@@ -48,7 +48,7 @@ fun BoxGuideBottomSheet(
                 .fillMaxSize()
                 .background(
                     color = PackyTheme.color.gray900.copy(
-                        alpha = if(dimVisible) 0.6f else 0f
+                        alpha = if (dimVisible) 0.6f else 0f
                     )
                 )
                 .clickableWithoutRipple {
@@ -67,7 +67,7 @@ fun BoxGuideBottomSheet(
                 animationSpec = tween(durationMillis = animationDuration)
             )
         ) {
-            Surface(
+            Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .background(

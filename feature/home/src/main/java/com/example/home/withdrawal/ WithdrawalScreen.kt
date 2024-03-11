@@ -3,7 +3,10 @@ package com.example.home.withdrawal
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
@@ -59,6 +62,8 @@ fun WithdrawalScreen(
     }
 
     Scaffold(
+        modifier = modifier
+            .windowInsetsPadding(WindowInsets.statusBars),
         topBar = {
             PackyTopBar.Builder()
                 .startIconButton(icon = R.drawable.arrow_left) {

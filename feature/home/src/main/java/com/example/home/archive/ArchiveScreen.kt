@@ -172,6 +172,8 @@ fun ArchiveScreen(
     }
 
     Scaffold(
+        modifier = modifier
+            .windowInsetsPadding(WindowInsets.statusBars),
         topBar = {
             PackyTopBar.Builder()
                 .startTitle(ARCHIVE_TITLE)

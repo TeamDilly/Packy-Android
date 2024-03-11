@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -158,7 +160,9 @@ fun CreateBoxStickerScreen(
                     stickerIndex = viewModel.isStickerSelected(sticker) ?: 0
                 )
             }
-
+        }
+        item {
+            Spacer(Modifier.height(18.dp))
         }
     }
 }
@@ -173,24 +177,24 @@ private fun StickerForm(
 ) {
     Box(
         modifier = Modifier
-            .size(106.dp)
             .background(
                 color = PackyTheme.color.gray100,
                 shape = RoundedCornerShape(12.dp)
             )
-            .padding(8.dp)
             .clickableWithoutRipple {
                 onClick(
                     CreateBoxStickerIntent.OnStickerClick(
                         sticker = sticker
                     )
                 )
-            },
+            }
+            .size(106.dp)
+            .aspectRatio(1f),
         contentAlignment = Alignment.Center
     ) {
 
         GlideImage(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.size(80.dp),
             model = sticker.imgUrl,
             contentDescription = "sticker image",
             contentScale = ContentScale.Crop

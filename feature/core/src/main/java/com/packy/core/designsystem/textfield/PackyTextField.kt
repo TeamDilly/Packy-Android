@@ -1,6 +1,7 @@
 package com.packy.core.designsystem.textfield
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -18,6 +20,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -76,7 +79,7 @@ fun PackyTextField(
     CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
         BasicTextField(
             modifier = modifier
-                .onFocusChanged { focused = it.isFocused }
+                .onFocusChanged { focused = it.hasFocus }
                 .focusRequester(focusRequester)
                 .height(50.dp)
                 .background(
@@ -87,7 +90,8 @@ fun PackyTextField(
                 .padding(
                     horizontal = 16.dp,
                     vertical = 14.dp
-                ),
+                )
+                .verticalScroll(rememberScrollState()),
             value = value,
             onValueChange = {
                 onValueChange(it.take(maxValues))
@@ -133,7 +137,7 @@ fun PackyTextField(
                             )
                             innerTextField()
                         }
-                        if (showTrailingIcon && value.isNotEmpty()) {
+                        if (showTrailingIcon && value.isNotEmpty() && focused) {
                             Spacer(modifier = Modifier.width(width = 8.dp))
                             CloseButton(trailingIconOnClick)
                         }

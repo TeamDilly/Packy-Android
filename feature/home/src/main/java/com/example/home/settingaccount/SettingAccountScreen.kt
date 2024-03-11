@@ -4,9 +4,12 @@ import android.inputmethodservice.Keyboard
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,6 +36,8 @@ fun SettingAccountScreen(
     navController: NavController,
 ) {
     Scaffold(
+        modifier = modifier
+            .windowInsetsPadding(WindowInsets.statusBars),
         topBar = {
             PackyTopBar.Builder()
                 .startIconButton(icon = R.drawable.arrow_left) {

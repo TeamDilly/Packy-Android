@@ -102,6 +102,7 @@ fun BoxAddTitleScreen(
     }
 
     Scaffold(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
         topBar = {
             PackyTopBar.Builder()
                 .startIconButton(
@@ -118,7 +119,6 @@ fun BoxAddTitleScreen(
             modifier = modifier
                 .fillMaxSize()
                 .imePadding()
-                .windowInsetsPadding(WindowInsets.statusBars)
                 .padding(innerPadding)
                 .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally

@@ -210,7 +210,7 @@ fun BoxGuideScreen(
                             stickerUri = uiState.selectedSticker.sticker2?.imgUrl,
                             onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_2)) }
                         )
-                        Spacer(9.dp)
+                        Spacer(22.dp)
                         BoxGuideContent(
                             modifier = Modifier
                                 .aspectRatio(180f / 150f)

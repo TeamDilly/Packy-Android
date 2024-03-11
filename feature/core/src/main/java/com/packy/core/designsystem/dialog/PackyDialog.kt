@@ -64,6 +64,8 @@ fun PackyDialog(
         ) {
             Spacer(height = 32.dp)
             Text(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
                 text = title,
                 style = PackyTheme.typography.body02,
                 color = PackyTheme.color.gray900
@@ -71,6 +73,8 @@ fun PackyDialog(
             if (subTitle != null) {
                 Spacer(height = 4.dp)
                 Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
                     text = subTitle,
                     style = PackyTheme.typography.body04,
                     color = PackyTheme.color.gray600

@@ -4,10 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -79,6 +83,8 @@ fun SettingNicknameScreen(
     }
 
     Scaffold(
+        modifier = modifier
+            .windowInsetsPadding(WindowInsets.statusBars),
         topBar = {
             PackyTopBar.Builder()
                 .startIconButton(icon = R.drawable.arrow_left) {
@@ -122,12 +128,14 @@ fun SettingNicknameScreen(
                 },
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                showTrailingIcon = true
             )
             Spacer(1f)
             PackyButton(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
+                    .imePadding()
                     .fillMaxWidth(),
                 style = buttonStyle.large.black,
                 text = Strings.SAVE,

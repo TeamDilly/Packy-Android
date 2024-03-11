@@ -68,7 +68,7 @@ fun SignupNickNameScreen(
                 onValueChange = {
                     viewModel.emitIntent(SignupNickNameIntent.OnChangeInputNickName(it))
                 },
-                showTrailingIcon = uiState.inputNickName?.isNotEmpty() ?: false,
+                showTrailingIcon = true,
                 placeholder = SIGNUP_NICK_NAME_MAX_VALUE,
                 maxValues = MAX_NICK_NAME_LENGTH,
                 maxLines = 1

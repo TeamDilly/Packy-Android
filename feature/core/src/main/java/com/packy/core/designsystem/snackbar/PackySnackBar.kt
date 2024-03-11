@@ -27,8 +27,7 @@ import com.packy.core.theme.PackyTheme
 @Composable
 fun PackySnackBarHost(snackBarHostState: SnackbarHostState){
         SnackbarHost(
-            modifier = Modifier
-                .imePadding(),
+            modifier = Modifier,
             hostState = snackBarHostState
         ) { snackBarData ->
             Row(

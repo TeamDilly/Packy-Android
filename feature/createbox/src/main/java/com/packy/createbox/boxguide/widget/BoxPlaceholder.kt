@@ -29,7 +29,7 @@ fun BoxPlaceholder(
             contentDescription = "box guide placeholder icon",
             tint = PackyTheme.color.white,
         )
-        Spacer(height = 12.dp)
+        Spacer(height = 9.dp)
         Text(
             text = title,
             style = PackyTheme.typography.body04,

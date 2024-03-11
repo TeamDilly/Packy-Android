@@ -19,6 +19,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -134,15 +137,6 @@ fun MyBoxScreen(
     val sendBoxState: LazyGridState = rememberLazyGridState()
     val receiverBoxState: LazyGridState = rememberLazyGridState()
 
-    val visibleLazyBox = @Composable {
-        val firstVisibleItemIndex = if (pagerState.currentPage == 0) {
-            remember { derivedStateOf { lazyBoxScrollVisible(sendBoxState) } }
-        } else {
-            remember { derivedStateOf { lazyBoxScrollVisible(receiverBoxState) } }
-        }
-        firstVisibleItemIndex.value && lazyBox.isNotEmpty() &&lazyBox.size > 2
-    }
-
     LaunchedEffect(Unit) {
         viewModel.getReceiveBoxes()
         viewModel.getSendBoxes()
@@ -205,6 +199,8 @@ fun MyBoxScreen(
     }
 
     Scaffold(
+        modifier = modifier
+            .windowInsetsPadding(WindowInsets.statusBars),
         topBar = {
             PackyTopBar.Builder()
                 .startTitle(MY_BOX_TITLE)
@@ -236,61 +232,45 @@ fun MyBoxScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            AnimatedVisibility(
-                visible = visibleLazyBox(),
-                enter = fadeIn(
-                    tween(
-                        500,
-                        if(firstVisibleDelay) 500 else 0
-                    )
-                ) + expandVertically(
-                    tween(
-                        500,
-                        if(firstVisibleDelay) 500 else 0
-                    )
-                ),
-                exit = fadeOut(tween(500)) + shrinkVertically(tween(500)),
-            ) {
-                firstVisibleDelay = false
-                Column {
-                    Spacer(32.dp)
-                    Text(
-                        text = Strings.LAZY_BOX_TITLE,
-                        style = PackyTheme.typography.body01,
-                        color = PackyTheme.color.gray900,
-                        modifier = Modifier.padding(horizontal = 24.dp)
-                    )
-                    Spacer(12.dp)
-                    HorizontalPager(
-                        modifier = Modifier.fillMaxWidth(),
-                        state = lazyBoxState,
-                        contentPadding = PaddingValues(
-                            start = 14.dp,
-                            end = 40.dp
-                        ),
-                        pageSpacing = 16.dp
-                    ) { page ->
-                        LazyBoxItem(
-                            modifier = Modifier
-                                .background(
-                                    color = PackyTheme.color.gray100,
-                                    shape = RoundedCornerShape(16.dp)
+            firstVisibleDelay = false
+            Column {
+                Spacer(32.dp)
+                Text(
+                    text = Strings.LAZY_BOX_TITLE,
+                    style = PackyTheme.typography.body01,
+                    color = PackyTheme.color.gray900,
+                    modifier = Modifier.padding(horizontal = 24.dp)
+                )
+                Spacer(12.dp)
+                HorizontalPager(
+                    modifier = Modifier.fillMaxWidth(),
+                    state = lazyBoxState,
+                    contentPadding = PaddingValues(
+                        start = 14.dp,
+                        end = 40.dp
+                    ),
+                    pageSpacing = 16.dp
+                ) { page ->
+                    LazyBoxItem(
+                        modifier = Modifier
+                            .background(
+                                color = PackyTheme.color.gray100,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .padding(17.dp),
+                        lazyBox = lazyBox[page],
+                        onClick = { boxId ->
+                            viewModel.emitIntent(
+                                MyBoxIntent.ClickMyBox(
+                                    boxId,
+                                    true
                                 )
-                                .padding(17.dp),
-                            lazyBox = lazyBox[page],
-                            onClick = { boxId ->
-                                viewModel.emitIntent(
-                                    MyBoxIntent.ClickMyBox(
-                                        boxId,
-                                        true
-                                    )
-                                )
-                            },
-                            onMoreClick = { boxId -> viewModel.emitIntent(MyBoxIntent.OnLayBoxMoreClick(boxId)) }
-                        )
-                    }
-                    Spacer(24.dp)
+                            )
+                        },
+                        onMoreClick = { boxId -> viewModel.emitIntent(MyBoxIntent.OnLayBoxMoreClick(boxId)) }
+                    )
                 }
+                Spacer(24.dp)
             }
             MyBoxTab(
                 selectedTab = uiState.showTab,
@@ -405,9 +385,11 @@ private fun MyBoxItem(
         Spacer(height = 16.dp)
         GlideImage(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .clip(RoundedCornerShape(8.dp))
+                .width(131.dp)
+                .height(150.dp)
+                .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
             model = box.boxImageUrl,
             contentDescription = "Box Image",

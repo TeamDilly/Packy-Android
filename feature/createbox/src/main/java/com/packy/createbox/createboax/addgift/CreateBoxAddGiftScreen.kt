@@ -102,9 +102,9 @@ fun CreateBoxAddGiftScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f)
                 .padding(horizontal = 24.dp)
                 .clip(RoundedCornerShape(16.dp))
+                .aspectRatio(1f)
         ) {
             if (uiState.imageUri == null) {
                 EmptyGiftForm(launcher)

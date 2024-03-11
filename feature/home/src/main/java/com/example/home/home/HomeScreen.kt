@@ -564,8 +564,8 @@ private fun GiftBoxesTitle(
         Text(
             modifier = Modifier.clickableWithoutRipple { onMoreClick() },
             text = Strings.MORE,
-            style = PackyTheme.typography.body03,
-            color = PackyTheme.color.gray900,
+            style = PackyTheme.typography.body04,
+            color = PackyTheme.color.gray600,
         )
     }
 }

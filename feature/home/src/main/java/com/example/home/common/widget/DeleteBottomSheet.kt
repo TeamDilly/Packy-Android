@@ -64,7 +64,9 @@ fun DeleteBottomSheet(
                 )
             }
 
-            Divider()
+            Divider(
+                color = PackyTheme.color.gray200,
+            )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -83,7 +85,7 @@ fun DeleteBottomSheet(
                 Text(
                     text = Strings.CANCEL,
                     style = PackyTheme.typography.body02,
-                    color = PackyTheme.color.gray900,
+                    color = PackyTheme.color.gray600,
                     textAlign = TextAlign.Center
                 )
             }

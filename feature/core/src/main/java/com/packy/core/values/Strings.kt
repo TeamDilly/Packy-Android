@@ -24,8 +24,8 @@ object Strings {
     const val SEND = "보내기"
 
     // onboarding
-    const val ONBOARDING_TITLE_1 = "패키와 함께 특별한 선물박스를 만들어보세요"
-    const val ONBOARDING_TITLE_2 = "다가오는 이벤트를 기다리고\n지나간 이벤트를 추억해요"
+    const val ONBOARDING_TITLE_1 = "패키와 함께 특별한\n선물박스를 만들어보세요"
+    const val ONBOARDING_TITLE_2 = "패키의 선물박스로\n주고받은 마음을 추억해요"
 
     // login
     const val LOGIN_TITLE = "마음으로 채우는 특별한 선물박스"
@@ -136,7 +136,7 @@ object Strings {
     const val CREATE_BOX_ADD_TITLE_TITLE = "마지막으로 선물박스에\n이름을 붙여주세요"
     const val CREATE_BOX_ADD_TITLE_DESCRIPTION = "선물박스의 이름을 붙여 특별함을 더해요\n붙인 이름은 받는 분에게도 보여져요"
 
-    const val CREATE_BOX_ADD_SHARE_TITLE = "에게 선물박스를 보내보세요"
+    const val CREATE_BOX_ADD_SHARE_TITLE = "님에게\n선물박스를 보내보세요"
     const val CREATE_BOX_ADD_SHARE_SEND_KAKAO = "카카오톡으로 보내기"
     const val CREATE_BOX_ADD_SHARE_LAZY = "나중에 보낼래요"
 
@@ -147,7 +147,7 @@ object Strings {
 
     const val CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_TITLE = "저장하지 않고 나가시겠어요?"
     const val CREATE_BOX_CLOSE_BOTTOM_SHEET_DIALOG_DESCRIPTION = "입력한 내용이 선물박스에 담기지 않아요"
-    const val CREATE_BOX_LAZY_SHARE_DIALOG_TITLE = "선물박스를 보내지 않으시겠어요?"
+    const val CREATE_BOX_LAZY_SHARE_DIALOG_TITLE = "선물박스를 보내지 않고 나갈까요?"
     const val CREATE_BOX_LAZY_SHARE_DIALOG_DESCRIPTION = "나중에 다시 보낼 수 있어요"
 
 

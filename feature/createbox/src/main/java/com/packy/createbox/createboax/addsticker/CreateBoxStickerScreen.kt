@@ -188,13 +188,13 @@ private fun StickerForm(
                     )
                 )
             }
-            .size(106.dp)
+            .fillMaxSize()
             .aspectRatio(1f),
         contentAlignment = Alignment.Center
     ) {
 
         GlideImage(
-            modifier = Modifier.size(80.dp),
+            modifier = Modifier.fillMaxSize().padding(13.dp),
             model = sticker.imgUrl,
             contentDescription = "sticker image",
             contentScale = ContentScale.Crop
@@ -202,6 +202,7 @@ private fun StickerForm(
         if (isStickerSelected) {
             Box(
                 modifier = Modifier
+                    .padding(8.dp)
                     .size(24.dp)
                     .background(
                         color = PackyTheme.color.gray900,

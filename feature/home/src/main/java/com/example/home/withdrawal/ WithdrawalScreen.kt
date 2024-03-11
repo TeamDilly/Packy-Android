@@ -53,8 +53,8 @@ fun WithdrawalScreen(
     if (showWithdrawalDialog) {
         PackyDialog(
             title = WITHDRAWAL_DIALOG_TITLE,
-            dismiss = Strings.CANCEL,
-            confirm = Strings.CONFIRM,
+            dismiss = Strings.CONFIRM,
+            confirm = Strings.CANCEL,
             onConfirm = { viewModel.emitIntentThrottle(WithdrawalIntent.OnWithdrawalClick) },
             onDismiss = { viewModel.emitIntentThrottle(WithdrawalIntent.OnCloseWithdrawalDialogClick) },
             backHandler = { viewModel.emitIntentThrottle(WithdrawalIntent.OnCloseWithdrawalDialogClick) }

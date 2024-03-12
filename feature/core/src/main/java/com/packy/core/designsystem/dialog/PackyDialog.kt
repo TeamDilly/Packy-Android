@@ -67,7 +67,7 @@ fun PackyDialog(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 text = title,
-                style = PackyTheme.typography.body02,
+                style = PackyTheme.typography.body01,
                 color = PackyTheme.color.gray900
             )
             if (subTitle != null) {
@@ -77,7 +77,7 @@ fun PackyDialog(
                     textAlign = TextAlign.Center,
                     text = subTitle,
                     style = PackyTheme.typography.body04,
-                    color = PackyTheme.color.gray600
+                    color = PackyTheme.color.gray700
                 )
             }
             Spacer(height = 32.dp)
@@ -104,7 +104,7 @@ fun PackyDialog(
                     Text(
                         modifier = Modifier.align(Alignment.Center),
                         text = dismiss,
-                        style = PackyTheme.typography.body04.copy(
+                        style = PackyTheme.typography.body02.copy(
                             textAlign = TextAlign.Center
                         ),
                         color = PackyTheme.color.gray600
@@ -127,7 +127,7 @@ fun PackyDialog(
                     Text(
                         modifier = Modifier.align(Alignment.Center),
                         text = confirm,
-                        style = PackyTheme.typography.body04.copy(
+                        style = PackyTheme.typography.body02.copy(
                             textAlign = TextAlign.Center
                         ),
                         color = PackyTheme.color.gray900

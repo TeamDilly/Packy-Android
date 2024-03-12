@@ -175,7 +175,7 @@ private fun PhotoFrame(
             .background(
                 color = PackyTheme.color.gray200,
             )
-            .padding(all = 16.dp)
+            .padding(all = 14.dp)
             .fillMaxWidth()
     ) {
         Column(

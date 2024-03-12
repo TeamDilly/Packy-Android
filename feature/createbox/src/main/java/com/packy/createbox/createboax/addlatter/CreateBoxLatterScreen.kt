@@ -191,35 +191,37 @@ private fun LetterForm(
     envelope: LetterEnvelope?,
     onValueChange: emitMviIntent<CreateBoxLetterIntent>,
 ) {
-    Box(
-        modifier = modifier
-    ) {
-        PackyTextField(
-            value = text,
-            onValueChange = { onValueChange(CreateBoxLetterIntent.ChangeLetterText(it)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .border(
-                    width = 4.dp,
-                    color = envelope?.letter?.borderColorCode.colorCodeToColor(
-                        fallbackColor = PackyTheme.color.gray200,
-                        alpha = (envelope?.letter?.opacity?.times(0.01f)) ?: 0f
+    Column {
+        Box(
+            modifier = modifier
+        ) {
+            PackyTextField(
+                value = text,
+                onValueChange = { onValueChange(CreateBoxLetterIntent.ChangeLetterText(it)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .border(
+                        width = 4.dp,
+                        color = envelope?.letter?.borderColorCode.colorCodeToColor(
+                            fallbackColor = PackyTheme.color.gray200,
+                            alpha = (envelope?.letter?.opacity?.times(0.01f)) ?: 0f
+                        ),
+                        shape = RoundedCornerShape(16.dp)
                     ),
-                    shape = RoundedCornerShape(16.dp)
-                ),
-            textFieldColor = PackyTheme.color.gray100,
-            placeholder = Strings.CREATE_BOX_ADD_LETTER_PLACEHOLDER,
-            textAlign = TextAlign.Center,
-            maxLines = Constant.MAX_Letter_LINES,
-        )
+                textFieldColor = PackyTheme.color.gray100,
+                placeholder = Strings.CREATE_BOX_ADD_LETTER_PLACEHOLDER,
+                textAlign = TextAlign.Center,
+                maxLines = Constant.MAX_Letter_LINES,
+            )
+        }
+        Spacer(height = 8.dp)
         Text(
             modifier = Modifier
                 .padding(
-                    bottom = 16.dp,
-                    end = 16.dp
+                    end = 25.dp
                 )
-                .align(Alignment.BottomEnd),
+                .align(Alignment.End),
             text = "${text.length}/${Constant.MAX_Letter_TEXT}",
             style = PackyTheme.typography.body04,
             color = PackyTheme.color.gray600,

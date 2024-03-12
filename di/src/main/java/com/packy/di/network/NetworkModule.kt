@@ -8,6 +8,7 @@ import com.packy.data.local.AccountPrefManager
 import com.packy.di.BuildConfig
 import com.packy.di.authenticator.model.RefreshTokenRequest
 import com.packy.di.authenticator.model.TokenInfo
+import com.packy.domain.usecase.auth.LogoutUseCase
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.toResource
 import dagger.Module
@@ -16,11 +17,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
-import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
@@ -28,7 +26,6 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -37,6 +34,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -79,7 +77,9 @@ object NetworkModule {
     @Packy
     fun provideKtorClient(
         @Default httpClient: HttpClient,
+        @ApplicationContext ctx: Context,
         accountManagerHelper: AccountManagerHelper,
+        logoutUseCase: LogoutUseCase
     ): HttpClient {
         return httpClient.config {
             install(Auth) {
@@ -108,6 +108,14 @@ object NetworkModule {
                                     refreshToken = token.data.refreshToken
                                 )
                             } else {
+                                logoutUseCase.logout()
+                                accountManagerHelper.removeAuthToken()
+
+                                val pm = ctx.packageManager
+                                val intent = pm.getLaunchIntentForPackage(ctx.packageName)
+                                val mainIntent = Intent.makeRestartActivityTask(intent!!.component)
+                                ctx.startActivity(mainIntent)
+                                Runtime.getRuntime().exit(0)
                                 null
                             }
                         } else {

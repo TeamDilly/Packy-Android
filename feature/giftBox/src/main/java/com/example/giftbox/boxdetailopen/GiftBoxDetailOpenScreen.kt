@@ -22,7 +22,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -280,6 +283,8 @@ fun GiftBoxDetailOpenScreen(
                     ) {
                         GlideImage(
                             modifier = Modifier
+                                .requiredWidth(450.dp)
+                                .requiredHeight(450.dp)
                                 .clickableWithoutRipple {
                                     viewModel.emitIntentThrottle(GiftBoxDetailOpenIntent.OnGiftClick)
                                 },

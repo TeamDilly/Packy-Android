@@ -108,6 +108,7 @@ object NetworkModule {
                                     refreshToken = token.data.refreshToken
                                 )
                             } else {
+                                accountManagerHelper.removeAuthToken()
                                 logoutUseCase.logout()
                                 accountManagerHelper.removeAuthToken()
 

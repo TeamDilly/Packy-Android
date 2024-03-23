@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UsableDto(
     @SerialName("isAvailable") val isAvailable: Boolean,
-    @SerialName("reason") val reason: UsableStatus
+    @SerialName("reason") val reason: UsableStatus? = null
 ) {
     fun toEntity(): Usable = Usable(
         isAvailable = isAvailable,

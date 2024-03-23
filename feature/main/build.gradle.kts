@@ -16,5 +16,6 @@ dependencies {
     implementation(project(":feature:createbox"))
     implementation(project(":feature:giftBox"))
     implementation(project(":feature:home"))
+    implementation(project(":lib"))
 }
 

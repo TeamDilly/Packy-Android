@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Usable(
     @SerialName("isAvailable") val isAvailable: Boolean,
-    @SerialName("reason") val reason: UsableStatus
+    @SerialName("reason") val reason: UsableStatus?
 )

@@ -33,6 +33,7 @@ fun LaunchScreen(
 
         viewModel.checkUserStatusOnAppEntry()
             .collect {
+                println("LOGEE $it")
                 when (it) {
                     UserState.NOT_REGISTERED,
                     UserState.WITHDRAWAL,

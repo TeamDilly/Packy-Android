@@ -30,41 +30,56 @@ fun LaunchScreen(
 ) {
 
     LaunchedEffect(null) {
-        val isUser = viewModel.checkUserStatusOnAppEntry() == UserState.REGISTERED
-        if (!isUser) {
-            navController.navigate(OnboardingRoute.ONBOARDING_NAV_GRAPH) {
-                popUpTo(
-                    MainRoute.LAUNCH_ROUTE
-                ) {
-                    inclusive = true
-                }
-            }
-        } else {
 
-            delay(1500)
-            when (deepLinkController) {
-                DeepLinkController.NonDeepLink -> navController.navigate(HOME_ROOT) {
-                    popUpTo(
-                        MainRoute.LAUNCH_ROUTE
-                    ) {
-                        inclusive = true
-                    }
-                }
-
-                is DeepLinkController.OpenBox -> {
-                    navController.navigate(GiftBoxRoute.getGiftBoxRootRoute(deepLinkController.boxId.toLong(),
-                        skipArr = false,
-                        shouldShowShared = false
-                    )) {
-                        popUpTo(
-                            MainRoute.LAUNCH_ROUTE
-                        ) {
-                            inclusive = true
+        viewModel.checkUserStatusOnAppEntry()
+            .collect {
+                when (it) {
+                    UserState.NOT_REGISTERED,
+                    UserState.WITHDRAWAL,
+                    UserState.BLACKLIST,
+                    UserState.INVALID_STATUS -> {
+                        navController.navigate(OnboardingRoute.ONBOARDING_NAV_GRAPH) {
+                            popUpTo(
+                                MainRoute.LAUNCH_ROUTE
+                            ) {
+                                inclusive = true
+                            }
                         }
                     }
+
+                    UserState.REGISTERED -> {
+                        delay(1500)
+                        when (deepLinkController) {
+                            DeepLinkController.NonDeepLink -> navController.navigate(HOME_ROOT) {
+                                popUpTo(
+                                    MainRoute.LAUNCH_ROUTE
+                                ) {
+                                    inclusive = true
+                                }
+                            }
+
+                            is DeepLinkController.OpenBox -> {
+                                navController.navigate(
+                                    GiftBoxRoute.getGiftBoxRootRoute(
+                                        deepLinkController.boxId.toLong(),
+                                        skipArr = false,
+                                        shouldShowShared = false
+                                    )
+                                ) {
+                                    popUpTo(
+                                        MainRoute.LAUNCH_ROUTE
+                                    ) {
+                                        inclusive = true
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    UserState.NEED_UPDATE -> TODO()
+                    UserState.LOADING -> Unit
                 }
             }
-        }
     }
 
     Scaffold { innerPadding ->

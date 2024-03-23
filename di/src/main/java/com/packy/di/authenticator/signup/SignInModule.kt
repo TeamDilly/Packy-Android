@@ -3,7 +3,7 @@ package com.packy.di.authenticator.signup
 import com.packy.data.remote.auth.SignInService
 import com.packy.data.repository.auth.SignInRepositoryImp
 import com.packy.data.usecase.auth.SignInUseCaseImp
-import com.packy.di.network.Packy
+import com.packy.di.network.NonTokenPacky
 import com.packy.domain.repository.auth.SignInRepository
 import com.packy.domain.usecase.auth.SignInUseCase
 import dagger.Binds
@@ -20,7 +20,7 @@ object SignInServiceModule {
     @Provides
     @Singleton
     fun provideSignInService(
-        @Packy httpClient: HttpClient
+        @NonTokenPacky httpClient: HttpClient
     ): SignInService = SignInService(httpClient)
 }
 

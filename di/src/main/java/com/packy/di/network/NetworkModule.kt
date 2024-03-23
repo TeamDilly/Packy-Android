@@ -40,13 +40,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    @Default
     @Provides
     @Singleton
-    @Default
-    fun provideHttpClient(
-        accountManagerHelper: AccountManagerHelper,
-        accountPrefManager: AccountPrefManager,
-    ): HttpClient {
+    fun provideHttpClient(): HttpClient {
         return HttpClient(Android) {
             expectSuccess = true
             install(ContentNegotiation) {
@@ -72,9 +69,26 @@ object NetworkModule {
         }
     }
 
+    @NonTokenPacky
     @Provides
     @Singleton
+    fun provideKtorWithoutTokenClient(
+        @Default httpClient: HttpClient,
+    ): HttpClient {
+        return httpClient.config {
+            install(DefaultRequest) {
+                url(BuildConfig.BASE_URL)
+                header(
+                    HttpHeaders.ContentType,
+                    ContentType.Application.Json
+                )
+            }
+        }
+    }
+
     @Packy
+    @Provides
+    @Singleton
     fun provideKtorClient(
         @Default httpClient: HttpClient,
         @ApplicationContext ctx: Context,
@@ -110,7 +124,6 @@ object NetworkModule {
                             } else {
                                 accountManagerHelper.removeAuthToken()
                                 logoutUseCase.logout()
-                                accountManagerHelper.removeAuthToken()
 
                                 val pm = ctx.packageManager
                                 val intent = pm.getLaunchIntentForPackage(ctx.packageName)

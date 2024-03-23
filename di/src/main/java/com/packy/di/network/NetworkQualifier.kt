@@ -13,3 +13,7 @@ annotation class Youtube
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class Packy
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class NonTokenPacky

@@ -28,7 +28,7 @@ import com.packy.core.theme.PackyTheme
 @Composable
 fun PackyDialog(
     packyDialogInfo: PackyDialogInfo
-){
+) {
     PackyDialog(
         title = packyDialogInfo.title,
         subTitle = packyDialogInfo.subTitle,
@@ -44,10 +44,10 @@ fun PackyDialog(
 fun PackyDialog(
     title: String,
     subTitle: String? = null,
-    dismiss: String,
+    dismiss: String? = null,
     confirm: String,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
+    onDismiss: (() -> Unit)? = null,
     backHandler: (() -> Unit)? = null
 ) {
     Dialog(
@@ -93,29 +93,31 @@ fun PackyDialog(
                     .height(56.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(56.dp)
-                        .clickableWithoutRipple {
-                            onDismiss()
-                        },
-                ) {
-                    Text(
-                        modifier = Modifier.align(Alignment.Center),
-                        text = dismiss,
-                        style = PackyTheme.typography.body02.copy(
-                            textAlign = TextAlign.Center
-                        ),
-                        color = PackyTheme.color.gray600
+                if (dismiss != null && onDismiss != null) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(56.dp)
+                            .clickableWithoutRipple {
+                                onDismiss()
+                            },
+                    ) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            text = dismiss,
+                            style = PackyTheme.typography.body02.copy(
+                                textAlign = TextAlign.Center
+                            ),
+                            color = PackyTheme.color.gray600
+                        )
+                    }
+                    Divider(
+                        modifier = Modifier
+                            .width(1.dp)
+                            .fillMaxHeight(),
+                        color = PackyTheme.color.gray300
                     )
                 }
-                Divider(
-                    modifier = Modifier
-                        .width(1.dp)
-                        .fillMaxHeight(),
-                    color = PackyTheme.color.gray300
-                )
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -159,6 +161,17 @@ fun PackyDialogNoSubTitlePreview() {
     PackyDialog(
         title = "Title",
         dismiss = "Dismiss",
+        confirm = "Confirm",
+        onConfirm = {},
+        onDismiss = {}
+    )
+}
+
+@Composable
+@Preview
+fun PackyDialogSingleButtonPreview() {
+    PackyDialog(
+        title = "Title",
         confirm = "Confirm",
         onConfirm = {},
         onDismiss = {}

@@ -7,9 +7,9 @@ import kotlinx.serialization.SerialName
 data class PackyDialogInfo(
     val title: String,
     val subTitle: String? = null,
-    val dismiss: String,
+    val dismiss: String? = null,
     val confirm: String,
     val onConfirm: () -> Unit,
-    val onDismiss: () -> Unit,
+    val onDismiss: (() -> Unit)? = null,
     val backHandler: (() -> Unit)? = null
 )

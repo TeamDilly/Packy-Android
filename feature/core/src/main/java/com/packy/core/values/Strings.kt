@@ -176,4 +176,7 @@ object Strings {
     const val ERROR_TITLE = "오류가 생겼어요"
     const val ERROR_DESCRIPTION = "잠시 후 다시 시도해주세요"
     const val ERROR_RETRY = "다시 시도하기"
+    const val NEED_UPDATE_TITLE = "패키 업데이트 안내"
+    const val NEED_UPDATE_DESCRIPTION = "더 나은 서비스 이용을 위해\n최신 버전으로 업데이트해주세요"
+    const val NEED_UPDATE_BUTTON = "업데이트 하기"
 }

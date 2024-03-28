@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.TrackedScreen
 import com.packy.core.common.Spacer
 import com.packy.core.common.keyboardAsState
 import com.packy.core.designsystem.button.PackyButton
@@ -58,6 +60,10 @@ fun BoxAddInfoScreen(
     closeCreateBox: () -> Unit,
     viewModel: BoxAddInfoViewModel = hiltViewModel()
 ) {
+    TrackedScreen(
+        label = AnalyticsConstant.AnalyticsLabel.VIEW,
+        loggerEvents = arrayOf(AnalyticsConstant.PageName.BOX_ADD_INFO)
+    )
     val uiState by viewModel.uiState.collectAsState()
     val isKeyboardOpen by keyboardAsState()
     val keyboardController = LocalSoftwareKeyboardController.current

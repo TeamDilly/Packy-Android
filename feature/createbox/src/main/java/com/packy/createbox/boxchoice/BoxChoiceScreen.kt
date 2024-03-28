@@ -35,6 +35,8 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.TrackedScreen
 import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
@@ -57,6 +59,11 @@ fun BoxChoiceScreen(
     closeCreateBox: () -> Unit,
     viewModel: BoxChoiceViewModel = hiltViewModel()
 ) {
+    TrackedScreen(
+        label = AnalyticsConstant.AnalyticsLabel.VIEW,
+        loggerEvents = arrayOf(AnalyticsConstant.PageName.BOX_CHOICE_BOX)
+    )
+
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {

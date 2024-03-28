@@ -42,6 +42,8 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.common.kakaoshare.KakaoShare
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.TrackedScreen
 import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
@@ -66,6 +68,10 @@ fun BoxShareScreen(
     moveToHomeClear: () -> Unit,
     viewModel: BoxShareViewModel = hiltViewModel()
 ) {
+    TrackedScreen(
+        label = AnalyticsConstant.AnalyticsLabel.VIEW,
+        loggerEvents = arrayOf(AnalyticsConstant.PageName.BOX_SHARE)
+    )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val shared by remember {
         derivedStateOf { uiState.shared }

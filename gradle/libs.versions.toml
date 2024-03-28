@@ -47,6 +47,9 @@ paging = "3.2.1"
 #https://mvnrepository.com/artifact/com.google.accompanist/accompanist-permissions
 permissions = "0.34.0"
 lottieVersion = "6.3.0"
+#https://firebase.google.com/docs/analytics/get-started?platform=android&hl=ko#kotlin+ktx
+firebase-bom = "32.8.0"
+firebase-plugin = "4.3.15"
 
 #test
 #https://mvnrepository.com/artifact/junit/junit
@@ -149,6 +152,10 @@ permissions = { group = "com.google.accompanist", name = "accompanist-permission
 #lottie
 lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieVersion" }
 
+#firebase
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+
 [bundles]
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide", "compose-ui-util", "compose-lifeCycle"]
 ktor-android = ["ktor-core","ktor-client-android", "ktor-client-serialization", "ktor-client-logging", "ktor-negotiation", "ktor-auth"]
@@ -163,3 +170,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serialization" }
+firebase-services = { id = "com.google.gms.google-services", version.ref = "firebase-plugin" }

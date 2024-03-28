@@ -16,6 +16,9 @@ internal fun Project.configureAndroidLibrary() {
     dependencies {
         add("implementation", libs.findLibrary("androidx.lifecycle.viewmodel.compose").get())
         add("implementation" , libs.findLibrary("okhttp").get())
+        val bom = libs.findLibrary("firebase.bom").get()
+        add("implementation", platform(bom))
+        add("implementation" , libs.findLibrary("firebase.analytics").get())
     }
 
 }

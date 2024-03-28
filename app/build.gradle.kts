@@ -1,5 +1,6 @@
 plugins {
     id("android.application.core")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -10,6 +11,8 @@ android {
         versionCode = 3
         versionName = "1.0.1"
         applicationId = "com.packy"
+
+        multiDexEnabled = true
     }
 
     buildFeatures {
@@ -58,4 +61,6 @@ dependencies {
     implementation(project(":library:pref"))
     implementation(project(":library:account"))
     implementation(libs.kakao.user)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
 }

@@ -1,8 +1,6 @@
 package com.packy.root
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.packy.account.AccountManagerHelper
 import com.packy.di.BuildConfig
 import com.packy.domain.model.usable.UsableStatus
@@ -25,7 +23,6 @@ class RootComposeViewModel @Inject constructor(
     suspend fun checkUserStatusOnAppEntry(): Flow<UserState> =
         getUsableUseCase.getUsable(BuildConfig.VERSION_NAME)
             .map { usable ->
-                println("LOGEE ${usable.message}")
                 when (usable) {
                     is Resource.Loading -> UserState.LOADING
                     is Resource.ApiError,

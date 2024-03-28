@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -57,37 +58,39 @@ fun CreateBoxChooseMusicScreen(
         viewModel.emitIntent(CreateBoxChooseMusicIntent.OnCloseClick)
     }
 
-    Column {
-        PackyTopBar.Builder()
-            .endIconButton(icon = R.drawable.cancle) {
-                viewModel.emitIntent(CreateBoxChooseMusicIntent.OnCloseClick)
-            }
-            .build()
-        Spacer(height = 9.dp)
+    Surface {
+        Column {
+            PackyTopBar.Builder()
+                .endIconButton(icon = R.drawable.cancle) {
+                    viewModel.emitIntent(CreateBoxChooseMusicIntent.OnCloseClick)
+                }
+                .build()
+            Spacer(height = 9.dp)
 
-        Column(
-            modifier = modifier.padding(horizontal = 24.dp),
-        ) {
-            Text(
-                text = Strings.CRATE_BOX_MUSIC,
-                style = PackyTheme.typography.heading01,
-                color = PackyTheme.color.gray900
-            )
-            Spacer(height = 24.dp)
-            ChooseMusicBox(
-                title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
-                description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
+            Column(
+                modifier = modifier.padding(horizontal = 24.dp),
             ) {
-                viewModel.emitIntent(CreateBoxChooseMusicIntent.OnChooseYourMusicClick)
+                Text(
+                    text = Strings.CRATE_BOX_MUSIC,
+                    style = PackyTheme.typography.heading01,
+                    color = PackyTheme.color.gray900
+                )
+                Spacer(height = 24.dp)
+                ChooseMusicBox(
+                    title = Strings.CHOOSE_YOUR_MUSIC_TITLE,
+                    description = Strings.CHOOSE_YOUR_MUSIC_DESCRIPTION,
+                ) {
+                    viewModel.emitIntent(CreateBoxChooseMusicIntent.OnChooseYourMusicClick)
+                }
+                Spacer(height = 8.dp)
+                ChooseMusicBox(
+                    title = Strings.CHOOSE_PACKY_MUSIC_TITLE,
+                    description = Strings.CHOOSE_PACKY_MUSIC_DESCRIPTION,
+                ) {
+                    viewModel.emitIntent(CreateBoxChooseMusicIntent.OnPackyMusicClick)
+                }
+                Spacer(height = 32.dp)
             }
-            Spacer(height = 8.dp)
-            ChooseMusicBox(
-                title = Strings.CHOOSE_PACKY_MUSIC_TITLE,
-                description = Strings.CHOOSE_PACKY_MUSIC_DESCRIPTION,
-            ) {
-                viewModel.emitIntent(CreateBoxChooseMusicIntent.OnPackyMusicClick)
-            }
-            Spacer(height = 32.dp)
         }
     }
 }

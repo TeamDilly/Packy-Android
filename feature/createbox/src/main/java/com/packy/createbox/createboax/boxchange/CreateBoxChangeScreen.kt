@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
@@ -58,69 +59,71 @@ fun CreateBoxChangeScreen(
         closeBoxChange()
     }
 
-    Column {
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(
-                    top = 24.dp,
-                )
-                .padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+    Surface {
+        Column {
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 24.dp,
+                    )
+                    .padding(horizontal = 24.dp),
+                horizontalAlignment = Alignment.Start
             ) {
-                Text(
-                    text = Strings.CREATE_BOX_CHANGE_BOX_TITLE,
-                    style = PackyTheme.typography.heading01,
-                    color = PackyTheme.color.gray900
-                )
-                Spacer(1f)
-                Text(
-                    modifier = Modifier.clickableWithoutRipple {
-                        viewModel.emitIntent(CreateBoxChangeIntent.OnConfirmClick)
-                    },
-                    text = Strings.CONFIRM,
-                    style = PackyTheme.typography.body02,
-                    color = PackyTheme.color.gray900
-                )
-            }
-            Spacer(height = 4.dp)
-            Text(
-                text = Strings.CREATE_BOX_CHANGE_BOX_DESCRIPTION,
-                style = PackyTheme.typography.body04,
-                color = PackyTheme.color.gray600
-            )
-        }
-        Spacer(height = 24.dp)
-        LazyRow(
-            modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(
-                space = 16.dp,
-                alignment = Alignment.CenterHorizontally
-            ),
-            contentPadding = PaddingValues(horizontal = 40.dp)
-        ) {
-            items(uiState.boxDesignList) { boxDesign ->
-                GlideImage(
-                    modifier = modifier
-                        .size(64.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .clickableWithoutRipple {
-                            viewModel.emitIntentThrottle(
-                                CreateBoxChangeIntent.ChangeBox(
-                                    boxDesign
-                                )
-                            )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = Strings.CREATE_BOX_CHANGE_BOX_TITLE,
+                        style = PackyTheme.typography.heading01,
+                        color = PackyTheme.color.gray900
+                    )
+                    Spacer(1f)
+                    Text(
+                        modifier = Modifier.clickableWithoutRipple {
+                            viewModel.emitIntent(CreateBoxChangeIntent.OnConfirmClick)
                         },
-                    model = boxDesign.boxSmall,
-                    contentDescription = "Box",
+                        text = Strings.CONFIRM,
+                        style = PackyTheme.typography.body02,
+                        color = PackyTheme.color.gray900
+                    )
+                }
+                Spacer(height = 4.dp)
+                Text(
+                    text = Strings.CREATE_BOX_CHANGE_BOX_DESCRIPTION,
+                    style = PackyTheme.typography.body04,
+                    color = PackyTheme.color.gray600
                 )
             }
+            Spacer(height = 24.dp)
+            LazyRow(
+                modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 16.dp,
+                    alignment = Alignment.CenterHorizontally
+                ),
+                contentPadding = PaddingValues(horizontal = 40.dp)
+            ) {
+                items(uiState.boxDesignList) { boxDesign ->
+                    GlideImage(
+                        modifier = modifier
+                            .size(64.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickableWithoutRipple {
+                                viewModel.emitIntentThrottle(
+                                    CreateBoxChangeIntent.ChangeBox(
+                                        boxDesign
+                                    )
+                                )
+                            },
+                        model = boxDesign.boxSmall,
+                        contentDescription = "Box",
+                    )
+                }
+            }
+            Spacer(height = 40.dp)
         }
-        Spacer(height = 40.dp)
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -88,68 +89,70 @@ fun CreateBoxPackyMusicScreen(
         viewModel.emitIntent(CreateBoxPackyMusicIntent.OnBackClick)
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Top
-    ) {
-        Spacer(height = 12.dp)
-        PackyTopBar.Builder()
-            .startIconButton(icon = R.drawable.arrow_left) {
-                viewModel.emitIntent(CreateBoxPackyMusicIntent.OnBackClick)
-            }
-            .endIconButton(icon = R.drawable.cancle) {
-                viewModel.emitIntent(CreateBoxPackyMusicIntent.OnCloseClick)
-            }
-            .build()
-        Spacer(height = 9.dp)
+    Surface {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize(),
+            verticalArrangement = Arrangement.Top
         ) {
-            BottomSheetTitle(
-                BottomSheetTitleContent(
-                    title = Strings.CREATE_BOX_ADD_PACKY_MUSIC_TITLE,
-                    description = Strings.CREATE_BOX_ADD_PACKY_MUSIC_DESCRIPTION,
-                )
-            )
-            Spacer(height = 100.dp)
-            HorizontalPager(
+            Spacer(height = 12.dp)
+            PackyTopBar.Builder()
+                .startIconButton(icon = R.drawable.arrow_left) {
+                    viewModel.emitIntent(CreateBoxPackyMusicIntent.OnBackClick)
+                }
+                .endIconButton(icon = R.drawable.cancle) {
+                    viewModel.emitIntent(CreateBoxPackyMusicIntent.OnCloseClick)
+                }
+                .build()
+            Spacer(height = 9.dp)
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                state = pagerState,
-                beyondBoundsPageCount = 4,
-                contentPadding = PaddingValues(horizontal = 44.dp),
-                pageSpacing = 16.dp
-            ) { index ->
+                    .fillMaxSize(),
+            ) {
+                BottomSheetTitle(
+                    BottomSheetTitleContent(
+                        title = Strings.CREATE_BOX_ADD_PACKY_MUSIC_TITLE,
+                        description = Strings.CREATE_BOX_ADD_PACKY_MUSIC_DESCRIPTION,
+                    )
+                )
+                Spacer(height = 100.dp)
+                HorizontalPager(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    state = pagerState,
+                    beyondBoundsPageCount = 4,
+                    contentPadding = PaddingValues(horizontal = 44.dp),
+                    pageSpacing = 16.dp
+                ) { index ->
 
-                uiState.music.getOrNull(index)?.let { packMusic ->
-                    packMusic.videoId?.let { videoId ->
-                        YoutubePlayerFrom(
-                            videoId = videoId,
-                            packMusic = packMusic,
-                            stateChange = viewModel::emitIntent,
-                            index = index,
-                        )
+                    uiState.music.getOrNull(index)?.let { packMusic ->
+                        packMusic.videoId?.let { videoId ->
+                            YoutubePlayerFrom(
+                                videoId = videoId,
+                                packMusic = packMusic,
+                                stateChange = viewModel::emitIntent,
+                                index = index,
+                            )
+                        }
                     }
                 }
+                Spacer(32.dp)
+                PackyIndicator(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(top = 24.dp),
+                    pagerState = pagerState
+                )
+                Spacer(1f)
+                PackyButton(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    style = buttonStyle.large.black,
+                    text = Strings.SELECT
+                ) {
+                    viewModel.emitIntent(CreateBoxPackyMusicIntent.OnSaveClick)
+                }
+                Spacer(height = 16.dp)
             }
-            Spacer(32.dp)
-            PackyIndicator(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 24.dp),
-                pagerState = pagerState
-            )
-            Spacer(1f)
-            PackyButton(
-                modifier = Modifier.padding(horizontal = 24.dp),
-                style = buttonStyle.large.black,
-                text = Strings.SELECT
-            ) {
-                viewModel.emitIntent(CreateBoxPackyMusicIntent.OnSaveClick)
-            }
-            Spacer(height = 16.dp)
         }
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -70,60 +71,62 @@ fun CreateBoxYourMusicScreen(
         viewModel.emitIntent(CreateBoxYourMusicIntent.OnBackClick)
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Top
-    ) {
-        PackyTopBar.Builder()
-            .startIconButton(icon = R.drawable.arrow_left) {
-                viewModel.emitIntent(CreateBoxYourMusicIntent.OnBackClick)
-            }
-            .endIconButton(icon = R.drawable.cancle) {
-                viewModel.emitIntent(CreateBoxYourMusicIntent.OnCloseClick)
-            }
-            .build()
-        Spacer(height = 9.dp)
+    Surface {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize(),
+            verticalArrangement = Arrangement.Top
         ) {
-            BottomSheetTitle(
-                BottomSheetTitleContent(
-                    title = Strings.CREATE_BOX_ADD_YOUR_MUSIC_TITLE,
-                    description = Strings.CREATE_BOX_ADD_YOUR_MUSIC_DESCRIPTION,
+            PackyTopBar.Builder()
+                .startIconButton(icon = R.drawable.arrow_left) {
+                    viewModel.emitIntent(CreateBoxYourMusicIntent.OnBackClick)
+                }
+                .endIconButton(icon = R.drawable.cancle) {
+                    viewModel.emitIntent(CreateBoxYourMusicIntent.OnCloseClick)
+                }
+                .build()
+            Spacer(height = 9.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+            ) {
+                BottomSheetTitle(
+                    BottomSheetTitleContent(
+                        title = Strings.CREATE_BOX_ADD_YOUR_MUSIC_TITLE,
+                        description = Strings.CREATE_BOX_ADD_YOUR_MUSIC_DESCRIPTION,
+                    )
                 )
-            )
-            Spacer(height = 32.dp)
-            val youtubeVideoId = extractYouTubeVideoId(uiState.youtubeLink)
-            if (uiState.validationYoutubeLink == true && youtubeVideoId != null) {
-                YoutubeView(
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp),
-                    youtubeVideoId = youtubeVideoId,
-                    close = viewModel::emitIntent,
-                )
-            } else {
-                YoutubeLinkForm(
+                Spacer(height = 32.dp)
+                val youtubeVideoId = extractYouTubeVideoId(uiState.youtubeLink)
+                if (uiState.validationYoutubeLink == true && youtubeVideoId != null) {
+                    YoutubeView(
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp),
+                        youtubeVideoId = youtubeVideoId,
+                        close = viewModel::emitIntent,
+                    )
+                } else {
+                    YoutubeLinkForm(
+                        modifier = Modifier
+                            .padding(horizontal = 24.dp),
+                        link = uiState.youtubeLink,
+                        onLinkChange = viewModel::emitIntent,
+                        isFailUrl = viewModel.currentState.validationYoutubeLink == false,
+                        onConfirmClick = viewModel::emitIntentThrottle
+                    )
+                }
+                Spacer(1f)
+                PackyButton(
                     modifier = Modifier
                         .padding(horizontal = 24.dp),
-                    link = uiState.youtubeLink,
-                    onLinkChange = viewModel::emitIntent,
-                    isFailUrl = viewModel.currentState.validationYoutubeLink == false,
-                    onConfirmClick = viewModel::emitIntentThrottle
-                )
+                    style = buttonStyle.large.black,
+                    text = Strings.SAVE,
+                    enabled = viewModel.currentState.validationYoutubeLink == true
+                ) {
+                    viewModel.emitIntentThrottle(CreateBoxYourMusicIntent.OnSaveClick)
+                }
+                Spacer(height = 16.dp)
             }
-            Spacer(1f)
-            PackyButton(
-                modifier = Modifier
-                    .padding(horizontal = 24.dp),
-                style = buttonStyle.large.black,
-                text = Strings.SAVE,
-                enabled = viewModel.currentState.validationYoutubeLink == true
-            ) {
-                viewModel.emitIntentThrottle(CreateBoxYourMusicIntent.OnSaveClick)
-            }
-            Spacer(height = 16.dp)
         }
     }
 }

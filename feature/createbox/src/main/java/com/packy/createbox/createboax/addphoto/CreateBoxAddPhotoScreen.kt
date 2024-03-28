@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -90,44 +91,45 @@ fun CreateBoxAddPhotoScreen(
         viewModel.emitIntent(CreateBoxAddPhotoIntent.OnCloseClick)
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-    ) {
-        PackyTopBar.Builder()
-            .endIconButton(icon = R.drawable.cancle) {
-                viewModel.emitIntent(CreateBoxAddPhotoIntent.OnCloseClick)
-            }
-            .build()
-        Spacer(height = 9.dp)
-        BottomSheetTitle(
-            BottomSheetTitleContent(
-                title = Strings.CREATE_BOX_ADD_PHOTO_TITLE,
-                description = Strings.CREATE_BOX_ADD_PHOTO_DESCRIPTION,
-            )
-        )
-        Spacer(height = 32.dp)
-        Box(modifier = Modifier.padding(horizontal = 40.dp)) {
-            PhotoFrame(
-                imageItem = uiState.photoItem,
-                closeBottomSheet = viewModel::emitIntent,
-                getPhotoUri = viewModel::emitIntent,
-                changeDescription = viewModel::emitIntent,
-            )
-        }
-        Spacer(1f)
-        PackyButton(
-            modifier = Modifier
-                .padding(horizontal = 24.dp),
-            style = buttonStyle.large.black,
-            text = Strings.SAVE,
-            enabled = viewModel.currentState.isSavable
+    Surface {
+        Column(
+            modifier = modifier
+                .fillMaxSize(),
         ) {
-            viewModel.emitIntent(CreateBoxAddPhotoIntent.OnSaveClick)
+            PackyTopBar.Builder()
+                .endIconButton(icon = R.drawable.cancle) {
+                    viewModel.emitIntent(CreateBoxAddPhotoIntent.OnCloseClick)
+                }
+                .build()
+            Spacer(height = 9.dp)
+            BottomSheetTitle(
+                BottomSheetTitleContent(
+                    title = Strings.CREATE_BOX_ADD_PHOTO_TITLE,
+                    description = Strings.CREATE_BOX_ADD_PHOTO_DESCRIPTION,
+                )
+            )
+            Spacer(height = 32.dp)
+            Box(modifier = Modifier.padding(horizontal = 40.dp)) {
+                PhotoFrame(
+                    imageItem = uiState.photoItem,
+                    closeBottomSheet = viewModel::emitIntent,
+                    getPhotoUri = viewModel::emitIntent,
+                    changeDescription = viewModel::emitIntent,
+                )
+            }
+            Spacer(1f)
+            PackyButton(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
+                style = buttonStyle.large.black,
+                text = Strings.SAVE,
+                enabled = viewModel.currentState.isSavable
+            ) {
+                viewModel.emitIntent(CreateBoxAddPhotoIntent.OnSaveClick)
+            }
+            Spacer(height = 16.dp)
         }
-        Spacer(height = 16.dp)
     }
-
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)

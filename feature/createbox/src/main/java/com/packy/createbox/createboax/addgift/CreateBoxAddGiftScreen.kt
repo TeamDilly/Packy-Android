@@ -82,84 +82,86 @@ fun CreateBoxAddGiftScreen(
         viewModel.emitIntent(CreateBoxAddGiftIntent.OnCloseClick)
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-    ) {
-        PackyTopBar.Builder()
-            .endIconButton(icon = R.drawable.cancle) {
-                viewModel.emitIntent(CreateBoxAddGiftIntent.OnCloseClick)
-            }
-            .build()
-        Spacer(height = 9.dp)
-        BottomSheetTitle(
-            BottomSheetTitleContent(
-                title = Strings.CREATE_BOX_ADD_GIFT_TITLE,
-                description = Strings.CREATE_BOX_ADD_GIFT_DESCRIPTION,
-            )
-        )
-        Spacer(height = 32.dp)
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .aspectRatio(1f)
+    Surface {
+        Column(
+            modifier = modifier
+                .fillMaxSize(),
         ) {
-            if (uiState.imageUri == null) {
-                EmptyGiftForm(launcher)
-            } else {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    GlideImage(
-                        modifier = modifier
-                            .fillMaxSize(),
-                        model = uiState.imageUri,
-                        contentDescription = "Gift",
-                        alignment = Alignment.TopCenter,
-                        contentScale = ContentScale.None,
-                    )
-                    PackyCloseIconButton(
-                        modifier = Modifier
-                            .padding(
-                                top = 12.dp,
-                                end = 12.dp
-                            )
-                            .align(Alignment.TopEnd),
-                        style = closeIconButtonStyle.medium.black
-                    ) {
-                        viewModel.emitIntent(CreateBoxAddGiftIntent.OnCancelImageClick)
+            PackyTopBar.Builder()
+                .endIconButton(icon = R.drawable.cancle) {
+                    viewModel.emitIntent(CreateBoxAddGiftIntent.OnCloseClick)
+                }
+                .build()
+            Spacer(height = 9.dp)
+            BottomSheetTitle(
+                BottomSheetTitleContent(
+                    title = Strings.CREATE_BOX_ADD_GIFT_TITLE,
+                    description = Strings.CREATE_BOX_ADD_GIFT_DESCRIPTION,
+                )
+            )
+            Spacer(height = 32.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .aspectRatio(1f)
+            ) {
+                if (uiState.imageUri == null) {
+                    EmptyGiftForm(launcher)
+                } else {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        GlideImage(
+                            modifier = modifier
+                                .fillMaxSize(),
+                            model = uiState.imageUri,
+                            contentDescription = "Gift",
+                            alignment = Alignment.TopCenter,
+                            contentScale = ContentScale.None,
+                        )
+                        PackyCloseIconButton(
+                            modifier = Modifier
+                                .padding(
+                                    top = 12.dp,
+                                    end = 12.dp
+                                )
+                                .align(Alignment.TopEnd),
+                            style = closeIconButtonStyle.medium.black
+                        ) {
+                            viewModel.emitIntent(CreateBoxAddGiftIntent.OnCancelImageClick)
+                        }
                     }
                 }
             }
+            Spacer(1f)
+            PackyButton(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
+                style = buttonStyle.large.black,
+                text = Strings.SAVE,
+                enabled = uiState.isSavable
+            ) {
+                viewModel.emitIntentThrottle(CreateBoxAddGiftIntent.OnSaveClick)
+            }
+            Spacer(height = 8.dp)
+            Text(
+                text = CREATE_BOX_ADD_GIFT_CLOSE,
+                style = PackyTheme.typography.body02.copy(
+                    textAlign = TextAlign.Center,
+                ),
+                color = PackyTheme.color.gray900,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 14.dp,
+                        vertical = 14.dp
+                    )
+                    .clickableWithoutRipple {
+                        viewModel.emitIntentThrottle(CreateBoxAddGiftIntent.OnResetGiftClick)
+                    }
+            )
+            Spacer(height = 20.dp)
         }
-        Spacer(1f)
-        PackyButton(
-            modifier = Modifier
-                .padding(horizontal = 24.dp),
-            style = buttonStyle.large.black,
-            text = Strings.SAVE,
-            enabled = uiState.isSavable
-        ) {
-            viewModel.emitIntentThrottle(CreateBoxAddGiftIntent.OnSaveClick)
-        }
-        Spacer(height = 8.dp)
-        Text(
-            text = CREATE_BOX_ADD_GIFT_CLOSE,
-            style = PackyTheme.typography.body02.copy(
-                textAlign = TextAlign.Center,
-            ),
-            color = PackyTheme.color.gray900,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 14.dp,
-                    vertical = 14.dp
-                )
-                .clickableWithoutRipple {
-                    viewModel.emitIntentThrottle(CreateBoxAddGiftIntent.OnResetGiftClick)
-                }
-        )
-        Spacer(height = 20.dp)
     }
 }
 

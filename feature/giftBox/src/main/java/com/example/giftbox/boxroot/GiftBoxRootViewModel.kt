@@ -25,8 +25,8 @@ class GiftBoxRootViewModel @Inject constructor(
     init {
         savedStateHandle.get<Long>(GIFT_BOX_ID_ARG)?.let {
             getGiftBox(it.toString())
-        } ?: run{
-            sendEffect(GiftBoxRootEffect.FailToGetGIftBox)
+        } ?: run {
+            sendEffect(GiftBoxRootEffect.FailToGetGIftBox(null))
         }
     }
 
@@ -38,7 +38,7 @@ class GiftBoxRootViewModel @Inject constructor(
                     when (boxResource) {
                         is Resource.ApiError,
                         is Resource.NetworkError,
-                        is Resource.NullResult -> sendEffect(GiftBoxRootEffect.FailToGetGIftBox)
+                        is Resource.NullResult -> sendEffect(GiftBoxRootEffect.FailToGetGIftBox(boxId))
 
                         is Resource.Loading -> Unit
                         is Resource.Success -> {

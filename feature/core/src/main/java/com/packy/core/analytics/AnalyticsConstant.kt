@@ -15,8 +15,15 @@ object AnalyticsConstant {
         BOX_CHOICE_BOX("box_choice_box"),
         BOX_DETAIL("box_detail"),
         BOX_ADD_TITLE("box_add_title"),
-        BOX_SHARE("box_share")
+        BOX_SHARE("box_share"),
+        BOX_OPEN_ERROR("box_open_error"),
+        BOX_DETAIL_OPEN("box_detail_open")
     }
+
+    data class ContentId(
+        override val event: String,
+        override val key: String = "contentID",
+    ):AnalyticsEvent
 }
 
 interface AnalyticsEvent{

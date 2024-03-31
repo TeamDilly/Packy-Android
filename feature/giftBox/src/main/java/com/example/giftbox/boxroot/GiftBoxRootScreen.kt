@@ -29,8 +29,8 @@ fun GiftBoxRootScreen(
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                GiftBoxRootEffect.FailToGetGIftBox -> navController.navigate(
-                    route = GiftBoxRoute.GIFT_BOX_ERROR,
+                is GiftBoxRootEffect.FailToGetGIftBox -> navController.navigate(
+                    route = GiftBoxRoute.getGiftErrorRoute(effect.giftBox),
                 ) {
                     val currentRoute = navController.currentBackStackEntry?.destination?.route
                     currentRoute?.let { popUpTo(it) { inclusive = true } }

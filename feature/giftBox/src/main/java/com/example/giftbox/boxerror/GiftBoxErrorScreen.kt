@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.TrackedScreen
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
@@ -22,9 +24,19 @@ import com.packy.core.values.Strings
 fun GiftBoxErrorScreen(
     modifier: Modifier = Modifier,
     closeGiftBox: () -> Unit,
+    giftBoxId: Long?,
     message: String,
     viewModel: GiftBoxErrorViewModel = hiltViewModel()
 ) {
+    TrackedScreen(
+        label = AnalyticsConstant.AnalyticsLabel.VIEW,
+        loggerEvents = arrayOf(
+            AnalyticsConstant.PageName.BOX_OPEN_ERROR,
+            AnalyticsConstant.ContentId(
+                giftBoxId.toString()
+            )
+        )
+    )
     Scaffold { innerPadding ->
         Column(
             modifier = modifier

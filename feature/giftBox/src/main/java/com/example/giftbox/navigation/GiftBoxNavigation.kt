@@ -64,7 +64,8 @@ fun NavGraphBuilder.giftBoxNavGraph(
             if (giftBox == null) {
                 GiftBoxErrorScreen(
                     message = "Message",
-                    closeGiftBox = closeGiftBox
+                    closeGiftBox = closeGiftBox,
+                    giftBoxId = null
                 )
             } else {
                 GiftBoxMotionScreen(
@@ -120,10 +121,19 @@ fun NavGraphBuilder.giftBoxNavGraph(
         }
         asPagingComposable(
             route = GiftBoxRoute.GIFT_BOX_ERROR,
+            arguments = listOf(
+                navArgument(GIFT_BOX_ID_ARG) {
+                    defaultValue = null
+                    type = NavType.StringType
+                    nullable = true
+                }
+            )
         ) {
+            val giftBoxId = it.arguments?.getString(GIFT_BOX_ID_ARG)?.toLongOrNull()
             GiftBoxErrorScreen(
                 message = "Message",
-                closeGiftBox = closeGiftBox
+                closeGiftBox = closeGiftBox,
+                giftBoxId = giftBoxId
             )
         }
     }
@@ -180,5 +190,9 @@ object GiftBoxRoute {
     fun getGiftBoxArg(savedStateHandle: SavedStateHandle): GiftBox? {
         val giftBoxJson = savedStateHandle.get<String>(GIFT_BOX_ARG)
         return giftBoxJson?.let { PackyJson.decodeFromString<GiftBox>(it) }
+    }
+
+    fun getGiftErrorRoute(giftBoxId: String?): String {
+        return "$GIFT_BOX_ERROR/$giftBoxId"
     }
 }

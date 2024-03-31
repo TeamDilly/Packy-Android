@@ -7,11 +7,14 @@ import com.packy.mvi.mvi.UiState
 
 sealed interface GiftBoxRootIntent : MviIntent {}
 
-object GiftBoxRootState: UiState
+object GiftBoxRootState : UiState
 
 sealed interface GiftBoxRootEffect : SideEffect {
     data class GetGiftBox(
         val giftBox: GiftBox
-    ): GiftBoxRootEffect
-    data object FailToGetGIftBox: GiftBoxRootEffect
+    ) : GiftBoxRootEffect
+
+    data class FailToGetGIftBox(
+        val giftBox: String?
+    ) : GiftBoxRootEffect
 }

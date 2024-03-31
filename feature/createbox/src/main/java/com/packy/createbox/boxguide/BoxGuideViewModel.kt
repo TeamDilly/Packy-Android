@@ -1,6 +1,11 @@
 package com.packy.createbox.boxguide
 
 import android.net.Uri
+import androidx.lifecycle.viewModelScope
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.AnalyticsEvent
+import com.packy.core.analytics.FirebaseAnalyticsWrapper
+import com.packy.core.analytics.toBundle
 import com.packy.core.values.Strings
 import com.packy.core.widget.youtube.YoutubeState
 import com.packy.createbox.common.boxDesign
@@ -217,5 +222,39 @@ class BoxGuideViewModel @Inject constructor(
         setState(
             currentState.copy(youtubeState = YoutubeState.PAUSED)
         )
+    }
+
+    fun completeBoxLog() {
+        viewModelScope.launch {
+            val emptyItems = buildList<AnalyticsConstant.EmptyItem> {
+                val createBox = createBoxUseCase.getCreatedBox()
+                if (createBox.gift == null) {
+                    add(AnalyticsConstant.EmptyItem.GIFT)
+                }
+                if (createBox.photo == null) {
+                    add(AnalyticsConstant.EmptyItem.PHOTO)
+                }
+                if (createBox.stickers.find { it.location == 1 }?.imageUri == null) {
+                    add(AnalyticsConstant.EmptyItem.STICKER1)
+                }
+                if (createBox.stickers.find { it.location == 2 }?.imageUri == null) {
+                    add(AnalyticsConstant.EmptyItem.STICKER2)
+                }
+                if (createBox.letterContent == null) {
+                    add(AnalyticsConstant.EmptyItem.LETTER)
+                }
+                if (createBox.youtubeUrl == null) {
+                    add(AnalyticsConstant.EmptyItem.MUSIC)
+                }
+            }
+            FirebaseAnalyticsWrapper.logEvent(
+                label = AnalyticsConstant.AnalyticsLabel.CLICK,
+                bundle = arrayOf<AnalyticsEvent>(
+                    AnalyticsConstant.PageName.BOX_DETAIL,
+                    AnalyticsConstant.ComponentName.BOX_DETAIL_DONE_BUTTON,
+                    AnalyticsConstant.EmptyItems(emptyItems)
+                ).toBundle()
+            )
+        }
     }
 }

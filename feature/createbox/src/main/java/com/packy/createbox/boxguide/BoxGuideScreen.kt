@@ -155,6 +155,9 @@ fun BoxGuideScreen(
                             isBoxComplete = uiState.isBoxComplete(),
                             onClick = {
                                 viewModel.emitIntentThrottle(BoxGuideIntent.OnSaveClick)
+                            },
+                            onClickLog = {
+                                viewModel.completeBoxLog()
                             }
                         )
                     }
@@ -487,7 +490,8 @@ private fun BottomButton(
 @Composable
 private fun RightMenuTopbar(
     isBoxComplete: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onClickLog: () -> Unit = {}
 ) {
     Box(modifier = Modifier
         .width(60.dp)
@@ -496,10 +500,11 @@ private fun RightMenuTopbar(
             color = PackyTheme.color.white,
             shape = RoundedCornerShape(80.dp)
         )
-        .clickableWithoutRipple(
-            enabled = isBoxComplete,
-        ) {
-            onClick()
+        .clickableWithoutRipple {
+        }
+        .clickableWithoutRipple {
+            if (isBoxComplete) onClick()
+            onClickLog()
         }
     )
     {

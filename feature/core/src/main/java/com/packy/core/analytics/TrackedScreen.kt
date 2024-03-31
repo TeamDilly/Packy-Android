@@ -13,21 +13,14 @@ import androidx.lifecycle.LifecycleOwner
 fun TrackedScreen(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     label: AnalyticsConstant.AnalyticsLabel,
-    vararg loggerEvents: AnalyticsEvent
+    loggerEvents: Array<AnalyticsEvent>
 ) {
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_START) {
-                val bundle = Bundle()
-                for (loggerEvent in loggerEvents) {
-                    bundle.putString(
-                        loggerEvent.key,
-                        loggerEvent.event
-                    )
-                }
                 FirebaseAnalyticsWrapper.logEvent(
-                    label.label,
-                    bundle
+                    label,
+                    loggerEvents.toBundle()
                 )
             }
         }
@@ -38,4 +31,15 @@ fun TrackedScreen(
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
+}
+
+fun Array<AnalyticsEvent>.toBundle(): Bundle {
+    val bundle = Bundle()
+    for (loggerEvent in this) {
+        bundle.putString(
+            loggerEvent.key,
+            loggerEvent.event
+        )
+    }
+    return bundle
 }

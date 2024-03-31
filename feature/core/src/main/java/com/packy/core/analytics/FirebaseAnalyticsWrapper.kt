@@ -14,8 +14,8 @@ object FirebaseAnalyticsWrapper {
         Firebase.analytics.setUserId(userId)
     }
 
-    fun logEvent(eventTag: String, bundle: Bundle?) {
-        Firebase.analytics.logEvent(eventTag, bundle)
+    fun logEvent(label: AnalyticsConstant.AnalyticsLabel, bundle: Bundle?) {
+        Firebase.analytics.logEvent(label.label, bundle)
     }
 
 }

@@ -4,6 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.giftbox.giftarr.GiftBoxArrState
 import com.example.giftbox.navigation.GiftBoxRoute
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.AnalyticsEvent
+import com.packy.core.analytics.FirebaseAnalyticsWrapper
+import com.packy.core.analytics.toBundle
 import com.packy.domain.model.createbox.box.CreateBox
 import com.packy.domain.model.createbox.box.Gift
 import com.packy.domain.model.createbox.box.Photo
@@ -29,6 +33,16 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val giftBox = GiftBoxRoute.getGiftBoxArg(savedStateHandle)
+            FirebaseAnalyticsWrapper.logEvent(
+                label = AnalyticsConstant.AnalyticsLabel.VIEW,
+                bundle = arrayOf<AnalyticsEvent>(
+                    AnalyticsConstant.PageName.BOX_DETAIL_OPEN,
+                    AnalyticsConstant.ContentId(
+                        giftBox?.id.toString()
+                    )
+                ).toBundle()
+            )
+
             val photo = giftBox?.photos?.first() ?: return@launch
             setState {
                 GiftBoxDetailOpenState(

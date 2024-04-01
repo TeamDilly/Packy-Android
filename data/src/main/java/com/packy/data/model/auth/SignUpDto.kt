@@ -8,5 +8,6 @@ data class SignUpDto(
     @SerialName("accessToken") val accessToken: String,
     @SerialName("accessTokenExpiresIn") val accessTokenExpiresIn: Long,
     @SerialName("grantType") val grantType: String,
-    @SerialName("refreshToken") val refreshToken: String
+    @SerialName("refreshToken") val refreshToken: String,
+    @SerialName("id") val memberId: Long
 )

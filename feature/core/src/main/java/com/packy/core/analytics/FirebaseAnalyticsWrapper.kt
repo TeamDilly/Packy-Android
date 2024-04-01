@@ -11,6 +11,7 @@ object FirebaseAnalyticsWrapper {
     }
 
     fun setUserId(userId: String) {
+        println("LOGEE setUserId $userId")
         Firebase.analytics.setUserId(userId)
     }
 

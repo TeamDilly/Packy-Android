@@ -12,4 +12,6 @@ object PackyAuthenticatorKey: AuthenticatorKey {
         get() = "refreshToken"
     override val nickName: String
         get() = "PackyNickName"
+    override val memberId: String
+        get() = "PackyMemberId"
 }

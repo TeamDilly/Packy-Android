@@ -3,6 +3,7 @@ package com.packy.onboarding.login
 import androidx.lifecycle.viewModelScope
 import com.packy.common.authenticator.KakaoAuth
 import com.packy.common.authenticator.KakaoLoginController
+import com.packy.core.analytics.FirebaseAnalyticsWrapper
 import com.packy.domain.model.auth.SignIn
 import com.packy.domain.usecase.auth.SignInUseCase
 import com.packy.domain.usecase.auth.SignUpUseCase
@@ -66,6 +67,9 @@ class LoginViewModel @Inject constructor(
             is Resource.NetworkError -> Unit
             is Resource.NullResult -> Unit
             is Resource.Success -> {
+                FirebaseAnalyticsWrapper.setUserId(
+                    resource.data.memberId.toString()
+                )
                 when (resource.data.status) {
                     SignIn.AuthStatus.REGISTERED.name -> {
                         viewModelScope.launch {

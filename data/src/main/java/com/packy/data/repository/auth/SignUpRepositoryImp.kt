@@ -44,7 +44,8 @@ class SignUpRepositoryImp @Inject constructor(
                     email = "Packy",
                     token = signUpResource.data.accessToken,
                     refreshToken = signUpResource.data.refreshToken,
-                    nickname = signUp.nickname
+                    nickname = signUp.nickname,
+                    memberId = signUpResource.data.memberId
                 )
             }
 

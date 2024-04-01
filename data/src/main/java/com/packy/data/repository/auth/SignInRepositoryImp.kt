@@ -24,13 +24,15 @@ class SignInRepositoryImp @Inject constructor(
 
             if (signDto.data?.status == SignIn.AuthStatus.REGISTERED.name) {
                 val tokenInfo = signDto.data?.tokenInfo
+                val memberId = signDto.data?.tokenInfo?.memberId
                 tokenInfo?.let { token ->
                     token.accessToken?.let {
                         accountManagerHelper.setAuthToken(
                             email = "Packy",
                             token = it,
                             refreshToken = token.refreshToken,
-                            nickname = nickname
+                            nickname = nickname,
+                            memberId = memberId
                         )
                     }
                 }

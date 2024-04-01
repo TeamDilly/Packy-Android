@@ -1,6 +1,8 @@
 package com.packy.onboarding.termsagreement
 
 import android.util.Log
+import com.packy.account.AccountManagerHelper
+import com.packy.core.analytics.FirebaseAnalyticsWrapper
 import com.packy.domain.usecase.auth.SignUpUseCase
 import com.packy.lib.utils.Resource
 import com.packy.mvi.base.MviViewModel
@@ -10,7 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TermsAgreementViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase
+    private val signUpUseCase: SignUpUseCase,
+    private val accountManagerHelper: AccountManagerHelper
 ) :
     MviViewModel<TermsAgreementIntent, TermsAgreementState, TermsAgreementEffect>() {
     override fun createInitialState() = TermsAgreementState(
@@ -74,7 +77,11 @@ class TermsAgreementViewModel @Inject constructor(
                             currentState.copy(signUpFail = true)
                         }
 
-                        is Resource.Success -> sendEffect(TermsAgreementEffect.OnSuccessSignUp)
+                        is Resource.Success -> {
+                            val memberId = accountManagerHelper.getMemberId()
+                            FirebaseAnalyticsWrapper.setUserId(memberId.toString())
+                            sendEffect(TermsAgreementEffect.OnSuccessSignUp)
+                        }
                     }
                 }
         }

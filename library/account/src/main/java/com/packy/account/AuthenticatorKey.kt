@@ -5,4 +5,5 @@ interface AuthenticatorKey {
     val authTokenType: String
     val refreshToken: String
     val nickName: String
+    val memberId: String
 }

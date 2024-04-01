@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TokenInfo(
+    @SerialName("id") val memberId: Long,
     @SerialName("accessToken") val accessToken: String? = null,
     @SerialName("accessTokenExpiresIn") val accessTokenExpiresIn: Long? = null,
     @SerialName("grantType") val grantType: String? = null,

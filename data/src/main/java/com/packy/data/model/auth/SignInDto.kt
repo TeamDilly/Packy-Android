@@ -7,7 +7,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SignInDto(
     @SerialName("status") val status: String,
-    @SerialName("tokenInfo") val tokenInfo: TokenInfo? =null
+    @SerialName("tokenInfo") val tokenInfo: TokenInfo? = null,
 )
 
-fun SignInDto.toEntity() = SignIn(this.status)
+fun SignInDto.toEntity() = SignIn(
+    status = this.status,
+    memberId = this.tokenInfo?.memberId
+)

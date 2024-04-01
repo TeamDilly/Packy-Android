@@ -125,11 +125,6 @@ object NetworkModule {
                                 accountManagerHelper.removeAuthToken()
                                 logoutUseCase.logout()
 
-                                val pm = ctx.packageManager
-                                val intent = pm.getLaunchIntentForPackage(ctx.packageName)
-                                val mainIntent = Intent.makeRestartActivityTask(intent!!.component)
-                                ctx.startActivity(mainIntent)
-                                Runtime.getRuntime().exit(0)
                                 null
                             }
                         } else {

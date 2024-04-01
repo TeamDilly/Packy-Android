@@ -55,8 +55,8 @@ fun WithdrawalScreen(
             title = WITHDRAWAL_DIALOG_TITLE,
             dismiss = Strings.CONFIRM,
             confirm = Strings.CANCEL,
-            onConfirm = { viewModel.emitIntentThrottle(WithdrawalIntent.OnWithdrawalClick) },
-            onDismiss = { viewModel.emitIntentThrottle(WithdrawalIntent.OnCloseWithdrawalDialogClick) },
+            onConfirm = { viewModel.emitIntentThrottle(WithdrawalIntent.OnCloseWithdrawalDialogClick) },
+            onDismiss = { viewModel.emitIntentThrottle(WithdrawalIntent.OnWithdrawalClick) },
             backHandler = { viewModel.emitIntentThrottle(WithdrawalIntent.OnCloseWithdrawalDialogClick) }
         )
     }

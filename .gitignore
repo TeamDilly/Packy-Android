@@ -36,3 +36,5 @@ private_strings.xml
 /app/release
 gradle.properties
 /gradle.properties
+
+/app/google-services.json

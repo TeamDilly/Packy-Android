@@ -31,13 +31,13 @@ object AnalyticsConstant {
 
     data class ContentId(
         override val event: String,
-        override val key: String = "contentID",
+        override val key: String = "ContentId",
     ) : AnalyticsEvent
 
     data class EmptyItems(
         val emptyItems: List<EmptyItem>,
         override val event: String = emptyItems.toString(),
-        override val key: String = "emptyItems"
+        override val key: String = "EmptyItems"
     ) : AnalyticsEvent
 
     enum class EmptyItem {

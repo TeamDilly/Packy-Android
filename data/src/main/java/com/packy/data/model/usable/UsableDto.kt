@@ -6,11 +6,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UsableDto(
     @SerialName("isAvailable") val isAvailable: Boolean,
-    @SerialName("reason") val reason: UsableStatus? = null
+    @SerialName("id") val memberId: Long,
+    @SerialName("reason") val reason: UsableStatus? = null,
 ) {
     fun toEntity(): Usable = Usable(
         isAvailable = isAvailable,
-        reason = reason
+        reason = reason,
+        memberId = memberId
     )
 }
 

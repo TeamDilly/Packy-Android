@@ -1,7 +1,9 @@
 package com.packy.root
 
 import androidx.lifecycle.ViewModel
+import com.google.firebase.FirebaseApp
 import com.packy.account.AccountManagerHelper
+import com.packy.core.analytics.FirebaseAnalyticsWrapper
 import com.packy.di.BuildConfig
 import com.packy.domain.model.usable.UsableStatus
 import com.packy.domain.usecase.auth.LogoutUseCase
@@ -30,6 +32,7 @@ class RootComposeViewModel @Inject constructor(
                     is Resource.NullResult -> UserState.NOT_REGISTERED
 
                     is Resource.Success -> {
+                        FirebaseAnalyticsWrapper.setUserId(usable.data.memberId.toString())
                         if (usable.data.isAvailable) {
                             val account = accountHelper.getAccount()
                             if (account != null) {

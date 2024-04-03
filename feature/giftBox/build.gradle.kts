@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.packy.feature.main"
+    namespace = "com.packy.feature.giftBox"
 }
 
 dependencies {

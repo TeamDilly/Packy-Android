@@ -9,15 +9,12 @@ android {
     defaultConfig{
         targetSdk = 33
         versionCode = 3
-        versionName = "1.0.1"
+        versionName = "1.2.0"
         applicationId = "com.packy"
 
         multiDexEnabled = true
     }
 
-    buildFeatures {
-        buildConfig = true
-    }
     signingConfigs {
         maybeCreate("release").apply{
             val KEY_ALIAS: String by project

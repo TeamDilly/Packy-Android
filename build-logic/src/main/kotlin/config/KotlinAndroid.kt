@@ -23,17 +23,48 @@ internal fun Project.configureKotlinAndroid() {
             }
         }
 
+        buildFeatures {
+            buildConfig = true
+        }
+
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17
             targetCompatibility = JavaVersion.VERSION_17
         }
 
         buildTypes {
-            getByName("release") {
+            getByName("debug"){
                 isMinifyEnabled = false
+                defaultConfig {
+                    buildConfigField(
+                        "String",
+                        "VERSION_NAME",
+                        "\"1.2.0\""
+                    )
+                }
+                buildConfigField(
+                    "String",
+                    "BASE_URL",
+                    "\"https://dev.packyforyou.shop/\""
+                )
+            }
+            getByName("release") {
+                isMinifyEnabled = true
                 proguardFiles(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
+                )
+                defaultConfig {
+                    buildConfigField(
+                        "String",
+                        "VERSION_NAME",
+                        "\"1.2.0\""
+                    )
+                }
+                buildConfigField(
+                    "String",
+                    "BASE_URL",
+                    "\"https://prod.packyforyou.shop/\""
                 )
             }
         }

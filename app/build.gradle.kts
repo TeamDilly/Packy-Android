@@ -8,7 +8,7 @@ android {
 
     defaultConfig{
         targetSdk = 33
-        versionCode = 3
+        versionCode = 5
         versionName = "1.2.0"
         applicationId = "com.packy"
 

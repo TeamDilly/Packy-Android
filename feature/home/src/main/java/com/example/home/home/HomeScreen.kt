@@ -53,6 +53,8 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.home.common.widget.DeleteBottomSheet
 import com.example.home.common.widget.LazyBoxItem
 import com.example.home.root.HomeRoute.MY_BOX
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.TrackedScreen
 import com.packy.feature.core.R
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
@@ -86,6 +88,11 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    TrackedScreen(
+        label = AnalyticsConstant.AnalyticsLabel.VIEW,
+        loggerEvents = arrayOf(AnalyticsConstant.PageName.HOME)
+    )
+
     val scope = rememberCoroutineScope()
 
     val uiState by viewModel.uiState.collectAsState()

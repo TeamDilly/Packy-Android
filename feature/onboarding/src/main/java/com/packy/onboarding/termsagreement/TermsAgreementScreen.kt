@@ -23,6 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.TrackedScreen
 import com.packy.core.checkbox.PackyCheckBox
 import com.packy.core.common.Spacer
 import com.packy.core.theme.PackyTheme
@@ -39,6 +41,11 @@ fun TermsAgreementScreen(
     signUp: () -> Unit,
     viewModel: TermsAgreementViewModel = hiltViewModel()
 ) {
+    TrackedScreen(
+        label = AnalyticsConstant.AnalyticsLabel.VIEW,
+        loggerEvents = arrayOf(AnalyticsConstant.PageName.SIGNUP_TERMS_AGREEMENT)
+    )
+
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(null) {

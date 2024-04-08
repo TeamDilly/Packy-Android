@@ -26,6 +26,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.packy.common.authenticator.KakaoAuth
 import com.packy.common.authenticator.KakaoLoginController
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.TrackedScreen
 import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings.LOGIN_TITLE
@@ -39,6 +41,11 @@ fun LoginScreen(
     loggedIn: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    TrackedScreen(
+        label = AnalyticsConstant.AnalyticsLabel.VIEW,
+        loggerEvents = arrayOf(AnalyticsConstant.PageName.LOGIN)
+    )
+
     val uiState by viewModel.uiState.collectAsState()
     val kakaoLoginController = KakaoLoginController()
     val context = LocalContext.current

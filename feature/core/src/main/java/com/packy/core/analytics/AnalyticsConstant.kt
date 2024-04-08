@@ -5,8 +5,8 @@ object AnalyticsConstant {
     enum class AnalyticsLabel(
         val label: String
     ) {
-        VIEW("View"),
-        CLICK("Click")
+        VIEW("view"),
+        CLICK("click")
     }
 
     enum class PageName(

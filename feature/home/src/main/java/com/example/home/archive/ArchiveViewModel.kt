@@ -3,6 +3,10 @@ package com.example.home.archive
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.AnalyticsEvent
+import com.packy.core.analytics.FirebaseAnalyticsWrapper
+import com.packy.core.analytics.toBundle
 import com.packy.domain.model.archive.ArchiveGift
 import com.packy.domain.model.archive.ArchiveLetter
 import com.packy.domain.model.archive.ArchiveMusic
@@ -34,6 +38,21 @@ class ArchiveViewModel @Inject constructor(
 
     override fun handleIntent() {
         subscribeStateIntent<ArchiveIntent.OnArchiveTypeClick> { state, intent ->
+            if (state.showArchiveType == intent.type) {
+                return@subscribeStateIntent state
+            }
+            FirebaseAnalyticsWrapper.logEvent(
+                label = AnalyticsConstant.AnalyticsLabel.VIEW,
+                bundle = arrayOf<AnalyticsEvent>(
+                    AnalyticsConstant.PageName.ARCHIVE,
+                    when (intent.type) {
+                        ShowArchiveType.PHOTO -> AnalyticsConstant.ComponentName.PHOTO
+                        ShowArchiveType.LETTER -> AnalyticsConstant.ComponentName.LETTER
+                        ShowArchiveType.MUSIC -> AnalyticsConstant.ComponentName.MUSIC
+                        ShowArchiveType.GIFT -> AnalyticsConstant.ComponentName.GIFT
+                    }
+                ).toBundle()
+            )
             state.copy(showArchiveType = intent.type)
         }
         subscribeStateIntent<ArchiveIntent.OnArchiveClick> { state, intent ->
@@ -44,7 +63,7 @@ class ArchiveViewModel @Inject constructor(
         }
     }
 
-    fun listInit(){
+    fun listInit() {
         getPhotos()
         getMusics()
         getGifts()

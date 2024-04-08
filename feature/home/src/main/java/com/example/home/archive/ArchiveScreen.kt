@@ -61,6 +61,8 @@ import com.example.home.archive.widget.ArchivePhotos
 import com.example.home.mybox.MyBoxIntent
 import com.example.home.mybox.MyBoxType
 import com.packy.common.authenticator.ext.colorCodeToColor
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.TrackedScreen
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
@@ -91,6 +93,13 @@ fun ArchiveScreen(
     navController: NavController,
     viewModel: ArchiveViewModel = hiltViewModel()
 ) {
+    TrackedScreen(
+        label = AnalyticsConstant.AnalyticsLabel.VIEW,
+        loggerEvents = arrayOf(
+            AnalyticsConstant.PageName.ARCHIVE,
+            AnalyticsConstant.ComponentName.PHOTO
+        )
+    )
     val uiState by viewModel.uiState.collectAsState()
     val showArchive by remember {
         derivedStateOf { uiState.showArchive }

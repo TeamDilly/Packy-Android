@@ -75,6 +75,8 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.home.common.widget.DeleteBottomSheet
 import com.example.home.common.widget.LazyBoxItem
 import com.packy.common.authenticator.ext.toFormatTimeStampString
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.TrackedScreen
 import com.packy.core.common.NoRippleTheme
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
@@ -106,6 +108,13 @@ fun MyBoxScreen(
     moveToBoxDetail: (Long, Boolean) -> Unit,
     viewModel: MyBoxViewModel = hiltViewModel()
 ) {
+    TrackedScreen(
+        label = AnalyticsConstant.AnalyticsLabel.VIEW,
+        loggerEvents = arrayOf(
+            AnalyticsConstant.PageName.MY_BOX,
+            AnalyticsConstant.ComponentName.SEND
+        )
+    )
     val uiState by viewModel.uiState.collectAsState()
     val lazyBox by remember {
         derivedStateOf { uiState.lazyBox }
@@ -291,7 +300,7 @@ fun MyBoxScreen(
                         deleteMyBox = { boxId -> viewModel.emitIntent(MyBoxIntent.OnMyBoxMoreClick(boxId)) },
                         emptyText = Strings.HOME_MY_BOX_EMPTY_SEND_BOX,
                         nameTag = Strings.TO,
-                        state = sendBoxState
+                        state = sendBoxState,
                     )
 
                     MyBoxType.RECEIVE.ordinal -> MyBoxList(
@@ -304,7 +313,7 @@ fun MyBoxScreen(
                         emptyText = Strings.HOME_MY_BOX_EMPTY_RECEIVE_BOX,
                         nameTag = Strings.FROM,
                         showCreateBoxButton = false,
-                        state = receiverBoxState
+                        state = receiverBoxState,
                     )
                 }
             }

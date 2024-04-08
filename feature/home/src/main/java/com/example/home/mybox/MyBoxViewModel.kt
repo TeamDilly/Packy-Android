@@ -4,6 +4,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.packy.core.analytics.AnalyticsConstant
+import com.packy.core.analytics.AnalyticsEvent
+import com.packy.core.analytics.FirebaseAnalyticsWrapper
+import com.packy.core.analytics.toBundle
 import com.packy.domain.usecase.box.DeleteBoxUseCase
 import com.packy.domain.usecase.home.GetHomeBoxPaginationUseCase
 import com.packy.domain.usecase.home.GetLazyBoxUseCase
@@ -77,6 +82,17 @@ class MyBoxViewModel @Inject constructor(
                 }
         }
         subscribeStateIntent<MyBoxIntent.ChangeShowBoxType> { state, intent ->
+            if (state.showTab == intent.boxType) {
+                return@subscribeStateIntent state
+            }
+            FirebaseAnalyticsWrapper.logEvent(
+                label = AnalyticsConstant.AnalyticsLabel.VIEW,
+                bundle = arrayOf<AnalyticsEvent>(
+                    AnalyticsConstant.PageName.MY_BOX,
+                    if (intent.boxType == MyBoxType.SEND) AnalyticsConstant.ComponentName.SEND
+                    else AnalyticsConstant.ComponentName.RECEIVE
+                ).toBundle()
+            )
             state.copy(showTab = intent.boxType)
         }
     }

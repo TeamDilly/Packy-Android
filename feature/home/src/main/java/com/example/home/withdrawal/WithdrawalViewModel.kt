@@ -1,17 +1,12 @@
 package com.example.home.withdrawal
 
-import androidx.lifecycle.viewModelScope
 import com.packy.domain.usecase.auth.WithdrawUseCase
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.filterLoading
-import com.packy.lib.utils.filterSuccess
-import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

@@ -19,14 +19,28 @@ object AnalyticsConstant {
         BOX_ADD_TITLE("box_add_title"),
         BOX_SHARE("box_share"),
         BOX_OPEN_ERROR("box_open_error"),
-        BOX_DETAIL_OPEN("box_detail_open")
+        BOX_DETAIL_OPEN("box_detail_open"),
+        ONBOARDING("onboarding"),
+        LOGIN("login"),
+        SIGNUP_NICKNAME("signup_nickname"),
+        SIGNUP_PROFILE("signup_profile"),
+        SIGNUP_TERMS_AGREEMENT("signup_terms_agreement"),
+        HOME("home"),
+        MY_BOX("my_box"),
+        ARCHIVE("archive")
     }
 
     enum class ComponentName(
         override val event: String,
         override val key: String = "ComponentName"
     ): AnalyticsEvent{
-        BOX_DETAIL_DONE_BUTTON("box_detail_done_button")
+        BOX_DETAIL_DONE_BUTTON("box_detail_done_button"),
+        PHOTO("photo"),
+        LETTER("letter"),
+        MUSIC("music"),
+        GIFT("gift"),
+        SEND("send"),
+        RECEIVE("receive"),
     }
 
     data class ContentId(

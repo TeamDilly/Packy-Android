@@ -74,9 +74,21 @@ fun PackyNavHost(
     }
 }
 
-object MainRoute {
-    const val LAUNCH_NAV_GRAPH = "launchNavGraph"
-    const val LAUNCH_ROUTE = "launchRoute"
-    const val LAUNCH_ROUTE_OPEN_BOX = "launchRouteOpenBox"
-    fun getLaunchOpenBox(boxId: String) = "$LAUNCH_ROUTE_OPEN_BOX/{$boxId}"
+sealed class MainScreens(
+    val route: String,
+    val navArguments: List<NamedNavArgument> = emptyList()
+) : NavScreens(_route = route, _navArguments = navArguments) {
+    data object LaunchNavGraph : MainScreens("launchNavGraph")
+    data object LaunchRoute : MainScreens("launchRoute")
+    data object LaunchRouteOpenBox : MainScreens(
+        route = "launchRouteOpenBox",
+        navArguments = listOf(
+            navArgument("boxId") {
+                type = NavType.LongType
+            }
+        )
+    ) {
+        fun createRoute(boxId: Long) =
+            name.replaceArguments(navArguments.first(), boxId.toString())
+    }
 }

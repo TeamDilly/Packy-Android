@@ -10,9 +10,7 @@ fun String.appendArguments(navArguments: List<NamedNavArgument>) = buildString {
         .filter { it.argument.defaultValue == null }
         .takeIf { it.isNotEmpty() }
         ?.joinToString(separator = "/", prefix = "/") { "{${it.name}}" }
-        ?.let {
-            println("LOGEE 1 $it")
-            append(it) }
+        ?.let { append(it) }
 
     // 선택 인자를 추가한다.
     navArguments
@@ -20,4 +18,8 @@ fun String.appendArguments(navArguments: List<NamedNavArgument>) = buildString {
         .takeIf { it.isNotEmpty() }
         ?.joinToString(separator = "&", prefix = "?") { "${it.name}={${it.name}}" }
         ?.let { append(it) }
+}
+
+fun String.replaceArguments(navArgument: NamedNavArgument, argument: String): String{
+    return replace("{${navArgument.name}}", argument)
 }

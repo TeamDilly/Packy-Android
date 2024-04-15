@@ -54,6 +54,11 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":feature:main"))
+    implementation(project(":feature:createbox"))
+    implementation(project(":feature:giftBox"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:onboarding"))
+    implementation(project(":feature:core"))
 
     implementation(project(":library:pref"))
     implementation(project(":library:account"))

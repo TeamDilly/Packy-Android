@@ -31,7 +31,7 @@ import com.packy.di.BuildConfig
 import com.packy.feature.core.R
 import com.packy.onboarding.navigation.OnboardingRoute
 import com.packy.root.deeplink.DeepLinkController
-import com.packy.root.navigation.MainRoute
+import com.packy.root.navigation.MainScreens
 import kotlinx.coroutines.delay
 
 
@@ -76,7 +76,7 @@ fun LaunchScreen(
                     UserState.INVALID_STATUS -> {
                         navController.navigate(OnboardingRoute.ONBOARDING_NAV_GRAPH) {
                             popUpTo(
-                                MainRoute.LAUNCH_ROUTE
+                                MainScreens.LaunchRoute.name
                             ) {
                                 inclusive = true
                             }
@@ -88,7 +88,7 @@ fun LaunchScreen(
                         when (deepLinkController) {
                             DeepLinkController.NonDeepLink -> navController.navigate(HOME_ROOT) {
                                 popUpTo(
-                                    MainRoute.LAUNCH_ROUTE
+                                    MainScreens.LaunchRoute.name
                                 ) {
                                     inclusive = true
                                 }
@@ -103,7 +103,7 @@ fun LaunchScreen(
                                     )
                                 ) {
                                     popUpTo(
-                                        MainRoute.LAUNCH_ROUTE
+                                        MainScreens.LaunchRoute.name
                                     ) {
                                         inclusive = true
                                     }

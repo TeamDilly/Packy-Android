@@ -19,7 +19,7 @@ import com.packy.core.values.Strings
 import com.packy.core.values.Strings.CREATE_BOX_CANCEL_BOX
 import com.packy.createbox.navigation.CreateBoxRoute
 import com.packy.feature.main.R
-import com.packy.root.navigation.MainRoute
+import com.packy.root.navigation.MainScreens
 import com.packy.root.navigation.PackyNavHost
 import kotlinx.coroutines.launch
 
@@ -41,11 +41,11 @@ fun RootCompose(
     PackyNavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = MainRoute.LAUNCH_NAV_GRAPH,
+        startDestination = MainScreens.LaunchNavGraph.name,
         logout = {
             scope.launch {
                 viewModel.logout()
-                navController.navigate(MainRoute.LAUNCH_NAV_GRAPH) {
+                navController.navigate(MainScreens.LaunchNavGraph.name) {
                     popUpTo(navController.graph.id) {
                         inclusive = true
                     }

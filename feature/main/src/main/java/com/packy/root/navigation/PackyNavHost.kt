@@ -2,13 +2,18 @@ package com.packy.root.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.giftbox.navigation.giftBoxNavGraph
 import com.example.home.root.HomeRootScreen
 import com.example.home.root.HomeRoute.HOME_ROOT
 import com.example.home.navigation.settingsNavGraph
+import com.packy.core.navigiation.NavScreens
+import com.packy.core.navigiation.replaceArguments
 import com.packy.core.page.navigation.commonNavGraph
 import com.packy.createbox.navigation.createBoxNavGraph
 import com.packy.domain.model.getbox.GiftBox
@@ -68,7 +73,7 @@ fun PackyNavHost(
                 moveToCreateBox = moveToCreateBox,
                 moveToBoxDetail = moveToBoxDetail,
                 moveSettings = moveSettings,
-                moveToBoxOpenMotion=  moveToBoxOpenMotion,
+                moveToBoxOpenMotion = moveToBoxOpenMotion,
             )
         }
     }

@@ -6,8 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.packy.root.LaunchScreen
-import com.packy.root.navigation.MainRoute
-import com.packy.root.navigation.MainRoute.LAUNCH_NAV_GRAPH
+import com.packy.root.navigation.MainScreens
 
 fun NavGraphBuilder.deepLinkNavGraph(
     navController: NavHostController,
@@ -15,12 +14,12 @@ fun NavGraphBuilder.deepLinkNavGraph(
 ) {
 
     navigation(
-        startDestination = MainRoute.LAUNCH_ROUTE,
-        route = LAUNCH_NAV_GRAPH,
+        startDestination = MainScreens.LaunchRoute.name,
+        route = MainScreens.LaunchNavGraph.name,
     ) {
 
         composable(
-            route = MainRoute.LAUNCH_ROUTE,
+            route = MainScreens.LaunchRoute.name,
         ) {
             LaunchScreen(
                 navController = navController,
@@ -29,7 +28,7 @@ fun NavGraphBuilder.deepLinkNavGraph(
         }
 
         composable(
-            route = MainRoute.LAUNCH_ROUTE_OPEN_BOX + "/{boxId}",
+            route = MainScreens.LaunchRouteOpenBox.name,
             deepLinks = listOf(
                 navDeepLink {
                     uriPattern = DeepLinkRoute.GIFT_BOX_OPEN_LINK

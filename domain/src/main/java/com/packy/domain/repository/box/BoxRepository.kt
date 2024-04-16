@@ -15,7 +15,7 @@ interface BoxRepository {
     suspend fun deleteBox(giftBoxId: String): Flow<Resource<Unit>>
 
     suspend fun updateBoxDeliverStatus(
-        giftBoxId: String,
+        giftBoxId: Long,
         status: BoxDeliverStatus
     ): Flow<Resource<Unit>>
 }

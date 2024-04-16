@@ -38,7 +38,7 @@ class BoxShareViewModel @Inject constructor(
         boxTitle = null,
         receiverName = null,
         shared = false,
-        createdBoxId = null,
+        createdBoxId = -1L,
     )
 
     override fun handleIntent() {
@@ -58,7 +58,7 @@ class BoxShareViewModel @Inject constructor(
 
     private suspend fun lazyShar() {
         updateBoxDeliverStatusUseCase.updateBoxDeliverStatus(
-            currentState.createdBoxId ?: "",
+            currentState.createdBoxId,
             BoxDeliverStatus.WAITING,
         ).loadingHandler { setState { state -> state.copy(isLoading = it) } }
             .filterSuccess()
@@ -69,19 +69,19 @@ class BoxShareViewModel @Inject constructor(
     }
 
     init {
-        savedStateHandle.get<String>(CreateBoxArgs.CREATED_BOX_ID)?.let { createBoxId ->
-            viewModelScope.launch {
-                setState {
-                    it.copy(
-                        createdBoxId = createBoxId
-                    )
-                }
+        val createBoxId = savedStateHandle.get<Long>(CreateBoxArgs.CREATED_BOX_ID)
+            ?: throw IllegalArgumentException("createBoxId is null")
+        viewModelScope.launch {
+            setState {
+                it.copy(
+                    createdBoxId = createBoxId
+                )
             }
         }
     }
 
     private suspend fun sharedBox() {
-        val giftBoxId = currentState.createdBoxId?.toLongOrNull() ?: return
+        val giftBoxId = currentState.createdBoxId
         getKakaoMessageImageUseCase.getKakaoMessageImage(giftBoxId)
             .loadingHandler { setState { state -> state.copy(isLoading = it) } }
             .filterSuccess()
@@ -92,7 +92,7 @@ class BoxShareViewModel @Inject constructor(
                     sender = createBoxUseCase.getCreatedBox().senderName ?: "",
                     receiver = createBoxUseCase.getCreatedBox().receiverName ?: "",
                     imageUrl = kakaoMessageImage,
-                    boxId = currentState.createdBoxId ?: ""
+                    boxId = currentState.createdBoxId
                 )
                 sendEffect(BoxShareEffect.KakaoShare(kakaoCustomFeed))
             }
@@ -115,7 +115,7 @@ class BoxShareViewModel @Inject constructor(
             is Resource.Success -> {
                 viewModelScope.launch {
                     updateBoxDeliverStatusUseCase.updateBoxDeliverStatus(
-                        currentState.createdBoxId ?: "",
+                        currentState.createdBoxId,
                         BoxDeliverStatus.DELIVERED
                     ).loadingHandler { setState { state -> state.copy(isLoading = it) } }
                         .filterSuccess()

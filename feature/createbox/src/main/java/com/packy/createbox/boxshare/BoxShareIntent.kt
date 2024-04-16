@@ -21,7 +21,7 @@ data class BoxShareState(
     val boxTitle: String?,
     val receiverName: String?,
     val shared: Boolean?,
-    val createdBoxId: String? = null,
+    val createdBoxId: Long,
     val isLoading: Boolean = false,
 ) : UiState
 

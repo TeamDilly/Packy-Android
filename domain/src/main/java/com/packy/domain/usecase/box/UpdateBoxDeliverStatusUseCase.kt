@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface UpdateBoxDeliverStatusUseCase {
     suspend fun updateBoxDeliverStatus(
-        giftBoxId: String,
+        giftBoxId: Long,
         status: BoxDeliverStatus
     ): Flow<Resource<Unit>>
 }

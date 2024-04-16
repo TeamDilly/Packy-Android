@@ -56,7 +56,7 @@ class BoxRepositoryImp @Inject constructor(
         emit(deleteBox.map { })
     }
 
-    override suspend fun updateBoxDeliverStatus(giftBoxId: String, status: BoxDeliverStatus): Flow<Resource<Unit>> = flow {
+    override suspend fun updateBoxDeliverStatus(giftBoxId: Long, status: BoxDeliverStatus): Flow<Resource<Unit>> = flow {
         emit(Resource.Loading())
         val deleteBox = api.updateBoxDeliverStatus(giftBoxId, status)
         emit(deleteBox.map { })

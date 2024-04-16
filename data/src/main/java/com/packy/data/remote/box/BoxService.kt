@@ -49,7 +49,7 @@ class BoxService @Inject constructor(
     }
 
     suspend fun updateBoxDeliverStatus(
-        giftBoxId: String,
+        giftBoxId: Long,
         boxDeliverStatus: BoxDeliverStatus
     ): Resource<String> = safeRequest {
         httpClient.patch("/api/v1/giftboxes/${giftBoxId}"){

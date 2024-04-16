@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreatedBox(
-    @SerialName("id") val id: String,
+    @SerialName("id") val id: Long,
 )

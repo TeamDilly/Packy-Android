@@ -17,7 +17,8 @@ import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.CREATE_BOX_CANCEL_BOX
-import com.packy.createbox.navigation.CreateBoxRoute
+import com.packy.createbox.navigation.CreateBoxScreens
+
 import com.packy.feature.main.R
 import com.packy.root.navigation.MainScreens
 import com.packy.root.navigation.PackyNavHost
@@ -68,7 +69,7 @@ fun RootCompose(
             )
         },
         moveToCreateBox = {
-            navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH)
+            navController.navigate(CreateBoxScreens.CreateBoxNavGraph.name)
         },
         kakaoLinkScheme = kakaoLinkScheme,
         moveSettings = {
@@ -76,8 +77,8 @@ fun RootCompose(
         },
         moveToShared = { giftBoxId ->
             navController.navigate(
-                CreateBoxRoute.getBoxShareRoute(
-                    giftBoxId.toString(),
+                CreateBoxScreens.BoxShare.create(
+                    createdBoxId = giftBoxId
                 )
             )
         },

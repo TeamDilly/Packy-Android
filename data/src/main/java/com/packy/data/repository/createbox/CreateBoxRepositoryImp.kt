@@ -97,7 +97,7 @@ class CreateBoxRepositoryImp @Inject constructor(
             val createBoxDto = boxService.createBox(createBoxRequest)
             return@withContext createBoxDto.map {
                 CreatedBox(
-                    id = it.id.toString(),
+                    id = it.id,
                 )
             }
         }

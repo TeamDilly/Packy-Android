@@ -21,7 +21,7 @@ sealed interface BoxAddTitleEffect : SideEffect {
     data object MoveToBack : BoxAddTitleEffect
     data class MoveToShared(
         val motionBoxId: Long,
-        val createBoxId: String,
+        val createBoxId: Long,
         val showMotion: Boolean,
     ) : BoxAddTitleEffect
     data class FailCreateBox(

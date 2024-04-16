@@ -11,7 +11,7 @@ class UpdateBoxDeliverStatusUseCaseImp @Inject constructor(
     private val repository: BoxRepository
 ) : UpdateBoxDeliverStatusUseCase {
     override suspend fun updateBoxDeliverStatus(
-        giftBoxId: String,
+        giftBoxId: Long,
         status: BoxDeliverStatus
     ): Flow<Resource<Unit>> = repository.updateBoxDeliverStatus(giftBoxId, status)
 }

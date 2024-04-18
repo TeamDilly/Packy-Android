@@ -1,6 +1,8 @@
 package com.packy.createbox.createboax.addsticker
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
@@ -39,6 +42,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.common.conditionalBorder
 import com.packy.core.designsystem.iconbutton.PackyCloseIconButton
 import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.theme.PackyTheme
@@ -106,7 +110,6 @@ fun CreateBoxStickerScreen(
                     onClick = viewModel::emitIntentThrottle,
                     isStickerSelected = viewModel.isStickerSelected(sticker) != null,
                     sticker = sticker,
-                    stickerIndex = viewModel.isStickerSelected(sticker) ?: 0
                 )
             }
         }
@@ -116,7 +119,6 @@ fun CreateBoxStickerScreen(
                     onClick = viewModel::emitIntentThrottle,
                     isStickerSelected = viewModel.isStickerSelected(sticker) != null,
                     sticker = sticker,
-                    stickerIndex = viewModel.isStickerSelected(sticker) ?: 0
                 )
             }
         }
@@ -126,7 +128,6 @@ fun CreateBoxStickerScreen(
                     onClick = viewModel::emitIntentThrottle,
                     isStickerSelected = viewModel.isStickerSelected(sticker) != null,
                     sticker = sticker,
-                    stickerIndex = viewModel.isStickerSelected(sticker) ?: 0
                 )
             }
         }
@@ -139,7 +140,9 @@ fun CreateBoxStickerScreen(
 @Composable
 private fun StickerTitle(closeBottomSheet: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .padding(vertical = 12.dp)
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -149,7 +152,7 @@ private fun StickerTitle(closeBottomSheet: () -> Unit) {
             color = PackyTheme.color.gray900
         )
         Spacer(1f)
-        PackyCloseIconButton(style = closeIconButtonStyle.medium.white) {
+        PackyCloseIconButton(style = closeIconButtonStyle.large.white) {
             closeBottomSheet()
         }
     }
@@ -161,7 +164,6 @@ private fun StickerForm(
     modifier: Modifier = Modifier,
     isStickerSelected: Boolean,
     sticker: Sticker,
-    stickerIndex: Int,
     onClick: emitMviIntent<CreateBoxStickerIntent>,
 ) {
     Box(
@@ -170,50 +172,38 @@ private fun StickerForm(
                 color = PackyTheme.color.gray100,
                 shape = RoundedCornerShape(12.dp)
             )
-            .clickableWithoutRipple {
-                onClick(
-                    CreateBoxStickerIntent.OnStickerClick(
-                        sticker = sticker
-                    )
-                )
-            }
+            .conditionalBorder(
+                condition = isStickerSelected,
+                shape = RoundedCornerShape(12.dp),
+                width = 3.dp
+            )
             .fillMaxSize()
             .aspectRatio(1f),
         contentAlignment = Alignment.Center
     ) {
-
         GlideImage(
             modifier = Modifier
+                .background(
+                    color = PackyTheme.color.gray100,
+                    shape = RoundedCornerShape(12.dp)
+                )
                 .fillMaxSize()
+                .clickableWithoutRipple {
+                    onClick(
+                        CreateBoxStickerIntent.OnStickerClick(
+                            sticker = sticker
+                        )
+                    )
+                }
                 .padding(13.dp),
             model = sticker.imgUrl,
             contentDescription = "sticker image",
             contentScale = ContentScale.Crop
         )
-        if (isStickerSelected) {
-            Box(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(24.dp)
-                    .background(
-                        color = PackyTheme.color.gray900,
-                        shape = CircleShape
-                    )
-                    .align(Alignment.TopEnd),
-            ) {
-                Text(
-                    modifier = Modifier
-                        .align(Alignment.Center),
-                    text = stickerIndex.toString(),
-                    color = PackyTheme.color.white,
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
 fun StickerTitlePreview() {
     PackyTheme {
@@ -231,7 +221,6 @@ fun StickerFormPreview() {
             onClick = {},
             isStickerSelected = true,
             sticker = Sticker(id = 1, imgUrl = ""),
-            stickerIndex = 1
         )
     }
 }
@@ -244,7 +233,6 @@ fun StickerFormNonSelectedPreview() {
             onClick = {},
             isStickerSelected = false,
             sticker = Sticker(id = 1, imgUrl = ""),
-            stickerIndex = 1
         )
     }
 }

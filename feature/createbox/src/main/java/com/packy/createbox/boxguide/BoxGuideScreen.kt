@@ -193,7 +193,11 @@ fun BoxGuideScreen(
                                 }
                             },
                             onClick = {
-                                viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_PHOTO))
+                                viewModel.emitIntentThrottle(
+                                    BoxGuideIntent.ShowBottomSheet(
+                                        BoxGuideBottomSheetRoute.ADD_PHOTO
+                                    )
+                                )
                             }
                         )
                         Spacer(28.dp)
@@ -203,7 +207,13 @@ fun BoxGuideScreen(
                                 .weight(28f),
                             inclination = 10f,
                             stickerUri = uiState.selectedSticker.sticker1?.imgUrl,
-                            onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_1)) }
+                            onClick = {
+                                viewModel.emitIntentThrottle(
+                                    BoxGuideIntent.ShowBottomSheet(
+                                        BoxGuideBottomSheetRoute.ADD_STICKER_1
+                                    )
+                                )
+                            }
                         )
                     }
                     Spacer(height = 20.dp)
@@ -218,7 +228,13 @@ fun BoxGuideScreen(
                                 .weight(30f),
                             inclination = -10f,
                             stickerUri = uiState.selectedSticker.sticker2?.imgUrl,
-                            onClick = { viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_STICKER_2)) }
+                            onClick = {
+                                viewModel.emitIntentThrottle(
+                                    BoxGuideIntent.ShowBottomSheet(
+                                        BoxGuideBottomSheetRoute.ADD_STICKER_2
+                                    )
+                                )
+                            }
                         )
                         Spacer(22.dp)
                         BoxGuideContent(
@@ -242,7 +258,11 @@ fun BoxGuideScreen(
                                 }
                             },
                             onClick = {
-                                viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_LATTER))
+                                viewModel.emitIntentThrottle(
+                                    BoxGuideIntent.ShowBottomSheet(
+                                        BoxGuideBottomSheetRoute.ADD_LATTER
+                                    )
+                                )
                             }
                         )
                     }
@@ -282,7 +302,11 @@ fun BoxGuideScreen(
                             }
                         },
                         onClick = {
-                            viewModel.emitIntentThrottle(BoxGuideIntent.ShowBottomSheet(BoxGuideBottomSheetRoute.ADD_MUSIC))
+                            viewModel.emitIntentThrottle(
+                                BoxGuideIntent.ShowBottomSheet(
+                                    BoxGuideBottomSheetRoute.ADD_MUSIC
+                                )
+                            )
                         }
                     )
                     Spacer(1f)
@@ -567,7 +591,7 @@ private fun BottomSheetNav(
         BoxGuideBottomSheetRoute.ADD_STICKER_1 -> CreateBoxStickerScreen(
             stickerIndex = 1,
             selectedSticker = uiState.selectedSticker,
-            closeBottomSheet = closeBottomSheetDialog,
+            closeBottomSheet = { closeBottomSheetDialog(false) },
             onSaveSticker = { selectedSticker ->
                 onSaveSticker(selectedSticker)
             },
@@ -576,7 +600,7 @@ private fun BottomSheetNav(
         BoxGuideBottomSheetRoute.ADD_STICKER_2 -> CreateBoxStickerScreen(
             stickerIndex = 2,
             selectedSticker = uiState.selectedSticker,
-            closeBottomSheet = closeBottomSheetDialog,
+            closeBottomSheet = { closeBottomSheetDialog(false) },
             onSaveSticker = { selectedSticker ->
                 onSaveSticker(selectedSticker)
             },

@@ -30,6 +30,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
@@ -38,6 +39,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.designsystem.iconbutton.PackyCloseIconButton
+import com.packy.core.designsystem.iconbutton.closeIconButtonStyle
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.domain.model.createbox.SelectedSticker
@@ -49,7 +52,7 @@ import kotlinx.coroutines.flow.map
 fun CreateBoxStickerScreen(
     stickerIndex: Int,
     selectedSticker: SelectedSticker,
-    closeBottomSheet: (Boolean) -> Unit,
+    closeBottomSheet: () -> Unit,
     onSaveSticker: (SelectedSticker) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateBoxStickerViewModel = hiltViewModel()
@@ -95,41 +98,7 @@ fun CreateBoxStickerScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item(span = { GridItemSpan(3) }) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 24.dp,
-                    ),
-                horizontalAlignment = Alignment.Start
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = Strings.CREATE_BOX_STICKER_TITLE,
-                        style = PackyTheme.typography.heading01,
-                        color = PackyTheme.color.gray900
-                    )
-                    Spacer(1f)
-                    Text(
-                        modifier = Modifier.clickableWithoutRipple {
-                            viewModel.emitIntent(CreateBoxStickerIntent.OnSaveClick)
-                        },
-                        text = Strings.CONFIRM,
-                        style = PackyTheme.typography.body02,
-                        color = PackyTheme.color.gray900
-                    )
-                }
-                Spacer(height = 4.dp)
-                Text(
-                    text = Strings.CREATE_BOX_STICKER_DESCRIPTION,
-                    style = PackyTheme.typography.body04,
-                    color = PackyTheme.color.gray600
-                )
-            }
+            StickerTitle(closeBottomSheet)
         }
         uiState.selectedSticker?.sticker1?.let { sticker ->
             item {
@@ -168,15 +137,35 @@ fun CreateBoxStickerScreen(
 }
 
 @Composable
+private fun StickerTitle(closeBottomSheet: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = Strings.CREATE_BOX_STICKER_TITLE,
+            style = PackyTheme.typography.heading01,
+            color = PackyTheme.color.gray900
+        )
+        Spacer(1f)
+        PackyCloseIconButton(style = closeIconButtonStyle.medium.white) {
+            closeBottomSheet()
+        }
+    }
+}
+
+@Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun StickerForm(
-    onClick: emitMviIntent<CreateBoxStickerIntent>,
+    modifier: Modifier = Modifier,
     isStickerSelected: Boolean,
     sticker: Sticker,
-    stickerIndex: Int
+    stickerIndex: Int,
+    onClick: emitMviIntent<CreateBoxStickerIntent>,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(
                 color = PackyTheme.color.gray100,
                 shape = RoundedCornerShape(12.dp)
@@ -194,7 +183,9 @@ private fun StickerForm(
     ) {
 
         GlideImage(
-            modifier = Modifier.fillMaxSize().padding(13.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(13.dp),
             model = sticker.imgUrl,
             contentDescription = "sticker image",
             contentScale = ContentScale.Crop
@@ -219,5 +210,41 @@ private fun StickerForm(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun StickerTitlePreview() {
+    PackyTheme {
+        StickerTitle(
+            closeBottomSheet = {}
+        )
+    }
+}
+
+@Preview(widthDp = 106, heightDp = 106)
+@Composable
+fun StickerFormPreview() {
+    PackyTheme {
+        StickerForm(
+            onClick = {},
+            isStickerSelected = true,
+            sticker = Sticker(id = 1, imgUrl = ""),
+            stickerIndex = 1
+        )
+    }
+}
+
+@Preview(widthDp = 106, heightDp = 106)
+@Composable
+fun StickerFormNonSelectedPreview() {
+    PackyTheme {
+        StickerForm(
+            onClick = {},
+            isStickerSelected = false,
+            sticker = Sticker(id = 1, imgUrl = ""),
+            stickerIndex = 1
+        )
     }
 }

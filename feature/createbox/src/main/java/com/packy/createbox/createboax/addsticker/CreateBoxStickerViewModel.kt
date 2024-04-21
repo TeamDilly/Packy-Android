@@ -28,26 +28,18 @@ class CreateBoxStickerViewModel @Inject constructor(
         subscribeStateIntent<CreateBoxStickerIntent.OnStickerClick> { state, intent ->
             val selectedSticker = state.selectedSticker
             val newSticker = intent.sticker
-            val newSelectedSticker = if (selectedSticker?.isSelected(newSticker) == true) {
-                val selectedLocation = selectedSticker.isSelectedNumber(newSticker)
-                state.selectedSticker.set(
-                    selectedLocation ?: currentState.currentIndex,
-                    null
-                )
-                if (selectedLocation != currentState.currentIndex) {
+            val newSelectedSticker =
+                if (selectedSticker?.isSelected(currentState.currentIndex, newSticker) == true) {
                     state.selectedSticker.set(
+                        state.currentIndex,
+                        null
+                    )
+                } else {
+                    state.selectedSticker?.set(
                         state.currentIndex,
                         newSticker
                     )
-                } else {
-                    state.selectedSticker
                 }
-            } else {
-                state.selectedSticker?.set(
-                    state.currentIndex,
-                    newSticker
-                )
-            }
             sendEffect(
                 CreateBoxStickerEffect.OnChangeSticker(
                     selectedSticker = currentState.selectedSticker
@@ -92,7 +84,7 @@ class CreateBoxStickerViewModel @Inject constructor(
         }
     }
 
-    fun isStickerSelected(sticker: Sticker?): Int? {
-        return currentState.selectedSticker?.isSelectedNumber(sticker)
+    fun isStickerSelected(sticker: Sticker?): Boolean {
+        return currentState.selectedSticker?.isSelectedNumber(sticker) == currentState.currentIndex
     }
 }

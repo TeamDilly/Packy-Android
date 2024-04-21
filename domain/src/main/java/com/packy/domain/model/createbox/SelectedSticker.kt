@@ -32,6 +32,11 @@ data class SelectedSticker(
         }
     }
 
-    fun isSelected(sticker: Sticker?): Boolean = sticker1 == sticker || sticker2 == sticker
+    fun isSelected(index: Int, sticker: Sticker?): Boolean =
+        when(index){
+            1 -> sticker1 == sticker
+            2 -> sticker2 == sticker
+            else -> false
+        }
 }
 

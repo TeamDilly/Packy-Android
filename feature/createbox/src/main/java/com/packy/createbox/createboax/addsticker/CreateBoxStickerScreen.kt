@@ -108,7 +108,7 @@ fun CreateBoxStickerScreen(
             stickerPagingItems[index]?.let { sticker ->
                 StickerForm(
                     onClick = viewModel::emitIntentThrottle,
-                    isStickerSelected = viewModel.isStickerSelected(sticker) != null,
+                    isStickerSelected = viewModel.isStickerSelected(sticker),
                     sticker = sticker,
                 )
             }

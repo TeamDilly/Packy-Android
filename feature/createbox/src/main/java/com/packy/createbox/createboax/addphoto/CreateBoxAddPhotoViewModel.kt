@@ -56,7 +56,7 @@ class CreateBoxAddPhotoViewModel @Inject constructor(
             val photoUri = createBox.photo?.photoUrl?.let { Uri.parse(it) }
             val newPhotoItem = PhotoItem(
                 imageUri = photoUri,
-                contentDescription = createBox.photo?.description
+                contentDescription = createBox.photo?.description ?: ""
             )
             setState {
                 it.copy(
@@ -70,7 +70,7 @@ class CreateBoxAddPhotoViewModel @Inject constructor(
     companion object {
         val emptyImageItem = PhotoItem(
             null,
-            null
+            ""
         )
     }
 }

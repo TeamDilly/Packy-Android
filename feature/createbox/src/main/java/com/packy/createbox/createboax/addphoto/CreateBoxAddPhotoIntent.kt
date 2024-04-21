@@ -21,7 +21,7 @@ sealed interface CreateBoxAddPhotoIntent : MviIntent {
 
 data class PhotoItem(
     val imageUri: Uri?,
-    val contentDescription: String?
+    val contentDescription: String = ""
 )
 
 data class CreateBoxAddPhotoState(
@@ -29,7 +29,7 @@ data class CreateBoxAddPhotoState(
     val previousPhotoItem: PhotoItem,
 ) : UiState {
     val changed: Boolean get() = photoItem != previousPhotoItem
-    val isSavable: Boolean = photoItem.imageUri != null && photoItem.contentDescription != null
+    val isSavable: Boolean = photoItem.imageUri != null
 }
 
 sealed interface CreateBoxAddPhotoEffect : SideEffect {

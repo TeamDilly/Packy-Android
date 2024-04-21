@@ -77,11 +77,9 @@ class CreateBoxStickerViewModel @Inject constructor(
         )
     }
 
-    fun getSticker(
-        selectedSticker: SelectedSticker,
-    ) {
+    fun getSticker() {
         viewModelScope.launch(Dispatchers.IO) {
-            getStickerUseCase.getSticker(selectedSticker)
+            getStickerUseCase.getSticker()
                 .distinctUntilChanged()
                 .cachedIn(viewModelScope)
                 .collect {

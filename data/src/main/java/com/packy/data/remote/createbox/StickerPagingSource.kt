@@ -10,7 +10,6 @@ import javax.inject.Inject
 
 class StickerPagingSource(
     private val api: StickerService,
-    private val selectedSticker: SelectedSticker
 ) : PagingSource<Int, Sticker>() {
     override fun getRefreshKey(state: PagingState<Int, Sticker>): Int? {
         return state.anchorPosition
@@ -20,9 +19,7 @@ class StickerPagingSource(
         val lastId = params.key
         val stickersDto = api.getSticker(lastId)
         val result = if (stickersDto is Resource.Success) {
-            val stickers = stickersDto.data.content.map { it.toEntity() }.filter {
-                selectedSticker.notContains(it.id)
-            }
+            val stickers = stickersDto.data.content.map { it.toEntity() }
             LoadResult.Page(
                 data = stickers,
                 prevKey = params.key,

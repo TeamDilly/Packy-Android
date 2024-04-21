@@ -72,7 +72,7 @@ fun CreateBoxStickerScreen(
             stickerIndex,
             selectedSticker
         )
-        viewModel.getSticker(selectedSticker)
+        viewModel.getSticker()
     }
 
     LaunchedEffect(Unit) {
@@ -103,24 +103,6 @@ fun CreateBoxStickerScreen(
     ) {
         item(span = { GridItemSpan(3) }) {
             StickerTitle(closeBottomSheet)
-        }
-        uiState.selectedSticker?.sticker1?.let { sticker ->
-            item {
-                StickerForm(
-                    onClick = viewModel::emitIntentThrottle,
-                    isStickerSelected = viewModel.isStickerSelected(sticker) != null,
-                    sticker = sticker,
-                )
-            }
-        }
-        uiState.selectedSticker?.sticker2?.let { sticker ->
-            item {
-                StickerForm(
-                    onClick = viewModel::emitIntentThrottle,
-                    isStickerSelected = viewModel.isStickerSelected(sticker) != null,
-                    sticker = sticker,
-                )
-            }
         }
         items(stickerPagingItems.itemCount) { index ->
             stickerPagingItems[index]?.let { sticker ->

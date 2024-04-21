@@ -13,6 +13,6 @@ import javax.inject.Inject
 class GetStickerUseCaseImp @Inject constructor(
     private val repository: StickerRepository
 ) : GetStickerUseCase {
-    override suspend fun getSticker(selectedSticker: SelectedSticker): Flow<PagingData<Sticker>> =
-        repository.getSticker(selectedSticker)
+    override suspend fun getSticker(): Flow<PagingData<Sticker>> =
+        repository.getSticker()
 }

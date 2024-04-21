@@ -21,11 +21,11 @@ import javax.inject.Inject
 class StickerRepositoryImp @Inject constructor(
     private val stickerService: StickerService
 ) : StickerRepository {
-    override suspend fun getSticker(selectedSticker: SelectedSticker): Flow<PagingData<Sticker>> {
+    override suspend fun getSticker(): Flow<PagingData<Sticker>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {
-                StickerPagingSource(stickerService, selectedSticker)
+                StickerPagingSource(stickerService)
             }
         ).flow
     }

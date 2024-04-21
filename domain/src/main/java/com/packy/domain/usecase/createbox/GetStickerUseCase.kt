@@ -8,5 +8,5 @@ import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface GetStickerUseCase {
-    suspend fun getSticker(selectedSticker: SelectedSticker): Flow<PagingData<Sticker>>
+    suspend fun getSticker(): Flow<PagingData<Sticker>>
 }

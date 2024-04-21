@@ -1,9 +1,6 @@
 package com.example.giftbox.boxdetailopen
 
-import com.example.giftbox.navigation.GiftBoxRoute
 import com.packy.core.widget.youtube.YoutubeState
-import com.packy.domain.model.getbox.Envelope
-import com.packy.domain.model.getbox.Gift
 import com.packy.domain.model.getbox.GiftBox
 import com.packy.mvi.mvi.MviIntent
 import com.packy.mvi.mvi.SideEffect

@@ -37,13 +37,13 @@ class BoxService @Inject constructor(
     }
 
     suspend fun getGifBox(
-        giftBoxId: String
+        giftBoxId: Long
     ): Resource<GiftBoxDto> = safeRequest {
         httpClient.get("/api/v1/giftboxes/${giftBoxId}")
     }
 
     suspend fun deleteBox(
-        giftBoxId: String
+        giftBoxId: Long
     ): Resource<String> = safeRequest {
         httpClient.delete("/api/v1/giftboxes/${giftBoxId}")
     }

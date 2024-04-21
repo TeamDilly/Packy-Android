@@ -9,20 +9,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.giftbox.navigation.GiftBoxScreens
 import com.packy.core.common.BoxOpenLottie
 import com.packy.domain.model.getbox.GiftBox
-import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun GiftBoxMotionScreen(
     modifier: Modifier = Modifier,
@@ -41,9 +37,9 @@ fun GiftBoxMotionScreen(
     LaunchedEffect(progress) {
         if (progress == 1f) {
             navController.navigate(
-                GiftBoxRoute.getGiftBoxDetailOpenFadeRoute(
-                    giftBox,
-                    false
+                GiftBoxScreens.GiftBoxDetailOpenFade.create(
+                    giftBox = giftBox,
+                    shouldShowShared = false
                 )
             ) {
                 val currentRoute = navController.currentBackStackEntry?.destination?.route

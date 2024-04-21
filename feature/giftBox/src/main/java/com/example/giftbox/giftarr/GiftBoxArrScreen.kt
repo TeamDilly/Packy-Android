@@ -39,9 +39,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.giftbox.navigation.GiftBoxScreens
 import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
@@ -53,8 +51,6 @@ import com.packy.core.values.Strings
 import com.packy.core.values.Strings.GIFT_BOX_ARR_TITLE
 import com.packy.core.widget.animation.BoxShakeAnimation
 import com.packy.feature.core.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun GiftBoxArrScreen(
@@ -81,9 +77,9 @@ fun GiftBoxArrScreen(
         if (progress == 1f) {
             val giftBox = uiState.giftBox
             if (giftBox != null) {
-                navController.navigate(GiftBoxRoute.getGiftBoxDetailOpenFadeRoute(giftBox, false))
+                navController.navigate(GiftBoxScreens.GiftBoxDetailOpenFade.create(giftBox, false))
             } else {
-                // TODO ERROR 페이지
+                navController.navigate(GiftBoxScreens.GiftBoxError.name)
             }
         }
     }
@@ -194,7 +190,7 @@ fun GiftBoxArrScreen(
                             text = Strings.OPEN,
                             style = buttonStyle.large.black,
                             onClick = {
-                                if(!lottiePlaying) {
+                                if (!lottiePlaying) {
                                     viewModel.emitIntentThrottle(GiftBoxArrIntent.OnOpenClick)
                                 }
                             }
@@ -208,7 +204,7 @@ fun GiftBoxArrScreen(
                     .fillMaxSize()
                     .align(Alignment.Center)
                     .clickableWithoutRipple {
-                        if(!lottiePlaying) {
+                        if (!lottiePlaying) {
                             viewModel.emitIntentThrottle(GiftBoxArrIntent.OnOpenClick)
                         }
                     },

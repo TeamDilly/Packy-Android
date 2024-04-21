@@ -21,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.giftbox.navigation.GiftBoxScreens
 import com.example.home.root.HomeRoute.HOME_ROOT
 import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo
@@ -96,8 +96,8 @@ fun LaunchScreen(
 
                             is DeepLinkController.OpenBox -> {
                                 navController.navigate(
-                                    GiftBoxRoute.getGiftBoxRootRoute(
-                                        deepLinkController.boxId.toLong(),
+                                    GiftBoxScreens.GiftBoxRoot.create(
+                                        giftBoxId = deepLinkController.boxId.toLong(),
                                         skipArr = false,
                                         shouldShowShared = false
                                     )

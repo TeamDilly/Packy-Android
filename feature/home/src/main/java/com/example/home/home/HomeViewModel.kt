@@ -79,7 +79,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun routeGiftBoxMotion(it: HomeIntent.OnBoxDetailClick) {
-        getGiftBoxUseCase.getBox(it.giftBoxId.toString())
+        getGiftBoxUseCase.getBox(it.giftBoxId)
             .loadingHandler { setState { state -> state.copy(isLoading = it) } }
             .filterSuccess()
             .unwrapResource()
@@ -94,7 +94,7 @@ class HomeViewModel @Inject constructor(
 
     private fun deleteBox(giftBoxId: Long) =
         viewModelScope.launch(Dispatchers.IO) {
-            deleteBoxUseCase.deleteBox(giftBoxId.toString())
+            deleteBoxUseCase.deleteBox(giftBoxId)
                 .loadingHandler { setState { state -> state.copy(isLoading = it) } }
                 .errorMessageHandler { message ->
                     sendEffect(HomeEffect.ThrowError(message))

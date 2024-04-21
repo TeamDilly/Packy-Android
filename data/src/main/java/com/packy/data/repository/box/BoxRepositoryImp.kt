@@ -20,7 +20,7 @@ class BoxRepositoryImp @Inject constructor(
     private val api: BoxService,
     private val prefManager: AccountPrefManager,
 ) : BoxRepository {
-    override suspend fun getBox(giftBoxId: String): Flow<Resource<GiftBox>> = flow {
+    override suspend fun getBox(giftBoxId: Long): Flow<Resource<GiftBox>> = flow {
         emit(Resource.Loading())
         val giftBoxDto = api.getGifBox(giftBoxId)
         emit(giftBoxDto.map { it.toEntity(giftBoxId.toLong()) })
@@ -50,7 +50,7 @@ class BoxRepositoryImp @Inject constructor(
         })
     }
 
-    override suspend fun deleteBox(giftBoxId: String): Flow<Resource<Unit>> = flow {
+    override suspend fun deleteBox(giftBoxId: Long): Flow<Resource<Unit>> = flow {
         emit(Resource.Loading())
         val deleteBox = api.deleteBox(giftBoxId)
         emit(deleteBox.map { })

@@ -2,8 +2,8 @@ package com.example.giftbox.boxdetailopen
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.giftbox.giftarr.GiftBoxArrState
-import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.giftbox.navigation.GiftBoxArgs
+import com.example.giftbox.navigation.GiftBoxScreens
 import com.packy.core.analytics.AnalyticsConstant
 import com.packy.core.analytics.AnalyticsEvent
 import com.packy.core.analytics.FirebaseAnalyticsWrapper
@@ -32,7 +32,7 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val giftBox = GiftBoxRoute.getGiftBoxArg(savedStateHandle)
+            val giftBox = GiftBoxArgs.getGiftBoxArg(savedStateHandle)
             FirebaseAnalyticsWrapper.logEvent(
                 label = AnalyticsConstant.AnalyticsLabel.VIEW,
                 bundle = arrayOf<AnalyticsEvent>(
@@ -49,7 +49,7 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
                     giftBox
                 )
             }
-            savedStateHandle.get<Boolean>(GiftBoxRoute.GIFT_BOX_SHOULD_SHOW_SHARED)
+            savedStateHandle.get<Boolean>(GiftBoxArgs.GIFT_BOX_SHOULD_SHOW_SHARED_ARG)
                 ?.let { shouldShow ->
 
                     setState {

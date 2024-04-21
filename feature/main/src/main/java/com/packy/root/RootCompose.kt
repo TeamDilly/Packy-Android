@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.giftbox.navigation.GiftBoxScreens
 import com.example.home.root.HomeRoute.HOME_ROOT
 import com.example.home.navigation.SettingsRoute
 import com.packy.core.designsystem.dialog.PackyDialog
@@ -62,7 +62,7 @@ fun RootCompose(
         },
         moveToBoxDetail = { boxId, shouldShowShared ->
             navController.navigate(
-                GiftBoxRoute.getGiftBoxRootRoute(
+                GiftBoxScreens.GiftBoxRoot.create(
                     giftBoxId = boxId,
                     shouldShowShared = shouldShowShared
                 )
@@ -104,7 +104,7 @@ fun RootCompose(
             globalPopUp = closePackyDialog
         },
         moveToBoxOpenMotion = {
-            navController.navigate(GiftBoxRoute.getGiftBoxMotionRoute(it))
+            navController.navigate(GiftBoxScreens.GiftBoxMotion.create(it))
         }
     )
 }

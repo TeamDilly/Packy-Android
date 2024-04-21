@@ -2,6 +2,7 @@ package com.packy.createbox.boxguide
 
 import android.net.Uri
 import com.packy.core.widget.youtube.YoutubeState
+import com.packy.createbox.createboax.addpackymusic.PackyMusic
 import com.packy.domain.model.box.BoxDesign
 import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.domain.model.createbox.Sticker
@@ -70,7 +71,8 @@ data class BoxGuideState(
     val selectedSticker: SelectedSticker,
     val gift: Uri?,
     val boxDesign: BoxDesign?,
-    val showTutorial: Boolean = false
+    val showTutorial: Boolean = false,
+    val suggestionMusic: List<PackyMusic> = emptyList()
 ) : UiState {
     fun isBoxComplete() =
         this.photo != null && this.letter != null && this.youtubeUrl != null && this.selectedSticker.isStickerComplete()

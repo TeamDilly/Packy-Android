@@ -60,6 +60,7 @@ import com.packy.core.widget.giftbox.StickerForm
 import com.packy.createbox.createboax.addgift.CreateBoxAddGiftScreen
 import com.packy.feature.core.R
 import com.packy.createbox.createboax.addlatter.CreateBoxLetterScreen
+import com.packy.createbox.createboax.addpackymusic.PackyMusic
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.addsticker.CreateBoxStickerScreen
 import com.packy.createbox.createboax.boxchange.CreateBoxChangeScreen
@@ -99,6 +100,7 @@ fun BoxGuideScreen(
 
     LaunchedEffect(Unit) {
         viewModel.initUiState()
+        viewModel.getSuggestionMusic()
 
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -405,7 +407,8 @@ fun BoxGuideScreen(
                     },
                     closeBottomSheet = {
                         showBottomSheet = false
-                    }
+                    },
+                    suggestionMusic = uiState.suggestionMusic
                 )
             }
             AnimatedVisibility(
@@ -558,6 +561,7 @@ private fun BottomSheetNav(
     onSaveSticker: (SelectedSticker) -> Unit,
     saveGift: (Uri?) -> Unit,
     onSaveBox: (BoxDesign) -> Unit,
+    suggestionMusic: List<PackyMusic>
 ) {
     when (bottomSheetRoute) {
         BoxGuideBottomSheetRoute.ADD_GIFT -> {
@@ -578,7 +582,8 @@ private fun BottomSheetNav(
             CreateBoxNavHost(
                 modifier = Modifier.background(PackyTheme.color.white),
                 closeBottomSheet = closeBottomSheetDialog,
-                saveMusic = saveMusic
+                saveMusic = saveMusic,
+                suggestionMusic = suggestionMusic
             )
         }
 

@@ -53,6 +53,7 @@ fun CreateBoxPackyMusicScreen(
     navController: NavController,
     closeBottomSheet: (Boolean) -> Unit,
     saveMusic: (String) -> Unit,
+    suggestionMusic: List<PackyMusic>,
     viewModel: CreateBoxPackyMusicViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -65,7 +66,7 @@ fun CreateBoxPackyMusicScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getSuggestionMusic()
+        viewModel.getSuggestionMusic(suggestionMusic)
     }
 
     LaunchedEffect(null) {

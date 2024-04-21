@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.packy.core.animations.asPagingComposable
 import com.packy.createbox.createboax.addpackymusic.CreateBoxPackyMusicScreen
+import com.packy.createbox.createboax.addpackymusic.PackyMusic
 import com.packy.createbox.createboax.addyourmusic.CreateBoxYourMusicScreen
 import com.packy.createbox.createboax.choosemusic.CreateBoxChooseMusicScreen
 
@@ -18,6 +19,7 @@ fun CreateBoxNavHost(
     modifier: Modifier = Modifier,
     closeBottomSheet: (Boolean) -> Unit,
     saveMusic: (String) -> Unit,
+    suggestionMusic: List<PackyMusic>,
 ) {
     val navController = rememberNavController()
     NavHost(
@@ -28,7 +30,8 @@ fun CreateBoxNavHost(
         createBoxBottomSheetNavGraph(
             navController,
             closeBottomSheet,
-            saveMusic
+            saveMusic,
+            suggestionMusic,
         )
     }
 }
@@ -37,6 +40,7 @@ fun NavGraphBuilder.createBoxBottomSheetNavGraph(
     navController: NavHostController,
     closeBottomSheet: (Boolean) -> Unit,
     saveMusic: (String) -> Unit,
+    suggestionMusic: List<PackyMusic>
 ) {
     navigation(
         startDestination = CreateBoxBottomSheetRoute.CREATE_BOX_CHOOSE_MUSIC,
@@ -65,7 +69,8 @@ fun NavGraphBuilder.createBoxBottomSheetNavGraph(
             CreateBoxPackyMusicScreen(
                 navController = navController,
                 closeBottomSheet = closeBottomSheet,
-                saveMusic = saveMusic
+                saveMusic = saveMusic,
+                suggestionMusic = suggestionMusic
             )
         }
     }

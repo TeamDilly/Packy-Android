@@ -15,17 +15,22 @@ import com.packy.createbox.common.letterContent
 import com.packy.createbox.common.photo
 import com.packy.createbox.common.sticker
 import com.packy.createbox.common.youtubeUrl
+import com.packy.createbox.createboax.addpackymusic.PackyMusic
 import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.domain.model.createbox.Sticker
 import com.packy.domain.model.createbox.box.Gift
 import com.packy.domain.usecase.box.GetBoxDesignUseCase
 import com.packy.domain.usecase.createbox.CreateBoxFlagUseCase
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
+import com.packy.domain.usecase.music.SuggestionMusicUseCase
+import com.packy.lib.utils.filterSuccess
+import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,6 +39,7 @@ class BoxGuideViewModel @Inject constructor(
     private val getBoxDesignUseCase: GetBoxDesignUseCase,
     private val createBoxUseCase: CreateBoxUseCase,
     private val createBoxFlagUseCase: CreateBoxFlagUseCase,
+    private val suggestionMusicUseCase: SuggestionMusicUseCase,
 ) : MviViewModel<BoxGuideIntent, BoxGuideState, BoxGuideEffect>() {
     override fun createInitialState(): BoxGuideState = BoxGuideState(
         title = "",
@@ -45,7 +51,8 @@ class BoxGuideViewModel @Inject constructor(
             sticker2 = null
         ),
         gift = null,
-        boxDesign = null
+        boxDesign = null,
+
     )
 
     override fun handleIntent() {
@@ -250,6 +257,30 @@ class BoxGuideViewModel @Inject constructor(
                     AnalyticsConstant.EmptyItems(emptyItems)
                 ).toBundle()
             )
+        }
+    }
+
+    fun getSuggestionMusic() {
+        viewModelScope.launch {
+            suggestionMusicUseCase.suggestionMusic()
+                .filterSuccess()
+                .unwrapResource()
+                .map { musics ->
+                    musics.map { music ->
+                        PackyMusic(
+                            title = music.title,
+                            hashTag = music.hashtags,
+                            videoId = music.videoId,
+                            state = YoutubeState.INIT,
+                            youtubeMusicUri = music.youtubeUri
+                        )
+                    }
+                }
+                .collect { packyMusicList ->
+                    setState {
+                        it.copy(suggestionMusic = packyMusicList)
+                    }
+                }
         }
     }
 }

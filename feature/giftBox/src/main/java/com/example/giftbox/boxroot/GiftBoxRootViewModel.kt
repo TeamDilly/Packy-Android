@@ -2,7 +2,7 @@ package com.example.giftbox.boxroot
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ID_ARG
+import com.example.giftbox.navigation.GiftBoxArgs.GIFT_BOX_ID_ARG
 import com.packy.domain.usecase.box.GetBoxUseCase
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.filterLoading
@@ -24,13 +24,13 @@ class GiftBoxRootViewModel @Inject constructor(
 
     init {
         savedStateHandle.get<Long>(GIFT_BOX_ID_ARG)?.let {
-            getGiftBox(it.toString())
+            getGiftBox(it)
         } ?: run {
             sendEffect(GiftBoxRootEffect.FailToGetGIftBox(null))
         }
     }
 
-    private fun getGiftBox(boxId: String) {
+    private fun getGiftBox(boxId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             getBoxUseCase.getBox(boxId)
                 .filterLoading()

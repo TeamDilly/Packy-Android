@@ -13,14 +13,15 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieAnimatable
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.packy.core.common.BoxOpenLottie
-import com.packy.createbox.navigation.CreateBoxRoute
+import com.packy.createbox.navigation.CreateBoxScreens
+
 
 @Composable
 fun BoxShareMotionScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     boxId: Int,
-    createdBoxId: String?
+    createdBoxId: Long
 ) {
 
     Box(
@@ -40,9 +41,7 @@ fun BoxShareMotionScreen(
             if (anim.value < 0.1f) {
                 // 여기서 createdBoxId 가 null 인 경우는 완전한 버그이다.
                 navController.navigate(
-                    CreateBoxRoute.getBoxShareFadeInRoute(
-                        createdBoxId = createdBoxId!!,
-                    )
+                    CreateBoxScreens.BoxShareFadeIn.create(createdBoxId)
                 ) {
                     val currentRoute = navController.currentBackStackEntry?.destination?.route
                     currentRoute?.let { popUpTo(it) { inclusive = true } }

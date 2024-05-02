@@ -1,11 +1,14 @@
 package com.packy.onboarding.navigation
 
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.packy.core.animations.asPagingComposable
 import com.packy.core.animations.asRootComposable
+import com.packy.core.navigiation.NavScreens
+import com.packy.core.navigiation.replaceArguments
 import com.packy.onboarding.login.LoginScreen
 import com.packy.onboarding.navigation.OnboardingRouteArgs.NICKNAME
 import com.packy.onboarding.onboarding.OnboardingScreen
@@ -18,16 +21,16 @@ fun NavGraphBuilder.onboardingNavGraph(
     moveToHomeClear: () -> Unit
 ) {
     navigation(
-        startDestination = OnboardingRoute.ONBOARDING,
-        route = OnboardingRoute.ONBOARDING_NAV_GRAPH,
+        startDestination = OnboardingScreen.Onboarding.name,
+        route = OnboardingScreen.OnboardingNavGraph.name,
     ) {
         asRootComposable(
-            route = OnboardingRoute.ONBOARDING,
+            route = OnboardingScreen.Onboarding.name,
         ) {
             OnboardingScreen(navController = navController)
         }
         asPagingComposable(
-            route = OnboardingRoute.LOGIN,
+            route = OnboardingScreen.Login.name,
         ) {
             LoginScreen(
                 navController = navController,
@@ -35,7 +38,7 @@ fun NavGraphBuilder.onboardingNavGraph(
             )
         }
         asPagingComposable(
-            route = OnboardingRoute.SIGNUP_NICKNAME + "?" + "$NICKNAME={$NICKNAME}",
+            route = OnboardingScreen.SignupNickName.name,
             arguments = listOf(
                 navArgument(NICKNAME) {
                     nullable = true
@@ -49,12 +52,12 @@ fun NavGraphBuilder.onboardingNavGraph(
             )
         }
         asPagingComposable(
-            route = OnboardingRoute.SIGNUP_PROFILE,
+            route = OnboardingScreen.SignupProfile.name,
         ) {
             SignupProfileScreen(navController = navController)
         }
         asPagingComposable(
-            route = OnboardingRoute.TERMS_AGREEMENT,
+            route = OnboardingScreen.TermsAgreement.name,
         ) {
             TermsAgreementScreen(
                 navController = navController,
@@ -64,16 +67,28 @@ fun NavGraphBuilder.onboardingNavGraph(
     }
 }
 
-object OnboardingRoute {
-    const val ONBOARDING_NAV_GRAPH = "onboardingNavGraph"
+sealed class OnboardingScreen(
+    val route: String,
+    val navArguments: List<NamedNavArgument> = emptyList()
+) : NavScreens(_route = route, _navArguments = navArguments) {
+    data object OnboardingNavGraph : OnboardingScreen(route = "onboardingNavGraph")
+    data object Onboarding : OnboardingScreen(route = "onboarding")
+    data object Login : OnboardingScreen(route = "login")
 
-    const val ONBOARDING = "onboarding"
-    const val LOGIN = "login"
-    const val SIGNUP_NICKNAME = "signupNickName"
-    const val SIGNUP_PROFILE = "signupProfile"
-    const val TERMS_AGREEMENT = "termsAgreement"
-    fun getSignupNicknameRoute(nickname: String?) =
-        if (nickname == null) "signupNickname" else "signupNickname?$NICKNAME=$nickname"
+    data object SignupNickName : OnboardingScreen(
+        route = "signupNickName",
+        navArguments = listOf(
+            navArgument(NICKNAME) {
+                type = androidx.navigation.NavType.StringType
+                defaultValue = ""
+            }
+        )
+    ) {
+        fun create(nickname: String?) = name.replaceArguments(navArguments.first(), nickname ?: "")
+    }
+
+    data object SignupProfile : OnboardingScreen(route = "signupProfile")
+    data object TermsAgreement : OnboardingScreen(route = "termsAgreement")
 }
 
 object OnboardingRouteArgs {

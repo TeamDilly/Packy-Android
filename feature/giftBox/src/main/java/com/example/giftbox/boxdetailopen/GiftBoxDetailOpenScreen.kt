@@ -55,7 +55,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.giftbox.navigation.GiftBoxRoute
 import com.packy.common.authenticator.ext.colorCodeToColor
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple

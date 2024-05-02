@@ -38,7 +38,8 @@ import com.packy.core.screen.error.ErrorDialog
 import com.packy.core.screen.error.ErrorDialogInfo
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
-import com.packy.createbox.navigation.CreateBoxRoute
+import com.packy.createbox.navigation.CreateBoxScreens
+
 import com.packy.feature.core.R
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -87,14 +88,14 @@ fun BoxAddTitleScreen(
                     keyboardController?.hide()
                     if (effect.showMotion) {
                         navController.navigate(
-                            CreateBoxRoute.getBoxShareMotionRoute(
-                                boxId = effect.motionBoxId,
+                            CreateBoxScreens.BoxShareMotion.create(
+                                motionBoxId = effect.motionBoxId,
                                 createdBoxId = effect.createBoxId,
                             )
                         )
                     } else {
                         navController.navigate(
-                            CreateBoxRoute.getBoxShareRoute(
+                            CreateBoxScreens.BoxShare.create(
                                 createdBoxId = effect.createBoxId,
                             )
                         )

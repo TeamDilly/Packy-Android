@@ -1,6 +1,7 @@
 package com.example.giftbox.navigation
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -11,15 +12,16 @@ import com.example.giftbox.boxerror.GiftBoxErrorScreen
 import com.example.giftbox.boxmotion.GiftBoxMotionScreen
 import com.example.giftbox.boxroot.GiftBoxRootScreen
 import com.example.giftbox.giftarr.GiftBoxArrScreen
-import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ARG
-import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_ID_ARG
-import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_SHOULD_SHOW_SHARED
-import com.example.giftbox.navigation.GiftBoxRoute.GIFT_BOX_SKIP_ARR_ARG
+import com.example.giftbox.navigation.GiftBoxArgs.GIFT_BOX_ID_ARG
+import com.example.giftbox.navigation.GiftBoxArgs.GIFT_BOX_JSON_ARG
+import com.example.giftbox.navigation.GiftBoxArgs.GIFT_BOX_SHOULD_SHOW_SHARED_ARG
+import com.example.giftbox.navigation.GiftBoxArgs.GIFT_BOX_SKIP_ARR_ARG
 import com.packy.core.animations.asFadeInComposable
 import com.packy.core.animations.asFadeInSlidOutComposable
 import com.packy.core.animations.asPagingComposable
-import com.packy.core.animations.asRootComposable
 import com.packy.core.common.PackyJson
+import com.packy.core.navigiation.NavScreens
+import com.packy.core.navigiation.replaceArguments
 import com.packy.domain.model.getbox.GiftBox
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -30,12 +32,12 @@ fun NavGraphBuilder.giftBoxNavGraph(
     moveToShared: (Long) -> Unit,
 ) {
     navigation(
-        startDestination = GiftBoxRoute.GIFT_BOX_ROOT,
-        route = GiftBoxRoute.GIFT_BOX_NAV_GRAPH
+        startDestination = GiftBoxScreens.GiftBoxRoot.name,
+        route = GiftBoxScreens.GiftBoxNavGraph.name
     ) {
 
         asFadeInComposable(
-            route = GiftBoxRoute.GIFT_BOX_ROOT + "/{$GIFT_BOX_ID_ARG}" + "/{$GIFT_BOX_SKIP_ARR_ARG}" + "/{$GIFT_BOX_SHOULD_SHOW_SHARED}",
+            route = GiftBoxScreens.GiftBoxRoot.name,
             arguments = listOf(
                 navArgument(GIFT_BOX_ID_ARG) {
                     type = NavType.LongType
@@ -43,13 +45,13 @@ fun NavGraphBuilder.giftBoxNavGraph(
                 navArgument(GIFT_BOX_SKIP_ARR_ARG) {
                     type = NavType.BoolType
                 },
-                navArgument(GIFT_BOX_SHOULD_SHOW_SHARED) {
+                navArgument(GIFT_BOX_SHOULD_SHOW_SHARED_ARG) {
                     type = NavType.BoolType
                 },
             )
         ) {
             val skipArr = it.arguments?.getBoolean(GIFT_BOX_SKIP_ARR_ARG) ?: true
-            val shouldShowShared = it.arguments?.getBoolean(GIFT_BOX_SHOULD_SHOW_SHARED) ?: false
+            val shouldShowShared = it.arguments?.getBoolean(GIFT_BOX_SHOULD_SHOW_SHARED_ARG) ?: false
             GiftBoxRootScreen(
                 navController = navController,
                 skipArr = skipArr,
@@ -57,9 +59,9 @@ fun NavGraphBuilder.giftBoxNavGraph(
             )
         }
         asPagingComposable(
-            route = GiftBoxRoute.GIFT_BOX_MOTION + "/{$GIFT_BOX_ARG}",
+            route = GiftBoxScreens.GiftBoxMotion.name,
         ) {
-            val giftBoxJson = it.arguments?.getString(GIFT_BOX_ARG)
+            val giftBoxJson = it.arguments?.getString(GIFT_BOX_JSON_ARG)
             val giftBox = giftBoxJson?.let { json -> Json.decodeFromString<GiftBox>(json) }
             if (giftBox == null) {
                 GiftBoxErrorScreen(
@@ -75,7 +77,7 @@ fun NavGraphBuilder.giftBoxNavGraph(
             }
         }
         asPagingComposable(
-            route = GiftBoxRoute.GIFT_BOX_ARR + "/{$GIFT_BOX_ARG}",
+            route = GiftBoxScreens.GiftBoxArr.name,
         ) {
             GiftBoxArrScreen(
                 navController = navController,
@@ -83,12 +85,12 @@ fun NavGraphBuilder.giftBoxNavGraph(
             )
         }
         asPagingComposable(
-            route = GiftBoxRoute.GIFT_BOX_DETAIL_OPEN + "/{$GIFT_BOX_ARG}" + "/{$GIFT_BOX_SHOULD_SHOW_SHARED}",
+            route = GiftBoxScreens.GiftBoxDetailOpen.name,
             arguments = listOf(
-                navArgument(GIFT_BOX_ARG) {
+                navArgument(GIFT_BOX_JSON_ARG) {
                     type = NavType.StringType
                 },
-                navArgument(GIFT_BOX_SHOULD_SHOW_SHARED) {
+                navArgument(GIFT_BOX_SHOULD_SHOW_SHARED_ARG) {
                     type = NavType.BoolType
                 },
             )
@@ -101,13 +103,13 @@ fun NavGraphBuilder.giftBoxNavGraph(
             )
         }
         asFadeInSlidOutComposable(
-            route = GiftBoxRoute.GIFT_BOX_DETAIL_OPEN_FADE + "/{$GIFT_BOX_ARG}" + "/{$GIFT_BOX_SHOULD_SHOW_SHARED}",
+            route = GiftBoxScreens.GiftBoxDetailOpenFade.name,
             enterDuration = 1000,
             arguments = listOf(
-                navArgument(GIFT_BOX_ARG) {
+                navArgument(GIFT_BOX_JSON_ARG) {
                     type = NavType.StringType
                 },
-                navArgument(GIFT_BOX_SHOULD_SHOW_SHARED) {
+                navArgument(GIFT_BOX_SHOULD_SHOW_SHARED_ARG) {
                     type = NavType.BoolType
                 },
             )
@@ -120,12 +122,10 @@ fun NavGraphBuilder.giftBoxNavGraph(
             )
         }
         asPagingComposable(
-            route = GiftBoxRoute.GIFT_BOX_ERROR,
+            route = GiftBoxScreens.GiftBoxError.name,
             arguments = listOf(
                 navArgument(GIFT_BOX_ID_ARG) {
-                    defaultValue = null
-                    type = NavType.StringType
-                    nullable = true
+                    type = NavType.LongType
                 }
             )
         ) {
@@ -139,60 +139,139 @@ fun NavGraphBuilder.giftBoxNavGraph(
     }
 }
 
-object GiftBoxRoute {
-    const val GIFT_BOX_NAV_GRAPH = "giftBoxNavGraph"
-    const val GIFT_BOX_ROOT = "giftBoxRoot"
-    const val GIFT_BOX_ERROR = "giftBoxError"
-    const val GIFT_BOX_ARR = "giftBoxArr"
-    const val GIFT_BOX_MOTION = "giftBoxMotion"
-    const val GIFT_BOX_DETAIL_OPEN = "giftBoxDetailOpen"
-    const val GIFT_BOX_DETAIL_OPEN_FADE = "giftBoxDetailOpenFade"
+sealed class GiftBoxScreens(
+    val route: String,
+    val navArguments: List<NamedNavArgument> = emptyList()
+) : NavScreens(_route = route, _navArguments = navArguments) {
+    data object GiftBoxNavGraph : GiftBoxScreens("giftBoxNavGraph")
 
-    const val GIFT_BOX_ID_ARG = "giftBoxIdArg"
+    data object GiftBoxRoot : GiftBoxScreens(
+        route = "giftBoxRoot",
+        navArguments = listOf(
+            navArgument(GIFT_BOX_ID_ARG) {
+                type = NavType.LongType
+            },
+            navArgument(GIFT_BOX_SKIP_ARR_ARG) {
+                type = NavType.BoolType
+            },
+            navArgument(GIFT_BOX_SHOULD_SHOW_SHARED_ARG) {
+                type = NavType.BoolType
+            }
+        )
+    ) {
+        fun create(
+            giftBoxId: Long,
+            skipArr: Boolean = true,
+            shouldShowShared: Boolean
+        ) = name
+            .replaceArguments(navArguments[0], giftBoxId.toString())
+            .replaceArguments(navArguments[1], skipArr.toString())
+            .replaceArguments(navArguments[2], shouldShowShared.toString())
+    }
+
+    data object GiftBoxError : GiftBoxScreens(
+        route = "giftBoxError",
+        navArguments = listOf(
+            navArgument(GIFT_BOX_ID_ARG) {
+                type = NavType.LongType
+            }
+        )
+    ) {
+        fun create(giftBoxId: Long) = name.replaceArguments(navArguments.first(), giftBoxId.toString())
+    }
+
+    data object GiftBoxArr : GiftBoxScreens(
+        route = "giftBoxArr",
+        navArguments = listOf(
+            navArgument(GIFT_BOX_JSON_ARG) {
+                type = NavType.StringType
+            }
+        )
+    ) {
+        fun create(giftBox: GiftBox): String {
+            val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
+            return name.replaceArguments(
+                navArguments.first(),
+                giftBoxJson
+            )
+        }
+    }
+
+    data object GiftBoxMotion : GiftBoxScreens(
+        route = "giftBoxMotion",
+        navArguments = listOf(
+            navArgument(GIFT_BOX_JSON_ARG) {
+                type = NavType.StringType
+            }
+        )
+    ) {
+        fun create(giftBox: GiftBox): String {
+            val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
+            return name.replaceArguments(
+                navArguments.first(),
+                giftBoxJson
+            )
+        }
+    }
+
+    data object GiftBoxDetailOpen : GiftBoxScreens(
+        route = "giftBoxDetailOpen",
+        navArguments = listOf(
+            navArgument(GIFT_BOX_JSON_ARG) {
+                type = NavType.StringType
+            },
+            navArgument(GIFT_BOX_SHOULD_SHOW_SHARED_ARG) {
+                type = NavType.BoolType
+            }
+        )
+    ) {
+        fun create(
+            giftBox: GiftBox,
+            shouldShowShared: Boolean
+        ): String {
+            val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
+            return name.replaceArguments(
+                navArguments[0],
+                giftBoxJson
+            ).replaceArguments(
+                navArguments[1],
+                shouldShowShared.toString()
+            )
+        }
+    }
+
+    data object GiftBoxDetailOpenFade : GiftBoxScreens(
+        route = "giftBoxDetailOpenFade",
+        navArguments = listOf(
+            navArgument(GIFT_BOX_JSON_ARG) {
+                type = NavType.StringType
+            },
+            navArgument(GIFT_BOX_SHOULD_SHOW_SHARED_ARG) {
+                type = NavType.BoolType
+            }
+        )
+    ) {
+        fun create(giftBox: GiftBox, shouldShowShared: Boolean): String {
+            val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
+            return name.replaceArguments(
+                navArguments[0],
+                giftBoxJson
+            ).replaceArguments(
+                navArguments[1],
+                shouldShowShared.toString()
+            )
+        }
+    }
+}
+
+object GiftBoxArgs {
+    const val GIFT_BOX_ID_ARG = "giftBoxId"
     const val GIFT_BOX_SKIP_ARR_ARG = "skipArr"
-    const val GIFT_BOX_ARG = "giftBoxArg"
-    const val GIFT_BOX_SHOULD_SHOW_SHARED = "shouldShowShared"
-
-    fun getGiftBoxRootRoute(
-        giftBoxId: Long,
-        skipArr: Boolean = true,
-        shouldShowShared: Boolean
-    ): String {
-        return "$GIFT_BOX_ROOT/$giftBoxId/$skipArr/$shouldShowShared"
-    }
-
-    fun getGiftBoxMotionRoute(giftBox: GiftBox): String {
-        val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
-        return "${GIFT_BOX_MOTION}/$giftBoxJson"
-    }
-
-    fun getGiftBoxArrRoute(giftBox: GiftBox): String {
-        val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
-        return "${GIFT_BOX_ARR}/$giftBoxJson"
-    }
-
-    fun getGiftBoxDetailOpenRoute(
-        giftBox: GiftBox,
-        shouldShowShared: Boolean
-    ): String {
-        val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
-        return "${GIFT_BOX_DETAIL_OPEN}/$giftBoxJson/$shouldShowShared"
-    }
-
-    fun getGiftBoxDetailOpenFadeRoute(
-        giftBox: GiftBox,
-        shouldShowShared: Boolean
-    ): String {
-        val giftBoxJson = PackyJson.encodeToString(giftBox.toUrlEncoding())
-        return "${GIFT_BOX_DETAIL_OPEN_FADE}/$giftBoxJson/$shouldShowShared"
-    }
+    const val GIFT_BOX_SHOULD_SHOW_SHARED_ARG = "shouldShowShared"
+    const val GIFT_BOX_JSON_ARG = "giftBoxJson"
 
     fun getGiftBoxArg(savedStateHandle: SavedStateHandle): GiftBox? {
-        val giftBoxJson = savedStateHandle.get<String>(GIFT_BOX_ARG)
+        val giftBoxJson = savedStateHandle.get<String>(GIFT_BOX_JSON_ARG)
         return giftBoxJson?.let { PackyJson.decodeFromString<GiftBox>(it) }
-    }
-
-    fun getGiftErrorRoute(giftBoxId: String?): String {
-        return "$GIFT_BOX_ERROR/$giftBoxId"
     }
 }

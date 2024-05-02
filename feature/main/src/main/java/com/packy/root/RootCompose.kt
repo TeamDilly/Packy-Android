@@ -10,16 +10,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.giftbox.navigation.GiftBoxScreens
 import com.example.home.root.HomeRoute.HOME_ROOT
 import com.example.home.navigation.SettingsRoute
 import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.CREATE_BOX_CANCEL_BOX
-import com.packy.createbox.navigation.CreateBoxRoute
+import com.packy.createbox.navigation.CreateBoxScreens
+
 import com.packy.feature.main.R
-import com.packy.root.navigation.MainRoute
+import com.packy.root.navigation.MainScreens
 import com.packy.root.navigation.PackyNavHost
 import kotlinx.coroutines.launch
 
@@ -41,11 +42,11 @@ fun RootCompose(
     PackyNavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = MainRoute.LAUNCH_NAV_GRAPH,
+        startDestination = MainScreens.LaunchNavGraph.name,
         logout = {
             scope.launch {
                 viewModel.logout()
-                navController.navigate(MainRoute.LAUNCH_NAV_GRAPH) {
+                navController.navigate(MainScreens.LaunchNavGraph.name) {
                     popUpTo(navController.graph.id) {
                         inclusive = true
                     }
@@ -61,14 +62,14 @@ fun RootCompose(
         },
         moveToBoxDetail = { boxId, shouldShowShared ->
             navController.navigate(
-                GiftBoxRoute.getGiftBoxRootRoute(
+                GiftBoxScreens.GiftBoxRoot.create(
                     giftBoxId = boxId,
                     shouldShowShared = shouldShowShared
                 )
             )
         },
         moveToCreateBox = {
-            navController.navigate(CreateBoxRoute.CREATE_BOX_NAV_GRAPH)
+            navController.navigate(CreateBoxScreens.CreateBoxNavGraph.name)
         },
         kakaoLinkScheme = kakaoLinkScheme,
         moveSettings = {
@@ -76,8 +77,8 @@ fun RootCompose(
         },
         moveToShared = { giftBoxId ->
             navController.navigate(
-                CreateBoxRoute.getBoxShareRoute(
-                    giftBoxId.toString(),
+                CreateBoxScreens.BoxShare.create(
+                    createdBoxId = giftBoxId
                 )
             )
         },
@@ -103,7 +104,7 @@ fun RootCompose(
             globalPopUp = closePackyDialog
         },
         moveToBoxOpenMotion = {
-            navController.navigate(GiftBoxRoute.getGiftBoxMotionRoute(it))
+            navController.navigate(GiftBoxScreens.GiftBoxMotion.create(it))
         }
     )
 }

@@ -1,10 +1,8 @@
 package com.packy.createbox.boxchoice
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,15 +27,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.analytics.AnalyticsConstant
 import com.packy.core.analytics.TrackedScreen
-import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
@@ -46,10 +39,8 @@ import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.animation.ValueChangeAnimation
-import com.packy.createbox.navigation.CreateBoxRoute
+import com.packy.createbox.navigation.CreateBoxScreens
 import com.packy.feature.core.R
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -82,12 +73,10 @@ fun BoxChoiceScreen(
                     val boxDesign = effect.boxDesign
                     if (effect.shouldShowBoxMotion && boxDesign != null) {
                         navController.navigate(
-                            CreateBoxRoute.getBoxMotionRoute(
-                                boxDesign.id
-                            )
+                            CreateBoxScreens.BoxMotion.create(boxDesign.id)
                         )
                     } else {
-                        navController.navigate(CreateBoxRoute.BOX_GUIDE_PAGING) {
+                        navController.navigate(CreateBoxScreens.BoxGuidePaging.name) {
                             launchSingleTop = true
                         }
                     }
@@ -130,7 +119,7 @@ fun BoxChoiceScreen(
                 color = PackyTheme.color.gray900
             )
             Spacer(height = 60.dp)
-            ValueChangeAnimation(value =  uiState.selectedBox?.boxSet,) {
+            ValueChangeAnimation(value = uiState.selectedBox?.boxSet) {
                 GlideImage(
                     modifier = Modifier
                         .width(232.dp)

@@ -28,7 +28,7 @@ import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoIntent
 import com.packy.createbox.createboax.navigation.CreateBoxBottomSheetRoute
-import com.packy.createbox.navigation.CreateBoxRoute
+
 import com.packy.feature.core.R
 
 @Composable

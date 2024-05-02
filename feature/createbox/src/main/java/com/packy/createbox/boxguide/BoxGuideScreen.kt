@@ -65,7 +65,8 @@ import com.packy.createbox.createboax.addphoto.CreateBoxAddPhotoScreen
 import com.packy.createbox.createboax.addsticker.CreateBoxStickerScreen
 import com.packy.createbox.createboax.boxchange.CreateBoxChangeScreen
 import com.packy.createbox.createboax.navigation.CreateBoxNavHost
-import com.packy.createbox.navigation.CreateBoxRoute
+import com.packy.createbox.navigation.CreateBoxScreens
+
 import com.packy.domain.model.box.BoxDesign
 import com.packy.domain.model.createbox.SelectedSticker
 import com.packy.mvi.ext.emitMviIntent
@@ -107,7 +108,7 @@ fun BoxGuideScreen(
                 is BoxGuideEffect.MoveToBack -> navController.popBackStack()
                 is BoxGuideEffect.SaveBox -> {
                     viewModel.musicStop()
-                    navController.navigate(CreateBoxRoute.BOX_ADD_TITLE)
+                    navController.navigate(CreateBoxScreens.BoxAddTitle.name)
                 }
 
                 is BoxGuideEffect.ShowBottomSheet -> {

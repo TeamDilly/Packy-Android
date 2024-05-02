@@ -11,4 +11,5 @@ dependencies{
     implementation(libs.youtube.player)
     implementation(libs.permissions)
     implementation(project(":lib"))
+    implementation(libs.compose.navigation)
 }

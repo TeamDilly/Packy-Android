@@ -49,7 +49,8 @@ import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.dotted.DottedDivider
-import com.packy.createbox.navigation.CreateBoxRoute
+
+import com.packy.createbox.navigation.CreateBoxScreens
 import com.packy.feature.core.R
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -85,7 +86,7 @@ fun BoxAddInfoScreen(
                 BoxAddInfoEffect.MoveToBack -> closeCreateBox()
                 BoxAddInfoEffect.SaveBoxInfo -> {
                     keyboardController?.hide()
-                    navController.navigate(CreateBoxRoute.BOX_CHOICE)
+                    navController.navigate(CreateBoxScreens.BoxChoice.name)
                 }
             }
         }

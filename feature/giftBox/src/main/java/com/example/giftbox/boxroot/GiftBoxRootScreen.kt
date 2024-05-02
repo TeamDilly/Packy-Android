@@ -9,14 +9,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.giftbox.navigation.GiftBoxScreens
 import com.packy.core.theme.PackyTheme
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 @Composable
 fun GiftBoxRootScreen(
@@ -30,7 +26,8 @@ fun GiftBoxRootScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is GiftBoxRootEffect.FailToGetGIftBox -> navController.navigate(
-                    route = GiftBoxRoute.getGiftErrorRoute(effect.giftBox),
+                    route = effect.giftBoxId?.let { GiftBoxScreens.GiftBoxError.create(giftBoxId = it) }
+                        ?: run { GiftBoxScreens.GiftBoxError.name },
                 ) {
                     val currentRoute = navController.currentBackStackEntry?.destination?.route
                     currentRoute?.let { popUpTo(it) { inclusive = true } }
@@ -38,8 +35,12 @@ fun GiftBoxRootScreen(
 
                 is GiftBoxRootEffect.GetGiftBox -> {
                     val route =
-                        if (skipArr) GiftBoxRoute.getGiftBoxDetailOpenRoute(effect.giftBox, shouldShowShared)
-                        else GiftBoxRoute.getGiftBoxArrRoute(effect.giftBox)
+                        if (skipArr)
+                            GiftBoxScreens.GiftBoxDetailOpen.create(
+                                giftBox = effect.giftBox,
+                                shouldShowShared = shouldShowShared
+                            )
+                        else GiftBoxScreens.GiftBoxArr.create(effect.giftBox)
                     navController.navigate(route) {
                         val currentRoute = navController.currentBackStackEntry?.destination?.route
                         currentRoute?.let { popUpTo(it) { inclusive = true } }

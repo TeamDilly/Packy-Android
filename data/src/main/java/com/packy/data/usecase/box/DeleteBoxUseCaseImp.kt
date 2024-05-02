@@ -9,6 +9,6 @@ import javax.inject.Inject
 class DeleteBoxUseCaseImp @Inject constructor(
     private val repository: BoxRepository,
 ) : DeleteBoxUseCase {
-    override suspend fun deleteBox(giftBoxId: String): Flow<Resource<Unit>> =
+    override suspend fun deleteBox(giftBoxId: Long): Flow<Resource<Unit>> =
         repository.deleteBox(giftBoxId)
 }

@@ -49,7 +49,8 @@ import com.packy.core.common.BoxOpenLottie
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.animation.TextAnimation
-import com.packy.createbox.navigation.CreateBoxRoute
+import com.packy.createbox.navigation.CreateBoxScreens
+
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
@@ -57,7 +58,7 @@ import kotlin.math.roundToInt
 fun BoxMotionScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    boxId: Int,
+    motionBoxId: Int,
 ) {
 
     val (textAlpha, textOffsetY) = TextAnimation()
@@ -66,7 +67,7 @@ fun BoxMotionScreen(
         modifier = modifier
             .fillMaxSize(),
     ) {
-        val lottieAnimation = BoxOpenLottie.entries.getOrNull(boxId - 1) ?: BoxOpenLottie.BOX_OPEN_1
+        val lottieAnimation = BoxOpenLottie.entries.getOrNull(motionBoxId - 1) ?: BoxOpenLottie.BOX_OPEN_1
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(lottieAnimation.lottie))
         val progress by animateLottieCompositionAsState(
             composition,
@@ -97,7 +98,7 @@ fun BoxMotionScreen(
         )
 
         if (progress == 1f) {
-            navController.navigate(CreateBoxRoute.BOX_GUIDE_FADE_IN) {
+            navController.navigate(CreateBoxScreens.BoxGuideFadeIn.name) {
                 val currentRoute = navController.currentBackStackEntry?.destination?.route
                 currentRoute?.let { popUpTo(it) { inclusive = true } }
                 launchSingleTop = true

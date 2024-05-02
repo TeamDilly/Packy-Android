@@ -21,17 +21,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.giftbox.navigation.GiftBoxScreens
 import com.example.home.root.HomeRoute.HOME_ROOT
 import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
-import com.packy.di.BuildConfig
 import com.packy.feature.core.R
-import com.packy.onboarding.navigation.OnboardingRoute
+import com.packy.onboarding.navigation.OnboardingScreen
 import com.packy.root.deeplink.DeepLinkController
-import com.packy.root.navigation.MainRoute
+import com.packy.root.navigation.MainScreens
 import kotlinx.coroutines.delay
 
 
@@ -74,9 +73,9 @@ fun LaunchScreen(
                     UserState.WITHDRAWAL,
                     UserState.BLACKLIST,
                     UserState.INVALID_STATUS -> {
-                        navController.navigate(OnboardingRoute.ONBOARDING_NAV_GRAPH) {
+                        navController.navigate(OnboardingScreen.OnboardingNavGraph.name) {
                             popUpTo(
-                                MainRoute.LAUNCH_ROUTE
+                                MainScreens.LaunchRoute.name
                             ) {
                                 inclusive = true
                             }
@@ -88,7 +87,7 @@ fun LaunchScreen(
                         when (deepLinkController) {
                             DeepLinkController.NonDeepLink -> navController.navigate(HOME_ROOT) {
                                 popUpTo(
-                                    MainRoute.LAUNCH_ROUTE
+                                    MainScreens.LaunchRoute.name
                                 ) {
                                     inclusive = true
                                 }
@@ -96,14 +95,14 @@ fun LaunchScreen(
 
                             is DeepLinkController.OpenBox -> {
                                 navController.navigate(
-                                    GiftBoxRoute.getGiftBoxRootRoute(
-                                        deepLinkController.boxId.toLong(),
+                                    GiftBoxScreens.GiftBoxRoot.create(
+                                        giftBoxId = deepLinkController.boxId.toLong(),
                                         skipArr = false,
                                         shouldShowShared = false
                                     )
                                 ) {
                                     popUpTo(
-                                        MainRoute.LAUNCH_ROUTE
+                                        MainScreens.LaunchRoute.name
                                     ) {
                                         inclusive = true
                                     }

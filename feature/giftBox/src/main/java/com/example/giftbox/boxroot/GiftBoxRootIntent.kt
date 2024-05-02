@@ -15,6 +15,6 @@ sealed interface GiftBoxRootEffect : SideEffect {
     ) : GiftBoxRootEffect
 
     data class FailToGetGIftBox(
-        val giftBox: String?
+        val giftBoxId: Long?
     ) : GiftBoxRootEffect
 }

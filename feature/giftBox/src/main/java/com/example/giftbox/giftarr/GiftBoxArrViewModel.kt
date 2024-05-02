@@ -2,7 +2,7 @@ package com.example.giftbox.giftarr
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.example.giftbox.navigation.GiftBoxRoute
+import com.example.giftbox.navigation.GiftBoxArgs
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class GiftBoxArrViewModel @Inject constructor(
         viewModelScope.launch {
             setState {
                 GiftBoxArrState(
-                    GiftBoxRoute.getGiftBoxArg(savedStateHandle)
+                    GiftBoxArgs.getGiftBoxArg(savedStateHandle)
                 )
             }
         }

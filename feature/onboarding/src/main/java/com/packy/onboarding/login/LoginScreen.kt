@@ -22,9 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.packy.common.authenticator.KakaoAuth
 import com.packy.common.authenticator.KakaoLoginController
 import com.packy.core.analytics.AnalyticsConstant
 import com.packy.core.analytics.TrackedScreen
@@ -32,7 +30,7 @@ import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings.LOGIN_TITLE
 import com.packy.feature.core.R
-import com.packy.onboarding.navigation.OnboardingRoute
+import com.packy.onboarding.navigation.OnboardingScreen
 
 @Composable
 fun LoginScreen(
@@ -63,7 +61,7 @@ fun LoginScreen(
                 }
 
                 LoginEffect.KakaoLoginSuccess -> loggedIn()
-                is LoginEffect.KakaoLoginSuccessNotUser -> navController.navigate(OnboardingRoute.getSignupNicknameRoute(effect.nickname))
+                is LoginEffect.KakaoLoginSuccessNotUser -> navController.navigate(OnboardingScreen.SignupNickName.create(effect.nickname))
                 LoginEffect.KakaoLoginFail -> TODO()
             }
         }

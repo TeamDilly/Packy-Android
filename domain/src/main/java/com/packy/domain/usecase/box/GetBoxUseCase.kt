@@ -5,5 +5,5 @@ import com.packy.lib.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface GetBoxUseCase {
-    suspend fun getBox(giftBoxId: String): Flow<Resource<GiftBox>>
+    suspend fun getBox(giftBoxId: Long): Flow<Resource<GiftBox>>
 }

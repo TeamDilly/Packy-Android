@@ -64,7 +64,7 @@ class MyBoxViewModel @Inject constructor(
             )
         }
         subscribeIntent<MyBoxIntent.OnDeleteBoxClick> { intent ->
-            deleteBoxUseCase.deleteBox(intent.boxId.toString())
+            deleteBoxUseCase.deleteBox(intent.boxId)
                 .loadingHandler { setState { state -> state.copy(isLoading = it) } }
                 .filterSuccess()
                 .collect {

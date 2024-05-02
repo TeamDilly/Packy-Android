@@ -10,6 +10,6 @@ import javax.inject.Inject
 class GetBoxUseCaseImp @Inject constructor(
     private val repository: BoxRepository
 ) : GetBoxUseCase {
-    override suspend fun getBox(giftBoxId: String): Flow<Resource<GiftBox>> =
+    override suspend fun getBox(giftBoxId: Long): Flow<Resource<GiftBox>> =
         repository.getBox(giftBoxId)
 }

@@ -27,9 +27,8 @@ import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
-import com.packy.di.BuildConfig
 import com.packy.feature.core.R
-import com.packy.onboarding.navigation.OnboardingRoute
+import com.packy.onboarding.navigation.OnboardingScreen
 import com.packy.root.deeplink.DeepLinkController
 import com.packy.root.navigation.MainScreens
 import kotlinx.coroutines.delay
@@ -74,7 +73,7 @@ fun LaunchScreen(
                     UserState.WITHDRAWAL,
                     UserState.BLACKLIST,
                     UserState.INVALID_STATUS -> {
-                        navController.navigate(OnboardingRoute.ONBOARDING_NAV_GRAPH) {
+                        navController.navigate(OnboardingScreen.OnboardingNavGraph.name) {
                             popUpTo(
                                 MainScreens.LaunchRoute.name
                             ) {

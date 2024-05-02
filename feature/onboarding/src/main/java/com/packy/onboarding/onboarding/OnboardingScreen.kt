@@ -43,7 +43,6 @@ import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.indicator.PackyIndicator
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.feature.core.R
-import com.packy.onboarding.navigation.OnboardingRoute
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -66,7 +65,7 @@ fun OnboardingScreen(
     LaunchedEffect(null) {
         viewModel.effect.collect {
             when (it) {
-                OnboardingEffect.NavLoginScreenEffect -> navController.navigate(OnboardingRoute.LOGIN)
+                OnboardingEffect.NavLoginScreenEffect -> navController.navigate(com.packy.onboarding.navigation.OnboardingScreen.Login.name)
             }
         }
     }

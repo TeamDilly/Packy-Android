@@ -44,7 +44,7 @@ import com.packy.core.designsystem.button.buttonStyle
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.feature.core.R
 import com.packy.mvi.ext.emitMviIntent
-import com.packy.onboarding.navigation.OnboardingRoute
+import com.packy.onboarding.navigation.OnboardingScreen
 
 @Composable
 fun SignupProfileScreen(
@@ -65,7 +65,7 @@ fun SignupProfileScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 SignupProfileEffect.NavTermsAgreementEffect -> navController.navigate(
-                    OnboardingRoute.TERMS_AGREEMENT
+                    OnboardingScreen.TermsAgreement.name
                 )
 
                 SignupProfileEffect.ProfileChangeHapticEffect -> {

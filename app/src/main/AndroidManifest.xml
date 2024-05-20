@@ -24,10 +24,10 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/packy_icon"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/packy_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Packy"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <service

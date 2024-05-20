@@ -20,6 +20,9 @@ fun NavGraphBuilder.deepLinkNavGraph(
 
         composable(
             route = MainScreens.LaunchRoute.name,
+            deepLinks = listOf(navDeepLink {
+                uriPattern = DeepLinkRoute.MAIN
+            })
         ) {
             LaunchScreen(
                 navController = navController,
@@ -35,7 +38,7 @@ fun NavGraphBuilder.deepLinkNavGraph(
                 },
                 navDeepLink {
                     uriPattern = "$kakaoLinkScheme://kakaolink?boxId={boxId}"
-                }
+                },
             ),
         ) { entry ->
             val boxId = entry.arguments?.getString("boxId")

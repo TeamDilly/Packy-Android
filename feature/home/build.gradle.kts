@@ -16,4 +16,5 @@ dependencies {
     implementation(project(":lib"))
 
     implementation(libs.bundles.paging)
+    implementation(libs.branch.io)
 }

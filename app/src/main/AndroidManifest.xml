@@ -54,5 +54,7 @@
                     android:scheme="@string/kakao_scheme" />
             </intent-filter>
         </activity>
+        <meta-data android:name="io.branch.sdk.BranchKey" android:value="@string/branch_key" />
+        <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="@string/branch_test_key" />
     </application>
 </manifest>

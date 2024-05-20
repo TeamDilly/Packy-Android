@@ -62,7 +62,10 @@ dependencies {
 
     implementation(project(":library:pref"))
     implementation(project(":library:account"))
+
     implementation(libs.kakao.user)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+
+    implementation(libs.branch.io)
 }

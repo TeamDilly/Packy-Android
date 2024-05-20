@@ -71,6 +71,9 @@ youtube-player = "12.1.0"
 #https://github.com/google/accompanist
 accompanist = "0.32.0"
 
+#https://mvnrepository.com/artifact/io.branch.sdk.android/library
+branch-io = "5.12.0"
+
 [libraries]
 #andorid
 android-core = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -156,9 +159,12 @@ lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 
+#branch-io
+branch-io = { group = "io.branch.sdk.android", name = "library", version.ref = "branch-io" }
+
 [bundles]
 compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide", "compose-ui-util", "compose-lifeCycle"]
-ktor-android = ["ktor-core","ktor-client-android", "ktor-client-serialization", "ktor-client-logging", "ktor-negotiation", "ktor-auth"]
+ktor-android = ["ktor-core", "ktor-client-android", "ktor-client-serialization", "ktor-client-logging", "ktor-negotiation", "ktor-auth"]
 ktor = ["ktor-client-serialization", "ktor-client-logging", "ktor-negotiation", "ktor-client-cio", "ktor-auth"]
 paging = ["paging", "paging-compose"]
 test = ["test-junit", "test-android-junit", "test-android-espresso", "ktor-client-cio"]

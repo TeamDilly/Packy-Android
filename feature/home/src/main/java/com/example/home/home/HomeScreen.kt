@@ -1,5 +1,6 @@
 package com.example.home.home
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -41,6 +42,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -74,6 +76,7 @@ import com.packy.domain.model.home.BoxType
 import com.packy.domain.model.home.HomeBox
 import com.packy.domain.model.home.LazyBox
 import com.packy.domain.model.home.NoticeGiftBox
+import io.branch.referral.Branch
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -181,6 +184,10 @@ fun HomeScreen(
                 }
             }
         }
+    }
+
+    LaunchedEffect(Unit) {
+//        Branch.sessionBuilder(LocalContext.current as Activity).withCallback()
     }
 
     Scaffold(

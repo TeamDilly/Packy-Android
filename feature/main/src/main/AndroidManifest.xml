@@ -42,7 +42,6 @@
                     android:host="main"
                     android:scheme="packyforyou" />
             </intent-filter>
-
         </activity>
     </application>
 </manifest>

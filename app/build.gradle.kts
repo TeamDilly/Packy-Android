@@ -6,7 +6,7 @@ plugins {
 android {
     namespace = "com.packy"
 
-    defaultConfig{
+    defaultConfig {
         targetSdk = 33
         versionCode = 6
         versionName = "1.3.0"
@@ -16,7 +16,7 @@ android {
     }
 
     signingConfigs {
-        maybeCreate("release").apply{
+        maybeCreate("release").apply {
             val KEY_ALIAS: String by project
             val KEY_PASSWORD: String by project
             val STORE_FILE: String by project
@@ -27,7 +27,7 @@ android {
             storePassword = STORE_PASSWORD
         }
     }
-    buildTypes{
+    buildTypes {
         maybeCreate("debug").apply {
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false

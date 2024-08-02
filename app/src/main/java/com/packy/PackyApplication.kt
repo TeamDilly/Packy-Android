@@ -18,11 +18,11 @@ class PackyApplication : Application() {
         initBranch()
     }
 
-    private fun initFirebase(){
+    private fun initFirebase() {
         FirebaseApp.initializeApp(this)
     }
 
-    private fun initBranch(){
+    private fun initBranch() {
         Branch.getAutoInstance(this)
     }
 }

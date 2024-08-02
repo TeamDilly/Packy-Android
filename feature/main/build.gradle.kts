@@ -17,5 +17,9 @@ dependencies {
     implementation(project(":feature:giftBox"))
     implementation(project(":feature:home"))
     implementation(project(":lib"))
+    implementation(project(":library:pref"))
+
+    implementation(libs.branch.io)
+    implementation(project(":data"))
 }
 

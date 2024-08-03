@@ -10,16 +10,19 @@ data class Box(
     @SerialName("id") val id: Long,
     @SerialName("boxNormal") val boxNormal: String,
     @SerialName("boxTop") val boxTop: String,
+    @SerialName("boxLottie") val boxLottie: String
 ) {
     fun toUrlEncoding(): Box = Box(
         id = id,
         boxNormal = boxNormal.toEncoding(),
         boxTop = boxTop.toEncoding(),
+        boxLottie = boxLottie.toEncoding()
     )
 
     fun toUrlDecoding(): Box = Box(
         id = id,
         boxTop = boxTop.toDecoding(),
         boxNormal = boxNormal.toDecoding(),
+        boxLottie = boxLottie.toDecoding()
     )
 }

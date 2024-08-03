@@ -70,6 +70,7 @@ class BoxAddTitleViewModel @Inject constructor(
                     motionBoxId = createBoxUseCase.getCreatedBox().boxId ?: 0,
                     createBoxId = box.data.id,
                     showMotion = showMotion,
+                    lottieAnimation = createBox.lottieAnimation
                 )
             )
         } else {

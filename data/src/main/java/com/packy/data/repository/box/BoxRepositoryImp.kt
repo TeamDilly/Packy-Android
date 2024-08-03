@@ -37,7 +37,8 @@ class BoxRepositoryImp @Inject constructor(
                 boxNormal = boxDesign.boxNormal,
                 boxSet = boxDesign.boxSet,
                 boxSmall = boxDesign.boxSmall,
-                boxTop = boxDesign.boxTop
+                boxTop = boxDesign.boxTop,
+                boxLottie = boxDesign.boxLottie
             )
         )
     }

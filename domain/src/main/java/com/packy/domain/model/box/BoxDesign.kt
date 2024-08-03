@@ -10,5 +10,6 @@ data class BoxDesign(
     @SerialName("boxNormal") val boxNormal: String,
     @SerialName("boxSet") val boxSet: String,
     @SerialName("boxSmall") val boxSmall: String,
-    @SerialName("boxTop") val boxTop: String
+    @SerialName("boxTop") val boxTop: String,
+    @SerialName("boxLottie") val boxLottie: String,
 )

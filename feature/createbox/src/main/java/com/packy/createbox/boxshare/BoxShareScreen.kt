@@ -1,15 +1,10 @@
 package com.packy.createbox.boxshare
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -19,9 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,16 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.common.kakaoshare.KakaoShare
 import com.packy.core.analytics.AnalyticsConstant
 import com.packy.core.analytics.TrackedScreen
-import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
@@ -55,9 +43,7 @@ import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
-import com.packy.createbox.createboax.addgift.CreateBoxAddGiftIntent
 import com.packy.feature.core.R
-import com.packy.lib.utils.Resource
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalGlideComposeApi::class)

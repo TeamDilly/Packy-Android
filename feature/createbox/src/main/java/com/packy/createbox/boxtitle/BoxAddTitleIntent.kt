@@ -23,6 +23,7 @@ sealed interface BoxAddTitleEffect : SideEffect {
         val motionBoxId: Long,
         val createBoxId: Long,
         val showMotion: Boolean,
+        val lottieAnimation: String?,
     ) : BoxAddTitleEffect
     data class FailCreateBox(
         val message: String?

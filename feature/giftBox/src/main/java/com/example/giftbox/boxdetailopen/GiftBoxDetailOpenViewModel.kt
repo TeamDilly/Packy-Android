@@ -92,7 +92,8 @@ class GiftBoxDetailOpenViewModel @Inject constructor(
                                     ),
                                 ),
                                 youtubeUrl = giftBox.youtubeUrl,
-                                boxImage = giftBox.box.boxNormal
+                                boxImage = giftBox.box.boxNormal,
+                                lottieAnimation = giftBox.box.boxLottie
                             )
                         )
                     }

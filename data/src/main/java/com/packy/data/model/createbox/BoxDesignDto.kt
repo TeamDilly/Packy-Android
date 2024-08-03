@@ -11,7 +11,8 @@ data class BoxDesignDto(
     @SerialName("boxNormal") val boxNormal: String,
     @SerialName("boxSet") val boxSet: String,
     @SerialName("boxSmall") val boxSmall: String,
-    @SerialName("boxTop") val boxTop: String
+    @SerialName("boxTop") val boxTop: String,
+    @SerialName("boxLottie") val boxLottie: String,
 )
 
 fun BoxDesignDto.toEntity(): BoxDesign = BoxDesign(
@@ -20,6 +21,7 @@ fun BoxDesignDto.toEntity(): BoxDesign = BoxDesign(
     boxNormal = boxNormal,
     boxSet = boxSet,
     boxSmall = boxSmall,
-    boxTop = boxTop
+    boxTop = boxTop,
+    boxLottie = boxLottie,
 )
 

@@ -17,6 +17,7 @@ data class CreateBox(
     @SerialName("senderName") val senderName: String?,
     @SerialName("stickers") val stickers: List<Stickers>,
     @SerialName("youtubeUrl") val youtubeUrl: String?,
+    @SerialName("lottieAnimation") val lottieAnimation: String?,
 ) {
     fun boxAllReady(): Boolean = boxId != null &&
             envelopeId != null &&
@@ -27,5 +28,6 @@ data class CreateBox(
             receiverName != null &&
             senderName != null &&
             stickers.all { it.id != null && it.location != null && it.imageUri != null } &&
-            youtubeUrl != null
+            youtubeUrl != null &&
+            lottieAnimation != null
 }

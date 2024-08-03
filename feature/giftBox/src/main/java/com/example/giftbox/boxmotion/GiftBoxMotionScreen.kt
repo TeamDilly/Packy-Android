@@ -14,9 +14,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.example.giftbox.navigation.GiftBoxScreens
-import com.packy.core.common.BoxOpenLottie
 import com.packy.domain.model.getbox.GiftBox
 
 @Composable
@@ -26,9 +24,7 @@ fun GiftBoxMotionScreen(
     giftBox: GiftBox
 ) {
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(
-            BoxOpenLottie.entries[giftBox.box.id.toInt().minus(1)].openLottie
-        )
+        LottieCompositionSpec.Url(giftBox.box.boxLottie)
     )
     val progress by animateLottieCompositionAsState(
         composition = composition,

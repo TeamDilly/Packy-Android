@@ -70,10 +70,10 @@ fun BoxChoiceScreen(
                 }
 
                 is BoxChoiceEffect.SaveBoxInfo -> {
-                    val boxDesign = effect.boxDesign
+                    val boxDesign = effect.boxDesign?.boxLottie
                     if (effect.shouldShowBoxMotion && boxDesign != null) {
                         navController.navigate(
-                            CreateBoxScreens.BoxMotion.create(boxDesign.id)
+                            CreateBoxScreens.BoxMotion.create(boxDesign)
                         )
                     } else {
                         navController.navigate(CreateBoxScreens.BoxGuidePaging.name) {

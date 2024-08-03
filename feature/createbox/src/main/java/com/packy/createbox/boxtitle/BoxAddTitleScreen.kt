@@ -89,7 +89,7 @@ fun BoxAddTitleScreen(
                     if (effect.showMotion) {
                         navController.navigate(
                             CreateBoxScreens.BoxShareMotion.create(
-                                motionBoxId = effect.motionBoxId,
+                                lottieAnimation = effect.lottieAnimation ?: "",
                                 createdBoxId = effect.createBoxId,
                             )
                         )

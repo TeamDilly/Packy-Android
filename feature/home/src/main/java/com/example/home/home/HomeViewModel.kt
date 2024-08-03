@@ -1,8 +1,6 @@
 package com.example.home.home
 
 import androidx.lifecycle.viewModelScope
-import com.packy.data.local.GlobalPrefManager
-import com.packy.domain.model.home.NoticeGiftBox
 import com.packy.domain.usecase.box.DeleteBoxUseCase
 import com.packy.domain.usecase.box.GetBoxUseCase
 import com.packy.domain.usecase.home.GetHomeBoxUseCase

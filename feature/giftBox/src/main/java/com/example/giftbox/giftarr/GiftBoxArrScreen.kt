@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,7 +29,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
@@ -43,7 +41,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.giftbox.navigation.GiftBoxScreens
-import com.packy.core.common.BoxOpenLottie
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.button.PackyButton
@@ -65,9 +62,7 @@ fun GiftBoxArrScreen(
     val uiState by viewModel.uiState.collectAsState()
     var lottiePlaying by remember { mutableStateOf(false) }
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(
-            BoxOpenLottie.entries[uiState.giftBox?.box?.id?.toInt()?.minus(1) ?: 0].openLottie
-        )
+        LottieCompositionSpec.Url(uiState.giftBox?.box?.boxLottie ?: throw IllegalArgumentException("boxLottie is null"))
     )
     val progress by animateLottieCompositionAsState(
         composition,

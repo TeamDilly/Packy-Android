@@ -9,11 +9,13 @@ data class BoxDto(
     @SerialName("id") val id: Long,
     @SerialName("boxNormal") val boxNormal: String,
     @SerialName("boxTop") val boxTop: String,
+    @SerialName("boxLottie") val boxLottie: String
 )
 
 fun BoxDto.toEntity(): Box =
     Box(
         boxNormal = boxNormal,
         boxTop = boxTop,
-        id = id
+        id = id,
+        boxLottie = boxLottie
     )

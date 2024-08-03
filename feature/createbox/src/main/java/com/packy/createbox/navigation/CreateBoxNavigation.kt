@@ -20,7 +20,7 @@ import com.packy.createbox.boxsharemotion.BoxShareMotionScreen
 import com.packy.createbox.boxshare.BoxShareScreen
 import com.packy.createbox.boxtitle.BoxAddTitleScreen
 import com.packy.createbox.navigation.CreateBoxArgs.CREATED_BOX_ID
-import com.packy.createbox.navigation.CreateBoxArgs.MOTION_BOX_ID
+import com.packy.createbox.navigation.CreateBoxArgs.LOTTIE_ANIMATION_URL
 
 fun NavGraphBuilder.createBoxNavGraph(
     navController: NavHostController,
@@ -66,35 +66,35 @@ fun NavGraphBuilder.createBoxNavGraph(
         asFadeInComposable(
             route = CreateBoxScreens.BoxMotion.name,
             arguments = listOf(
-                navArgument(MOTION_BOX_ID) {
-                    type = NavType.IntType
+                navArgument(LOTTIE_ANIMATION_URL) {
+                    type = NavType.StringType
                 }
             ),
             enterDuration = 700
         ) {
-            val boxId = it.arguments?.getInt(MOTION_BOX_ID)
+            val lottieAnimation = it.arguments?.getString(LOTTIE_ANIMATION_URL)
             BoxMotionScreen(
                 navController = navController,
-                motionBoxId = boxId ?: 0,
+                lottieAnimation = lottieAnimation ?: ""
             )
         }
         asFadeInComposable(
             route = CreateBoxScreens.BoxShareMotion.name,
             arguments = listOf(
-                navArgument(MOTION_BOX_ID) {
-                    type = NavType.IntType
+                navArgument(LOTTIE_ANIMATION_URL) {
+                    type = NavType.StringType
                 },
                 navArgument(CREATED_BOX_ID) {
                     type = NavType.LongType
                 },
             ),
         ) {
-            val boxId = it.arguments?.getInt(MOTION_BOX_ID)
+            val lottieAnimation = it.arguments?.getString(LOTTIE_ANIMATION_URL)
             val createdBoxId = it.arguments?.getLong(CREATED_BOX_ID)
                 ?: throw IllegalArgumentException("createdBoxId is null")
             BoxShareMotionScreen(
                 navController = navController,
-                boxId = boxId ?: 0,
+                lottieAnimation = lottieAnimation ?: "",
                 createdBoxId = createdBoxId,
             )
         }
@@ -151,27 +151,27 @@ sealed class CreateBoxScreens(
     data object BoxMotion : CreateBoxScreens(
         route = "boxMotion",
         navArguments = listOf(
-            navArgument(MOTION_BOX_ID) {
-                type = NavType.IntType
+            navArgument(LOTTIE_ANIMATION_URL) {
+                type = NavType.StringType
             }
         )
     ) {
-        fun create(boxId: Long) = name.replaceArguments(navArguments.first(), boxId.toString())
+        fun create(lottieAnimation: String) = name.replaceArguments(navArguments.first(), lottieAnimation)
     }
 
     data object BoxShareMotion : CreateBoxScreens(
         route = "boxShareMotion",
         navArguments = listOf(
-            navArgument(MOTION_BOX_ID) {
-                type = NavType.IntType
+            navArgument(LOTTIE_ANIMATION_URL) {
+                type = NavType.StringType
             },
             navArgument(CREATED_BOX_ID) {
                 type = NavType.LongType
             }
         )
     ) {
-        fun create(motionBoxId: Long, createdBoxId: Long) =
-            name.replaceArguments(navArguments.first(), motionBoxId.toString())
+        fun create(lottieAnimation: String, createdBoxId: Long) =
+            name.replaceArguments(navArguments.first(), lottieAnimation)
                 .replaceArguments(navArguments[1], createdBoxId.toString())
     }
 
@@ -202,6 +202,6 @@ sealed class CreateBoxScreens(
 }
 
 object CreateBoxArgs {
-    const val MOTION_BOX_ID = "motionBoxId"
+    const val LOTTIE_ANIMATION_URL = "lottieAnimation"
     const val CREATED_BOX_ID = "createdBoxId"
 }

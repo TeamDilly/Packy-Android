@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface GetNoticeGiftBoxUseCase {
     suspend fun getNoticeGiftBox(): Flow<Resource<NoticeGiftBox?>>
+    suspend fun getDeferredLinkBoxId(): Flow<Long?>
 }

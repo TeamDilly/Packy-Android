@@ -78,6 +78,7 @@ import com.packy.domain.model.home.LazyBox
 import com.packy.domain.model.home.NoticeGiftBox
 import io.branch.referral.Branch
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -133,7 +134,12 @@ fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getGiftBoxes()
+        // deferredLink 에 아이템이 있을수 있으니 먼저 호출 후 메인 화면의 box들은 호출한다.
+        viewModel.getDeferredLinkBox()
+            .collect {
+                viewModel.getGiftBoxes()
+            }
+
         viewModel.resetPoint()
         viewModel.getNoticeGiftBox()
         viewModel.effect.collect { effect ->
@@ -308,7 +314,13 @@ fun HomeScreen(
                     modifier = Modifier,
                     lazyBoxes = lazyBoxes,
                     onClick = { viewModel.emitIntentThrottle(HomeIntent.OnLazyBoxDetailClick(it)) },
-                    onMoreClick = { viewModel.emitIntentThrottle(HomeIntent.OnBottomSheetMoreClick(it)) }
+                    onMoreClick = {
+                        viewModel.emitIntentThrottle(
+                            HomeIntent.OnBottomSheetMoreClick(
+                                it
+                            )
+                        )
+                    }
                 )
             }
             Spacer(height = 16.dp)

@@ -39,7 +39,7 @@ class RootActivity : ComponentActivity() {
 
                 GlobalPrefManager(context = this).apply {
                     GlobalScope.launch {
-                        deferredLinkBoxId.putData(boxId)
+                        deferredLinkBoxId.putData(boxId?.toLongOrNull())
                     }
                 }
 

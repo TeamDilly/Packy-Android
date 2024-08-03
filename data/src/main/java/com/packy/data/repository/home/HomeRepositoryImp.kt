@@ -3,6 +3,7 @@ package com.packy.data.repository.home
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.packy.data.local.GlobalPrefManager
 import com.packy.data.model.home.toEntity
 import com.packy.data.remote.home.HomeService
 import com.packy.data.remote.home.MyBoxPagingSource
@@ -17,7 +18,8 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class HomeRepositoryImp @Inject constructor(
-    private val homeService: HomeService
+    private val homeService: HomeService,
+    private val globalPrefManager: GlobalPrefManager
 ) : HomeRepository {
     override suspend fun getHomeBox(
         type: String,
@@ -56,4 +58,6 @@ class HomeRepositoryImp @Inject constructor(
         val noticeGiftBox = homeService.getNoticeGiftBox()
         emit(noticeGiftBox.map { it?.toEntity() })
     }
+
+    override suspend fun getDeferredLinkBoxId(): Flow<Long?> = globalPrefManager.deferredLinkBoxId.getData()
 }

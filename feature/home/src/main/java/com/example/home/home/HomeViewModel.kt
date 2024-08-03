@@ -1,6 +1,7 @@
 package com.example.home.home
 
 import androidx.lifecycle.viewModelScope
+import com.packy.data.local.GlobalPrefManager
 import com.packy.domain.model.home.NoticeGiftBox
 import com.packy.domain.usecase.box.DeleteBoxUseCase
 import com.packy.domain.usecase.box.GetBoxUseCase
@@ -18,6 +19,13 @@ import com.packy.lib.utils.unwrapResource
 import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMap
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.zip
@@ -31,9 +39,10 @@ class HomeViewModel @Inject constructor(
     private val deleteBoxUseCase: DeleteBoxUseCase,
     private val resetCreateBoxUseCase: ResetCreateBoxUseCase,
     private val getNoticeGiftBoxUseCase: GetNoticeGiftBoxUseCase,
-    private val getGiftBoxUseCase: GetBoxUseCase
+    private val getGiftBoxUseCase: GetBoxUseCase,
 ) :
     MviViewModel<HomeIntent, HomeState, HomeEffect>() {
+
     override fun createInitialState(): HomeState = HomeState(
         giftBoxes = emptyList(),
         lazyBox = emptyList(),
@@ -106,6 +115,19 @@ class HomeViewModel @Inject constructor(
                 }
         }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    suspend fun getDeferredLinkBox() =
+        getNoticeGiftBoxUseCase.getDeferredLinkBoxId()
+            .flatMapConcat {
+                flow<Unit> {
+                    try {
+                        if (it != null) getGiftBoxUseCase.getBox(it)
+                    } catch (e: Exception) {
+                        Unit
+                    }
+                }
+            }
+
     fun getGiftBoxes() {
         viewModelScope.launch(Dispatchers.IO) {
             getHomeBoxUseCase.getHomeBox()
@@ -136,7 +158,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getNoticeGiftBox(){
+    fun getNoticeGiftBox() {
         viewModelScope.launch(Dispatchers.IO) {
             getNoticeGiftBoxUseCase.getNoticeGiftBox()
                 .loadingHandler { setState { state -> state.copy(isLoading = it) } }

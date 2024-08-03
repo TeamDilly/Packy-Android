@@ -11,4 +11,5 @@ class GetNoticeGiftBoxUseCaseImp @Inject constructor(
     private val homeRepository: HomeRepository
 ) : GetNoticeGiftBoxUseCase {
     override suspend fun getNoticeGiftBox(): Flow<Resource<NoticeGiftBox?>> = homeRepository.getNoticeGiftBox()
+    override suspend fun getDeferredLinkBoxId(): Flow<Long?> = homeRepository.getDeferredLinkBoxId()
 }

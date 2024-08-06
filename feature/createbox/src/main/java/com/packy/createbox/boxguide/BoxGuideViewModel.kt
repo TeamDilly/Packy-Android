@@ -81,7 +81,8 @@ class BoxGuideViewModel @Inject constructor(
             getBoxDesignUseCase.setBoxDesignLocal(intent.boxDesign)
             createBoxUseCase.boxDesign(
                 intent.boxDesign.id,
-                intent.boxDesign.boxNormal
+                intent.boxDesign.boxNormal,
+                intent.boxDesign.boxLottie
             )
             state.copy(boxDesign = intent.boxDesign)
         }

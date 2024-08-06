@@ -59,5 +59,9 @@ class HomeRepositoryImp @Inject constructor(
         emit(noticeGiftBox.map { it?.toEntity() })
     }
 
-    override suspend fun getDeferredLinkBoxId(): Flow<Long?> = globalPrefManager.deferredLinkBoxId.getData()
+    override suspend fun getDeferredLinkBoxId(): Flow<Long?> {
+        val deferredLinkBoxId = globalPrefManager.deferredLinkBoxId.getData()
+        globalPrefManager.deferredLinkBoxId.clear()
+        return deferredLinkBoxId
+    }
 }

@@ -19,15 +19,18 @@ data class CreateBox(
     @SerialName("youtubeUrl") val youtubeUrl: String?,
     @SerialName("lottieAnimation") val lottieAnimation: String?,
 ) {
-    fun boxAllReady(): Boolean = boxId != null &&
-            envelopeId != null &&
-            envelopeUrl != null &&
-            letterContent != null &&
-            name != null &&
-            photo != null &&
-            receiverName != null &&
-            senderName != null &&
-            stickers.all { it.id != null && it.location != null && it.imageUri != null } &&
-            youtubeUrl != null &&
-            lottieAnimation != null
+    fun boxAllReady(): Boolean {
+        println("LOGEE boxId $boxId boxImage $boxImage envelopeId $envelopeId envelopeUrl $envelopeUrl gift $gift letterContent $letterContent name $name photo $photo receiverName $receiverName senderName $senderName stickers $stickers youtubeUrl $youtubeUrl lottieAnimation $lottieAnimation")
+        return boxId != null &&
+                envelopeId != null &&
+                envelopeUrl != null &&
+                letterContent != null &&
+                name != null &&
+                photo != null &&
+                receiverName != null &&
+                senderName != null &&
+                stickers.all { it.id != null && it.location != null && it.imageUri != null } &&
+                youtubeUrl != null &&
+                lottieAnimation != null
+    }
 }

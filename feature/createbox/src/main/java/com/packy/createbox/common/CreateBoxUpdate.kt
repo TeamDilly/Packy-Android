@@ -5,9 +5,9 @@ import com.packy.domain.model.createbox.box.Photo
 import com.packy.domain.model.createbox.box.Stickers
 import com.packy.domain.usecase.createbox.CreateBoxUseCase
 
-suspend fun CreateBoxUseCase.boxDesign(id: Long?, boxImage: String?) {
+suspend fun CreateBoxUseCase.boxDesign(id: Long?, boxImage: String?, lottieAnimation: String) {
     val createBox = getCreatedBox()
-    setCreateBox(createBox.copy(boxId = id, boxImage = boxImage))
+    setCreateBox(createBox.copy(boxId = id, boxImage = boxImage, lottieAnimation = lottieAnimation))
 }
 
 suspend fun CreateBoxUseCase.letterContent(letterContent: String?) {

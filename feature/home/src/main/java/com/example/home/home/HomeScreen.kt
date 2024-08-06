@@ -139,7 +139,9 @@ fun HomeScreen(
             .collect {
                 viewModel.getGiftBoxes()
             }
+    }
 
+    LaunchedEffect(Unit) {
         viewModel.resetPoint()
         viewModel.getNoticeGiftBox()
         viewModel.effect.collect { effect ->
@@ -190,10 +192,6 @@ fun HomeScreen(
                 }
             }
         }
-    }
-
-    LaunchedEffect(Unit) {
-//        Branch.sessionBuilder(LocalContext.current as Activity).withCallback()
     }
 
     Scaffold(

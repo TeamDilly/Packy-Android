@@ -118,11 +118,14 @@ class HomeViewModel @Inject constructor(
         getNoticeGiftBoxUseCase.getDeferredLinkBoxId()
             .flatMapConcat {
                 flow<Unit> {
-                    try {
-                        if (it != null) getGiftBoxUseCase.getBox(it)
-                    } catch (e: Exception) {
-                        Unit
-                    }
+                    emit(
+                        try {
+                            if (it != null) getGiftBoxUseCase.getBox(it)
+                            Unit
+                        } catch (e: Exception) {
+                            Unit
+                        }
+                    )
                 }
             }
 

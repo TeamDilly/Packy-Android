@@ -21,6 +21,7 @@ import com.packy.createbox.boxshare.BoxShareScreen
 import com.packy.createbox.boxtitle.BoxAddTitleScreen
 import com.packy.createbox.navigation.CreateBoxArgs.CREATED_BOX_ID
 import com.packy.createbox.navigation.CreateBoxArgs.LOTTIE_ANIMATION_URL
+import com.packy.lib.ext.toEncoding
 
 fun NavGraphBuilder.createBoxNavGraph(
     navController: NavHostController,
@@ -156,7 +157,7 @@ sealed class CreateBoxScreens(
             }
         )
     ) {
-        fun create(lottieAnimation: String) = name.replaceArguments(navArguments.first(), lottieAnimation)
+        fun create(lottieAnimation: String) = name.replaceArguments(navArguments.first(), lottieAnimation.toEncoding())
     }
 
     data object BoxShareMotion : CreateBoxScreens(
@@ -171,7 +172,7 @@ sealed class CreateBoxScreens(
         )
     ) {
         fun create(lottieAnimation: String, createdBoxId: Long) =
-            name.replaceArguments(navArguments.first(), lottieAnimation)
+            name.replaceArguments(navArguments.first(), lottieAnimation.toEncoding())
                 .replaceArguments(navArguments[1], createdBoxId.toString())
     }
 

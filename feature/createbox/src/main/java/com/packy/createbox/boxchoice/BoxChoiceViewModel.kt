@@ -80,7 +80,7 @@ class BoxChoiceViewModel @Inject constructor(
     private fun setBoxDesign(boxDesign: BoxDesign) {
         viewModelScope.launch {
             getBoxDesignUseCase.setBoxDesignLocal(boxDesign)
-            createBoxUseCase.boxDesign(boxDesign.id, boxDesign.boxNormal)
+            createBoxUseCase.boxDesign(boxDesign.id, boxDesign.boxNormal, boxDesign.boxLottie)
         }
     }
 }

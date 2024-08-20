@@ -15,6 +15,8 @@ import com.packy.lib.utils.Resource
 import com.packy.lib.utils.map
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class HomeRepositoryImp @Inject constructor(
@@ -60,8 +62,7 @@ class HomeRepositoryImp @Inject constructor(
     }
 
     override suspend fun getDeferredLinkBoxId(): Flow<Long?> {
-        val deferredLinkBoxId = globalPrefManager.deferredLinkBoxId.getData()
-        globalPrefManager.deferredLinkBoxId.clear()
-        return deferredLinkBoxId
+        return globalPrefManager.deferredLinkBoxId.getData()
+            .onEach { globalPrefManager.deferredLinkBoxId.clear() }
     }
 }

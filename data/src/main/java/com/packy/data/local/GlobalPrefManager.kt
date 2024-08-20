@@ -11,7 +11,7 @@ class GlobalPrefManager @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : PrefManager(context, DEVICE_PREF) {
 
-    val deferredLinkBoxId = createMemoryPrefItem<Long?>("deferredLinkBoxId", null, String::class)
+    val deferredLinkBoxId = createMemoryPrefItem<Long?>("deferredLinkBoxId", null, Long::class)
 
     suspend fun clearAll(){
         deferredLinkBoxId.clear()

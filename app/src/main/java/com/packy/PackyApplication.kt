@@ -23,6 +23,7 @@ class PackyApplication : Application() {
     }
 
     private fun initBranch() {
+        if (BuildConfig.DEBUG) Branch.enableTestMode()
         Branch.getAutoInstance(this)
     }
 }

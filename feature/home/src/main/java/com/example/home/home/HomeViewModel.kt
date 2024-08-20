@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMap
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapMerge
@@ -114,26 +115,30 @@ class HomeViewModel @Inject constructor(
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun getDeferredLinkBox() =
-        getNoticeGiftBoxUseCase.getDeferredLinkBoxId()
-            .flatMapConcat {
-                flow<Unit> {
-                    emit(
-                        try {
-                            if (it != null) getGiftBoxUseCase.getBox(it)
-                            Unit
-                        } catch (e: Exception) {
-                            Unit
-                        }
-                    )
-                }
-            }
-
     fun getGiftBoxes() {
         viewModelScope.launch(Dispatchers.IO) {
-            getHomeBoxUseCase.getHomeBox()
-                .zip(getLazyBoxUseCase.getLazyBox()) { homeBox, lazyBox ->
-                    homeBox + lazyBox
+            getNoticeGiftBoxUseCase.getDeferredLinkBoxId()
+                .flatMapConcat {
+                    flow<Unit> {
+                        if (it != null){
+                            try {
+                                getGiftBoxUseCase.getBox(it)
+                                    .collect{
+                                        emit(Unit)
+                                    }
+                            } catch (e: Exception) {
+                                emit(Unit)
+                            }
+                        } else{
+                            emit(Unit)
+                        }
+                    }
+                }
+                .flatMapConcat {
+                    getHomeBoxUseCase.getHomeBox()
+                        .zip(getLazyBoxUseCase.getLazyBox()) { homeBox, lazyBox ->
+                            homeBox + lazyBox
+                        }
                 }
                 .loadingHandler { setState { state -> state.copy(isLoading = it) } }
                 .errorMessageHandler { message ->

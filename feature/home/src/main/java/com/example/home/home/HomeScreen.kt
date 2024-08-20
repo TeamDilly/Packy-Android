@@ -135,10 +135,7 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         // deferredLink 에 아이템이 있을수 있으니 먼저 호출 후 메인 화면의 box들은 호출한다.
-        viewModel.getDeferredLinkBox()
-            .collect {
-                viewModel.getGiftBoxes()
-            }
+        viewModel.getGiftBoxes()
     }
 
     LaunchedEffect(Unit) {

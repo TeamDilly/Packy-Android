@@ -20,7 +20,6 @@ data class CreateBox(
     @SerialName("lottieAnimation") val lottieAnimation: String?,
 ) {
     fun boxAllReady(): Boolean {
-        println("LOGEE boxId $boxId boxImage $boxImage envelopeId $envelopeId envelopeUrl $envelopeUrl gift $gift letterContent $letterContent name $name photo $photo receiverName $receiverName senderName $senderName stickers $stickers youtubeUrl $youtubeUrl lottieAnimation $lottieAnimation")
         return boxId != null &&
                 envelopeId != null &&
                 envelopeUrl != null &&

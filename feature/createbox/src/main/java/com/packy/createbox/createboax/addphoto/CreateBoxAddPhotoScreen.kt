@@ -161,7 +161,6 @@ private fun PhotoFrame(
             )
         } else {
             // FIXME 권한 안줬을떄 처리
-            println("권한 안줬을때 처리")
         }
     }
 

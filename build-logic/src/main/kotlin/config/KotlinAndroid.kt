@@ -39,7 +39,7 @@ internal fun Project.configureKotlinAndroid() {
                     buildConfigField(
                         "String",
                         "VERSION_NAME",
-                        "\"1.2.0\""
+                        "\"1.4.0\""
                     )
                 }
                 buildConfigField(
@@ -58,7 +58,7 @@ internal fun Project.configureKotlinAndroid() {
                     buildConfigField(
                         "String",
                         "VERSION_NAME",
-                        "\"1.2.0\""
+                        "\"1.4.0\""
                     )
                 }
                 buildConfigField(

@@ -12,4 +12,5 @@ object DeepLinkRoute {
     const val GIFT_BOX_OPEN_LINK = "${URL}boxopen/{boxId}"
 
     const val MAIN = "${URL}main"
+    const val CREATE_BOX = "${URL}createbox"
 }

@@ -27,6 +27,7 @@ import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
+import com.packy.createbox.navigation.CreateBoxScreens
 import com.packy.feature.core.R
 import com.packy.onboarding.navigation.OnboardingScreen
 import com.packy.root.deeplink.DeepLinkController
@@ -41,6 +42,8 @@ fun LaunchScreen(
     deepLinkController: DeepLinkController = DeepLinkController.NonDeepLink,
     viewModel: RootComposeViewModel = hiltViewModel()
 ) {
+
+    println("LOGEE $navController")
 
     var packyDialog by rememberSaveable {
         mutableStateOf<PackyDialogInfo?>(null)
@@ -62,7 +65,6 @@ fun LaunchScreen(
             intent
         )
     }
-
 
     LaunchedEffect(null) {
 
@@ -106,6 +108,14 @@ fun LaunchScreen(
                                     ) {
                                         inclusive = true
                                     }
+                                }
+                            }
+
+                            DeepLinkController.CreateBox -> navController.navigate(CreateBoxScreens.CreateBoxNavGraph.name) {
+                                popUpTo(
+                                    MainScreens.LaunchRoute.name
+                                ) {
+                                    inclusive = true
                                 }
                             }
                         }

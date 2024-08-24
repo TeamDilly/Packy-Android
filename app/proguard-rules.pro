@@ -46,3 +46,6 @@
  -dontwarn org.conscrypt.*
  -dontwarn org.openjsse.**
  -dontwarn org.slf4j.impl.StaticLoggerBinder
+
+-dontwarn com.android.billingclient.api.Purchase
+-dontwarn java.lang.invoke.StringConcatFactory

@@ -7,7 +7,7 @@ android {
     namespace = "com.packy"
 
     defaultConfig {
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 6
         versionName = "1.3.0"
         applicationId = "com.packy"

@@ -22,6 +22,8 @@ composeBom = "2023.10.01"
 androidxComposeNavigation = "2.7.5"
 #https://developer.android.com/jetpack/androidx/releases/lifecycle
 composeLifecycle = "2.7.0"
+#https://developer.android.com/jetpack/androidx/releases/compose-foundation?hl=ko
+composeFoundation = "1.6.8"
 #https://mvnrepository.com/artifact/com.google.dagger/hilt-android
 hilt = "2.48"
 #https://developer.android.com/jetpack/androidx/releases/hilt?hl=ko
@@ -100,6 +102,7 @@ compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxComposeNavigation" }
 compose-glide = { group = "com.github.bumptech.glide", name = "compose", version.ref = "compose-glide" }
 compose-lifeCycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "composeLifecycle" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "composeFoundation" }
 
 #network
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
@@ -163,7 +166,7 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 branch-io = { group = "io.branch.sdk.android", name = "library", version.ref = "branch-io" }
 
 [bundles]
-compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide", "compose-ui-util", "compose-lifeCycle"]
+compose = ["compose-ui", "compose-ui-graphics", "compose-ui-graphics", "compose-preview", "compose-ui-tooling", "compose-material3", "compose-navigation", "hilt-navigation-compose", "compose-glide", "compose-ui-util", "compose-lifeCycle", "compose-foundation"]
 ktor-android = ["ktor-core", "ktor-client-android", "ktor-client-serialization", "ktor-client-logging", "ktor-negotiation", "ktor-auth"]
 ktor = ["ktor-client-serialization", "ktor-client-logging", "ktor-negotiation", "ktor-client-cio", "ktor-auth"]
 paging = ["paging", "paging-compose"]

@@ -71,6 +71,8 @@ import com.packy.core.screen.error.ErrorDialogInfo
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.widget.animation.BoxShakeAnimation
+import com.packy.core.widget.banner.SmallScrollBanner
+import com.packy.domain.model.banner.ImageBanner
 import com.packy.domain.model.getbox.GiftBox
 import com.packy.domain.model.home.BoxType
 import com.packy.domain.model.home.HomeBox
@@ -251,52 +253,24 @@ fun HomeScreen(
                 .verticalScroll(rememberScrollState()),
         ) {
             Spacer(height = 16.dp)
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .background(
-                        color = PackyTheme.color.gray900,
-                        shape = RoundedCornerShape(16.dp)
+            SmallScrollBanner(
+                bannerUrlList = listOf(
+                    ImageBanner(
+                        imageUrl = "https://picsum.photos/250/250",
+                        url = "`"
+                    ),
+                    ImageBanner(
+                        imageUrl = "https://picsum.photos/250/240",
+                        url = "`"
+                    ),
+                    ImageBanner(
+                        imageUrl = "https://picsum.photos/250/230",
+                        url = "`"
                     )
-                    .clickableWithoutRipple { viewModel.emitIntentThrottle(HomeIntent.OnCrateBoxClick) },
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(top = 36.dp),
-                    text = Strings.HOME_CREATE_BOX_TITLE,
-                    style = PackyTheme.typography.body01,
-                    color = PackyTheme.color.white,
-                    textAlign = TextAlign.Center,
-                )
-                Image(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .height(154.dp),
-                    painter = painterResource(id = com.example.home.R.drawable.home_create_box),
-                    contentDescription = "create box",
-                )
-                Box(
-                    modifier = Modifier
-                        .padding(bottom = 24.dp)
-                        .padding(horizontal = 24.dp)
-                        .fillMaxWidth()
-                        .background(
-                            color = PackyTheme.color.white,
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .padding(vertical = 14.dp),
-                        text = Strings.HOME_CREATE_BUTTON,
-                        style = PackyTheme.typography.body04,
-                        color = PackyTheme.color.gray900
-                    )
-                }
-            }
+                ),
+                currentIndex = 0
+            )
+            CreateBox(viewModel, modifier)
             if (giftBoxes.isNotEmpty()) {
                 Spacer(height = 16.dp)
                 HomeGiftBox(
@@ -322,6 +296,59 @@ fun HomeScreen(
                 )
             }
             Spacer(height = 16.dp)
+        }
+    }
+}
+
+@Composable
+private fun CreateBox(
+    viewModel: HomeViewModel,
+    modifier: Modifier
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .background(
+                color = PackyTheme.color.gray900,
+                shape = RoundedCornerShape(16.dp)
+            )
+            .clickableWithoutRipple { viewModel.emitIntentThrottle(HomeIntent.OnCrateBoxClick) },
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(top = 36.dp),
+            text = Strings.HOME_CREATE_BOX_TITLE,
+            style = PackyTheme.typography.body01,
+            color = PackyTheme.color.white,
+            textAlign = TextAlign.Center,
+        )
+        Image(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(154.dp),
+            painter = painterResource(id = com.example.home.R.drawable.home_create_box),
+            contentDescription = "create box",
+        )
+        Box(
+            modifier = Modifier
+                .padding(bottom = 24.dp)
+                .padding(horizontal = 24.dp)
+                .fillMaxWidth()
+                .background(
+                    color = PackyTheme.color.white,
+                    shape = RoundedCornerShape(8.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(vertical = 14.dp),
+                text = Strings.HOME_CREATE_BUTTON,
+                style = PackyTheme.typography.body04,
+                color = PackyTheme.color.gray900
+            )
         }
     }
 }

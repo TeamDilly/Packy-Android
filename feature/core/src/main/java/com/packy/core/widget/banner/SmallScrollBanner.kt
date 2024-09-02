@@ -9,15 +9,14 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.domain.model.banner.ImageBanner
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalGlideComposeApi::class)
 @Composable
@@ -28,15 +27,12 @@ fun SmallScrollBanner(
     clickBanner: (String) -> Unit = {},
 ) {
 
-    val pagerState = rememberPagerState(pageCount = {
-        bannerUrlList.size
-    })
-
-    LaunchedEffect(key1 = currentIndex) {
-        launch {
-            pagerState.scrollToPage(currentIndex)
+    val pagerState = rememberPagerState(
+        initialPage = 499,
+        pageCount = {
+            1000
         }
-    }
+    )
 
     Box(
         modifier = modifier
@@ -46,16 +42,20 @@ fun SmallScrollBanner(
         HorizontalPager(
             modifier = Modifier
                 .fillMaxSize(),
+            userScrollEnabled = true,
             state = pagerState,
-        ) {
+        ) { index ->
+            val item = bannerUrlList[index % bannerUrlList.size]
+
             GlideImage(
                 modifier = modifier
                     .fillMaxSize()
                     .clickableWithoutRipple {
-                        clickBanner(bannerUrlList[it].url)
+                        clickBanner(item.url)
                     },
-                model = bannerUrlList[it].imageUrl,
-                contentDescription = "banner Image"
+                model = item.imageUrl,
+                contentDescription = "banner Image",
+                contentScale = ContentScale.Crop
             )
         }
     }

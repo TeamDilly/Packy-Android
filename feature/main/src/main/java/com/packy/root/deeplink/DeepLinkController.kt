@@ -1,6 +1,7 @@
 package com.packy.root.deeplink
 
 import android.content.Intent
+import android.os.Build
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.navDeepLink
@@ -13,7 +14,11 @@ sealed interface DeepLinkController {
 
     fun getDeepLinkController(backStackEntry: NavBackStackEntry): DeepLinkController {
         // 딥링크 인텐트를 추출
-        val intent = backStackEntry.arguments?.getParcelable("android-support-nav:controller:deepLinkIntent", Intent::class.java)
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            backStackEntry.arguments?.getParcelable("android-support-nav:controller:deepLinkIntent", Intent::class.java)
+        } else {
+            backStackEntry.arguments?.getParcelable<Intent>("android-support-nav:controller:deepLinkIntent")
+        }
 
         // 인텐트의 데이터로부터 URI를 가져오기
         val deepLinkUri = intent?.data

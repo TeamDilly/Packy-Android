@@ -1,5 +1,6 @@
 package com.example.home.home
 
+import com.packy.domain.model.banner.ImageBanner
 import com.packy.domain.model.getbox.GiftBox
 import com.packy.domain.model.home.HomeBox
 import com.packy.domain.model.home.LazyBox
@@ -42,7 +43,9 @@ data class HomeState(
     val giftBoxes: List<HomeBox>,
     val lazyBox: List<LazyBox>,
     val isLoading: Boolean = false,
-    val noticeGiftBox: NoticeGiftBox? = null
+    val noticeGiftBox: NoticeGiftBox? = null,
+    val homeBannerList: List<ImageBanner> = emptyList(),
+    val homeBannerCurrentIndex: Int? = null
 ) : UiState
 
 sealed interface HomeEffect : SideEffect {

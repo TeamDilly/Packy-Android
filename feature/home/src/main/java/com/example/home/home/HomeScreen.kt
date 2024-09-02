@@ -78,7 +78,10 @@ import com.packy.domain.model.home.LazyBox
 import com.packy.domain.model.home.NoticeGiftBox
 import io.branch.referral.Branch
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

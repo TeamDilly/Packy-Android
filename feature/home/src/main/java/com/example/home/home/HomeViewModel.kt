@@ -1,6 +1,7 @@
 package com.example.home.home
 
 import androidx.lifecycle.viewModelScope
+import com.packy.core.flow.tickerFlow
 import com.packy.domain.usecase.box.DeleteBoxUseCase
 import com.packy.domain.usecase.box.GetBoxUseCase
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
@@ -18,6 +19,10 @@ import com.packy.mvi.base.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -30,6 +35,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -120,16 +126,16 @@ class HomeViewModel @Inject constructor(
             getNoticeGiftBoxUseCase.getDeferredLinkBoxId()
                 .flatMapConcat {
                     flow<Unit> {
-                        if (it != null){
+                        if (it != null) {
                             try {
                                 getGiftBoxUseCase.getBox(it)
-                                    .collect{
+                                    .collect {
                                         emit(Unit)
                                     }
                             } catch (e: Exception) {
                                 emit(Unit)
                             }
-                        } else{
+                        } else {
                             emit(Unit)
                         }
                     }
@@ -179,5 +185,25 @@ class HomeViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    suspend fun autoScrollHomeBanner() {
+        val autoScrollJob = tickerFlow(AUTO_SCROLL_DELAY)
+            .map {
+                uiState.first().homeBannerCurrentIndex
+            }
+            .collect {
+                if (it == null) {
+                    awaitCancellation()
+                } else {
+                    setState { state ->
+                        state.copy(homeBannerCurrentIndex = it + 1)
+                    }
+                }
+            }
+    }
+
+    companion object {
+        private const val AUTO_SCROLL_DELAY = 3000L
     }
 }

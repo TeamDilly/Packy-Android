@@ -268,7 +268,6 @@ fun HomeScreen(
                         url = "`"
                     )
                 ),
-                currentIndex = 0
             )
             CreateBox(viewModel, modifier)
             if (giftBoxes.isNotEmpty()) {

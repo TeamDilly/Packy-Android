@@ -45,7 +45,6 @@ data class HomeState(
     val isLoading: Boolean = false,
     val noticeGiftBox: NoticeGiftBox? = null,
     val homeBannerList: List<ImageBanner> = emptyList(),
-    val homeBannerCurrentIndex: Int? = null
 ) : UiState
 
 sealed interface HomeEffect : SideEffect {

@@ -186,24 +186,4 @@ class HomeViewModel @Inject constructor(
                 }
         }
     }
-
-    suspend fun autoScrollHomeBanner() {
-        val autoScrollJob = tickerFlow(AUTO_SCROLL_DELAY)
-            .map {
-                uiState.first().homeBannerCurrentIndex
-            }
-            .collect {
-                if (it == null) {
-                    awaitCancellation()
-                } else {
-                    setState { state ->
-                        state.copy(homeBannerCurrentIndex = it + 1)
-                    }
-                }
-            }
-    }
-
-    companion object {
-        private const val AUTO_SCROLL_DELAY = 3000L
-    }
 }

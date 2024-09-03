@@ -17,15 +17,19 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.domain.model.banner.ImageBanner
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalGlideComposeApi::class)
 @Composable
 fun SmallScrollBanner(
     bannerUrlList: List<ImageBanner>,
-    currentIndex: Int,
     modifier: Modifier = Modifier,
     clickBanner: (String) -> Unit = {},
 ) {
+
+    var autoScrollJob: Job? = null
 
     val pagerState = rememberPagerState(
         initialPage = 499,
@@ -33,6 +37,15 @@ fun SmallScrollBanner(
             1000
         }
     )
+
+    LaunchedEffect(key1 = pagerState.settledPage) {
+        autoScrollJob?.cancel()
+        autoScrollJob = launch {
+            println("LOGEE LaunchedEffect launch")
+            delay(3000L)
+            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+        }
+    }
 
     Box(
         modifier = modifier
@@ -60,3 +73,4 @@ fun SmallScrollBanner(
         }
     }
 }
+

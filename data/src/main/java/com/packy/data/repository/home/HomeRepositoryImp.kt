@@ -7,6 +7,7 @@ import com.packy.data.local.GlobalPrefManager
 import com.packy.data.model.home.toEntity
 import com.packy.data.remote.home.HomeService
 import com.packy.data.remote.home.MyBoxPagingSource
+import com.packy.domain.model.banner.ImageBanner
 import com.packy.domain.model.home.HomeBox
 import com.packy.domain.model.home.LazyBox
 import com.packy.domain.model.home.NoticeGiftBox
@@ -64,5 +65,11 @@ class HomeRepositoryImp @Inject constructor(
     override suspend fun getDeferredLinkBoxId(): Flow<Long?> {
         return globalPrefManager.deferredLinkBoxId.getData()
             .onEach { globalPrefManager.deferredLinkBoxId.clear() }
+    }
+
+    override suspend fun getNotices(): Flow<Resource<List<ImageBanner>>> = flow {
+        emit(Resource.Loading())
+        val notice = homeService.getNotice()
+        emit(notice.map { it.map { it.toEntity() } })
     }
 }

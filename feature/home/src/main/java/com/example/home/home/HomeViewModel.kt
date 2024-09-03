@@ -7,6 +7,7 @@ import com.packy.domain.usecase.box.GetBoxUseCase
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
 import com.packy.domain.usecase.home.GetLazyBoxUseCase
 import com.packy.domain.usecase.home.GetNoticeGiftBoxUseCase
+import com.packy.domain.usecase.home.GetNoticesUseCase
 import com.packy.domain.usecase.reset.ResetCreateBoxUseCase
 import com.packy.lib.utils.Resource
 import com.packy.lib.utils.errorMessageHandler
@@ -45,6 +46,7 @@ class HomeViewModel @Inject constructor(
     private val resetCreateBoxUseCase: ResetCreateBoxUseCase,
     private val getNoticeGiftBoxUseCase: GetNoticeGiftBoxUseCase,
     private val getGiftBoxUseCase: GetBoxUseCase,
+    private val getNoticeUseCase: GetNoticesUseCase
 ) :
     MviViewModel<HomeIntent, HomeState, HomeEffect>() {
 
@@ -120,6 +122,22 @@ class HomeViewModel @Inject constructor(
                 }
         }
 
+    fun getNotice(){
+        viewModelScope.launch(Dispatchers.IO) {
+            getNoticeUseCase.getNotices()
+                .loadingHandler { setState { state -> state.copy(isLoading = it) } }
+                .filterSuccess()
+                .unwrapResource()
+                .collect { notice ->
+                    setState { state ->
+                        state.copy(
+                            homeBannerList = notice
+                        )
+                    }
+                }
+        }
+    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getGiftBoxes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -142,7 +160,9 @@ class HomeViewModel @Inject constructor(
                 }
                 .flatMapConcat {
                     getHomeBoxUseCase.getHomeBox()
-                        .zip(getLazyBoxUseCase.getLazyBox()) { homeBox, lazyBox ->
+                        .zip(
+                            getLazyBoxUseCase.getLazyBox(),
+                        ) { homeBox, lazyBox ->
                             homeBox + lazyBox
                         }
                 }

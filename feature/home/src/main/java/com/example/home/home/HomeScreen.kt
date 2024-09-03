@@ -142,6 +142,7 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         // deferredLink 에 아이템이 있을수 있으니 먼저 호출 후 메인 화면의 box들은 호출한다.
         viewModel.getGiftBoxes()
+        viewModel.getNotice()
     }
 
     LaunchedEffect(Unit) {
@@ -253,28 +254,17 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
         ) {
-            Spacer(height = 8.dp)
-            SmallScrollBanner(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .aspectRatio(4.1f)
-                    .clip(shape = RoundedCornerShape(20.dp)),
-                bannerUrlList = listOf(
-                    ImageBanner(
-                        imageUrl = "https://picsum.photos/250/250",
-                        url = "`"
-                    ),
-                    ImageBanner(
-                        imageUrl = "https://picsum.photos/250/240",
-                        url = "`"
-                    ),
-                    ImageBanner(
-                        imageUrl = "https://picsum.photos/250/230",
-                        url = "`"
-                    )
-                ),
-            )
+            if (uiState.homeBannerList.isNotEmpty()) {
+                Spacer(height = 8.dp)
+                SmallScrollBanner(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .aspectRatio(4.1f)
+                        .clip(shape = RoundedCornerShape(20.dp)),
+                    bannerUrlList = uiState.homeBannerList,
+                )
+            }
             Spacer(height = 12.dp)
             CreateBox(viewModel, modifier)
             if (giftBoxes.isNotEmpty()) {

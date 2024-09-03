@@ -32,16 +32,16 @@ fun SmallScrollBanner(
     var autoScrollJob: Job? = null
 
     val pagerState = rememberPagerState(
-        initialPage = 499,
+        initialPage = if (bannerUrlList.size <= 1) bannerUrlList.size else 499,
         pageCount = {
-            1000
+            if (bannerUrlList.size <= 1) bannerUrlList.size else 1000
         }
     )
 
     LaunchedEffect(key1 = pagerState.settledPage) {
+        if (bannerUrlList.size <= 1) return@LaunchedEffect
         autoScrollJob?.cancel()
         autoScrollJob = launch {
-            println("LOGEE LaunchedEffect launch")
             delay(3000L)
             pagerState.animateScrollToPage(pagerState.currentPage + 1)
         }

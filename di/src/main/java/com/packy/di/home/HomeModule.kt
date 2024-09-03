@@ -6,12 +6,14 @@ import com.packy.data.usecase.home.GetHomeBoxPaginationUseCaseImp
 import com.packy.data.usecase.home.GetHomeBoxUseCaseImp
 import com.packy.data.usecase.home.GetLazyBoxUseCaseImp
 import com.packy.data.usecase.home.GetNoticeGiftBoxUseCaseImp
+import com.packy.data.usecase.home.GetNoticesUseCaseImp
 import com.packy.di.network.Packy
 import com.packy.domain.repository.home.HomeRepository
 import com.packy.domain.usecase.home.GetHomeBoxPaginationUseCase
 import com.packy.domain.usecase.home.GetHomeBoxUseCase
 import com.packy.domain.usecase.home.GetLazyBoxUseCase
 import com.packy.domain.usecase.home.GetNoticeGiftBoxUseCase
+import com.packy.domain.usecase.home.GetNoticesUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -48,4 +50,7 @@ abstract class HomeRepositoryModule {
 
     @Binds
     abstract fun bindGetNoticeGiftBoxUseCase(useCase: GetNoticeGiftBoxUseCaseImp): GetNoticeGiftBoxUseCase
+
+    @Binds
+    abstract fun bindGetNoticeUseCase(useCase: GetNoticesUseCaseImp): GetNoticesUseCase
 }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -252,8 +253,13 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
         ) {
-            Spacer(height = 16.dp)
+            Spacer(height = 8.dp)
             SmallScrollBanner(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .aspectRatio(4.1f)
+                    .clip(shape = RoundedCornerShape(20.dp)),
                 bannerUrlList = listOf(
                     ImageBanner(
                         imageUrl = "https://picsum.photos/250/250",
@@ -269,6 +275,7 @@ fun HomeScreen(
                     )
                 ),
             )
+            Spacer(height = 12.dp)
             CreateBox(viewModel, modifier)
             if (giftBoxes.isNotEmpty()) {
                 Spacer(height = 16.dp)

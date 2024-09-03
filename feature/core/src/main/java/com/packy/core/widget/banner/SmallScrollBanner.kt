@@ -49,8 +49,6 @@ fun SmallScrollBanner(
 
     Box(
         modifier = modifier
-            .aspectRatio(4.1f)
-            .clip(shape = RoundedCornerShape(20.dp))
     ) {
         HorizontalPager(
             modifier = Modifier
@@ -61,7 +59,7 @@ fun SmallScrollBanner(
             val item = bannerUrlList[index % bannerUrlList.size]
 
             GlideImage(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .clickableWithoutRipple {
                         clickBanner(item.url)

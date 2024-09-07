@@ -23,6 +23,7 @@ import com.packy.domain.model.banner.ImageBanner
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalGlideComposeApi::class)
 @Composable
@@ -31,11 +32,10 @@ fun SmallScrollBanner(
     modifier: Modifier = Modifier,
     clickBanner: (String) -> Unit = {},
 ) {
-
     var autoScrollJob: Job? = null
 
     val pagerState = rememberPagerState(
-        initialPage = if (bannerUrlList.size <= 1) bannerUrlList.size else 499,
+        initialPage = if (bannerUrlList.size <= 1) bannerUrlList.size else BANNER_MIDDLE,
         pageCount = {
             if (bannerUrlList.size <= 1) bannerUrlList.size else 1000
         }
@@ -59,7 +59,8 @@ fun SmallScrollBanner(
             userScrollEnabled = true,
             state = pagerState,
         ) { index ->
-            val item = bannerUrlList[index % bannerUrlList.size]
+            val bannerIndex = abs(index - BANNER_MIDDLE)  % bannerUrlList.size
+            val item = bannerUrlList[bannerIndex]
 
             GlideImage(
                 modifier = Modifier
@@ -85,7 +86,7 @@ fun SmallScrollBanner(
                     )
                     .align(Alignment.BottomEnd)
                     .padding(horizontal = 8.dp, vertical = 2.dp),
-                text = "${(pagerState.currentPage % bannerUrlList.size) + 1} / ${bannerUrlList.size}",
+                text = "${(abs(pagerState.currentPage - BANNER_MIDDLE)  % bannerUrlList.size) + 1} / ${bannerUrlList.size}",
                 style = PackyTheme.typography.body06,
                 color = PackyTheme.color.white
             )
@@ -93,3 +94,4 @@ fun SmallScrollBanner(
     }
 }
 
+const val BANNER_MIDDLE = 499

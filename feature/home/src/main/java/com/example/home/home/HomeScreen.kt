@@ -95,6 +95,7 @@ fun HomeScreen(
     moveToBoxDetail: (Long, Boolean) -> Unit,
     moveToBoxOpenMotion: (GiftBox) -> Unit,
     moveSettings: () -> Unit,
+    moveToWebView: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -263,6 +264,9 @@ fun HomeScreen(
                         .aspectRatio(4.1f)
                         .clip(shape = RoundedCornerShape(20.dp)),
                     bannerUrlList = uiState.homeBannerList,
+                    clickBanner = {
+                        moveToWebView(it)
+                    }
                 )
             }
             Spacer(height = 12.dp)

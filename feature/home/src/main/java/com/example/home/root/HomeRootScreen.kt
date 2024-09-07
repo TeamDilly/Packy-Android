@@ -1,5 +1,6 @@
 package com.example.home.root
 
+import android.webkit.WebView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,6 +51,7 @@ fun HomeRootScreen(
     moveToBoxDetail: (Long, Boolean) -> Unit,
     moveToBoxOpenMotion: (GiftBox) -> Unit,
     moveSettings: () -> Unit,
+    moveToWebView: (String) -> Unit,
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -94,7 +96,8 @@ fun HomeRootScreen(
                     moveToCreateBox = moveToCreateBox,
                     moveToBoxDetail = moveToBoxDetail,
                     moveSettings = moveSettings,
-                    moveToBoxOpenMotion = moveToBoxOpenMotion
+                    moveToBoxOpenMotion = moveToBoxOpenMotion,
+                    moveToWebView = moveToWebView
                 )
             }
             asFadeInComposable(

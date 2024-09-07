@@ -43,8 +43,6 @@ fun LaunchScreen(
     viewModel: RootComposeViewModel = hiltViewModel()
 ) {
 
-    println("LOGEE $navController")
-
     var packyDialog by rememberSaveable {
         mutableStateOf<PackyDialogInfo?>(null)
     }

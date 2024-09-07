@@ -20,8 +20,10 @@ import com.packy.core.values.Strings.CREATE_BOX_CANCEL_BOX
 import com.packy.createbox.navigation.CreateBoxScreens
 
 import com.packy.feature.main.R
+import com.packy.root.navigation.CommonScreen
 import com.packy.root.navigation.MainScreens
 import com.packy.root.navigation.PackyNavHost
+import com.packy.root.webview.ComposeWebViewScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -105,6 +107,9 @@ fun RootCompose(
         },
         moveToBoxOpenMotion = {
             navController.navigate(GiftBoxScreens.GiftBoxMotion.create(it))
+        },
+        moveToWebView = { url ->
+            navController.navigate(CommonScreen.WebView.create(url))
         }
     )
 }

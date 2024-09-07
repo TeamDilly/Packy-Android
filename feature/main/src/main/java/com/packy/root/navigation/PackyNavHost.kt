@@ -12,6 +12,7 @@ import com.example.giftbox.navigation.giftBoxNavGraph
 import com.example.home.root.HomeRootScreen
 import com.example.home.root.HomeRoute.HOME_ROOT
 import com.example.home.navigation.settingsNavGraph
+import com.packy.core.animations.asPagingComposable
 import com.packy.core.navigiation.NavScreens
 import com.packy.core.navigiation.replaceArguments
 import com.packy.core.page.navigation.commonNavGraph
@@ -19,6 +20,8 @@ import com.packy.createbox.navigation.createBoxNavGraph
 import com.packy.domain.model.getbox.GiftBox
 import com.packy.onboarding.navigation.onboardingNavGraph
 import com.packy.root.deeplink.deepLinkNavGraph
+import com.packy.root.navigation.CommonRouteArgs.WEB_URL
+import com.packy.root.webview.ComposeWebViewScreen
 
 @Composable
 fun PackyNavHost(
@@ -33,6 +36,7 @@ fun PackyNavHost(
     closeCreateBox: () -> Unit,
     moveToShared: (Long) -> Unit,
     moveToBoxOpenMotion: (GiftBox) -> Unit,
+    moveToWebView: (String) -> Unit,
     logout: () -> Unit
 ) {
     NavHost(
@@ -74,9 +78,45 @@ fun PackyNavHost(
                 moveToBoxDetail = moveToBoxDetail,
                 moveSettings = moveSettings,
                 moveToBoxOpenMotion = moveToBoxOpenMotion,
+                moveToWebView = moveToWebView
             )
         }
+        asPagingComposable(
+            route = CommonScreen.WebView.name,
+            arguments = listOf(
+                navArgument(WEB_URL){
+                    nullable = true
+                    type = NavType.StringType
+                    defaultValue = null
+                }
+            )
+        ){
+            val webUrl = it.arguments?.getString(WEB_URL) ?: ""
+            ComposeWebViewScreen(url = webUrl)
+        }
     }
+}
+
+sealed class CommonScreen(
+    val route: String,
+    val navArguments: List<NamedNavArgument> = emptyList()
+) : NavScreens(_route = route, _navArguments = navArguments) {
+    data object CommonNavGraph : CommonScreen(route = "commonNavGraph")
+    data object WebView : CommonScreen(
+        route = "WebView",
+        navArguments = listOf(
+            navArgument(WEB_URL) {
+                type = androidx.navigation.NavType.StringType
+                defaultValue = ""
+            }
+        )
+    ) {
+        fun create(webViewUrl: String) = name.replaceArguments(navArguments.first(), webViewUrl)
+    }
+}
+
+object CommonRouteArgs {
+    const val WEB_URL = "webUrl"
 }
 
 sealed class MainScreens(

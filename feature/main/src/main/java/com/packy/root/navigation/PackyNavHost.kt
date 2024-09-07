@@ -92,7 +92,10 @@ fun PackyNavHost(
             )
         ){
             val webUrl = it.arguments?.getString(WEB_URL) ?: ""
-            ComposeWebViewScreen(url = webUrl)
+            ComposeWebViewScreen(
+                navController = navController,
+                url = webUrl
+            )
         }
     }
 }

@@ -11,12 +11,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
+import com.packy.core.designsystem.topbar.PackyTopBar
+import com.packy.feature.core.R
 
 @Composable
 fun ComposeWebViewScreen(
+    navController: NavController,
     url: String
 ) {
     Scaffold(
+        topBar = {
+            PackyTopBar.Builder()
+                .startIconButton(icon = R.drawable.cancle) {
+                    navController.popBackStack()
+                }
+                .build()
+        },
         modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
     ) { innerPadding ->
         AndroidView(

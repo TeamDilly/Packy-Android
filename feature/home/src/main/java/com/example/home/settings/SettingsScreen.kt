@@ -1,6 +1,5 @@
 package com.example.home.settings
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,7 +40,7 @@ import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
 import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
-import com.packy.core.page.navigation.CommonRoute
+import com.packy.core.page.navigation.CommonScreen
 import com.packy.core.theme.PackyTheme
 import com.packy.core.values.Strings
 import com.packy.core.values.Strings.MODIFY_PROFILE
@@ -73,7 +72,7 @@ fun SettingsScreen(
                 SettingsEffect.MoveToBack -> navController.popBackStack()
                 is SettingsEffect.MoveToWeb -> {
                     navController.navigate(
-                        route = CommonRoute.getWebScreenRoute(effect.url.toEncoding())
+                        route = CommonScreen.WebView.create(effect.url.toEncoding())
                     )
                 }
 

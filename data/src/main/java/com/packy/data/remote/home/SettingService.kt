@@ -12,6 +12,6 @@ class SettingService @Inject constructor(
     private val httpClient: HttpClient
 ) {
     suspend fun getSettings(): Resource<List<SettingDto>> = safeRequest {
-        httpClient.get(urlString = "/api/v1/admin/settings")
+        httpClient.get(urlString = "/api/v2/admin/settings")
     }
 }

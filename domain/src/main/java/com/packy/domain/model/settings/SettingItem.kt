@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SettingItem(
-    @SerialName("route") val route: SettingRoute,
+    @SerialName("name") val name: String,
     @SerialName("url") val url: String
 )

@@ -7,11 +7,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SettingDto(
-    @SerialName("tag") val tag: SettingRoute,
+    @SerialName("name") val name: String,
     @SerialName("url") val url: String
 ){
     fun toEntity() : SettingItem = SettingItem(
-        route = tag,
+        name = name,
         url = url
     )
 }

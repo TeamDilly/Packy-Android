@@ -267,7 +267,7 @@ private fun ServerSettingItem(
     settings.invoke().forEach { settingItem ->
         SettingItem(
             modifier = modifier,
-            title = settingItem.route.title,
+            title = settingItem.name,
             onClick = { onClick(SettingsIntent.OnWebSettingClick(settingItem.url)) }
         )
     }

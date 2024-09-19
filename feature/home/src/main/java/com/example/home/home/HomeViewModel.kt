@@ -131,7 +131,7 @@ class HomeViewModel @Inject constructor(
                 .collect { notice ->
                     setState { state ->
                         state.copy(
-                            homeBannerList = notice + notice
+                            homeBannerList = notice
                         )
                     }
                 }

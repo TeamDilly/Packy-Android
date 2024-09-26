@@ -8,8 +8,8 @@ android {
 
     defaultConfig {
         targetSdk = 34
-        versionCode = 7
-        versionName = "1.4.0"
+        versionCode = 8
+        versionName = "1.5.0"
         applicationId = "com.packy"
 
         multiDexEnabled = true

@@ -2,7 +2,14 @@ package com.packy.core.page.webscreen
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.net.http.SslError
+import android.view.ViewGroup
+import android.webkit.SslErrorHandler
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Box
@@ -26,6 +33,7 @@ import com.packy.core.designsystem.progress.PackyProgress
 import com.packy.core.designsystem.progress.PackyProgressDialog
 import com.packy.core.designsystem.topbar.PackyTopBar
 import com.packy.core.theme.PackyTheme
+import com.packy.feature.core.BuildConfig
 import com.packy.feature.core.R
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -35,6 +43,7 @@ fun WebScreen(
     url: String,
     modifier: Modifier = Modifier
 ) {
+    WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
     var loadingProgress by remember {
         mutableStateOf(false)
     }
@@ -55,17 +64,51 @@ fun WebScreen(
     ) { innerPadding ->
         Box(
             modifier = modifier
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .fillMaxSize(),
         ) {
             AndroidView(
                 modifier = Modifier.fillMaxSize(),
                 factory = { context ->
                     WebView(context).apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        webChromeClient = ChromeClient()
                         webViewClient = object : WebViewClient() {
+                            override fun onReceivedError(
+                                view: WebView?,
+                                request: WebResourceRequest?,
+                                error: WebResourceError?
+                            ) {
+                                super.onReceivedError(view, request, error)
+                                println("LOGEE onReceivedError $error")
+                            }
+
+                            override fun onReceivedHttpError(
+                                view: WebView?,
+                                request: WebResourceRequest?,
+                                errorResponse: WebResourceResponse?
+                            ) {
+                                super.onReceivedHttpError(view, request, errorResponse)
+                                println("LOGEE onReceivedHttpError $errorResponse")
+                            }
+
+                            override fun onReceivedSslError(
+                                view: WebView?,
+                                handler: SslErrorHandler?,
+                                error: SslError?
+                            ) {
+                                super.onReceivedSslError(view, handler, error)
+                                println("LOGEE onReceivedSslError $error")
+                            }
+
                             override fun shouldOverrideUrlLoading(
                                 view: WebView?,
                                 request: WebResourceRequest?
                             ): Boolean {
+                                println("LOGEE shouldOverrideUrlLoading")
                                 loadingProgress = true
                                 return false
                             }
@@ -74,23 +117,33 @@ fun WebScreen(
                                 view: WebView?,
                                 url: String?
                             ) {
-                                super.onPageFinished(
-                                    view,
-                                    url
-                                )
+                                println("LOGEE onPageFinished")
+                                super.onPageFinished(view, url)
                                 loadingProgress = false
                             }
                         }
-                        settings.javaScriptEnabled = true
-                        settings.loadWithOverviewMode = true
-                        settings.useWideViewPort = true
-                        settings.domStorageEnabled = true
+                        settings.apply {
+                            javaScriptEnabled = true
+                            domStorageEnabled = true
+                            cacheMode = WebSettings.LOAD_DEFAULT
+                            blockNetworkLoads = false
+                            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                            setGeolocationEnabled(true)
+                            setSupportZoom(true)
+                            builtInZoomControls = true
+                            displayZoomControls = false
+                        }
                     }
                 },
                 update = { webView ->
+                    println("LOGEE $url")
                     webView.loadUrl(url)
                 }
             )
         }
     }
+}
+
+class ChromeClient : WebChromeClient() {
+
 }

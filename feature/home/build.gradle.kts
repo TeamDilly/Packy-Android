@@ -15,6 +15,8 @@ dependencies {
     implementation(project(":common-android"))
     implementation(project(":lib"))
 
+    implementation(libs.compose.permission)
+
     implementation(libs.bundles.paging)
     implementation(libs.branch.io)
 }

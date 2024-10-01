@@ -17,13 +17,15 @@ material = "1.10.0"
 #https://developer.android.com/jetpack/androidx/releases/activity
 activityCompose = "1.8.1"
 #https://developer.android.com/jetpack/compose/bom/bom-mapping
-composeBom = "2023.10.01"
+composeBom = "2024.09.02"
 #https://developer.android.com/jetpack/androidx/releases/navigation
 androidxComposeNavigation = "2.7.5"
 #https://developer.android.com/jetpack/androidx/releases/lifecycle
 composeLifecycle = "2.7.0"
 #https://developer.android.com/jetpack/androidx/releases/compose-foundation?hl=ko
 composeFoundation = "1.6.8"
+#https://google.github.io/accompanist/permissions/
+composePermissions = "0.36.0"
 #https://mvnrepository.com/artifact/com.google.dagger/hilt-android
 hilt = "2.48"
 #https://developer.android.com/jetpack/androidx/releases/hilt?hl=ko
@@ -104,6 +106,9 @@ compose-glide = { group = "com.github.bumptech.glide", name = "compose", version
 compose-lifeCycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "composeLifecycle" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "composeFoundation" }
 
+#compose permissions
+compose-permission = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref="composePermissions"}
+
 #network
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
@@ -161,6 +166,7 @@ lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = 
 #firebase
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebase-message = { group = "com.google.firebase", name = "firebase-messaging-ktx" }
 
 #branch-io
 branch-io = { group = "io.branch.sdk.android", name = "library", version.ref = "branch-io" }

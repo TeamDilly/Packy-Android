@@ -1,6 +1,7 @@
 package com.example.home.home
 
-import android.app.Activity
+import android.Manifest
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -49,6 +50,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -56,6 +60,9 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.home.common.widget.DeleteBottomSheet
 import com.example.home.common.widget.LazyBoxItem
 import com.example.home.root.HomeRoute.MY_BOX
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.packy.core.analytics.AnalyticsConstant
 import com.packy.core.analytics.TrackedScreen
 import com.packy.feature.core.R
@@ -145,6 +152,8 @@ fun HomeScreen(
         viewModel.getGiftBoxes()
         viewModel.getNotice()
     }
+
+    InitNotificationPermission()
 
     LaunchedEffect(Unit) {
         viewModel.resetPoint()
@@ -622,5 +631,21 @@ private fun GiftBoxesTitle(
             style = PackyTheme.typography.body04,
             color = PackyTheme.color.gray600,
         )
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+private fun InitNotificationPermission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val notificationPermission = rememberPermissionState(
+            permission = Manifest.permission.POST_NOTIFICATIONS
+        )
+
+        if (!notificationPermission.status.isGranted) {
+            LaunchedEffect(Unit) {
+                    notificationPermission.launchPermissionRequest()
+            }
+        }
     }
 }

@@ -159,7 +159,7 @@ fun GiftBoxDetailOpenScreen(
                     .blur(if (showDialog != ShowDetail.NONE) 12.dp else 0.dp),
                 state = pagerState,
                 userScrollEnabled = uiState.hasGift,
-                beyondBoundsPageCount = 2
+                beyondViewportPageCount = 2,
             ) {
                 when (it) {
                     0 -> GiftBoxColumn(

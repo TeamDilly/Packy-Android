@@ -19,8 +19,10 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ripple.LocalRippleTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -32,7 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.packy.core.common.NoRippleTheme
+import com.packy.core.common.noRippleConfiguration
 import com.packy.core.theme.PackyTheme
 import com.packy.feature.core.R
 
@@ -163,10 +165,11 @@ class PackyTopBar {
             }
         }
 
+        @OptIn(ExperimentalMaterial3Api::class)
         @SuppressLint("ComposableNaming")
         @Composable
         fun build(modifier: Modifier = Modifier) {
-            CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
+            CompositionLocalProvider(LocalRippleConfiguration provides noRippleConfiguration) {
                 Row(
                     modifier = modifier
                         .fillMaxWidth()

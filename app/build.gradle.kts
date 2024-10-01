@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.kakao.user)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.message)
 
     implementation(libs.branch.io)
 }

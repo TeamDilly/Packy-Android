@@ -34,6 +34,7 @@ import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
@@ -77,9 +78,9 @@ import com.example.home.common.widget.LazyBoxItem
 import com.packy.common.authenticator.ext.toFormatTimeStampString
 import com.packy.core.analytics.AnalyticsConstant
 import com.packy.core.analytics.TrackedScreen
-import com.packy.core.common.NoRippleTheme
 import com.packy.core.common.Spacer
 import com.packy.core.common.clickableWithoutRipple
+import com.packy.core.common.noRippleConfiguration
 import com.packy.core.designsystem.dialog.PackyDialog
 import com.packy.core.designsystem.dialog.PackyDialogInfo
 import com.packy.core.designsystem.progress.PackyProgressDialog
@@ -288,7 +289,7 @@ fun MyBoxScreen(
             HorizontalPager(
                 modifier = Modifier.fillMaxSize(),
                 state = pagerState,
-                beyondBoundsPageCount = 1
+                beyondViewportPageCount = 4,
             ) {
                 when (it) {
                     MyBoxType.SEND.ordinal -> MyBoxList(
@@ -514,6 +515,7 @@ private fun EmptyMyBoxes(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MyBoxTab(
     selectedTab: MyBoxType,
@@ -529,7 +531,7 @@ private fun MyBoxTab(
         },
     ) {
         MyBoxType.entries.forEach { tabType ->
-            CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
+            CompositionLocalProvider(LocalRippleConfiguration provides noRippleConfiguration) {
                 val isSelected = selectedTab == tabType
                 Tab(
                     text = {

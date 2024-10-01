@@ -1,14 +1,13 @@
 package com.packy.core.common
 
 import androidx.compose.material.ripple.RippleAlpha
-import androidx.compose.material.ripple.RippleTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.RippleConfiguration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-object NoRippleTheme : RippleTheme {
-    @Composable
-    override fun defaultColor() = Color.Unspecified
-
-    @Composable
-    override fun rippleAlpha(): RippleAlpha = RippleAlpha(0.0f, 0.0f, 0.0f, 0.0f)
-}
+@OptIn(ExperimentalMaterial3Api::class)
+val noRippleConfiguration = RippleConfiguration(
+    color = Color.Transparent,
+    rippleAlpha = RippleAlpha(0f, 0f, 0f, 0f)
+)

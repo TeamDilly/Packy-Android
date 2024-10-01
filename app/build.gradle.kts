@@ -59,6 +59,7 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:onboarding"))
     implementation(project(":feature:core"))
+    implementation(project(":common-android"))
 
     implementation(project(":library:pref"))
     implementation(project(":library:account"))

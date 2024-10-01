@@ -215,7 +215,7 @@ fun ArchiveScreen(
                 modifier = Modifier
                     .fillMaxSize(),
                 state = pagerState,
-                beyondBoundsPageCount = 4,
+                beyondViewportPageCount = 4,
                 pageSpacing = 24.dp,
                 contentPadding = PaddingValues(horizontal = 24.dp)
             ) { page ->

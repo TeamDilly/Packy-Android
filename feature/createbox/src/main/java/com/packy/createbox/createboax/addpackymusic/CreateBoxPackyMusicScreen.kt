@@ -121,7 +121,7 @@ fun CreateBoxPackyMusicScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     state = pagerState,
-                    beyondBoundsPageCount = 4,
+                    beyondViewportPageCount = 4,
                     contentPadding = PaddingValues(horizontal = 44.dp),
                     pageSpacing = 16.dp
                 ) { index ->
